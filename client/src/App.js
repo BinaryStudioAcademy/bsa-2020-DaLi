@@ -3,12 +3,9 @@ import logo from './logo.svg';
 import './App.css';
 import { Typography } from '@material-ui/core'
 
-import Header from "./components/Header/Header";
-
 function App() {
   return (
     <div className="App">
-      <Header />
       <Typography variant='h6' className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
         <p>

@@ -82,8 +82,12 @@
 }
 
 .forgot-pswd {
+  cursor: pointer;
   text-decoration: none;
   color: #5e91d8;
+  background-color: transparent;
+  outline:none;
+  border:none;
 }
 
 .error {

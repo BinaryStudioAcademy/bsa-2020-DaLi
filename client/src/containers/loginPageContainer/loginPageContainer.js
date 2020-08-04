@@ -2,6 +2,7 @@ import React from 'react';
 import { Formik, Form, Field, ErrorMessage, getIn } from 'formik';
 import * as Yup from 'yup';
 import './loginPageStyles.css';
+import Modal from '../../components/ModalComponent/ModalComponent';
 
 const SignInSchema = Yup.object().shape({
   email: Yup.string().email('Invalid email').required('Required'),
@@ -12,6 +13,7 @@ const SignInSchema = Yup.object().shape({
 });
 
 const LoginPage = () => {
+  const [isModalVisible, setIsModalVisible] = React.useState(false);
   return (
     <div className="container">
       <div className="form-wrapper">
@@ -45,7 +47,11 @@ const LoginPage = () => {
                   placeholder="Shhh..."
                   style={getStyles(errors, 'password')}
                 />
-                <ErrorMessage name="password" component="div" className="error" />
+                <ErrorMessage
+                  name="password"
+                  component="div"
+                  className="error"
+                />
               </div>
               <div className="checkbox-wrapper">
                 <label htmlFor="remember">Remember me</label>
@@ -55,13 +61,24 @@ const LoginPage = () => {
                 <button type="submit" className="btn btn-submit">
                   Sign in
                 </button>
-                <a href="#" className="forgot-pswd">
+                <button className="forgot-pswd" onClick={() => setIsModalVisible(true)}>
                   I seem to have forgotten my password
-                </a>
+                </button>
               </div>
             </Form>
           )}
         </Formik>
+
+        {isModalVisible && (
+          <Modal onModalClose={() => setIsModalVisible(false)}>
+            <Modal.Body>
+              Please contact an administrator to reset your password
+            </Modal.Body>
+            <Modal.Footer>
+              <Modal.Footer.CloseBtn>Back to login</Modal.Footer.CloseBtn>
+            </Modal.Footer>
+          </Modal>
+        )}
       </div>
     </div>
   );

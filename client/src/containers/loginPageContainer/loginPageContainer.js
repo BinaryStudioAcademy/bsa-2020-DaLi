@@ -9,7 +9,7 @@ const SignInSchema = Yup.object().shape({
   password: Yup.string()
     .required('No password provided.')
     .min(8, 'Password is too short - should be 8 chars minimum.')
-    .matches(/[a-zA-Z]/, 'Password can only contain Latin letters.')
+    .matches(/^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/, 'Password must contain one uppercase, one lowercase, one number and one special character.')
 });
 
 const LoginPage = () => {
@@ -61,7 +61,7 @@ const LoginPage = () => {
                 <button type="submit" className="btn btn-submit">
                   Sign in
                 </button>
-                <button className="forgot-pswd" onClick={() => setIsModalVisible(true)}>
+                <button type="button" className="forgot-pswd" onClick={() => setIsModalVisible(true)}>
                   I seem to have forgotten my password
                 </button>
               </div>

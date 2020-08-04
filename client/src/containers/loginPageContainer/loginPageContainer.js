@@ -2,7 +2,7 @@ import React from 'react';
 import { Formik, Form, Field, ErrorMessage, getIn } from 'formik';
 import * as Yup from 'yup';
 import './loginPageStyles.css';
-import Modal from '../../components/ModalComponent/ModalComponent';
+import Modal from '../../components/ModalComponent';
 
 const SignInSchema = Yup.object().shape({
   email: Yup.string().email('Invalid email').required('Required'),

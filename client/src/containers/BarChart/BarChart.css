@@ -1,0 +1,24 @@
+div#container {
+  width: 1000px;
+  height: 600px ;
+  padding: 80px;
+}
+
+.label {
+  font-size: 24px;
+  font-weight: bold;
+}
+
+line#limit {
+  stroke: #333;
+  stroke-width: 3;
+  stroke-dasharray: 10;
+}
+
+g text {
+  font-size: 14px;
+}
+
+.y-axis path, .x-axis path {
+  stroke-width: 2px;
+}

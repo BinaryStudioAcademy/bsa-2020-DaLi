@@ -1,7 +1,8 @@
-import { fork, all } from "redux-saga/effects";
+import { fork, all } from 'redux-saga/effects';
 
-function* exampleSaga () {}
+/* eslint-disable-next-line */
+function* exampleSaga() {}
 
 export function* rootSaga() {
-    yield all([fork(exampleSaga)]);
+  yield all([fork(exampleSaga)]);
 }

@@ -5,12 +5,19 @@
 .visualizationModalForm label {
     color: #718391;
     font-weight: bold;
+    font-size: 12px;
+    margin-bottom: 5px;
 }
 
 .visualizationModalForm input, textarea {
     border: 1px solid #dadada;
     padding: 10px;
     border-radius: 5px;
+    margin-bottom: 15px;
+}
+
+.visualizationModalForm textarea {
+    min-height: 80px;
 }
 
 .visualizationModalForm input::placeholder, textarea::placeholder {
@@ -19,7 +26,16 @@
     font-family: 'Roboto';
 }
 
+.visualizationModalForm textarea::placeholder {
+    margin-top: -10px;
+}
+
 .visualizationModalForm input:focus, textarea:focus {
     outline: none;
     border: 1px solid #33a1de;
+}
+
+.visualizationModalFooter {
+    padding-right: 24px !important;
+    margin-bottom: 23px;
 }

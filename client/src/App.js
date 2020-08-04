@@ -2,10 +2,12 @@ import React from 'react';
 import logo from './logo.svg';
 import './App.css';
 import { Typography } from '@material-ui/core'
+import SaveVisualizationModal from "./components/SaveVisualizationModal/SaveVisualizationModal";
 
 function App() {
   return (
     <div className="App">
+      <SaveVisualizationModal />
       <Typography variant='h6' className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
         <p>

@@ -1,0 +1,25 @@
+.visualizationModalForm {
+    display: flex;
+    flex-direction: column;
+}
+.visualizationModalForm label {
+    color: #718391;
+    font-weight: bold;
+}
+
+.visualizationModalForm input, textarea {
+    border: 1px solid #dadada;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.visualizationModalForm input::placeholder, textarea::placeholder {
+    color: #c6cfd4;
+    font-size: 15px;
+    font-family: 'Roboto';
+}
+
+.visualizationModalForm input:focus, textarea:focus {
+    outline: none;
+    border: 1px solid #33a1de;
+}

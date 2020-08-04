@@ -1,13 +1,5 @@
 import { combineReducers } from "redux";
-
-const exampleReducer = (state = {}, action) => {
-    switch (action.type) {
-        case 'EXAMPLE':
-            return {};
-        default:
-            return state;
-    }
-};
+import { exampleReducer } from '../containers/ExampleContainer/exampleReducer'
 
 export default combineReducers({
     exampleReducer

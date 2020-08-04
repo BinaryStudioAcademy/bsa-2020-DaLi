@@ -1,0 +1,26 @@
+.visualization-container {
+    margin: 0;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.visualization-list {
+    display: flex;
+    flex-wrap: wrap;
+    list-style: none;
+}
+
+.visualization-icon {
+    width: 100px;
+    height: 100px;
+    background-color: darkgrey;
+    border: 1px solid black;
+}
+
+.visualization-item {
+    margin-right: 70px;
+    text-align: center;
+    cursor: pointer;
+}

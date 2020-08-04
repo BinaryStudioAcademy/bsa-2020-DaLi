@@ -1,6 +1,8 @@
 import { combineReducers } from "redux";
-import { exampleReducer } from '../containers/ExampleContainer/exampleReducer'
+import { exampleReducer } from "../containers/ExampleContainer/exampleReducer";
+import tableVisualization from "../containers/TableVisualization/reducer";
 
 export default combineReducers({
-    exampleReducer
+  exampleReducer,
+  tableVisualization,
 });

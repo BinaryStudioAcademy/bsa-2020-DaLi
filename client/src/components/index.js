@@ -1,5 +1,5 @@
-import ExampleComponent from './ExampleComponent/ExampleComponent';
+import Header from './Header/Header';
 import LoginForm from './LoginForm';
 import Modal from './Modal';
 
-export { ExampleComponent, LoginForm, Modal };
+export { Header, LoginForm, Modal };

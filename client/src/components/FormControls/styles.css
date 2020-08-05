@@ -1,0 +1,22 @@
+.MyFieldContainer {
+    display: flex;
+    flex-direction: column;
+}
+
+.labelsContainer {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-end;
+}
+
+.MyFieldContainer p {
+    color: red;
+    font-weight: bold;
+    font-size: 12px;
+    margin: 0 0 5px 0;
+}
+
+.invalid input, .invalid textarea {
+    border-color: red !important;
+}

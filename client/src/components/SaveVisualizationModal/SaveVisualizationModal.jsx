@@ -6,47 +6,61 @@ import MuiDialogActions from '@material-ui/core/DialogActions';
 import Button from '@material-ui/core/Button';
 import CloseIcon from '@material-ui/icons/Close';
 import IconButton from '@material-ui/core/IconButton';
-import Typography from '@material-ui/core/Typography';
+import * as Yup from "yup";
+import {Formik, Form} from 'formik';
 
-import { Formik, Form, Field } from 'formik';
-
+import {MyField} from "../FormControls/FormControls";
 import './styles.css';
 
-const SaveVisualizationModal = () => {
-  const cancel = () => {
+const ValidationSchema = Yup.object({
+  name: Yup.string()
+      .required("Name is required")
+})
 
+
+const SaveVisualizationModal = ({saveVisualization, closeModal, isVisible}) => {
+
+  const cancel = (resetForm) => () => {
+    resetForm();
+    /*    closeModal();*/
   };
-  const onSubmit = () => {
-
+  const save = (values) => {
+    console.log(values);
+    /*    saveVisualization();*/
   }
   return (
-      <Dialog open={true} maxWidth="sm" fullWidth>
+      <Dialog open={isVisible || false} maxWidth="sm" fullWidth>
         <DialogTitle>
-          <Typography variant="h6">
           Save visualization
-          </Typography>
-          <IconButton aria-label="close" size='small' style={{position:'absolute', top: 20, right: 24,}}>
+          <IconButton aria-label="close" size='small' style={{position: 'absolute', top: 20, right: 24,}}>
             <CloseIcon style={{fontSize: 18, color: '#c6cfd4',}}/>
           </IconButton>
         </DialogTitle>
-        <DialogContent>
-          <Formik initialValues={{name: '', description: ''}} onSubmit={() =>console.log('SUBMIT FORM')} >
-            <Form className='visualizationModalForm'>
-              <label>Name</label>
-              <Field name='name' as='input' placeholder='What is the name of your card?'/>
-              <label>Description</label>
-              <Field name='description' as='textarea' placeholder='It`s optional but oh, so helpful'/>
-            </Form>
-          </Formik>
-        </DialogContent>
-        <MuiDialogActions className='visualizationModalFooter'>
-          <Button variant="outlined" style={{textTransform: 'none', fontSize: 12}}>
-            Cancel
-          </Button>
-          <Button variant="outlined" disabled style={{textTransform: 'none', fontSize: 12}}>
-            Save
-          </Button>
-        </MuiDialogActions>
+
+        <Formik initialValues={{name: '', description: ''}} validationSchema={ValidationSchema}
+                onSubmit={values => save(values)}>
+          {(props) => (
+              <Form className='visualizationModalForm' onSubmit={props.handleSubmit}>
+                <DialogContent>
+                  <MyField name='name' as='input' placeholder='What is the name of your card?' label='Name'/>
+                  <MyField name='description' as='textarea' placeholder='It`s optional but oh, so helpful'
+                           label='Description'/>
+
+                </DialogContent>
+                <MuiDialogActions className='visualizationModalFooter'>
+                  <Button onClick={cancel(props.resetForm)} variant="outlined"
+                          style={{textTransform: 'none', fontSize: 12}}>
+                    Cancel
+                  </Button>
+                  <Button type='submit' variant="outlined" disabled={!(props.isValid && props.dirty)}
+                          style={{textTransform: 'none', fontSize: 12}}>
+                    Save
+                  </Button>
+                </MuiDialogActions>
+              </Form>
+          )}
+
+        </Formik>
       </Dialog>
   )
 };

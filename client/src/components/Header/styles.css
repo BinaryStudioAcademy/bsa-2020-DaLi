@@ -1,0 +1,12 @@
+header {
+    background-color: #519ee3;
+    display: flex;
+    justify-content: flex-end;
+    padding: 10px 0;
+}
+
+.header-icons {
+    color: #FFF;
+    margin-right: 35px;
+    cursor: pointer;
+}

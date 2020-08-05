@@ -1,5 +1,5 @@
-import ExampleComponent from './ExampleComponent/ExampleComponent'
+import Header from './Header/Header';
+import ExampleComponent from './ExampleComponent/ExampleComponent';
 import SaveVisualizationModal from './SaveVisualizationModal/SaveVisualizationModal';
 
-export { ExampleComponent }
-export { SaveVisualizationModal }
+export { ExampleComponent, Header, SaveVisualizationModal };

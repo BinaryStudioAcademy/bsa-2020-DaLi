@@ -1,1 +1,2 @@
-export function* exampleSaga() { }
+// eslint-disable-next-line
+export function* exampleSaga() {}

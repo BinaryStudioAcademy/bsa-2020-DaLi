@@ -1,10 +1,13 @@
 import React from 'react';
+import { BrowserRouter as Router, Route } from 'react-router-dom';
 import './App.css';
-import LoginPage from './containers/LoginPageContainer';
+import { LoginPage } from './pages';
 
 function App() {
   return (
-    <LoginPage />
+    <Router>
+      <Route exact path="/" component={LoginPage}/>
+    </Router>
   );
 }
 

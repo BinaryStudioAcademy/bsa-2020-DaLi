@@ -8,19 +8,19 @@ const initialState = {
       XAxis: {
         key: "createdAt",
         label: "Total",
-        display: true,
+        displayLabel: true,
       },
       YAxis: {
         key: "total",
         label: "Date",
-        display: true,
+        displayLabel: true,
       },
     },
     dateStep: dateStep.month,
     display: {
       stacking: stacking.notStack,
       goal: {
-        display: true,
+        display: false,
         value: 400,
         label: "Goal",
       },
@@ -36,7 +36,7 @@ export const barChartReducer = (state = initialState, action) => {
       return {
         ...state,
         data: action.data,
-        loading: false
+        loading: false,
       };
     default:
       return state;

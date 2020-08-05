@@ -1,7 +1,13 @@
 div#container {
   width: 1000px;
-  height: 600px ;
+  height: 600px;
   padding: 80px;
+}
+
+.bar__info-hover {
+  width: 150px;
+  height: 50px;
+  border-radius: 8px;
 }
 
 .label {
@@ -9,16 +15,23 @@ div#container {
   font-weight: bold;
 }
 
-line#limit {
+line#goal {
   stroke: #333;
   stroke-width: 3;
   stroke-dasharray: 10;
+}
+
+text.goal__label {
+  word-wrap: break-word !important;
+  width: 50px;
+  font-weight: bold;
 }
 
 g text {
   font-size: 14px;
 }
 
-.y-axis path, .x-axis path {
+.y-axis path,
+.x-axis path {
   stroke-width: 2px;
 }

@@ -2,12 +2,14 @@ import {
   FETCH_DATA,
   FETCH_DATA_SUCCESS,
   FETCH_DATA_ERROR,
+  UPDATE_SORTING_CONFIG,
 } from "./actionTypes";
 
 const initialState = {
   isLoading: false,
   error: false,
   data: null,
+  config: null,
 };
 
 export default function (state = initialState, action) {
@@ -24,11 +26,23 @@ export default function (state = initialState, action) {
       };
     }
     case FETCH_DATA_SUCCESS: {
-      const { data } = action.payload;
+      const { data, config } = action.payload;
       return {
         ...state,
         isLoading: false,
         data,
+        config,
+      };
+    }
+
+    case UPDATE_SORTING_CONFIG: {
+      const { order, orderBy } = action.payload;
+      return {
+        ...state,
+        config: {
+          ...state.config,
+          sort: { order, orderBy },
+        },
       };
     }
 

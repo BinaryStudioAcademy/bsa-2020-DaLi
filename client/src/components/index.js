@@ -1,3 +1,4 @@
-import ExampleComponent from './ExampleComponent/ExampleComponent'
+import ExampleComponent from "./ExampleComponent/ExampleComponent";
+import EnhancedTable from "./EnhancedTable";
 
-export { ExampleComponent }
+export { ExampleComponent, EnhancedTable };

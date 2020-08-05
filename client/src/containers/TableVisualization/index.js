@@ -1,11 +1,12 @@
 import React, { useEffect } from "react";
 import { connect } from "react-redux";
-import { fetchData } from "./actions";
-
+import * as actions from "./actions";
+import { EnhancedTable } from "../../components";
+import { stableSort, getComparator } from "./helpers";
 import "./index.css";
 
 const TableVisualization = (props) => {
-  const { isLoading, data, error, fetchData } = props;
+  const { isLoading, data, config, fetchData, updateSortingConfig } = props;
 
   useEffect(() => {
     fetchData();
@@ -14,9 +15,16 @@ const TableVisualization = (props) => {
   return (
     <>
       {isLoading && <div>Loading...</div>}
-      {data && <div>Data is ready</div>}
-      {error && <div>Error</div>}
-      {console.log(data)}
+      {data && (
+        <EnhancedTable
+          columnHeaders={config.columnHeaders}
+          rows={data}
+          config={config}
+          updateSortingConfig={updateSortingConfig}
+          stableSort={stableSort}
+          getComparator={getComparator}
+        />
+      )}
     </>
   );
 };
@@ -26,7 +34,7 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = {
-  fetchData,
+  ...actions,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(TableVisualization);

@@ -1,10 +1,6 @@
-import mockData from "./mockData";
-
-const sleep = (milliseconds) => {
-  return new Promise((resolve) => setTimeout(resolve, milliseconds));
-};
+import { config, mockData, sleep } from "./helpers";
 
 export const getData = async () => {
   await sleep(1000);
-  return mockData;
+  return { data: mockData, config };
 };

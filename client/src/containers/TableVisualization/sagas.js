@@ -8,8 +8,8 @@ import { getData } from "./services";
 
 export function* fetchData() {
   try {
-    const data = yield call(getData);
-    yield put({ type: FETCH_DATA_SUCCESS, payload: { data } });
+    const { data, config } = yield call(getData);
+    yield put({ type: FETCH_DATA_SUCCESS, payload: { data, config } });
   } catch (error) {
     yield put({ type: FETCH_DATA_ERROR, payload: { error } });
   }

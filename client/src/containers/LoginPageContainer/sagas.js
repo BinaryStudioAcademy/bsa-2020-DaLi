@@ -12,12 +12,12 @@ export function* loginSaga(payload) {
   }
 }
 
-function* watchloginSaga() {
+function* watchLoginSaga() {
 	yield takeEvery(types.LOGIN_USER, loginSaga)
 }
 
 export default function* loginSagas() {
   yield all ([
-    watchloginSaga()
+    watchLoginSaga()
   ]);
 }

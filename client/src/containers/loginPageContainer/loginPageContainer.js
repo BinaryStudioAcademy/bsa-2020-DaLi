@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect, useDispatch } from 'react-redux';
 import { LoginForm } from '../../components';
-import { Modal } from './../../components';
+import { Modal } from '../../components';
 import { loginUser } from './actions';
 
 const LoginPageContainer = () => {

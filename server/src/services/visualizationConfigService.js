@@ -8,12 +8,28 @@ export const createConfig = (data) => {
   });
 };
 
-export const getConfig = (id) => visualizationConfigRepository.getById(id);
+export const getConfig = async (id) => {
+  const config = await visualizationConfigRepository.getById(id);
+  if (!config) {
+    throw "Config not found";
+  }
+  return config;
+};
 
-export const updateConfig = (id, dataToUpdate) => {
-  const oldConfig = visualizationConfigRepository.getById(id);
-
+export const updateConfig = async (id, dataToUpdate) => {
+  const oldConfig = await visualizationConfigRepository.getById(id);
+  if (!oldConfig) {
+    throw "Config not found";
+  }
   const { color } = dataToUpdate;
   const newConfig = { ...oldConfig, color };
   return visualizationConfigRepository.updateById(id, newConfig);
+};
+
+export const deleteConfig = async (id) => {
+  const isDeleted = await visualizationConfigRepository.deleteById(id);
+  if (!isDeleted) {
+    throw "Config not found";
+  }
+  return isDeleted;
 };

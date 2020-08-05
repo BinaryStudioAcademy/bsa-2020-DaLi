@@ -21,6 +21,12 @@ router
       .updateConfig(req.params.id, req.body)
       .then((config) => res.send(config))
       .catch(next)
+  )
+  .delete("/:id", (req, res, next) =>
+    visualizationConfigService
+      .deleteConfig(req.params.id)
+      .then(() => res.send("Config deleted successfully"))
+      .catch(next)
   );
 
 export default router;

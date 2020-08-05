@@ -1,8 +1,10 @@
 import React, { Component } from "react";
 import * as d3 from "d3";
+import d3Tip from "d3-tip"
 import "./BarChart.css";
 import { connect } from "react-redux";
 import { fetchData } from "./barChartActions";
+import { findLineByLeastSquares } from "../../utils/trendline";
 
 class BarChart extends Component {
   componentDidMount() {
@@ -38,32 +40,42 @@ class BarChart extends Component {
         ),
       };
 
-    const xScale = d3
-      .scaleBand()
-      .domain(this.props.data.map((d) => d[this.state.XAxisKey]))
-      .range([
-        this.state.margin.left,
-        this.state.width - this.state.margin.right,
-      ])
-      .padding(0.1);
+    const tip  = d3Tip()
+    .attr('class', 'd3-tip')
+    .offset([-10, 0])
+    .html(d => `
+      <div><span>${this.state.XAxisKey}:</span> <span style='color:white'>${d[this.state.XAxisKey]}</span></div>
+      <div><span>${this.state.YAxisKey}:</span> <span style='color:white'>${d[this.state.YAxisKey]}</span></div>
+    `)
 
-    const yScale = d3
-      .scaleLinear()
-      .domain([yDataRange.min, yDataRange.max])
-      .range([
-        this.state.height - this.state.margin.bottom,
-        this.state.margin.top,
-      ]);
+    chart.call(tip)
 
-    const xAxis = (g) =>
-      g
-        .attr("transform", `translate(0,${height - margin.bottom})`)
-        .call(d3.axisBottom(xScale).tickSizeOuter(0));
+    const xScale = d3.scaleBand()
+    .domain(this.props.data.map((d) => d[this.state.XAxisKey]))
+    .range([
+      this.state.margin.left,
+      this.state.width - this.state.margin.right,
+    ])
+    .padding(0.1);
 
-    const yAxis = (g) =>
-      g
-        .attr("transform", `translate(${margin.left},0)`)
-        .call(d3.axisLeft(yScale));
+    const yScale = d3.scaleLinear()
+    .domain([yDataRange.min, yDataRange.max])
+    .range([
+      this.state.height - this.state.margin.bottom,
+      this.state.margin.top,
+    ]);
+
+    const xAxis = (g) => g.attr(
+      "transform", 
+      `translate(0,${height - margin.bottom})`
+    )
+    .call(d3.axisBottom(xScale).tickSizeOuter(0));
+
+    const yAxis = (g) => g.attr(
+      "transform", 
+      `translate(${margin.left},0)`
+    )
+    .call(d3.axisLeft(yScale));
 
     const zoom = (chart) => {
       const extent = [
@@ -77,119 +89,114 @@ class BarChart extends Component {
             d3.event.transform.applyX(d)
           )
         );
-        chart
-          .selectAll(".bars rect")
-          .attr("x", (d) => xScale(d[this.state.XAxisKey]))
-          .attr("width", xScale.bandwidth());
+
+        chart.selectAll(".bars rect")
+        .attr("x", (d) => xScale(d[this.state.XAxisKey]))
+        .attr("width", xScale.bandwidth());
+
         chart.selectAll(".x-axis").call(xAxis);
       };
 
-      chart.call(
-        d3
-          .zoom()
-          .scaleExtent([1, 8])
-          .translateExtent(extent)
-          .extent(extent)
-          .on("zoom", zoomed)
+      chart.call(d3.zoom()
+        .scaleExtent([1, 8])
+        .translateExtent(extent)
+        .extent(extent)
+        .on("zoom", zoomed)
       );
     };
 
-    const barsInfo = chart.selectAll().data(this.props.data).join("g");
+    const barsInfo = chart.selectAll()
+    .data(this.props.data)
+    .join("g");
 
-    chart
-      .attr("viewBox", [0, 0, width, height])
-      .call(zoom)
-      .selectAll()
-      .data(this.props.data)
-      .join("rect")
-      .attr("class", "bar")
-      .attr("fill", "#4AA1DE")
-      .attr("x", (d) => xScale(d[this.state.XAxisKey]))
-      .attr("y", (d) => yScale(d[this.state.YAxisKey]))
-      .attr(
-        "height",
-        (d) => yScale(yDataRange.min) - yScale(d[this.state.YAxisKey])
-      )
-      .attr("width", xScale.bandwidth())
-      .on("mouseenter", (_, index) => {
-        d3.selectAll(".bar")
-          .filter((_, i) => i !== index)
-          .transition()
-          .duration(500)
-          .attr("opacity", 0.6);
+    chart.attr("viewBox", [0, 0, width, height])
+    .call(zoom);
 
-        // const currentBarInfo = barsInfo.filter((_, i) => i === index);
+    chart.append("g")
+    .attr("class", "bars")
+    .selectAll()
+    .data(this.props.data)
+    .join("rect")
+    .attr("class", "bar")
+    .attr("fill", "#4AA1DE")
+    .attr("x", (d) => xScale(d[this.state.XAxisKey]))
+    .attr("y", (d) => yScale(d[this.state.YAxisKey]))
+    .attr("height", (d) => yScale(yDataRange.min) - yScale(d[this.state.YAxisKey]))
+    .attr("width", xScale.bandwidth())
+    .on("mouseenter", (_, index) => {
+      d3.selectAll(".bar")
+      .filter((_, i) => i !== index)
+      .transition()
+      .duration(500)
+      .attr("opacity", 0.6);
+    })
+    .on("mouseleave", () => {
+      d3.selectAll(".bar")
+      .transition()
+      .duration(500)
+      .attr("opacity", 1);
+    })
+    .on('mouseover', tip.show)
+    .on('mouseout', tip.hide);;
 
-        // currentBarInfo
-        //   .append("text")
-        //   .attr("class", "bar__info-hover")
-        //   .attr("fill", "#333")
-        //   .attr(
-        //     "x",
-        //     (a) => xScale(a[this.state.XAxisKey]) + xScale.bandwidth() / 2 - 75
-        //   )
-        //   .attr("y", (a) => yScale(a[this.state.YAxisKey]) - 60)
-      })
-      .on("mouseleave", (_,index) => {
-        d3.selectAll(".bar").transition().duration(500).attr("opacity", 1);
+    if (this.props.settings.display.showTrendLine && this.props.data.length) {
+      const xValues = this.props.data.map((d) => d[this.state.XAxisKey]);
+      const yValues = this.props.data.map((d) => d[this.state.YAxisKey]);
+      let lineCoords = findLineByLeastSquares(xValues, yValues);
 
-        // const currentBarInfo = barsInfo.filter((_, i) => i === index)
-        // currentBarInfo.select("rect").remove()
-        // currentBarInfo.selectAll("text").remove()
-      });
+      chart.select(".bars")
+      .append("line")
+      .attr("id", "trendline")
+      .attr("x1", 0)
+      .attr("y1", yScale(lineCoords.start.y))
+      .attr("x2", width)
+      .attr("y2", yScale(lineCoords.end.y));
+    }
 
     if (this.props.settings.display.showDataPointsValues) {
-      barsInfo
-        .append("text")
-        .attr("class", "bar__value")
-        .attr(
-          "x",
-          (a) => xScale(a[this.state.XAxisKey]) + xScale.bandwidth() / 2
-        )
-        .attr("y", (a) => yScale(a[this.state.YAxisKey]) - 20)
-        .attr("text-anchor", "middle")
-        .text((a) => `${a[this.state.YAxisKey]}`);
+      barsInfo.append("text")
+      .attr("class", "bar__value")
+      .attr("x", (a) => xScale(a[this.state.XAxisKey]) + xScale.bandwidth() / 2)
+      .attr("y", (a) => yScale(a[this.state.YAxisKey]) - 20)
+      .attr("text-anchor", "middle")
+      .text((a) => `${a[this.state.YAxisKey]}`);
     }
 
     chart.append("g").attr("class", "x-axis").call(xAxis);
     chart.append("g").attr("class", "y-axis").call(yAxis);
 
     if (YAxis.displayLabel) {
-      chart
-        .append("text")
-        .attr("class", "label")
-        .attr("x", -(height / 2) - margin.left)
-        .attr("y", margin.left / 4)
-        .attr("transform", "rotate(-90)")
-        .text(YAxis.label);
+      chart.append("text")
+      .attr("class", "label")
+      .attr("x", -(height / 2) - margin.left)
+      .attr("y", margin.left / 4)
+      .attr("transform", "rotate(-90)")
+      .text(YAxis.label);
     }
     if (XAxis.displayLabel) {
-      chart
-        .append("text")
-        .attr("class", "label")
-        .attr("x", width / 2 + margin.bottom)
-        .attr("y", height - margin.bottom * 0.2)
-        .attr("text-anchor", "middle")
-        .text(XAxis.label);
+      chart.append("text")
+      .attr("class", "label")
+      .attr("x", width / 2 + margin.bottom)
+      .attr("y", height - margin.bottom * 0.2)
+      .attr("text-anchor", "middle")
+      .text(XAxis.label);
     }
 
     if (goal.display) {
       const y = yScale(goal.value);
-      chart
-        .append("line")
-        .attr("id", "goal")
-        .attr("x1", 0)
-        .attr("y1", y)
-        .attr("x2", width)
-        .attr("y2", y);
+      chart.append("line")
+      .attr("id", "goal")
+      .attr("x1", 0)
+      .attr("y1", y)
+      .attr("x2", width)
+      .attr("y2", y);
 
-      chart
-        .append("text")
-        .attr("y", y - 10)
-        .attr("x", width - 50)
-        .attr("text-anchor", "middle")
-        .attr("class", "goal__label")
-        .text(goal.label);
+      chart.append("text")
+      .attr("y", y - 10)
+      .attr("x", width - 50)
+      .attr("text-anchor", "middle")
+      .attr("class", "goal__label")
+      .text(goal.label);
     }
   }
 

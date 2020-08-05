@@ -20,11 +20,11 @@ const initialState = {
     display: {
       stacking: stacking.notStack,
       goal: {
-        display: false,
-        value: 400,
+        display: true,
+        value: -400,
         label: "Goal",
       },
-      trendLine: true,
+      showTrendLine: true,
       showDataPointsValues: true,
     },
   },

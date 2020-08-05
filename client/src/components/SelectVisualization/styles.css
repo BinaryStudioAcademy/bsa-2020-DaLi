@@ -13,10 +13,7 @@
 }
 
 .visualization-icon {
-    width: 100px;
-    height: 100px;
-    background-color: darkgrey;
-    border: 1px solid black;
+    border: 1px solid rgba(153, 153, 153, 0.77);
 }
 
 .visualization-item {

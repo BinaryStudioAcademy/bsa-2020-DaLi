@@ -15,7 +15,6 @@ function App() {
                 </Switch>
             </Router>
 
-
             {/*<Typography variant='h6' className="App-header">*/}
             {/*  <img src={logo} className="App-logo" alt="logo" />*/}
             {/*  <p>*/}

@@ -4,6 +4,8 @@ const { Strategy: JwtStrategy, ExtractJwt } = require("passport-jwt");
 const validator = require("validator");
 const bcrypt = require("bcrypt");
 const { secretKey, jwtExpiresIn } = require("../config/security.config");
+const userRepo = require("../repos/userRepo");
+const { unauthorized, badRequest } = require("../helpers/types/HttpError");
 
 // Mock
 const findById = (id) => ({
@@ -29,11 +31,11 @@ passport.use(
     async (req, email, password, done) => {
       try {
         if (!validator.isEmail(email)) {
-          return done("Email is not valid", null);
+          return done(badRequest("Email is not valid"), null);
         }
-        const userByEmail = await findByEmail(email);
+        const userByEmail = await userRepo.getByEmail(email);
         if (userByEmail) {
-          return done("User with such email already exists", null);
+          return done(badRequest("User with such email already exists"), null);
         }
         return done(null, {
           email,
@@ -55,17 +57,16 @@ passport.use(
     async (email, password, done) => {
       try {
         if (!validator.isEmail(email)) {
-          return done("Email is not valid", null);
+          return done(unauthorized("Email is not valid"), null);
         }
-        const userByEmail = await findByEmail(email);
+        const userByEmail = await userRepo.getByEmail(email);
         if (!userByEmail) {
-          return done("Email is wrong", null);
+          return done(unauthorized("Email is wrong"), null);
         }
-        // const isMatched = await bcrypt.compare(password, userByEmail.password);
-        const isMatched = password === userByEmail.password;
+        const isMatched = await bcrypt.compare(password, userByEmail.password);
         return isMatched
           ? done(null, userByEmail)
-          : done("Password is wrong", null);
+          : done(unauthorized("Password is wrong"), null);
       } catch (err) {
         return done(err);
       }

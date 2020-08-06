@@ -1,19 +1,19 @@
 import Sequelize from "sequelize";
+import databaseUrl from "../config/db.config";
+import User from "./user";
 
-console.log(process.env.DATABASE_URL);
-
-const sequelize = new Sequelize(process.env.DATABASE_URL, {
-  dialect: 'postgres',
+export const sequelize = new Sequelize(databaseUrl, {
+  dialect: "postgres",
 });
 
-const models = {};
+User(sequelize, Sequelize.DataTypes);
+
+const models = sequelize.models;
 
 Object.keys(models).forEach((key) => {
   if ("associate" in models[key]) {
     models[key].associate(models);
   }
 });
-
-export { sequelize };
 
 export default models;

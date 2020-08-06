@@ -1,6 +1,7 @@
 import { Router } from "express";
 import passport from "passport";
-const { login } = require("../services/auth");
+
+const { login, register } = require("../services/auth");
 
 const router = Router();
 
@@ -9,6 +10,15 @@ router.post(
   passport.authenticate("login", { session: false }),
   (req, res) => {
     res.send(login(req.user));
+  }
+);
+
+router.post(
+  "/register",
+  passport.authenticate("register", { session: false }),
+  async (req, res) => {
+    await register(req.user);
+    res.sendStatus(204);
   }
 );
 

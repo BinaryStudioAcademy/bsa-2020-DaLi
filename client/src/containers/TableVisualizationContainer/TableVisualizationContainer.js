@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { EnhancedTable } from '../../components';
 import { mockData, initConfig, stableSort, getComparator } from './helpers';
 
-const TableVisualization = () => {
+const TableVisualizationContainer = () => {
   const { columns, sort } = initConfig;
 
   const [sortOrder, setSortOrder] = useState(sort.order);
@@ -26,4 +26,4 @@ const TableVisualization = () => {
     />
   );
 };
-export default TableVisualization;
+export default TableVisualizationContainer;

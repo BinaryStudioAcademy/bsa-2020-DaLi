@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React from "react";
 import * as d3 from "d3";
 import d3Tip from "d3-tip";
@@ -7,7 +8,7 @@ import "./BarChart.css";
 import { useEffect } from "react";
 
 function BarChart(props) {
-  useEffect(() => {  
+  useEffect(() => {
     const { margin, width, height } = props.settings.chart,
     { goal, showTrendLine, showDataPointsValues } = props.settings.display,
     XAxis = props.settings.axisData.XAxis,
@@ -34,28 +35,28 @@ function BarChart(props) {
     `)
     chart.call(tip)
     .attr("viewBox", [0, 0, width, height])
-  
+
     const xScale = d3.scaleBand()
     .domain(data.map((d) => d[XAxis.key]))
     .range([margin.left, width - margin.right])
     .padding(0.1);
-  
+
     const yScale = d3.scaleLinear()
     .domain([yDataRange.min, yDataRange.max])
     .range([height - margin.bottom, margin.top ]);
-  
+
     const xAxis = (g) => g
     .attr("transform", `translate(0,${height - margin.bottom})`)
     .call(d3.axisBottom(xScale).tickSizeOuter(0));
-    
+
     const yAxis = (g) => g
     .attr("transform", `translate(${margin.left},0)`)
     .call(d3.axisLeft(yScale));
-  
+
     const barsInfo = chart.selectAll()
     .data(data)
     .join("g");
-  
+
     chart.append("g")
     .attr("class", "bars")
     .selectAll()
@@ -82,12 +83,12 @@ function BarChart(props) {
     })
     .on('mouseover', tip.show)
     .on('mouseout', tip.hide);
-  
+
     if (showTrendLine && data.length) {
       const xValues = data.map((d) => d[XAxis.key]);
       const yValues = data.map((d) => d[YAxis.key]);
       const lineCoords = findLineByLeastSquares(xValues, yValues);
-      
+
       chart.select(".bars")
       .append("line")
       .attr("id", "trendline")
@@ -96,7 +97,7 @@ function BarChart(props) {
       .attr("x2", width)
       .attr("y2", yScale(lineCoords.end.y));
     }
-  
+
     if (showDataPointsValues) {
       barsInfo.append("text")
       .attr("class", "bar__value")
@@ -105,10 +106,10 @@ function BarChart(props) {
       .attr("text-anchor", "middle")
       .text((a) => `${a[YAxis.key]}`);
     }
-  
+
     chart.append("g").attr("class", "x-axis").call(xAxis);
     chart.append("g").attr("class", "y-axis").call(yAxis);
-  
+
     if (YAxis.displayLabel) {
       chart.append("text")
       .attr("class", "label")
@@ -117,7 +118,7 @@ function BarChart(props) {
       .attr("transform", "rotate(-90)")
       .text(YAxis.label);
     }
-  
+
     if (XAxis.displayLabel) {
       chart.append("text")
       .attr("class", "label")
@@ -126,7 +127,7 @@ function BarChart(props) {
       .attr("text-anchor", "middle")
       .text(XAxis.label);
     }
-  
+
     if (goal.display) {
       const y = yScale(goal.value);
       chart.append("line")
@@ -135,7 +136,7 @@ function BarChart(props) {
       .attr("y1", y)
       .attr("x2", width)
       .attr("y2", y);
-  
+
       chart.append("text")
       .attr("y", y - 10)
       .attr("x", width - 50)
@@ -144,7 +145,7 @@ function BarChart(props) {
       .text(goal.label);
     }
   }, [])
-  
+
 
   return (
     <div id="container">

@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React, { Component } from "react";
 import { BarChart } from "../../components";
 import { orders } from "../../mock_orders";

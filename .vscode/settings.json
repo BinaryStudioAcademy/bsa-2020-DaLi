@@ -1,0 +1,11 @@
+{
+  "editor.formatOnSave": false,
+  "[javascript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "editor.codeActionsOnSave": { "source.fixAll.eslint": true },
+  "eslint.workingDirectories": [
+		{ "directory": "client", "changeProcessCWD": true },
+		{ "directory": "server", "changeProcessCWD": true }
+	]
+}

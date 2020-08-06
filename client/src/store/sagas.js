@@ -1,7 +1,6 @@
-import { fork, all } from "redux-saga/effects";
-import { exampleSaga } from "../containers/ExampleContainer/exampleSagas";
-import tableVisualizationSagas from "../containers/TableVisualization/sagas";
+import { fork, all } from 'redux-saga/effects';
+import { exampleSaga } from '../containers/ExampleContainer/exampleSagas';
 
 export function* rootSaga() {
-  yield all([fork(exampleSaga), tableVisualizationSagas()]);
+  yield all([fork(exampleSaga)]);
 }

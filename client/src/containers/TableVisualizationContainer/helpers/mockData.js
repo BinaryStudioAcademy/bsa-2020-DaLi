@@ -8999,4 +8999,4 @@ export default [
     createdAt: '1575679111000',
     quantity: 73,
   },
-]
+];

@@ -1,4 +1,4 @@
-import ExampleContainer from "./ExampleContainer/ExampleContainer";
-import TableVisualization from "./TableVisualization";
+import ExampleContainer from './ExampleContainer/ExampleContainer';
+import TableVisualizationContainer from './TableVisualizationContainer/TableVisualizationContainer';
 
-export { ExampleContainer, TableVisualization };
+export { ExampleContainer, TableVisualizationContainer };

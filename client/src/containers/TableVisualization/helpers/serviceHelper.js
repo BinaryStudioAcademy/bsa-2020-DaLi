@@ -8,7 +8,10 @@ export const config = {
     { id: "createdAt", title: "CreatedAt", type: "date" },
     { id: "quantity", title: "Quantity", type: "number" },
   ],
-  sort: {},
+  sort: {
+    order: "asc",
+    orderBy: "id",
+  },
 };
 
 export const sleep = (milliseconds) => {

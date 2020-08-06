@@ -1,4 +1,5 @@
+import ExampleComponent from './ExampleComponent/ExampleComponent';
 import Header from './Header/Header';
-import ExampleComponent from './ExampleComponent/ExampleComponent'
+import SignUp from './SignUp/SignUp';
 
-export { ExampleComponent, Header }
+export { ExampleComponent, Header, SignUp };

@@ -17,7 +17,5 @@ routes(app);
 app.use(errorHandlerMiddleware);
 
 sequelize.sync().then(async () => {
-  app.listen(process.env.PORT, () =>
-    console.log(`App is listening on port ${process.env.PORT}!`)
-  );
+  app.listen(process.env.PORT, () => console.log(`App is listening on port ${process.env.PORT}!`));
 });

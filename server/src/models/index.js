@@ -11,7 +11,7 @@ VisualizationConfigModel(sequelize, Sequelize.DataTypes);
 const models = sequelize.models;
 
 Object.keys(models).forEach((key) => {
-  if ("associate" in models[key]) {
+  if ('associate' in models[key]) {
     models[key].associate(models);
   }
 });

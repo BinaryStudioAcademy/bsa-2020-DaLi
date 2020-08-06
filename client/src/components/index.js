@@ -1,5 +1,7 @@
 import Header from './Header/Header';
-import ExampleComponent from './ExampleComponent/ExampleComponent';
 import SaveVisualizationModal from './SaveVisualizationModal/SaveVisualizationModal';
+import LoginForm from './LoginForm';
+import Modal from './Modal';
+import BarChart from './BarChart/BarChart'
 
-export { ExampleComponent, Header, SaveVisualizationModal };
+export { BarChart, Header, SaveVisualizationModal, LoginForm, Modal };

@@ -1,6 +1,6 @@
-import { combineReducers } from 'redux';
-import { exampleReducer } from '../containers/ExampleContainer/exampleReducer';
+import { combineReducers } from "redux";
+import loginreducer from '../containers/LoginPageContainer/reducer'
 
 export default combineReducers({
-  exampleReducer,
+    loginreducer
 });

@@ -1,9 +1,9 @@
 /* eslint-disable */
-import React, { Component } from 'react';
-import { BarChart } from '../../components';
-import { orders } from '../../mock_orders';
-import { stacking } from './types';
-import './BarChartContainer.css';
+import React, { Component } from "react";
+import { BarChart } from "../../components";
+import { orders } from "../../mock_orders";
+import { stacking } from "./types";
+import "./BarChartContainer.css";
 
 class BarChartContainer extends Component {
   state = {

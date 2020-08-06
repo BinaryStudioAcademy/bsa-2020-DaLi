@@ -1,4 +1,6 @@
 import Header from './Header/Header';
 import ExampleComponent from './ExampleComponent/ExampleComponent'
+import BarChart from './BarChart/BarChart'
 
-export { ExampleComponent, Header }
+export { ExampleComponent, BarChart, Header }
+

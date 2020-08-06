@@ -5,11 +5,10 @@ import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 import store from './store'
-import { BarChartContainer } from './containers';
 
 ReactDOM.render(
   <Provider store={store}>
-    <BarChartContainer />
+    <App />
   </Provider>,
   document.getElementById('root')
 );

@@ -1,7 +1,9 @@
 import home from "./home";
-import auth from "./auth";
+import authRoutes from "./auth";
+import visualizationConfigRoutes from "./visualizationConfig";
 
-export default {
-  home,
-  auth,
+export default (app) => {
+    app.use("/", home);
+    app.use("/config", visualizationConfigRoutes);
+    app.use('/api/auth', authRoutes);
 };

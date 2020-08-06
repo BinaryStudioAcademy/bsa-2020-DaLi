@@ -1,17 +1,19 @@
 import Sequelize from "sequelize";
-import databaseUrl from "../config/db.config";
+import DATABASE_URL from "../config/dbConfig";
 import User from "./user";
+import VisualizationConfigModel from "./visualizationConfig";
 
-export const sequelize = new Sequelize(databaseUrl, {
+export const sequelize = new Sequelize(DATABASE_URL, {
   dialect: "postgres",
 });
 
 User(sequelize, Sequelize.DataTypes);
+VisualizationConfigModel(sequelize, Sequelize.DataTypes);
 
 const models = sequelize.models;
 
 Object.keys(models).forEach((key) => {
-  if ("associate" in models[key]) {
+  if ('associate' in models[key]) {
     models[key].associate(models);
   }
 });

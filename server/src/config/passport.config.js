@@ -7,20 +7,6 @@ const { secretKey, jwtExpiresIn } = require("../config/security.config");
 const userRepo = require("../repos/userRepo");
 const { unauthorized, badRequest } = require("../helpers/types/HttpError");
 
-// Mock
-const findById = (id) => ({
-  id,
-  email: "test@mail.com",
-  password: "hashed_bcrypt_pass",
-});
-
-// Mock
-const findByEmail = (email) => ({
-  id: 42,
-  email,
-  password: "hashed_bcrypt_pass",
-});
-
 passport.use(
   "register",
   new LocalStrategy(

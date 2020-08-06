@@ -1,62 +1,55 @@
 import * as axios from 'axios';
-import qs from 'qs';
+
+const baseRequest = async (request) => {
+  try {
+    return (await axios(request)).data;
+  } catch (error) {
+    throw new Error(error.response?.data?.error || error.response?.data?.message || error.message);
+  }
+};
 
 class baseAPIService {
   constructor(baseURL) {
-    this.instance = axios.create({
-      withCredentials: true,
-      baseURL,
-      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    this.baseURL = baseURL;
+  }
+
+  getData(endpoint) {
+    return baseRequest({
+      method: 'get',
+      url: `${this.baseURL}${endpoint}`,
     });
   }
 
-  async getData(endpoint) {
-    try {
-      const res = await this.instance.get(`${endpoint}`);
-      return res.data;
-    } catch (err) {
-      return JSON.parse(err.request.responseText);
-    }
+  // endpoint example = 'users/12'
+  getDataById(endpoint) {
+    return baseRequest({
+      method: 'get',
+      url: `${this.baseURL}${endpoint}`,
+    });
+  }
+
+  postData(endpoint, data) {
+    return baseRequest({
+      method: 'post',
+      url: `${this.baseURL}${endpoint}`,
+      data,
+    });
+  }
+
+  putData(endpoint, data) {
+    return baseRequest({
+      method: 'put',
+      url: `${this.baseURL}${endpoint}`,
+      data,
+    });
   }
 
   // endpoint example = 'users/12'
-  async getDataById(endpoint) {
-    try {
-      const res = await this.instance.get(`${endpoint}`);
-      return res.data;
-    } catch (err) {
-      return JSON.parse(err.request.responseText);
-    }
-  }
-
-  async postData(endpoint, data) {
-    try {
-      const query = qs.stringify(data);
-      const res = await this.instance.post(`${endpoint}`, query);
-      return res.data;
-    } catch (err) {
-      return JSON.parse(err.request.responseText);
-    }
-  }
-
-  async putData(endpoint, data) {
-    try {
-      const query = qs.stringify(data);
-      const res = await this.instance.put(`${endpoint}`, query);
-      return res.data;
-    } catch (err) {
-      return JSON.parse(err.request.responseText);
-    }
-  }
-
-  // endpoint example = 'users/12'
-  async deleteData(endpoint) {
-    try {
-      const res = await this.instance.delete(`${endpoint}`);
-      return res.data;
-    } catch (err) {
-      return JSON.parse(err.request.responseText);
-    }
+  deleteData(endpoint) {
+    return baseRequest({
+      method: 'delete',
+      url: `${this.baseURL}${endpoint}`,
+    });
   }
 }
 

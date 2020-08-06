@@ -1,8 +1,11 @@
 import baseAPIService from './baseAPI.service';
+import config from '../../config/index';
+
+const API_URL = config.api.url;
 
 class UserAPIService extends baseAPIService {
   constructor() {
-    super('http://localhost:5000/');
+    super(API_URL);
   }
 }
 

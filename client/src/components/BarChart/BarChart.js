@@ -3,6 +3,7 @@ import * as d3 from "d3";
 import d3Tip from "d3-tip";
 
 import { findLineByLeastSquares } from "../../utils/trendline";
+import { calcMaxYDataValue, calcMinYDataValue } from "../../utils/calcCriticalYAxisValue";
 import "./BarChart.css";
 import { useEffect } from "react";
 
@@ -154,13 +155,3 @@ function BarChart(props) {
 }
 
 export default BarChart;
-
-function calcMinYDataValue(minValue, goal) {
-  const min = goal.display ? Math.min(minValue, goal.value) : minValue;
-  return min > 0 ? min * 0.7 : min * 1.2;
-}
-
-function calcMaxYDataValue(maxVal, goal) {
-  const max = goal.display ? Math.max(maxVal, goal.value) : maxVal;
-  return max > 0 ? max * 1.2 : max * 0.7;
-}

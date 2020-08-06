@@ -1,12 +1,12 @@
-import React, { Component } from "react";
-import { BarChart } from "../../components";
-import { orders } from "../../mock_orders";
-import { stacking } from "./types";
+import React, { Component } from 'react';
+import * as d3 from 'd3'
+import { orders } from '../../mock_orders';
+import LineChart from '../../components/LineChart/LineChart';
 
-class BarChartContainer extends Component {
+class LineChartContainer extends Component {
   state = {
     data: orders,
-    settings : {
+    settings: {
       axisData: {
         XAxis: {
           key: "createdAt",
@@ -30,10 +30,9 @@ class BarChartContainer extends Component {
         width: 1000,
       },
       display: {
-        stacking: stacking.notStack,
         goal: {
           display: true,
-          value: 1400,
+          value: 100,
           label: "Goal",
         },
         showTrendLine: false,
@@ -45,10 +44,13 @@ class BarChartContainer extends Component {
   render() {
     return (
       <div>
-        <BarChart data={this.state.data} settings={this.state.settings} />
+        <LineChart 
+          data={this.state.data}
+          settings={this.state.settings}
+        />
       </div>
     );
   }
-}
+};
 
-export default BarChartContainer;
+export default LineChartContainer;

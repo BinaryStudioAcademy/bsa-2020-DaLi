@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './styles.css';
@@ -10,19 +11,18 @@ function Modal({ children, onModalClose }) {
       const listener = keyListenersMap.get(e.keyCode);
       return listener && listener(e);
     }
-    document.addEventListener("keydown", keyListener);
+    document.addEventListener('keydown', keyListener);
 
-    return () => document.removeEventListener("keydown", keyListener);
+    return () => document.removeEventListener('keydown', keyListener);
   });
 
   const modalRef = React.createRef();
-  const handleTabKey = e => {
+  const handleTabKey = (e) => {
     const focusableModalElements = modalRef.current.querySelectorAll(
-      'a[href], button, textarea, input[type="text"], input[type="radio"], input[type="checkbox"], select'
+      'a[href], button, textarea, input[type="text"], input[type="radio"], input[type="checkbox"], select',
     );
     const firstElement = focusableModalElements[0];
-    const lastElement =
-      focusableModalElements[focusableModalElements.length - 1];
+    const lastElement = focusableModalElements[focusableModalElements.length - 1];
 
     if (!e.shiftKey && document.activeElement !== firstElement) {
       firstElement.focus();
@@ -35,17 +35,18 @@ function Modal({ children, onModalClose }) {
     }
   };
 
-  const keyListenersMap = new Map([[27, onModalClose], [9, handleTabKey]]);
+  const keyListenersMap = new Map([
+    [27, onModalClose],
+    [9, handleTabKey],
+  ]);
 
   return ReactDOM.createPortal(
     <div className="modal-container" role="dialog" aria-modal="true">
       <div className="modal-content" ref={modalRef}>
-        <modalContext.Provider value={{ onModalClose }}>
-          {children}
-        </modalContext.Provider>
+        <modalContext.Provider value={{ onModalClose }}>{children}</modalContext.Provider>
       </div>
     </div>,
-    document.body
+    document.body,
   );
 }
 
@@ -72,14 +73,7 @@ Modal.Footer = function ModalFooter(props) {
 
 Modal.Footer.CloseBtn = function CloseBtn(props) {
   const { onModalClose } = React.useContext(modalContext);
-  return (
-    <button
-      {...props}
-      className="close-btn"
-      title="close modal"
-      onClick={onModalClose}
-    />
-  );
+  return <button {...props} className="close-btn" title="close modal" onClick={onModalClose} />;
 };
 
 export default Modal;

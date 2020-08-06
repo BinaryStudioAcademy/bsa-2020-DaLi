@@ -5,19 +5,16 @@ import * as types from './actionTypes';
 export function* loginSaga(payload) {
   try {
     const response = yield call(loginService, payload);
-    yield put({ type: types.LOGIN_USER_SUCCESS, response })
-    
-  } catch(error) {
-    yield put({ type: types.LOGIN_USER_ERROR, error })
+    yield put({ type: types.LOGIN_USER_SUCCESS, response });
+  } catch (error) {
+    yield put({ type: types.LOGIN_USER_ERROR, error });
   }
 }
 
 function* watchLoginSaga() {
-	yield takeEvery(types.LOGIN_USER, loginSaga)
+  yield takeEvery(types.LOGIN_USER, loginSaga);
 }
 
 export default function* loginSagas() {
-  yield all ([
-    watchLoginSaga()
-  ]);
+  yield all([watchLoginSaga()]);
 }

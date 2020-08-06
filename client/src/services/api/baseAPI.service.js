@@ -13,18 +13,20 @@ class baseAPIService {
     this.baseURL = baseURL;
   }
 
-  getData(endpoint) {
+  getData(endpoint, params) {
     return baseRequest({
       method: 'get',
       url: `${this.baseURL}${endpoint}`,
+      params,
     });
   }
 
   // endpoint example = 'users/12'
-  getDataById(endpoint) {
+  getDataById(endpoint, params) {
     return baseRequest({
       method: 'get',
       url: `${this.baseURL}${endpoint}`,
+      params,
     });
   }
 
@@ -45,10 +47,11 @@ class baseAPIService {
   }
 
   // endpoint example = 'users/12'
-  deleteData(endpoint) {
+  deleteData(endpoint, params) {
     return baseRequest({
       method: 'delete',
       url: `${this.baseURL}${endpoint}`,
+      params,
     });
   }
 }

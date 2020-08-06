@@ -10,9 +10,7 @@ export function findLineByLeastSquares(valuesX, valuesY) {
   const valuesLength = valuesX.length;
 
   if (valuesLength !== valuesY.length) {
-    throw new Error(
-      "The parameters valuesX and valuesY need to have same size!"
-    );
+    throw new Error('The parameters valuesX and valuesY need to have same size!');
   }
 
   //   Above and below cover edge cases
@@ -33,12 +31,12 @@ export function findLineByLeastSquares(valuesX, valuesY) {
 
   //   Calculate m and b for the line equation:
   //   y = x * m + b
-  var m = (count * xySum - xSum * ySum) / (count * xxSum - xSum * xSum);
-  var b = ySum / count - (m * xSum) / count;
+  const m = (count * xySum - xSum * ySum) / (count * xxSum - xSum * xSum);
+  const b = ySum / count - (m * xSum) / count;
 
   //   We then return the x and y data points according to our fit
-  var resultValuesX = [];
-  var resultValuesY = [];
+  const resultValuesX = [];
+  const resultValuesY = [];
 
   for (let i = 0; i < valuesLength; i++) {
     x = valuesX[i];

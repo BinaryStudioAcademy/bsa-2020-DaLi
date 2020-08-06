@@ -1,4 +1,3 @@
-/* eslint-disable import/no-extraneous-dependencies */
 import React from 'react';
 import PropTypes from 'prop-types';
 
@@ -7,16 +6,16 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import TableSortLabel from '@material-ui/core/TableSortLabel';
 
-const EnhancedTableHead = (props) => {
+const EnhancedTableHead = props => {
   const { columns, onRequestSort, sortOrder, sortOrderBy } = props;
-  const createSortHandler = (property) => (event) => {
+  const createSortHandler = property => event => {
     onRequestSort(event, property);
   };
 
   return (
     <TableHead>
       <TableRow>
-        {columns.map((columnHeader) => (
+        {columns.map(columnHeader => (
           <TableCell
             key={columnHeader.id}
             align="center"
@@ -37,7 +36,7 @@ const EnhancedTableHead = (props) => {
 };
 
 EnhancedTableHead.propTypes = {
-  columns: PropTypes.object,
+  columns: PropTypes.array,
   sortOrder: PropTypes.string,
   sortOrderBy: PropTypes.string,
   onRequestSort: PropTypes.func,

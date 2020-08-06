@@ -1,4 +1,3 @@
-/* eslint-disable import/no-extraneous-dependencies */
 import React from 'react';
 import PropTypes from 'prop-types';
 
@@ -8,7 +7,7 @@ import TableContainer from '@material-ui/core/TableContainer';
 import EnhancedTableHead from './EnhancedTableHead';
 import EnhancedTableBody from './EnhancedTableBody';
 
-const EnhancedTable = (props) => {
+const EnhancedTable = props => {
   const { columns, rows, sortOrder, sortOrderBy, handleRequestSort, stableSort, getComparator } = props;
 
   return (
@@ -33,7 +32,7 @@ const EnhancedTable = (props) => {
 };
 
 EnhancedTable.propTypes = {
-  columns: PropTypes.object,
+  columns: PropTypes.array,
   rows: PropTypes.array,
   sortOrder: PropTypes.string,
   sortOrderBy: PropTypes.string,

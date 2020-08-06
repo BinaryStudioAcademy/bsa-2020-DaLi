@@ -7,10 +7,9 @@ import Button from '@material-ui/core/Button';
 import CloseIcon from '@material-ui/icons/Close';
 import IconButton from '@material-ui/core/IconButton';
 import * as Yup from 'yup';
-import { Formik, Form } from 'formik';
+import { Formik, Form, Field } from 'formik';
 import PropTypes from 'prop-types';
 
-import { MyField } from '../FormControls/FormControls';
 import './styles.css';
 
 const ValidationSchema = Yup.object({
@@ -28,7 +27,7 @@ const SaveVisualizationModal = ({closeModal, saveVisualization, isVisible}) => {
     /*    saveVisualization(); */
   };
   return (
-    <Dialog open={isVisible || false} maxWidth="sm" fullWidth>
+    <Dialog open={isVisible || true} maxWidth="sm" fullWidth>
       <DialogTitle>
         Save visualization
         <IconButton aria-label="close" size="small" style={{ position: 'absolute', top: 20, right: 24 }}>
@@ -48,11 +47,21 @@ const SaveVisualizationModal = ({closeModal, saveVisualization, isVisible}) => {
   );
 };
 
-const MyForm = ({ handleSubmit, resetForm, isValid, dirty, cancel }) => (
+const MyForm = ({ handleSubmit, resetForm, isValid, dirty, cancel, errors, touched }) => (
   <Form className="visualizationModalForm" onSubmit={handleSubmit}>
-    <DialogContent>
-      <MyField name="name" as="input" placeholder="What is the name of your card?" label="Name" />
-      <MyField name="description" as="textarea" placeholder="It`s optional but oh, so helpful" label="Description" />
+    <DialogContent className="MyFieldContainer">
+      <div className="labelsContainer">
+        <label>Name</label>
+        <p>{touched.name && errors.name}</p>
+      </div>
+      <Field
+        name="name"
+        as="input"
+        placeholder="What is the name of your card?"
+        style={touched.name && errors.name ? { borderColor: 'red' } : {}}
+      />
+      <label>Description</label>
+      <Field name="description" as="textarea" placeholder="It`s optional but oh, so helpful" />
     </DialogContent>
     <MuiDialogActions className="visualizationModalFooter">
       <Button onClick={cancel(resetForm)} variant="outlined" style={{ textTransform: 'none', fontSize: 12 }}>
@@ -82,6 +91,8 @@ MyForm.propTypes = {
   isValid: PropTypes.bool,
   dirty: PropTypes.bool,
   cancel: PropTypes.func,
+  touched: PropTypes.object,
+  errors: PropTypes.object,
 };
 
 export default SaveVisualizationModal;

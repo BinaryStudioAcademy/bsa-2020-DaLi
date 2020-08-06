@@ -9,6 +9,29 @@
     margin-bottom: 5px;
 }
 
+.MyFieldContainer {
+    display: flex;
+    flex-direction: column;
+}
+
+.labelsContainer {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-end;
+}
+
+.MyFieldContainer p {
+    color: red;
+    font-weight: bold;
+    font-size: 12px;
+    margin: 0 0 5px 0;
+}
+
+.invalid input, .invalid textarea {
+    border-color: red !important;
+}
+
 .visualizationModalForm input, textarea {
     border: 1px solid #dadada;
     padding: 10px;

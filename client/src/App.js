@@ -6,7 +6,7 @@ import { LoginPage } from './pages';
 function App() {
   return (
     <Router>
-      <Route exact path="/" component={LoginPage}/>
+      <Route exact path="/" component={LoginPage} />
     </Router>
   );
 }

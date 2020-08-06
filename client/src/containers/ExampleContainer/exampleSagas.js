@@ -1,1 +1,1 @@
-export function* exampleSaga() { }
+export function* exampleSaga() {}

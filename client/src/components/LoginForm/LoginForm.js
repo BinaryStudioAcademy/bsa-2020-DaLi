@@ -17,7 +17,7 @@ const SignInSchema = Yup.object().shape({
 });
 
 const getStyles = (errors, fieldName) => {
-  return getIn(errors, fieldName) ? { border: '1px solid red' } : '';
+  return getIn(errors, fieldName) ? { border: '1px solid red' } : {};
 };
 
 const LoginForm = ({ setIsModalVisible, login }) => (

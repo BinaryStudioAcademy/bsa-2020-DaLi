@@ -1,3 +1,4 @@
 import ExampleComponent from './ExampleComponent/ExampleComponent'
+import BarChart from './BarChart/BarChart'
 
-export { ExampleComponent }
+export { ExampleComponent, BarChart }

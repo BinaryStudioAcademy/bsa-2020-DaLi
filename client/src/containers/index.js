@@ -1,4 +1,4 @@
 import ExampleContainer from './ExampleContainer/ExampleContainer'
-import BarChart from './BarChart/BarChart'
+import BarChartContainer from './BarChartContainer/BarChartContainer'
 
-export { ExampleContainer, BarChart }
+export { ExampleContainer, BarChartContainer }

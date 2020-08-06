@@ -1,6 +1,7 @@
 import Header from './Header/Header';
-import ExampleComponent from './ExampleComponent/ExampleComponent'
+import LoginForm from './LoginForm';
+import Modal from './Modal';
 import BarChart from './BarChart/BarChart'
 
-export { ExampleComponent, BarChart, Header }
+export { BarChart, Header, LoginForm, Modal };
 

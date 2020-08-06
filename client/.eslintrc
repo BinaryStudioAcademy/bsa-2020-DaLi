@@ -44,6 +44,7 @@
     "prettier/prettier": ["error"],
     "jsx-a11y/label-has-associated-control": "off",
     "react/jsx-props-no-spreading": 0,
-    "newline-per-chained-call": ["error", { "ignoreChainWithDepth": 2 }]
+    "newline-per-chained-call": [true, "consistent"],
+    "comma-dangle": ["error", "never"]
   }
 }

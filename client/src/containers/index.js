@@ -1,4 +1,4 @@
-import ExampleContainer from './ExampleContainer/ExampleContainer'
 import LoginPageContainer from './LoginPageContainer';
+import BarChartContainer from './BarChartContainer/BarChartContainer'
 
-export { ExampleContainer, LoginPageContainer }
+export { LoginPageContainer, BarChartContainer }

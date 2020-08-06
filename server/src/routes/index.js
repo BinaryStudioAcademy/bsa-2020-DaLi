@@ -1,5 +1,7 @@
-import home from './home';
+import home from "./home";
+import visualizationConfigRoutes from "./visualizationConfig";
 
-export default {
-  home,
+export default (app) => {
+  app.use("/config", visualizationConfigRoutes);
+  app.use("/", home);
 };

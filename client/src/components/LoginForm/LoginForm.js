@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React from 'react';
 import * as Yup from 'yup';
 import './styles.css';

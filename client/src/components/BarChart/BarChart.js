@@ -82,11 +82,12 @@ function BarChart(props) {
       .on('mouseover', tip.show)
       .on('mouseout', tip.hide);
 
+
     if (showTrendLine && data.length) {
       const xValues = data.map((d) => d[XAxis.key]);
       const yValues = data.map((d) => d[YAxis.key]);
       const lineCoords = findLineByLeastSquares(xValues, yValues);
-
+      
       chart
         .select('.bars')
         .append('line')

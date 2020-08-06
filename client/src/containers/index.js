@@ -1,3 +1,4 @@
-import ExampleContainer from './ExampleContainer/ExampleContainer'
+import ExampleContainer from './ExampleContainer/ExampleContainer';
+import SignUpContainer from './SingUp/SignUp';
 
-export { ExampleContainer }
+export { ExampleContainer, SignUpContainer };

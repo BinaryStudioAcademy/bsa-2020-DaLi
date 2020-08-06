@@ -1,4 +1,5 @@
 import ExampleContainer from './ExampleContainer/ExampleContainer';
+import BarChartContainer from './BarChartContainer/BarChartContainer'
 import SignUpContainer from './SingUp/SignUp';
 
-export { ExampleContainer, SignUpContainer };
+export { ExampleContainer, BarChartContainer, SignUpContainer }

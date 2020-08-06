@@ -1,3 +1,2 @@
-export function* exampleSaga() {
-  yield null;
-}
+/* eslint-disable */
+export function* exampleSaga() { }

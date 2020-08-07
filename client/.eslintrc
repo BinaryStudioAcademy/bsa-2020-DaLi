@@ -1,3 +1,4 @@
+
 {
   "env": {
     "es6": true,
@@ -38,9 +39,17 @@
     "react/jsx-one-expression-per-line": "off",
     "react-hooks/rules-of-hooks": "error",
     "react-hooks/exhaustive-deps": "warn",
-    "import/no-extraneous-dependencies": ["error", {"devDependencies": true}],
+    "import/no-extraneous-dependencies": ["error", { "devDependencies": true }],
     "import/prefer-default-export": "off",
     "operator-linebreak": [2, "after", { "overrides": { "?": "before", ":": "before" }} ],
-    "prettier/prettier": ["error"]
+    "prettier/prettier": ["error"],
+    "jsx-a11y/label-has-associated-control": "off",
+    "react/jsx-props-no-spreading": 0,
+    "newline-per-chained-call": 0,
+    "implicit-arrow-linebreak": 0,
+    "comma-dangle": 0,
+    "indent": 0,
+    "no-shadow": 0
   }
 }
+

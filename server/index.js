@@ -6,12 +6,13 @@ import { sequelize } from "./src/models";
 import routes from "./src/routes";
 import errorHandlerMiddleware from "./src/middlewares/errorHandlerMiddleware";
 import passport from 'passport';
-import './src/config/passport.config';
-
+import { passportMiddleware } from "./src/middlewares/passport";
 const app = express();
 
+app.use(passport.initialize())
+passportMiddleware(passport)
+
 app.use(cors());
-app.use(passport.initialize({}));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 

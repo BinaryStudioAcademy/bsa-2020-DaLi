@@ -1,15 +1,12 @@
-/* eslint-disable */
-import React, { Component } from "react";
-import { BarChart } from "../../components";
-import { orders } from "../../mock_orders";
-import { stacking } from "./types";
-import "./BarChartContainer.css";
+import React, { Component } from 'react';
 
-class BarChartContainer extends Component {
+import { orders } from '../../mock_orders';
+import LineChart from '../../components/LineChart/LineChart';
+import { lineType } from './types';
 
+class LineChartContainer extends Component {
   constructor(props) {
     super(props);
-
     this.state = {
       data: orders,
       settings: {
@@ -36,27 +33,27 @@ class BarChartContainer extends Component {
           width: 1000,
         },
         display: {
-          stacking: stacking.notStack,
           goal: {
             display: true,
-            value: 1400,
+            value: 100,
             label: 'Goal',
           },
-          showTrendLine: false,
+          lineType: lineType.natural,
+          showTrendLine: true,
           showDataPointsValues: true,
         },
       },
     };
-  };
+  }
 
   render() {
     const { data, settings } = this.state;
     return (
       <div>
-        <BarChart data={data} settings={settings} />
+        <LineChart data={data} settings={settings} />
       </div>
     );
   }
 }
 
-export default BarChartContainer;
+export default LineChartContainer;

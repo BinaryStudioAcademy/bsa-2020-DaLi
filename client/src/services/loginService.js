@@ -1,5 +1,8 @@
 /* eslint-disable */
-import { LOGIN_API_ENDPOINT } from '../config/API';
+
+import {
+  LOGIN_API_ENDPOINT
+} from '../config/API';
 
 export const loginService = (request) => {
   const parameters = {

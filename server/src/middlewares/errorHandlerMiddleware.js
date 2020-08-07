@@ -1,15 +1,13 @@
-export default (err, _, res, next) => {
-    console.error(err); // only for development
-    let {message} = err;
-    const {statusCode = 500} = err;
-
-    if (res.headersSent) {
-        return next(err);
+const errorHandlerMiddleware = (err, req, res, next) => {
+  if (typeof err === "string") {
+    if (err.includes("not found")) {
+      res.status(404).json({ error: true, message: err });
+    } else {
+      res.status(400).json({ error: true, message: err });
     }
-    return res.status(statusCode)
-        .send({
-            error: true,
-            message,
-            statusCode,
-        });
+  } else {
+    res.send();
+  }
 };
+
+export default errorHandlerMiddleware;

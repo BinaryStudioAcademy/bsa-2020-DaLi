@@ -1,3 +1,5 @@
+// В коментах присутствують заготовки для мідлварки реєстрації, файл не удалять!!
+
 // const passport = require("passport");
 // const LocalStrategy = require("passport-local").Strategy;
 // const { Strategy: JwtStrategy, ExtractJwt } = require("passport-jwt");

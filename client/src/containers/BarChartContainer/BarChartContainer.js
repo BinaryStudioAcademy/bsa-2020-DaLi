@@ -8,16 +8,16 @@ import "./BarChartContainer.css";
 class BarChartContainer extends Component {
   state = {
     data: orders,
-    settings : {
+    settings: {
       axisData: {
         XAxis: {
-          key: "createdAt",
-          label: "Total",
+          key: 'createdAt',
+          label: 'Total',
           displayLabel: true,
         },
         YAxis: {
-          key: "total",
-          label: "Date",
+          key: 'total',
+          label: 'Date',
           displayLabel: true,
         },
       },
@@ -36,13 +36,13 @@ class BarChartContainer extends Component {
         goal: {
           display: true,
           value: 1400,
-          label: "Goal",
+          label: 'Goal',
         },
         showTrendLine: false,
         showDataPointsValues: true,
       },
-    }
-  }
+    },
+  };
 
   render() {
     return (

@@ -12,7 +12,7 @@ const SignInSchema = Yup.object().shape({
     .min(8, 'Password is too short - should be 8 chars minimum.')
     .matches(
       /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/,
-      'Password must contain one uppercase, one lowercase, one number and one special character.',
+      'Password must contain one uppercase, one lowercase, one number and one special character.'
     ),
 });
 

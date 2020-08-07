@@ -8,7 +8,6 @@ const db = {
   password: process.env.DB_PASSWORD,
   host: process.env.DB_HOST,
   port: process.env.DB_PORT,
-  dialect: process.env.DB_DIALECT,
 };
 
 const { database, username, password, host, port } = db;

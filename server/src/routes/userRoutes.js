@@ -33,7 +33,7 @@ router.post('/', async (req, res, next) => {
   }
 });
 
-router.put('/:id', async (req, res, next) => {
+router.patch('/:id', async (req, res, next) => {
   const result = await UserService.updateUser(
     {
       id: req.params.id,

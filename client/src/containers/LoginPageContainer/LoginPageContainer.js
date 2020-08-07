@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React from 'react';
 import { connect, useDispatch } from 'react-redux';
 import { LoginForm, Modal } from '../../components';

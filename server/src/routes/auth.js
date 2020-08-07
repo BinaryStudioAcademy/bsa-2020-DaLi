@@ -6,7 +6,6 @@ const router = Router();
 
 router.post(
   "/login",
-  passport.authenticate("jwt", { session: false }),
   (req, res) => {
     res.send(login(req.user));
   }

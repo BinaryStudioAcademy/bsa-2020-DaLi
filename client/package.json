@@ -28,8 +28,8 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "lint": "eslint src/ --ext .jsx,.js",
-    "lint:write": "eslint src/ --ext .jsx,.js --fix",
+    "lint": "eslint",
+    "lint:write": "eslint --fix",
     "prettier": "prettier --write src/**/*.js?(x)"
   },
   "eslintConfig": {
@@ -66,9 +66,8 @@
     }
   },
   "lint-staged": {
-    "**/*.js?(x)": [
-      "npm run lint:write",
-      "git add"
+    "*.{js,jsx}": [
+      "npm run lint:write"
     ]
   }
 }

@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 
 import Grid from '@material-ui/core/Grid';
 import { ViewVisualizationSidebar, ViewVisualizationMain } from '../../components';
+import InitialTable from '../InitialTableContainer/InitialTableContainer';
 
 import { getVisualizationComponent, getVisualizationIcon } from './helper';
 
@@ -14,7 +15,7 @@ const ViewVisualizationContainer = ({ visualizationType }) => {
 
   const visualizationComponent = getVisualizationComponent(visualizationType);
   const visualizationIcon = getVisualizationIcon(visualizationType);
-  const contentViewComponent = currentView === 'table' ? <div>Table</div> : visualizationComponent;
+  const contentViewComponent = currentView === 'table' ? <InitialTable /> : visualizationComponent;
 
   const onSwitchContentView = (viewType) => setCurrentView(viewType);
   const onToggleSideBar = () => setIsSideBarOpen(!isSideBarOpen);

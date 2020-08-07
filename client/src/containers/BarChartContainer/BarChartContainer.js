@@ -6,6 +6,7 @@ import { stacking } from "./types";
 import "./BarChartContainer.css";
 
 class BarChartContainer extends Component {
+
   constructor(props) {
     super(props);
 
@@ -46,7 +47,7 @@ class BarChartContainer extends Component {
         },
       },
     };
-  }
+  };
 
   render() {
     const { data, settings } = this.state;

@@ -1,16 +1,16 @@
 /* eslint-disable */
+
 import {
   LOGIN_API_ENDPOINT
 } from '../config/API';
 
 export const loginService = (request) => {
-
   const parameters = {
     method: 'POST',
     headers: {
-      'Content-Type': 'application/json'
+      'Content-Type': 'application/json',
     },
-    body: JSON.stringify(request)
+    body: JSON.stringify(request),
   };
 
   // Temporarily disabled

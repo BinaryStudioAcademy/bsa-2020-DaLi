@@ -1,8 +1,8 @@
 /* eslint-disable */
 import React from 'react';
 import { connect, useDispatch } from 'react-redux';
-import { LoginForm } from '../../components';
-import { Modal } from '../../components';
+import { LoginForm, Modal } from '../../components';
+
 import { loginUser } from './actions';
 
 const LoginPageContainer = () => {
@@ -13,7 +13,7 @@ const LoginPageContainer = () => {
       <div className="form-wrapper">
         <h1 className="title">Sign in to DaLi</h1>
 
-        <LoginForm setIsModalVisible={setIsModalVisible} login={(data)=>dispatch(loginUser(data))} />
+        <LoginForm setIsModalVisible={setIsModalVisible} login={(data) => dispatch(loginUser(data))} />
 
         {isModalVisible && (
           <Modal onModalClose={() => setIsModalVisible(false)}>

@@ -7,7 +7,7 @@ import TableContainer from '@material-ui/core/TableContainer';
 import EnhancedTableHead from './EnhancedTableHead';
 import EnhancedTableBody from './EnhancedTableBody';
 
-const EnhancedTable = props => {
+const EnhancedTable = (props) => {
   const { columns, rows, sortOrder, sortOrderBy, handleRequestSort, stableSort, getComparator } = props;
 
   return (

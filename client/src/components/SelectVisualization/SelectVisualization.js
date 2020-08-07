@@ -1,9 +1,8 @@
-import React, { useState } from 'react';
+import React from 'react';
 import EqualizerOutlinedIcon from '@material-ui/icons/EqualizerOutlined';
 import TimelineOutlinedIcon from '@material-ui/icons/TimelineOutlined';
 import TableChartOutlinedIcon from '@material-ui/icons/TableChartOutlined';
 
-import SaveVisualizationModal from '../SaveVisualizationModal/SaveVisualizationModal';
 import './styles.css';
 
 const iconStyles = {
@@ -17,37 +16,16 @@ const myVisualizations = [
 ];
 
 const SelectVisualization = () => {
-  const [isModal, setIsModal] = useState(false);
-  const [modalType, setModalType] = useState(null);
-
-  const openModal = (typeModal) => () => {
-    setIsModal(true);
-    setModalType(typeModal);
-  };
-  const closeModal = () => {
-    setIsModal(false);
-    setModalType(null);
-  };
-
-  const createVisualization = (data) => {
-    const newVisualizationData = { ...data };
-    newVisualizationData.type = modalType;
-    closeModal();
-    // there should be a function to save to the database
-    // console.log(newVisualizationData);
-  };
-
   return (
     <div className="select-visualization-container">
       {myVisualizations.map((item) => {
         return (
-          <button type="button" key={item.id} className="visualization-container" onClick={openModal(item.type)}>
+          <button type="button" key={item.id} className="visualization-container" onClick={() => {}}>
             {item.icon}
             <h2>{item.name}</h2>
           </button>
         );
       })}
-      <SaveVisualizationModal closeModal={closeModal} isVisible={isModal} saveVisualization={createVisualization} />
     </div>
   );
 };

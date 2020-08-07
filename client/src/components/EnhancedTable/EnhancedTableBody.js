@@ -5,14 +5,14 @@ import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableRow from '@material-ui/core/TableRow';
 
-const EnhancedTableBody = props => {
+const EnhancedTableBody = (props) => {
   const { rows, sortOrder, sortOrderBy, stableSort, getComparator } = props;
   return (
     <TableBody>
-      {stableSort(rows, getComparator(sortOrder, sortOrderBy)).map(row => {
+      {stableSort(rows, getComparator(sortOrder, sortOrderBy)).map((row) => {
         return (
           <TableRow>
-            {Object.keys(row).map(key => {
+            {Object.keys(row).map((key) => {
               return <TableCell align="center">{row[key]}</TableCell>;
             })}
           </TableRow>

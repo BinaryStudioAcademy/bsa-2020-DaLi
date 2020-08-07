@@ -6,5 +6,6 @@ import LoginForm from './LoginForm';
 import Modal from './Modal';
 import LineChart from './LineChart/LineChart';
 import EnhancedTable from './EnhancedTable/EnhancedTable';
+import InitialTable from './InitialTable/InitialTable';
 
-export { BarChart, Header, SaveVisualizationModal, LoginForm, Modal, LineChart, SignUp, EnhancedTable };
+export { BarChart, Header, SaveVisualizationModal, LoginForm, Modal, LineChart, SignUp, EnhancedTable, InitialTable };

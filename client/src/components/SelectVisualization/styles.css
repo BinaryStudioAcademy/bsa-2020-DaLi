@@ -1,0 +1,20 @@
+.select-visualization-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    min-height: 100vh;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.visualization-container {
+    text-align: center;
+    border: 2px solid gray;
+    padding: 0 25px;
+    border-radius: 5px;
+}
+
+.visualization-container:hover {
+    border: 2px solid #33a1de;
+    color: #33a1de;
+}

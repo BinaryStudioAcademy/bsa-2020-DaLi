@@ -26,6 +26,15 @@
         "no-param-reassign": "off",
         "radix": "off",
         "prefer-destructuring": "off",
-        "prettier/prettier": ["error"]
+        "operator-linebreak": [2, "after", { "overrides": { "?": "before", ":": "before" }} ],
+        "prettier/prettier": ["error"],
+        "jsx-a11y/label-has-associated-control": "off",
+        "react/jsx-props-no-spreading": 0,
+        "newline-per-chained-call": 0,
+        "implicit-arrow-linebreak": 0,
+        "comma-dangle": 0,
+        "indent": 0,
+    "no-shadow": 0
+
     }
 }

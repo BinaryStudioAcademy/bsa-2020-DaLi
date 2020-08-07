@@ -1,8 +1,4 @@
-/* eslint-disable */
-
-import {
-  LOGIN_API_ENDPOINT
-} from '../config/API';
+import { LOGIN_API_ENDPOINT } from '../config/API';
 
 export const loginService = (request) => {
   const parameters = {
@@ -13,14 +9,11 @@ export const loginService = (request) => {
     body: JSON.stringify(request),
   };
 
-  // Temporarily disabled
-  // return fetch(LOGIN_API_ENDPOINT, parameters)
-  //   .then(response => {
-  //     return response.json();
-  //   })
-  //   .then(json => {
-  //     return json;
-  //   });
-
-  console.log(request);
+  return fetch(LOGIN_API_ENDPOINT, parameters)
+    .then((response) => {
+      return response.json();
+    })
+    .then((json) => {
+      return json;
+    });
 };

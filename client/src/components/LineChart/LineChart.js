@@ -4,14 +4,15 @@ import * as d3 from 'd3';
 import d3Tip from 'd3-tip';
 import PropTypes from 'prop-types';
 
-import { findLineByLeastSquares } from '../../utils/trendline';
 import { calcMaxYDataValue, calcMinYDataValue } from '../../utils/calcCriticalYAxisValue';
-import './BarChart.css';
+import { findLineByLeastSquares } from '../../utils/trendline';
 
-function BarChart(props) {
+import './LineChart.css';
+
+function LineChart(props) {
   useEffect(() => {
     const { margin, width, height } = props.settings.chart;
-    const { goal, showTrendLine, showDataPointsValues } = props.settings.display;
+    const { goal, showTrendLine, showDataPointsValues, lineType } = props.settings.display;
     const XAxis = props.settings.axisData.XAxis;
     const YAxis = props.settings.axisData.YAxis;
     const chart = d3.select('svg');
@@ -27,6 +28,16 @@ function BarChart(props) {
       ),
     };
 
+    const xScale = d3
+      .scaleBand()
+      .domain(data.map((d) => d[XAxis.key]))
+      .range([margin.left, width - margin.right]);
+
+    const yScale = d3
+      .scaleLinear()
+      .domain([yDataRange.min, yDataRange.max])
+      .range([height - margin.bottom, margin.top]);
+
     const tip = d3Tip()
       .attr('class', 'd3-tip')
       .offset([-10, 0])
@@ -38,58 +49,54 @@ function BarChart(props) {
       );
     chart.call(tip).attr('viewBox', [0, 0, width, height]);
 
-    const xScale = d3
-      .scaleBand()
-      .domain(data.map((d) => d[XAxis.key]))
-      .range([margin.left, width - margin.right])
-      .padding(0.1);
+    const line = d3
+      .line()
+      .x((d) => xScale(d[XAxis.key]) + xScale.bandwidth() / 2)
+      .y((d) => yScale(d[YAxis.key]))
+      .curve(d3[lineType]);
 
-    const yScale = d3
-      .scaleLinear()
-      .domain([yDataRange.min, yDataRange.max])
-      .range([height - margin.bottom, margin.top]);
+    chart.append('path').datum(data).attr('class', 'line').attr('d', line);
+
+    chart
+      .selectAll('.dot')
+      .data(data)
+      .enter()
+      .append('circle')
+      .attr('class', 'dot')
+      .attr('cx', (d) => xScale(d[XAxis.key]) + xScale.bandwidth() / 2)
+      .attr('cy', (d) => yScale(d[YAxis.key]))
+      .attr('r', 5)
+      .on('mouseover', tip.show)
+      .on('mouseout', tip.hide);
+
+    if (showDataPointsValues) {
+      chart
+        .selectAll('.dot__value')
+        .data(data)
+        .enter()
+        .append('text')
+        .attr('class', 'dot__value')
+        .attr('x', (d) => xScale(d[XAxis.key]) + xScale.bandwidth() / 2)
+        .attr('y', (d) => yScale(d[YAxis.key]) - 20)
+        .attr('text-anchor', 'middle')
+        .text((d) => d[YAxis.key]);
+    }
 
     const xAxis = (g) => {
       return g.attr('transform', `translate(0,${height - margin.bottom})`).call(d3.axisBottom(xScale).tickSizeOuter(0));
     };
-
     const yAxis = (g) => g.attr('transform', `translate(${margin.left},0)`).call(d3.axisLeft(yScale));
 
-    const barsInfo = chart.selectAll().data(data).join('g');
+    chart.append('g').attr('class', 'x-axis').call(xAxis);
 
-    chart
-      .append('g')
-      .attr('class', 'bars')
-      .selectAll()
-      .data(data)
-      .join('rect')
-      .attr('class', 'bar')
-      .attr('fill', '#4AA1DE')
-      .attr('x', (d) => xScale(d[XAxis.key]))
-      .attr('y', (d) => yScale(d[YAxis.key]))
-      .attr('height', (d) => yScale(yDataRange.min) - yScale(d[YAxis.key]))
-      .attr('width', xScale.bandwidth())
-      .on('mouseenter', (_, index) => {
-        d3.selectAll('.bar')
-          .filter((__, i) => i !== index)
-          .transition()
-          .duration(500)
-          .attr('opacity', 0.6);
-      })
-      .on('mouseleave', () => {
-        d3.selectAll('.bar').transition().duration(500).attr('opacity', 1);
-      })
-      .on('mouseover', tip.show)
-      .on('mouseout', tip.hide);
-
+    chart.append('g').attr('class', 'y-axis').call(yAxis);
 
     if (showTrendLine && data.length) {
       const xValues = data.map((d) => d[XAxis.key]);
       const yValues = data.map((d) => d[YAxis.key]);
       const lineCoords = findLineByLeastSquares(xValues, yValues);
-      
+
       chart
-        .select('.bars')
         .append('line')
         .attr('id', 'trendline')
         .attr('x1', 0)
@@ -97,19 +104,6 @@ function BarChart(props) {
         .attr('x2', width)
         .attr('y2', yScale(lineCoords.end.y));
     }
-
-    if (showDataPointsValues) {
-      barsInfo
-        .append('text')
-        .attr('class', 'bar__value')
-        .attr('x', (a) => xScale(a[XAxis.key]) + xScale.bandwidth() / 2)
-        .attr('y', (a) => yScale(a[YAxis.key]) - 20)
-        .attr('text-anchor', 'middle')
-        .text((a) => `${a[YAxis.key]}`);
-    }
-
-    chart.append('g').attr('class', 'x-axis').call(xAxis);
-    chart.append('g').attr('class', 'y-axis').call(yAxis);
 
     if (YAxis.displayLabel) {
       chart
@@ -152,7 +146,7 @@ function BarChart(props) {
   );
 }
 
-BarChart.propTypes = {
+LineChart.propTypes = {
   data: PropTypes.array,
   settings: PropTypes.shape({
     axisData: PropTypes.shape({
@@ -190,4 +184,4 @@ BarChart.propTypes = {
   }),
 };
 
-export default BarChart;
+export default LineChart;

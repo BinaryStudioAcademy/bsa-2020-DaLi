@@ -1,16 +1,17 @@
 import React from 'react';
+import MaterialButton from '@material-ui/core/Button';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
-import './styles.css';
+// import './styles.css';
 
 const Button = ({ text, onClick, disabled, icon, classes, active, ...attrs }) => {
   const btnClasses = classNames('btn', ...classes, { active });
 
   return (
-    <button onClick={onClick} className={btnClasses} disabled={disabled} {...attrs}>
+    <MaterialButton onClick={onClick} className={btnClasses} disabled={disabled} {...attrs}>
       {icon}
       {text}
-    </button>
+    </MaterialButton>
   );
 };
 

@@ -1,6 +1,6 @@
 import { createMuiTheme } from '@material-ui/core/styles';
 
-let theme = createMuiTheme({
+const theme = createMuiTheme({
   palette: {
     primary: {
       light: '#63ccff',
@@ -30,7 +30,7 @@ let theme = createMuiTheme({
   },
 });
 
-theme = {
+const DaLiTheme = {
   ...theme,
   overrides: {
     MuiDrawer: {
@@ -107,10 +107,7 @@ theme = {
         height: 32,
       },
     },
-    // MuiInput: {
-
-    // }
   },
 };
 
-export default theme;
+export default DaLiTheme;

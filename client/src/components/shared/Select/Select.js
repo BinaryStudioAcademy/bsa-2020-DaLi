@@ -3,12 +3,7 @@ import MaterialSelect from '@material-ui/core/Select';
 import PropTypes from 'prop-types';
 
 const Select = ({ children, ...attrs }) => {
-
-  return (
-    <MaterialSelect {...attrs}>
-      {children}
-    </MaterialSelect>
-  );
+  return <MaterialSelect {...attrs}>{children}</MaterialSelect>;
 };
 
 Select.propTypes = {

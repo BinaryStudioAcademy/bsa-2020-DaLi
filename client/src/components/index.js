@@ -5,19 +5,7 @@ import BarChart from './BarChart/BarChart';
 import LoginForm from './LoginForm';
 import Modal from './Modal';
 import LineChart from './LineChart/LineChart';
-import LineChartSettings from './LineChartSettings';
 import EnhancedTable from './EnhancedTable/EnhancedTable';
 import InitialTable from './InitialTable/InitialTable';
 
-export {
-  BarChart,
-  Header,
-  SaveVisualizationModal,
-  LoginForm,
-  Modal,
-  LineChart,
-  SignUp,
-  EnhancedTable,
-  LineChartSettings,
-  InitialTable,
-};
+export { BarChart, Header, SaveVisualizationModal, LoginForm, Modal, LineChart, SignUp, EnhancedTable, InitialTable };

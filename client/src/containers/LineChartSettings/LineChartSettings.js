@@ -7,9 +7,7 @@ import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
 import Button from '@material-ui/core/Button';
 import InputLabel from '@material-ui/core/InputLabel';
-// import FormHelperText from '@material-ui/core/FormHelperText';
 import FormControl from '@material-ui/core/FormControl';
-// import Select from '@material-ui/core/Select';
 import NativeSelect from '@material-ui/core/NativeSelect';
 import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
 
@@ -52,7 +50,7 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: theme.palette.background.paper,
     display: 'flex',
     height: '100vh',
-    maxWidth: '520px',
+    maxWidth: '400px',
     flexDirection: 'column',
   },
   backBtn: {
@@ -60,9 +58,12 @@ const useStyles = makeStyles((theme) => ({
     alignSelf: 'flex-start',
   },
   tabs: {
+    display: 'flex',
+    justifyContent: 'center',
     marginBottom: '3rem',
   },
   tab: {
+    minWidth: 100,
     backgroundColor: '#519ee3',
     color: 'white',
     borderRadius: '2rem',
@@ -83,6 +84,7 @@ const useStyles = makeStyles((theme) => ({
     marginBottom: '2rem',
     display: 'flex',
     justifyContent: 'center',
+    width: 300,
   },
   formControl: {
     margin: theme.spacing(1),
@@ -124,6 +126,7 @@ function LineChartSettings() {
         value={value}
         onChange={handleChange}
         aria-label="simple tabs example"
+        variant="fullWidth"
         classes={{
           indicator: classes.indicator,
         }}
@@ -178,9 +181,9 @@ function LineChartSettings() {
       <TabPanel value={value} index={2}>
         Item Three
       </TabPanel>
-      <diw className={classes.btnWrapper}>
+      <div className={classes.btnWrapper}>
         <Button className={classes.btn}>Done</Button>
-      </diw>
+      </div>
     </div>
   );
 }

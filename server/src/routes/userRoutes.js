@@ -4,7 +4,6 @@ import * as UserService from '../services/userService';
 const router = Router();
 
 router.get('/', async (req, res, next) => {
-  console.log('SSDSDSD');
   const result = await UserService.getUsers();
   res.json(result);
   next();

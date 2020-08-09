@@ -1,4 +1,5 @@
 import jwt from 'jsonwebtoken';
+import jwtDecode from 'jwt-decode';
 import UserRepository from '../repositories/userRepository';
 import jwtConfig from '../config/jwt.config';
 
@@ -8,7 +9,6 @@ export const login = async (user) => {
     if (candidate.password === user.password) {
       const token = jwt.sign(
         {
-          email: candidate.email,
           id: candidate.id,
         },
         jwtConfig.secretKey,
@@ -28,4 +28,10 @@ export const login = async (user) => {
     success: false,
     message: 'User with such email was not found',
   };
+};
+
+export const getUserByToken = async (token) => {
+  const { id } = jwtDecode(token);
+  const { firstName, lastName, email } = await UserRepository.getById({ id });
+  return { firstName, lastName, email };
 };

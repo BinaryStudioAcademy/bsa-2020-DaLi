@@ -5,7 +5,7 @@ import './src/config/passport.config';
 import passport from 'passport';
 import { sequelize } from './src/models';
 import routes from './src/routes';
-// import errorHandlerMiddleware from './src/middlewares/errorHandlerMiddleware';
+import errorHandlerMiddleware from './src/middlewares/errorHandlerMiddleware';
 import { passportMiddleware } from './src/middlewares/passport';
 
 const app = express();
@@ -19,7 +19,7 @@ app.use(express.urlencoded({ extended: true }));
 
 routes(app);
 
-// app.use(errorHandlerMiddleware);
+app.use(errorHandlerMiddleware);
 
 sequelize.sync();
 

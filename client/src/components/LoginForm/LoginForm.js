@@ -4,8 +4,6 @@ import * as Yup from 'yup';
 import './styles.css';
 import { Formik, Form, Field, ErrorMessage, getIn } from 'formik';
 import PropTypes from 'prop-types';
-import AlarmIcon from '@material-ui/icons/Alarm';
-import Button from '../Button';
 
 const SignInSchema = Yup.object().shape({
   email: Yup.string().email('Invalid email').required('Required'),
@@ -64,15 +62,6 @@ const LoginForm = ({ setIsModalVisible, login }) => (
           <button type="button" className="forgot-pswd" onClick={() => setIsModalVisible(true)}>
             I seem to have forgotten my password
           </button>
-          
-
- <Button
-  text="Hello World"
-  classes={['danger', 'outline', 'rounded']}
-  icon={<AlarmIcon />}
-  disabled
-  onClick={() => alert('hello')}
-/>;
         </div>
       </Form>
     )}

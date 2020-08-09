@@ -7,6 +7,7 @@ import Modal from './Modal';
 import LineChart from './LineChart/LineChart';
 import LineChartSettings from './LineChartSettings';
 import EnhancedTable from './EnhancedTable/EnhancedTable';
+import InitialTable from './InitialTable/InitialTable';
 
 export {
   BarChart,
@@ -18,4 +19,5 @@ export {
   SignUp,
   EnhancedTable,
   LineChartSettings,
+  InitialTable,
 };

@@ -9,7 +9,7 @@ const modalContext = React.createContext();
 const modalRef = React.createRef();
 const handleTabKey = (e) => {
   const focusableModalElements = modalRef.current.querySelectorAll(
-    'a[href], button, textarea, input[type="text"], input[type="radio"], input[type="checkbox"], select',
+    'a[href], button, textarea, input[type="text"], input[type="radio"], input[type="checkbox"], select'
   );
   const firstElement = focusableModalElements[0];
   const lastElement = focusableModalElements[focusableModalElements.length - 1];
@@ -48,7 +48,7 @@ function Modal({ children, onModalClose }) {
         <modalContext.Provider value={{ onModalClose }}>{children}</modalContext.Provider>
       </div>
     </div>,
-    document.body,
+    document.body
   );
 }
 

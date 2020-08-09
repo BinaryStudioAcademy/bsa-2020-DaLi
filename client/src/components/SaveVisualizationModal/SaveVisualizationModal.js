@@ -20,17 +20,22 @@ const SaveVisualizationModal = ({closeModal, saveVisualization, isVisible}) => {
 
   const cancel = (resetForm) => () => {
     resetForm();
-    /*    closeModal(); */
+    closeModal();
   };
   // eslint-disable-next-line
   const save = (values) => {
-    /*    saveVisualization(); */
+    saveVisualization(values);
   };
   return (
-    <Dialog open={isVisible || true} maxWidth="sm" fullWidth>
+    <Dialog open={isVisible || false} maxWidth="sm" fullWidth>
       <DialogTitle>
         Save visualization
-        <IconButton aria-label="close" size="small" style={{ position: 'absolute', top: 20, right: 24 }}>
+        <IconButton
+          aria-label="close"
+          size="small"
+          style={{ position: 'absolute', top: 20, right: 24 }}
+          onClick={closeModal}
+        >
           <CloseIcon style={{ fontSize: 18, color: '#c6cfd4' }} />
         </IconButton>
       </DialogTitle>
@@ -51,7 +56,7 @@ const MyForm = ({ handleSubmit, resetForm, isValid, dirty, cancel, errors, touch
   <Form className="visualizationModalForm" onSubmit={handleSubmit}>
     <DialogContent className="MyFieldContainer">
       <div className="labelsContainer">
-        <label>Name</label>
+        <span>Name</span>
         <p>{touched.name && errors.name}</p>
       </div>
       <Field
@@ -60,7 +65,9 @@ const MyForm = ({ handleSubmit, resetForm, isValid, dirty, cancel, errors, touch
         placeholder="What is the name of your card?"
         style={touched.name && errors.name ? { borderColor: 'red' } : {}}
       />
-      <label>Description</label>
+      <div className="labelsContainer">
+        <span>Description</span>
+      </div>
       <Field name="description" as="textarea" placeholder="It`s optional but oh, so helpful" />
     </DialogContent>
     <MuiDialogActions className="visualizationModalFooter">

@@ -5,7 +5,7 @@ import visualizationConfigRoutes from './visualizationConfig';
 
 export default (app) => {
   app.use('/', home);
-  app.use('/users', userRoutes);
-  app.use('/config', visualizationConfigRoutes);
-  app.use('/auth', authRoutes);
+  app.use('/api/users', userRoutes);
+  app.use('/api/config', visualizationConfigRoutes);
+  app.use('/api/auth', authRoutes);
 };

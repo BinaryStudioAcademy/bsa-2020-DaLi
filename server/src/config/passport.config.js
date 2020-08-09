@@ -16,21 +16,21 @@
 //       usernameField: "email",
 //       passReqToCallback: true,
 //     },
-//     async (req, email, password, done) => {
-//       try {
-//         if (!validator.isEmail(email)) {
-//           return done(badRequest("Email is not valid"), null);
-//         }
-//         const userByEmail = await userRepo.getByEmail(email);
-//         if (userByEmail) {
-//           return done(badRequest("User with such email already exists"), null);
-//         }
-//         return done(null, {
-//           email,
-//           password: await bcrypt.hash(password, 10),
-//         });
-//       } catch (err) {
-//         return done(err);
+// async (req, email, password, done) => {
+//   try {
+//     if (!validator.isEmail(email)) {
+//       return done(badRequest("Email is not valid"), null);
+//     }
+//     const userByEmail = await userRepo.getByEmail(email);
+//     if (userByEmail) {
+//       return done(badRequest("User with such email already exists"), null);
+//     }
+//     return done(null, {
+//       email,
+//       password: await bcrypt.hash(password, 10),
+//     });
+//   } catch (err) {
+//     return done(err);
 //       }
 //     }
 //   )
@@ -43,22 +43,22 @@
 //       usernameField: "email",
 //     },
 //     async (email, password, done) => {
-//       try {
-//         if (!validator.isEmail(email)) {
-//           return done(unauthorized("Email is not valid"), null);
-//         }
-//         const userByEmail = await userRepo.getByEmail(email);
-//         if (!userByEmail) {
-//           return done(unauthorized("Email is wrong"), null);
-//         }
-//         const isMatched = await bcrypt.compare(password, userByEmail.password);
-//         return isMatched
-//           ? done(null, userByEmail)
-//           : done(unauthorized("Password is wrong"), null);
-//       } catch (err) {
-//         return done(err);
-//       }
+//   try {
+//     if (!validator.isEmail(email)) {
+//       return done(unauthorized("Email is not valid"), null);
 //     }
+//     const userByEmail = await userRepo.getByEmail(email);
+//     if (!userByEmail) {
+//       return done(unauthorized("Email is wrong"), null);
+//     }
+//     const isMatched = await bcrypt.compare(password, userByEmail.password);
+//     return isMatched
+//       ? done(null, userByEmail)
+//       : done(unauthorized("Password is wrong"), null);
+//   } catch (err) {
+//     return done(err);
+//   }
+// }
 //   )
 // );
 

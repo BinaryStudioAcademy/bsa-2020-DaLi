@@ -11,7 +11,7 @@ import {
 
 export function* loginSaga(payload) {
   try {
-    const response = yield call(loginService, payload);
+    const response = yield call(loginService, payload.request);
     yield put({ type: LOGIN_USER_SUCCESS, payload: response });
   } catch (error) {
     yield put({ type: LOGIN_USER_ERROR, error });

@@ -3,7 +3,7 @@ import callApi from '../helpers/callApi';
 
 export const loginService = async (request) => {
   const response = await callApi({
-    endpoint: 'api/login',
+    endpoint: 'http://localhost:5000/api/auth/login',
     type: 'POST',
     request,
   });

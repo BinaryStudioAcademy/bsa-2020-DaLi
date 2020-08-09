@@ -39,7 +39,7 @@ const LoginForm = ({ setIsModalVisible, login, token }) => {
   return (
     <Formik
       initialValues={{ email: '', password: '' }}
-      validationSchema={SignInSchema}
+      // validationSchema={SignInSchema}
       onSubmit={(values) => login(values)}
     >
       {({ errors }) => (

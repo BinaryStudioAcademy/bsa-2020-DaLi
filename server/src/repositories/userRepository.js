@@ -11,4 +11,4 @@ class UserRepository extends BaseRepository {
   }
 }
 
-export default new UserRepository(models.user);
+export default new UserRepository(models.User);

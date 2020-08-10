@@ -1,46 +1,42 @@
 import { Model } from 'sequelize';
 
 export default (sequelize, DataTypes) => {
-  class User extends Model {
+  class Visualization extends Model {
     static associate(models) {
-      User.hasMany(models.Visualization);
+      Visualization.belongsTo(models.User);
     }
   }
-  User.init(
+  Visualization.init(
     {
       id: {
         type: DataTypes.UUID,
-        allowNull: false,
         autoIncrement: false,
         primaryKey: true,
         defaultValue: DataTypes.UUIDV4,
       },
-      firstName: {
+      type: {
+        type: DataTypes.ENUM(['LINE_CHART', 'BAR_CHART', 'TABLE']),
+        allowNull: false,
+      },
+      name: {
         type: DataTypes.STRING,
         allowNull: false,
       },
-      lastName: {
+      description: {
         type: DataTypes.STRING,
-        allowNull: false,
+        allowNull: true,
       },
-      email: {
+      config: {
         type: DataTypes.STRING,
         allowNull: false,
-        unique: true,
-      },
-      password: {
-        allowNull: false,
-        type: DataTypes.STRING,
-        unique: true,
       },
       createdAt: DataTypes.DATE,
       updatedAt: DataTypes.DATE,
     },
     {
       sequelize,
-      modelName: 'User',
+      modelName: 'Visualization',
     }
   );
-
-  return User;
+  return Visualization;
 };

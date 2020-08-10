@@ -46,6 +46,14 @@ class baseAPIService {
     });
   }
 
+  patchData(endpoint, data) {
+    return baseRequest({
+      method: 'patch',
+      url: `${this.baseURL}${endpoint}`,
+      data,
+    });
+  }
+
   // endpoint example = 'users/12'
   deleteData(endpoint, params) {
     return baseRequest({

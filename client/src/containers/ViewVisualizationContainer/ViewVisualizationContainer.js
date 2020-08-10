@@ -8,7 +8,7 @@ import { ViewVisualizationSidebar, ViewVisualizationMain } from '../../component
 import InitialTable from '../InitialTableContainer/InitialTableContainer';
 
 import * as actions from './actions';
-import { saveVisualization } from './service';
+import { visualizationsAPIService } from '../../services/api/visualizationsAPI.service';
 
 import { getVisualizationComponent, getVisualizationIcon, getVisualizationSettings, getVisualization } from './helper';
 
@@ -42,7 +42,8 @@ const ViewVisualizationContainer = (props) => {
 
   const onSwitchContentView = (viewType) => setCurrentView(viewType);
   const onToggleSideBar = () => setIsSideBarOpen(!isSideBarOpen);
-  const onVisualizationSave = () => saveVisualization(id, currentVisualization);
+  const onVisualizationSave = () =>
+    visualizationsAPIService.patchData(`api/visualizations/${id}`, currentVisualization);
 
   return (
     <>

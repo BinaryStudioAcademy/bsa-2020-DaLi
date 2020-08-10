@@ -6,7 +6,7 @@ import MuiAlert from '@material-ui/lab/Alert';
 import { LoginForm, Modal } from '../../components';
 import { login } from './actions';
 
-const LoginPageContainer = ({ token, error }) => {
+const LoginPageContainer = ({ error }) => {
   const [isModalVisible, setIsModalVisible] = React.useState(false);
   const [open, setOpen] = React.useState(true);
 
@@ -25,7 +25,7 @@ const LoginPageContainer = ({ token, error }) => {
     <div className="container">
       <div className="form-wrapper">
         <h1 className="title">Sign in to DaLi</h1>
-        <LoginForm setIsModalVisible={setIsModalVisible} token={token} login={handleSubmit} />
+        <LoginForm setIsModalVisible={setIsModalVisible} login={handleSubmit} />
         {isModalVisible && (
           <Modal onModalClose={() => setIsModalVisible(false)}>
             <Modal.Body>Please contact an administrator to reset your password</Modal.Body>
@@ -45,12 +45,10 @@ const LoginPageContainer = ({ token, error }) => {
 };
 
 LoginPageContainer.propTypes = {
-  token: PropTypes.string,
   error: PropTypes.string,
 };
 
 const mapStateToProps = ({ currentUser }) => ({
-  token: currentUser.token,
   error: currentUser.error,
 });
 

@@ -1,9 +1,7 @@
 import React from 'react';
-import { Redirect } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import * as Yup from 'yup';
 import { Formik, Form, Field, ErrorMessage, getIn } from 'formik';
-import { getToken } from '../../helpers/jwtToken';
 
 import './styles.css';
 
@@ -23,12 +21,6 @@ const getStyles = (errors, fieldName) => {
 };
 
 const LoginForm = ({ setIsModalVisible, login }) => {
-  const jwtToken = getToken();
-
-  if (jwtToken) {
-    return <Redirect to="/" />;
-  }
-
   return (
     <Formik
       initialValues={{ email: '', password: '' }}
@@ -81,7 +73,6 @@ const LoginForm = ({ setIsModalVisible, login }) => {
 LoginForm.propTypes = {
   login: PropTypes.func,
   setIsModalVisible: PropTypes.func,
-  token: PropTypes.string,
 };
 
 export default LoginForm;

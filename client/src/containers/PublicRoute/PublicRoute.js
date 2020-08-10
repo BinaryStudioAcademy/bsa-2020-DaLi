@@ -6,18 +6,18 @@ import { connect } from 'react-redux';
 // sample use case
 // <ProtectedRoute exact path="/path" component={Component} />
 
-const ProtectedRoute = ({ isAuthorized, component: Component, ...rest }) => {
+const PublicRoute = ({ isAuthorized, component: Component, ...rest }) => {
   return (
     <Route
       {...rest}
       render={(props) => {
-        if (isAuthorized) {
+        if (!isAuthorized) {
           return <Component {...props} />;
         }
         return (
           <Redirect
             to={{
-              pathname: '/login',
+              pathname: '/',
               state: {
                 from: props.location,
               },
@@ -29,7 +29,7 @@ const ProtectedRoute = ({ isAuthorized, component: Component, ...rest }) => {
   );
 };
 
-ProtectedRoute.propTypes = {
+PublicRoute.propTypes = {
   isAuthorized: PropTypes.bool,
   location: PropTypes.any,
   component: PropTypes.elementType,
@@ -39,4 +39,4 @@ const mapStateToProps = ({ currentUser }) => ({
   isAuthorized: currentUser.isAuthorized,
 });
 
-export default connect(mapStateToProps)(ProtectedRoute);
+export default connect(mapStateToProps)(PublicRoute);

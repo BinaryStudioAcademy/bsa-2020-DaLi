@@ -6,6 +6,8 @@ import LineChartSettings from './LineChartSettings';
 import TableVisualizationContainer from './TableVisualizationContainer/TableVisualizationContainer';
 import ViewVisualizationContainer from './ViewVisualizationContainer/ViewVisualizationContainer';
 import InitialTableContainer from './InitialTableContainer/InitialTableContainer';
+import ProtectedRoute from './ProtectedRoute/ProtectedRoute';
+import PublicRoute from './PublicRoute/PublicRoute';
 import VisualizationsListContainer from './VisualizationsListContainer/VisualizationsListContainer';
 
 export {
@@ -16,6 +18,8 @@ export {
   TableVisualizationContainer,
   ViewVisualizationContainer,
   InitialTableContainer,
+  ProtectedRoute,
+  PublicRoute,
   LineChartSettings,
   VisualizationsListContainer,
 };

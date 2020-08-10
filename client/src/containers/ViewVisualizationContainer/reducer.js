@@ -5,7 +5,6 @@ const viewVisualizationReducer = (state = {}, { type, payload }) => {
     case SET_VISUALIZATION: {
       const { visualization } = payload;
       return {
-        ...state,
         ...visualization,
       };
     }

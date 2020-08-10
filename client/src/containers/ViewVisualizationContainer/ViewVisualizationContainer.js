@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
 import Grid from '@material-ui/core/Grid';
@@ -6,16 +7,27 @@ import * as actions from './actions';
 import { ViewVisualizationSidebar, ViewVisualizationMain } from '../../components';
 import InitialTable from '../InitialTableContainer/InitialTableContainer';
 
-import { getVisualizationComponent, getVisualizationIcon } from './helper';
+import { getVisualizationComponent, getVisualizationIcon, getVisualization } from './helper';
 
 import './ViewVisualizationContainer.css';
 
-const ViewVisualizationContainer = () => {
+const ViewVisualizationContainer = (props) => {
+  const { id, visualizations, currentVisualization, setVisualization, updateVisualizationConfig } = props;
+
+  useEffect(() => {
+    const visualization = getVisualization(visualizations, id);
+    setVisualization(visualization);
+  }, []);
+
   const [currentView, setCurrentView] = useState('table');
   const [isSideBarOpen, setIsSideBarOpen] = useState(false);
 
-  const visualizationComponent = getVisualizationComponent('BAR_CHART');
-  const visualizationIcon = getVisualizationIcon('BAR_CHART');
+  const visualizationComponent = getVisualizationComponent(
+    currentVisualization.type,
+    currentVisualization.config,
+    updateVisualizationConfig
+  );
+  const visualizationIcon = getVisualizationIcon(currentVisualization.type);
   const contentViewComponent = currentView === 'table' ? <InitialTable /> : visualizationComponent;
 
   const onSwitchContentView = (viewType) => setCurrentView(viewType);
@@ -44,6 +56,14 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = {
   ...actions,
+};
+
+ViewVisualizationContainer.propTypes = {
+  id: PropTypes.string,
+  visualizations: PropTypes.array,
+  currentVisualization: PropTypes.object,
+  setVisualization: PropTypes.func,
+  updateVisualizationConfig: PropTypes.func,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(ViewVisualizationContainer);

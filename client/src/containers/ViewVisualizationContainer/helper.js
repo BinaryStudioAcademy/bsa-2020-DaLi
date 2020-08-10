@@ -8,14 +8,14 @@ import BarChart from '../BarChartContainer/BarChartContainer';
 import LineChart from '../LineChartContainer/LineChartContainer';
 import TableVisualization from '../TableVisualizationContainer/TableVisualizationContainer';
 
-export const getVisualizationComponent = (visualizationType) => {
+export const getVisualizationComponent = (visualizationType, config, updateConfig) => {
   switch (visualizationType) {
     case 'BAR_CHART':
-      return <BarChart />;
+      return <BarChart config={config} />;
     case 'LINE_CHART':
-      return <LineChart />;
+      return <LineChart config={config} />;
     case 'TABLE':
-      return <TableVisualization />;
+      return <TableVisualization config={config} updateConfig={updateConfig} />;
     default:
       return null;
   }
@@ -33,3 +33,6 @@ export const getVisualizationIcon = (visualizationType) => {
       return null;
   }
 };
+
+export const getVisualization = (visualizations, id) =>
+  visualizations.filter((visualization) => visualization.id === Number(id))[0];

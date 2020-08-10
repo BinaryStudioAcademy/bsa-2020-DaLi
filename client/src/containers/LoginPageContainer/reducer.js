@@ -2,6 +2,7 @@ import { LOGIN_USER_SUCCESS, LOGIN_USER_ERROR, LOGOUT_USER_SUCCESS, LOGOUT_USER_
 
 const initialState = {
   user: '',
+  error: '',
   isAuthorized: false,
   isLoading: false,
   token: '',
@@ -10,11 +11,11 @@ const initialState = {
 const loginReducer = (state = initialState, { type, payload }) => {
   switch (type) {
     case LOGIN_USER_SUCCESS: {
-      console.log(payload);
       return {
         ...state,
-        user: payload,
-        isAuthorized: Boolean(payload),
+        user: payload.user,
+        error: '',
+        isAuthorized: Boolean(payload.user),
         isLoading: true,
         token: payload.token,
       };
@@ -23,6 +24,7 @@ const loginReducer = (state = initialState, { type, payload }) => {
       return {
         ...state,
         user: null,
+        error: '',
         isAuthorized: false,
         isLoading: true,
         token: '',
@@ -32,6 +34,7 @@ const loginReducer = (state = initialState, { type, payload }) => {
     case LOGOUT_USER_ERROR:
       return {
         ...state,
+        error: payload.message,
         isLoading: false,
       };
     default:

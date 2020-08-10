@@ -19,6 +19,7 @@
     "qs": "^6.9.4",
     "query-string": "^6.13.1",
     "react": "^16.13.1",
+    "react-beautiful-dnd": "^13.0.0",
     "react-dom": "^16.13.1",
     "react-redux": "^7.2.1",
     "react-router-dom": "^5.2.0",

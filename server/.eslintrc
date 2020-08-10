@@ -34,7 +34,7 @@
         "implicit-arrow-linebreak": 0,
         "comma-dangle": 0,
         "indent": 0,
-    "no-shadow": 0
-
+        "no-shadow": 0,
+        "import/prefer-default-export": "off"
     }
 }

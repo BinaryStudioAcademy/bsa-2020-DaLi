@@ -5,3 +5,4 @@ import visualizationsSaga from '../containers/VisualizationsListContainer/sagas'
 export function* rootSaga() {
   yield all([authSaga(), visualizationsSaga()]);
 }
+

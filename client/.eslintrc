@@ -39,6 +39,7 @@
     "react/jsx-one-expression-per-line": "off",
     "react-hooks/rules-of-hooks": "error",
     "react-hooks/exhaustive-deps": "warn",
+    "react/no-children-prop": 0,
     "import/no-extraneous-dependencies": ["error", { "devDependencies": true }],
     "import/prefer-default-export": "off",
     "operator-linebreak": [2, "after", { "overrides": { "?": "before", ":": "before" }} ],

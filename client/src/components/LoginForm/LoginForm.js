@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { Redirect } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import * as Yup from 'yup';
 import { Formik, Form, Field, ErrorMessage, getIn } from 'formik';
-import { setToken, getToken } from '../../helpers/jwtToken';
+import { getToken } from '../../helpers/jwtToken';
 
 import './styles.css';
 
@@ -22,14 +22,8 @@ const getStyles = (errors, fieldName) => {
   return getIn(errors, fieldName) ? { border: '1px solid red' } : {};
 };
 
-const LoginForm = ({ setIsModalVisible, login, token }) => {
-  const [jwtToken, setJwtToken] = useState(getToken());
-  useEffect(() => {
-    if (token) {
-      setJwtToken(token);
-      setToken(token);
-    }
-  }, [token]);
+const LoginForm = ({ setIsModalVisible, login }) => {
+  const jwtToken = getToken();
 
   if (jwtToken) {
     return <Redirect to="/" />;

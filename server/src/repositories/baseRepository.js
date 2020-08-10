@@ -3,19 +3,22 @@ export default class BaseRepository {
     this.model = model;
   }
 
-  getAll() {
-    return this.model.findAll();
+  async getAll() {
+    const result = await this.model.findAll();
+    return result;
   }
 
-  getById(id) {
-    return this.model.findByPk(id);
+  async getById({ id }) {
+    const result = await this.model.findByPk(id);
+    return result;
   }
 
-  create(data) {
-    return this.model.create(data);
+  async create(data) {
+    const result = await this.model.create(data);
+    return result;
   }
 
-  async updateById(id, data) {
+  async updateById({ id }, data) {
     const result = await this.model.update(data, {
       where: { id },
       returning: true,
@@ -25,9 +28,10 @@ export default class BaseRepository {
     return result[1];
   }
 
-  deleteById(id) {
-    return this.model.destroy({
+  async deleteById({ id }) {
+    const result = await this.model.destroy({
       where: { id },
     });
+    return result;
   }
 }

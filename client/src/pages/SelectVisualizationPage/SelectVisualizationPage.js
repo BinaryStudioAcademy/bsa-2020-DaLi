@@ -1,5 +1,5 @@
 import React from 'react';
-import SelectVisualization from '../../components/SelectVisualization/SelectVisualization';
+import { SelectVisualization } from '../../components';
 
 const SelectVisualizationPage = () => {
   return <SelectVisualization />;

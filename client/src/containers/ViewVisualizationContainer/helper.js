@@ -9,6 +9,7 @@ import LineChart from '../LineChartContainer/LineChartContainer';
 import TableVisualization from '../TableVisualizationContainer/TableVisualizationContainer';
 
 import { BarChartSettings, TableSettingsSidebar } from '../../components';
+import LineChartSettings from '../LineChartSettings';
 
 export const getVisualizationComponent = (visualizationType, config, updateConfig) => {
   switch (visualizationType) {
@@ -41,7 +42,7 @@ export const getVisualizationSettings = (visualizationType, config, updateConfig
     case 'BAR_CHART':
       return <BarChartSettings config={config} updateConfig={updateConfig} />;
     case 'LINE_CHART':
-      return 'settings';
+      return <LineChartSettings config={config} updateConfig={updateConfig} />;
     case 'TABLE':
       return <TableSettingsSidebar config={config} updateConfig={updateConfig} />;
     default:

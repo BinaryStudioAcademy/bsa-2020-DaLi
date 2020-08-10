@@ -16,11 +16,7 @@ const EnhancedTableHead = (props) => {
     <TableHead>
       <TableRow>
         {columns.map((columnHeader) => (
-          <TableCell
-            key={columnHeader.id}
-            align="center"
-            sortDirection={sortOrderBy === columnHeader.id ? sortOrder : false}
-          >
+          <TableCell key={columnHeader.id} sortDirection={sortOrderBy === columnHeader.id ? sortOrder : false}>
             <TableSortLabel
               active={sortOrder === columnHeader.id}
               direction={sortOrderBy === columnHeader.id ? sortOrder : 'asc'}

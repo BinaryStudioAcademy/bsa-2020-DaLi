@@ -35,7 +35,13 @@ const VisualizationsList = ({ visualizations, isLoading, deleteItem }) => {
       {!isLoading &&
         visualizations.map((visualization) => {
           return (
-            <NavLink to="/visualizations" key={visualization.id} className="visualization-item">
+            <NavLink
+              to={{
+                pathname: `/visualizations/${visualization.id}`,
+              }}
+              key={visualization.id}
+              className="visualization-item"
+            >
               {chooseIcon(visualization.type)}
               <h2>{visualization.name}</h2>
               <DeleteOutlinedIcon style={{ color: 'red', fontSize: 40 }} onClick={deleteItem(visualization.id)} />

@@ -11,7 +11,7 @@ function App() {
       <Route exact path="/login" component={LoginPage} />
       <Route exact path="/select-visualization" component={SelectVisualizationPage} />
       <Route exact path="/visualizations" component={VisualizationsPage} />
-      <Route path="/visualization/:id" component={ViewVisualizationPage} />
+      <Route exact path="/visualizations/:id" component={ViewVisualizationPage} />
     </Router>
   );
 }

@@ -2,10 +2,13 @@ import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
-import Grid from '@material-ui/core/Grid';
-import * as actions from './actions';
+import { Grid, Button } from '@material-ui/core';
+import SaveIcon from '@material-ui/icons/Save';
 import { ViewVisualizationSidebar, ViewVisualizationMain } from '../../components';
 import InitialTable from '../InitialTableContainer/InitialTableContainer';
+
+import * as actions from './actions';
+import { visualizationsAPIService } from '../../services/api/visualizationsAPI.service';
 
 import { getVisualizationComponent, getVisualizationIcon, getVisualizationSettings, getVisualization } from './helper';
 
@@ -39,18 +42,32 @@ const ViewVisualizationContainer = (props) => {
 
   const onSwitchContentView = (viewType) => setCurrentView(viewType);
   const onToggleSideBar = () => setIsSideBarOpen(!isSideBarOpen);
+  const onVisualizationSave = () =>
+    visualizationsAPIService.patchData(`/api/visualizations/${id}`, currentVisualization);
 
   return (
-    <Grid container className="view-visualization-container">
-      {isSideBarOpen && <ViewVisualizationSidebar component={visualizationSettings} />}
-      <ViewVisualizationMain
-        contentViewComponent={contentViewComponent}
-        currentContentView={currentView}
-        visualizationIcon={visualizationIcon}
-        onToggleSideBar={onToggleSideBar}
-        onSwitchContentView={onSwitchContentView}
-      />
-    </Grid>
+    <>
+      <div className="view-visualization-header">
+        <Button
+          className="view-visualization-button"
+          variant="contained"
+          startIcon={<SaveIcon />}
+          onClick={onVisualizationSave}
+        >
+          Save
+        </Button>
+      </div>
+      <Grid container className="view-visualization-container">
+        {isSideBarOpen && <ViewVisualizationSidebar component={visualizationSettings} />}
+        <ViewVisualizationMain
+          contentViewComponent={contentViewComponent}
+          currentContentView={currentView}
+          visualizationIcon={visualizationIcon}
+          onToggleSideBar={onToggleSideBar}
+          onSwitchContentView={onSwitchContentView}
+        />
+      </Grid>
+    </>
   );
 };
 

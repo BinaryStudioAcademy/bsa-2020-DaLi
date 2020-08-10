@@ -59,10 +59,21 @@ class baseAPIService {
     return response;
   };
 
+  patchData = async (endpoint, data) => {
+    const response = await baseRequest({
+      method: 'patch',
+      url: `${this.baseURL}${endpoint}`,
+      headers: { Authorization: `Bearer ${this.accessToken}` },
+      data,
+    });
+
+    return response;
+  };
+
   deleteData = async (endpoint, params) => {
     const response = await baseRequest({
       method: 'delete',
-      url: `${this.baseURL}${endpoint}`,
+      url: `${this.baseURL}/${endpoint}`,
       headers: { Authorization: `Bearer ${this.accessToken}` },
       params,
     });

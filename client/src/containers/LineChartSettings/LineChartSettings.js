@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles, withStyles } from '@material-ui/core/styles';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import Typography from '@material-ui/core/Typography';
@@ -10,6 +10,64 @@ import InputLabel from '@material-ui/core/InputLabel';
 import FormControl from '@material-ui/core/FormControl';
 import NativeSelect from '@material-ui/core/NativeSelect';
 import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Switch from '@material-ui/core/Switch';
+import TextField from '@material-ui/core/TextField';
+import ColorPicker from 'material-ui-color-picker';
+
+const PrettySwitch = withStyles((theme) => ({
+  root: {
+    width: 60,
+    height: 26,
+    padding: 0,
+    margin: theme.spacing(1),
+    overflow: 'unset',
+  },
+  switchBase: {
+    padding: 1,
+    '&$checked': {
+      transform: 'translateX(34px)',
+      color: theme.palette.common.white,
+      '& + $track': {
+        backgroundColor: '#519EE3',
+        opacity: 1,
+        border: 'none',
+      },
+    },
+    '&$focusVisible $thumb': {
+      color: '#519EE3',
+      border: '6px solid #fff',
+    },
+  },
+  thumb: {
+    width: 24,
+    height: 24,
+  },
+  track: {
+    borderRadius: 26 / 2,
+    border: `1px solid ${theme.palette.grey[400]}`,
+    backgroundColor: theme.palette.grey[50],
+    opacity: 1,
+    transition: theme.transitions.create(['background-color', 'border']),
+  },
+  checked: {},
+  focusVisible: {},
+}))(({ classes, ...props }) => {
+  return (
+    <Switch
+      focusVisibleClassName={classes.focusVisible}
+      disableRipple
+      classes={{
+        root: classes.root,
+        switchBase: classes.switchBase,
+        thumb: classes.thumb,
+        track: classes.track,
+        checked: classes.checked,
+      }}
+      {...props}
+    />
+  );
+});
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -101,19 +159,77 @@ const useStyles = makeStyles((theme) => ({
     fontSize: 'bold',
     fontWeight: '2rem',
   },
+  input: {
+    display: 'flex',
+    margin: '25px 0px',
+  },
+  colorPicker: {
+    display: 'flex',
+    margin: '25px 25px 25px 0',
+  },
 }));
 
-function LineChartSettings() {
+function LineChartSettings({ updateConfig, config: oldConfig }) {
   const classes = useStyles();
-  const [value, setValue] = React.useState(0);
-  const [state] = React.useState({
-    xAxis: '',
-    yAxis: '',
-  });
+  const xAxisValues = ['createdAt'];
+  const yAxisValues = ['total'];
+  const [value, setValue] = useState(0);
+  const [xAxis, setXAxis] = useState('a');
+  const [yAxis, setYAxis] = useState('b');
+  const [isGoalLine, setIsGoalLine] = useState(false);
+  const [goalLine, setGoalLine] = useState(0);
+  const [color, setColor] = useState('#000');
+  const [isLabelXAxis, setIsLabelXAxis] = useState(false);
+  const [isLabelYAxis, setIsLabelYAxis] = useState(false);
+  const [labelXAxis, setLabelXAxis] = useState('');
+  const [labelYAxis, setLabelYAxis] = useState('');
+  const [config, setConfig] = useState({});
+
+  useEffect(() => {
+    updateConfig(...oldConfig, ...config);
+  }, [config]);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
+
+  const onDoneButton = () => {
+    setConfig({
+      axisData: {
+        XAxis: {
+          key: xAxis,
+          label: labelXAxis,
+          displayLabel: isLabelXAxis,
+        },
+        YAxis: {
+          key: yAxis,
+          label: labelYAxis,
+          displayLabel: isLabelYAxis,
+        },
+      },
+      display: {
+        goal: {
+          display: isGoalLine,
+          value: goalLine,
+          label: 'Goal',
+        },
+        color,
+        showTrendLine: false,
+        showDataPointsValues: true,
+      },
+    });
+  };
+
+  const valuesX = xAxisValues.map((value) => (
+    <option value={value} key={value}>
+      {value}
+    </option>
+  ));
+  const valuesY = yAxisValues.map((value) => (
+    <option value={value} key={value}>
+      {value}
+    </option>
+  ));
 
   return (
     <div className={classes.root}>
@@ -142,17 +258,16 @@ function LineChartSettings() {
           </InputLabel>
           <NativeSelect
             className={classes.select}
-            value={state.age}
-            onChange={() => {}}
+            value={xAxis}
+            onChange={(event) => {
+              setXAxis(event.target.value);
+            }}
             inputProps={{
-              xAxis: 'products',
+              xAxis: 'xAxis',
               id: 'x-native-label-placeholder',
             }}
           >
-            <option value="">Select a field</option>
-            <option value={10}>Ten</option>
-            <option value={20}>Twenty</option>
-            <option value={30}>Thirty</option>
+            {valuesX}
           </NativeSelect>
         </FormControl>
         <FormControl className={classes.formControl}>
@@ -161,31 +276,100 @@ function LineChartSettings() {
           </InputLabel>
           <NativeSelect
             className={classes.select}
-            value={state.age}
-            onChange={() => {}}
+            value={yAxis}
+            onChange={(event) => setYAxis(event.target.value)}
             inputProps={{
               yAxis: 'products',
               id: 'y-native-label-placeholder',
             }}
           >
-            <option value="">Select a field</option>
-            <option value={10}>Ten</option>
-            <option value={20}>Twenty</option>
-            <option value={30}>Thirty</option>
+            {valuesY}
           </NativeSelect>
         </FormControl>
       </TabPanel>
       <TabPanel value={value} index={1}>
-        Item Two
+        <FormControlLabel
+          control={<PrettySwitch checked={isGoalLine} onChange={(event) => setIsGoalLine(event.target.checked)} />}
+          label="Goal line"
+        />
+        {isGoalLine ? (
+          <TextField
+            id="standard-basic"
+            label="Goal line"
+            className={classes.input}
+            type="number"
+            InputLabelProps={{
+              shrink: true,
+            }}
+            value={goalLine}
+            onChange={(event) => {
+              setGoalLine(event.target.value);
+            }}
+          />
+        ) : null}
+        <ColorPicker
+          className={classes.colorPicker}
+          name="color"
+          defaultValue="Сhoose your color"
+          value={color}
+          onChange={(color) => setColor(color)}
+        />
       </TabPanel>
       <TabPanel value={value} index={2}>
-        Item Three
+        <FormControlLabel
+          control={<PrettySwitch checked={isLabelXAxis} onChange={(event) => setIsLabelXAxis(event.target.checked)} />}
+          label="Show label on x-axis"
+        />
+        {isLabelXAxis ? (
+          <TextField
+            id="standard-basic"
+            label="X-axis label"
+            className={classes.input}
+            InputLabelProps={{
+              shrink: true,
+            }}
+            value={labelXAxis}
+            onChange={(event) => {
+              setLabelXAxis(event.target.value);
+            }}
+          />
+        ) : null}
+        <FormControlLabel
+          control={<PrettySwitch checked={isLabelYAxis} onChange={(event) => setIsLabelYAxis(event.target.checked)} />}
+          label="Show label on y-axis"
+        />
+        {isLabelYAxis ? (
+          <TextField
+            id="standard-basic"
+            label="Y-axis label"
+            className={classes.input}
+            InputLabelProps={{
+              shrink: true,
+            }}
+            value={labelYAxis}
+            onChange={(event) => {
+              setLabelYAxis(event.target.value);
+            }}
+          />
+        ) : null}
       </TabPanel>
       <div className={classes.btnWrapper}>
-        <Button className={classes.btn}>Done</Button>
+        <Button
+          className={classes.btn}
+          onClick={() => {
+            onDoneButton();
+          }}
+        >
+          Done
+        </Button>
       </div>
     </div>
   );
 }
+
+LineChartSettings.propTypes = {
+  config: PropTypes.object,
+  updateConfig: PropTypes.func,
+};
 
 export default LineChartSettings;

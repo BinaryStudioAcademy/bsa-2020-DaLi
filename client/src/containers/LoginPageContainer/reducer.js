@@ -10,10 +10,11 @@ const initialState = {
 const loginReducer = (state = initialState, { type, payload }) => {
   switch (type) {
     case LOGIN_USER_SUCCESS: {
+      console.log(payload);
       return {
         ...state,
-        user: payload.user,
-        isAuthorized: Boolean(payload.user),
+        user: payload,
+        isAuthorized: Boolean(payload),
         isLoading: true,
         token: payload.token,
       };

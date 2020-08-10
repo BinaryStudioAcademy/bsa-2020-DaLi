@@ -9,3 +9,15 @@ export const loginService = async (request) => {
   });
   return response.json();
 };
+
+export const getCurrentUserService = async () => {
+  try {
+    const response = await callApi({
+      endpoint: 'http://localhost:5000/api/auth/user',
+      type: 'GET',
+    });
+    return response.json();
+  } catch (e) {
+    return null;
+  }
+};

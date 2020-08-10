@@ -1,4 +1,4 @@
-import dotenv from "dotenv";
+import dotenv from 'dotenv';
 
 dotenv.config();
 
@@ -11,6 +11,6 @@ const db = {
 };
 
 const { database, username, password, host, port } = db;
-const database_URL = `postgres:${username}:${password}@${host}:${port}/${database}`;
+const databaseURL = `postgres:${username}:${password}@${host}:${port}/${database}`;
 
-export default database_URL;
+export default databaseURL;

@@ -1,7 +1,7 @@
 {
   "editor.formatOnSave": false,
   "[javascript]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
+    "editor.defaultFormatter": "rvest.vs-code-prettier-eslint"
   },
   "editor.codeActionsOnSave": { "source.fixAll.eslint": true },
   "eslint.workingDirectories": [

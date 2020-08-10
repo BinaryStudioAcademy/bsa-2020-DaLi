@@ -10,6 +10,7 @@ import InitialTable from './InitialTable/InitialTable';
 import SelectVisualization from './SelectVisualization/SelectVisualization';
 import ViewVisualizationSidebar from './ViewVisualizationSidebar';
 import ViewVisualizationMain from './ ViewVisualizationMain';
+import TableSettingsSidebar from './TableSettingsSidebar/TableSettingsSidebar';
 
 export {
   BarChart,
@@ -24,4 +25,5 @@ export {
   SelectVisualization,
   ViewVisualizationSidebar,
   ViewVisualizationMain,
+  TableSettingsSidebar,
 };

@@ -1,0 +1,24 @@
+.table-settings-sidebar-container {
+    width: 100%;
+}
+
+.property-item {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    border: 1px solid #f0f0f0;
+    padding: 10px 20px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    box-shadow: 0 3px 3px #e6e6e6;
+}
+
+.property-item h4 {
+    margin: 0;
+}
+
+.property-item_buttons-container svg {
+    margin-left: 7px;
+    cursor: pointer;
+}

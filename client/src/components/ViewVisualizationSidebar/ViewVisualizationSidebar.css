@@ -1,0 +1,9 @@
+.view-visualization-sidebar {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 400px;
+  padding: 20px;
+
+  border-right: 2px solid #f4f4f4;
+}

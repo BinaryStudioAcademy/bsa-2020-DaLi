@@ -1,19 +1,11 @@
-import { LOGIN_API_ENDPOINT } from '../config/API';
+// import { LOGIN_API_ENDPOINT } from '../config/API';
+import callApi from '../helpers/callApi';
 
-export const loginService = (request) => {
-  const parameters = {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(request),
-  };
-
-  return fetch(LOGIN_API_ENDPOINT, parameters)
-    .then((response) => {
-      return response.json();
-    })
-    .then((json) => {
-      return json;
-    });
+export const loginService = async (request) => {
+  const response = await callApi({
+    endpoint: 'http://localhost:5000/api/auth/login',
+    type: 'POST',
+    request,
+  });
+  return response.json();
 };

@@ -1,8 +1,9 @@
 import React from 'react';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 import './App.css';
+import { Header } from './components';
 import { ThemeProvider } from '@material-ui/core/styles';
-import { LoginPage, SelectVisualizationPage } from './pages';
+import { LoginPage, SelectVisualizationPage, VisualizationsPage } from './pages';
 import DaLiTheme from './components/shared/DaLiTheme';
 import ExampleComponent from './components/ExampleComponent/ExampleComponent';
 
@@ -10,8 +11,10 @@ function App() {
   return (
     <ThemeProvider theme={DaLiTheme}>
       <Router>
-        <Route exact path="/" component={LoginPage} />
+        <Route exact path="/" component={Header} />
+        <Route exact path="/login" component={LoginPage} />
         <Route exact path="/select-visualization" component={SelectVisualizationPage} />
+        <Route exact path="/visualizations" component={VisualizationsPage} />
         <Route exact path="/example" component={ExampleComponent} />
       </Router>
     </ThemeProvider>

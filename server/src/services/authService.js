@@ -11,26 +11,37 @@ export const login = async (user) => {
     // if (bcrypt.compareSync(user.password, candidate.password)) {
     // not hashed password
     if (candidate.password === user.password) {
+      const { id, email, firstName, lastName } = candidate;
       const token = jwt.sign(
         {
-          id: candidate.id,
+          id,
         },
         jwtConfig.secretKey,
         { expiresIn: jwtConfig.expiresIn }
       );
       return {
-        success: true,
-        token: `Bearer ${token}`,
+        status: 200,
+        response: {
+          success: true,
+          token,
+          user: { email, firstName, lastName },
+        },
       };
     }
     return {
-      success: false,
-      message: 'Wrong password entered',
+      status: 401,
+      response: {
+        success: false,
+        message: 'Wrong password entered',
+      },
     };
   }
   return {
-    success: false,
-    message: 'User with such email was not found',
+    status: 404,
+    response: {
+      success: false,
+      message: 'User with such email was not found',
+    },
   };
 };
 
@@ -43,18 +54,41 @@ export const register = async (user) => {
 
     const newUser = await UserRepository.create(candidate);
     return {
-      success: true,
-      user: newUser,
+      status: 201,
+      response: {
+        success: true,
+        user: newUser,
+      },
     };
   }
   return {
-    success: false,
-    message: 'User with such email already exists',
+    status: 409,
+    response: {
+      success: false,
+      message: 'User with such email already exists',
+    },
   };
 };
 
 export const getUserByToken = async (token) => {
   const { id } = jwtDecode(token);
-  const { firstName, lastName, email } = await UserRepository.getById({ id });
-  return { firstName, lastName, email };
+  const candidate = await UserRepository.getById({ id });
+  if (!candidate) {
+    return {
+      status: 404,
+      response: {
+        success: false,
+        message: 'User not found',
+      },
+    };
+  }
+  const { firstName, lastName, email } = candidate;
+  return {
+    status: 200,
+    response: {
+      firstName,
+      lastName,
+      email,
+    },
+  };
 };

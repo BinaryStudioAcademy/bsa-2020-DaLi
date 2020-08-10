@@ -16,7 +16,7 @@ function App({ isAuthorized, isLoading, login }) {
     }
   }, [login, token]);
 
-  return !isLoading ? (
+  return isLoading ? (
     'Loading'
   ) : (
     <Router>

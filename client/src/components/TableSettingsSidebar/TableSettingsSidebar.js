@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { DragDropContext, Droppable } from 'react-beautiful-dnd';
+import Button from '@material-ui/core/Button';
 
 import PropertyItem from './PropertyItem';
 import './styles.css';
@@ -63,14 +64,25 @@ const TableSettingsSidebar = ({ config }) => {
     updateColumnConfig(result);
   };
 
+  const saveConfig = () => {};
+
+  const getListStyle = (isDraggingOver) => ({
+    paddingBottom: isDraggingOver ? '50px' : '0px',
+  });
+
   return (
     <div className="table-settings-sidebar-container">
       <h3>Visible columns</h3>
       <p>Click and drag to change their order</p>
       <DragDropContext onDragEnd={onDragEnd}>
         <Droppable droppableId="droppable">
-          {(provided) => (
-            <div ref={provided.innerRef} {...provided.droppableProps}>
+          {(provided, snapshot) => (
+            <div
+              ref={provided.innerRef}
+              {...provided.droppableProps}
+              className="property-item-container"
+              style={getListStyle(snapshot.isDraggingOver)}
+            >
               {tableConfig.columns.map((property, index) => (
                 <PropertyItem
                   name={property.title}
@@ -84,6 +96,11 @@ const TableSettingsSidebar = ({ config }) => {
           )}
         </Droppable>
       </DragDropContext>
+      <div className="table-settings-sidebar-footer">
+        <Button onClick={saveConfig} className="view-visualization__setting-button" variant="contained">
+          Done
+        </Button>
+      </div>
     </div>
   );
 };

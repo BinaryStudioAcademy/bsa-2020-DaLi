@@ -22,7 +22,7 @@ export const login = async (user) => {
         status: 200,
         response: {
           success: true,
-          token: `Bearer ${token}`,
+          token,
         },
       };
     }

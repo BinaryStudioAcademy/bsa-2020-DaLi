@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Route } from 'react-router-dom';
 import './App.css';
 import { Header } from './components';
 import { LoginPage, SelectVisualizationPage } from './pages';
+import { ViewVisualizationContainer } from './containers';
 
 function App() {
   return (
@@ -10,6 +11,7 @@ function App() {
       <Route exact path="/" component={Header} />
       <Route exact path="/login" component={LoginPage} />
       <Route exact path="/select-visualization" component={SelectVisualizationPage} />
+      <Route exact path="/visualization" component={ViewVisualizationContainer} />
     </Router>
   );
 }

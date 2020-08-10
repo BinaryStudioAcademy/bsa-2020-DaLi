@@ -13,14 +13,11 @@ const EnhancedTableBody = (props) => {
         return (
           <TableRow>
             {Object.keys(row).map((key) => {
-              return <TableCell align="center">{row[key]}</TableCell>;
+              return <TableCell>{row[key]}</TableCell>;
             })}
           </TableRow>
         );
       })}
-      <TableRow>
-        <TableCell />
-      </TableRow>
     </TableBody>
   );
 };

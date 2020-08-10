@@ -38,4 +38,8 @@ ViewVisualizationContainer.propTypes = {
   visualizationType: PropTypes.string,
 };
 
+ViewVisualizationContainer.defaultProps = {
+  visualizationType: 'BAR_CHART',
+};
+
 export default ViewVisualizationContainer;

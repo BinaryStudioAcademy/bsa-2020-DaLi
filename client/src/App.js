@@ -4,9 +4,9 @@ import PropTypes from 'prop-types';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 import './App.css';
 import { Header } from './components';
-import { LoginPage, SelectVisualizationPage } from './pages';
 import { login } from './containers/LoginPageContainer/actions';
 import { getToken } from './helpers/jwtToken';
+import { LoginPage, SelectVisualizationPage, VisualizationsPage, ViewVisualizationPage } from './pages';
 
 function App({ login }) {
   const token = getToken();
@@ -20,6 +20,8 @@ function App({ login }) {
       <Route exact path="/" component={Header} />
       <Route exact path="/login" component={LoginPage} />
       <Route exact path="/select-visualization" component={SelectVisualizationPage} />
+      <Route exact path="/visualizations" component={VisualizationsPage} />
+      <Route path="/visualization/:id" component={ViewVisualizationPage} />
     </Router>
   );
 }

@@ -7,8 +7,11 @@ import Modal from './Modal';
 import LineChart from './LineChart/LineChart';
 import EnhancedTable from './EnhancedTable/EnhancedTable';
 import InitialTable from './InitialTable/InitialTable';
+import SelectVisualization from './SelectVisualization/SelectVisualization';
 import ViewVisualizationSidebar from './ViewVisualizationSidebar';
 import ViewVisualizationMain from './ ViewVisualizationMain';
+import TableSettingsSidebar from './TableSettingsSidebar/TableSettingsSidebar';
+import BarChartSettings from './BarChartSettings';
 
 export {
   BarChart,
@@ -20,6 +23,9 @@ export {
   SignUp,
   EnhancedTable,
   InitialTable,
+  SelectVisualization,
   ViewVisualizationSidebar,
   ViewVisualizationMain,
+  TableSettingsSidebar,
+  BarChartSettings,
 };

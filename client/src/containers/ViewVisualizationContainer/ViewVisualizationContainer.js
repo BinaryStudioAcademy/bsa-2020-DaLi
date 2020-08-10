@@ -43,7 +43,7 @@ const ViewVisualizationContainer = (props) => {
   const onSwitchContentView = (viewType) => setCurrentView(viewType);
   const onToggleSideBar = () => setIsSideBarOpen(!isSideBarOpen);
   const onVisualizationSave = () =>
-    visualizationsAPIService.patchData(`api/visualizations/${id}`, currentVisualization);
+    visualizationsAPIService.patchData(`/api/visualizations/${id}`, currentVisualization);
 
   return (
     <>

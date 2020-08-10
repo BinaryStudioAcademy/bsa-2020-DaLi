@@ -9,7 +9,6 @@ import Button from '@material-ui/core/Button';
 import InputLabel from '@material-ui/core/InputLabel';
 import FormControl from '@material-ui/core/FormControl';
 import NativeSelect from '@material-ui/core/NativeSelect';
-import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Switch from '@material-ui/core/Switch';
 import TextField from '@material-ui/core/TextField';
@@ -233,10 +232,6 @@ const BarChartSettings = ({ updateConfig, config: oldConfig }) => {
 
   return (
     <div className={classes.root}>
-      <Button className={classes.backBtn}>
-        <ArrowBackIosIcon />
-        Bar options
-      </Button>
       <Tabs
         className={classes.tabs}
         value={value}

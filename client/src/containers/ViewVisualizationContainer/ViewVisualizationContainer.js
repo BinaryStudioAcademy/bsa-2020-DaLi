@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 
 import Grid from '@material-ui/core/Grid';
+import * as actions from './actions';
 import { ViewVisualizationSidebar, ViewVisualizationMain } from '../../components';
 import InitialTable from '../InitialTableContainer/InitialTableContainer';
 
@@ -9,12 +10,12 @@ import { getVisualizationComponent, getVisualizationIcon } from './helper';
 
 import './ViewVisualizationContainer.css';
 
-const ViewVisualizationContainer = ({ visualizationType }) => {
+const ViewVisualizationContainer = () => {
   const [currentView, setCurrentView] = useState('table');
   const [isSideBarOpen, setIsSideBarOpen] = useState(false);
 
-  const visualizationComponent = getVisualizationComponent(visualizationType);
-  const visualizationIcon = getVisualizationIcon(visualizationType);
+  const visualizationComponent = getVisualizationComponent('BAR_CHART');
+  const visualizationIcon = getVisualizationIcon('BAR_CHART');
   const contentViewComponent = currentView === 'table' ? <InitialTable /> : visualizationComponent;
 
   const onSwitchContentView = (viewType) => setCurrentView(viewType);
@@ -34,12 +35,15 @@ const ViewVisualizationContainer = ({ visualizationType }) => {
   );
 };
 
-ViewVisualizationContainer.propTypes = {
-  visualizationType: PropTypes.string,
+const mapStateToProps = (state) => {
+  return {
+    currentVisualization: state.currentVisualization,
+    visualizations: state.visualizations,
+  };
 };
 
-ViewVisualizationContainer.defaultProps = {
-  visualizationType: 'BAR_CHART',
+const mapDispatchToProps = {
+  ...actions,
 };
 
-export default ViewVisualizationContainer;
+export default connect(mapStateToProps, mapDispatchToProps)(ViewVisualizationContainer);

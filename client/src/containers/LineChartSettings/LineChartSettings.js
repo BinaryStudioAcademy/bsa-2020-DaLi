@@ -9,6 +9,7 @@ import Button from '@material-ui/core/Button';
 import InputLabel from '@material-ui/core/InputLabel';
 import FormControl from '@material-ui/core/FormControl';
 import NativeSelect from '@material-ui/core/NativeSelect';
+import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Switch from '@material-ui/core/Switch';
 import TextField from '@material-ui/core/TextField';
@@ -81,7 +82,7 @@ function TabPanel(props) {
     >
       {value === index && (
         <Box p={3}>
-          <Typography component="span">{children}</Typography>
+          <Typography>{children}</Typography>
         </Box>
       )}
     </div>
@@ -168,10 +169,10 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const BarChartSettings = ({ updateConfig, config: oldConfig }) => {
+function LineChartSettings({ updateConfig, config: oldConfig }) {
+  const classes = useStyles();
   const xAxisValues = ['createdAt'];
   const yAxisValues = ['total'];
-  const classes = useStyles();
   const [value, setValue] = useState(0);
   const [xAxis, setXAxis] = useState('a');
   const [yAxis, setYAxis] = useState('b');
@@ -185,7 +186,7 @@ const BarChartSettings = ({ updateConfig, config: oldConfig }) => {
   const [config, setConfig] = useState({});
 
   useEffect(() => {
-    // updateConfig(...oldConfig, ...config);
+    updateConfig(...oldConfig, ...config);
   }, [config]);
 
   const handleChange = (event, newValue) => {
@@ -232,6 +233,10 @@ const BarChartSettings = ({ updateConfig, config: oldConfig }) => {
 
   return (
     <div className={classes.root}>
+      <Button className={classes.backBtn}>
+        <ArrowBackIosIcon />
+        Line Options
+      </Button>
       <Tabs
         className={classes.tabs}
         value={value}
@@ -248,23 +253,25 @@ const BarChartSettings = ({ updateConfig, config: oldConfig }) => {
       </Tabs>
       <TabPanel value={value} index={0}>
         <FormControl className={classes.formControl}>
-          <InputLabel className={classes.label} shrink id="xAxis-native-helper">
+          <InputLabel className={classes.label} shrink htmlFor="x-native-label-placeholder">
             X-Axis
           </InputLabel>
           <NativeSelect
             className={classes.select}
             value={xAxis}
-            onChange={(event) => setXAxis(event.target.value)}
+            onChange={(event) => {
+              setXAxis(event.target.value);
+            }}
             inputProps={{
-              id: 'xAxis-native-helper',
-              name: 'xAxis',
+              xAxis: 'xAxis',
+              id: 'x-native-label-placeholder',
             }}
           >
             {valuesX}
           </NativeSelect>
         </FormControl>
         <FormControl className={classes.formControl}>
-          <InputLabel className={classes.label} shrink htmlFor="yAxis-native-helper">
+          <InputLabel className={classes.label} shrink htmlFor="y-native-label-placeholder">
             Y-Axis
           </InputLabel>
           <NativeSelect
@@ -272,8 +279,8 @@ const BarChartSettings = ({ updateConfig, config: oldConfig }) => {
             value={yAxis}
             onChange={(event) => setYAxis(event.target.value)}
             inputProps={{
-              id: 'yAxis-native-helper',
-              name: 'yAxis',
+              yAxis: 'products',
+              id: 'y-native-label-placeholder',
             }}
           >
             {valuesY}
@@ -358,11 +365,11 @@ const BarChartSettings = ({ updateConfig, config: oldConfig }) => {
       </div>
     </div>
   );
-};
+}
 
-BarChartSettings.propTypes = {
+LineChartSettings.propTypes = {
   config: PropTypes.object,
   updateConfig: PropTypes.func,
 };
 
-export default BarChartSettings;
+export default LineChartSettings;

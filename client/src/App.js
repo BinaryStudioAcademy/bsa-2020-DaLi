@@ -2,7 +2,7 @@ import React from 'react';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 import './App.css';
 import { Header } from './components';
-import { LoginPage, SelectVisualizationPage, ViewVisualizationPage } from './pages';
+import { LoginPage, SelectVisualizationPage, VisualizationsPage, ViewVisualizationPage } from './pages';
 
 function App() {
   return (
@@ -10,6 +10,7 @@ function App() {
       <Route exact path="/" component={Header} />
       <Route exact path="/login" component={LoginPage} />
       <Route exact path="/select-visualization" component={SelectVisualizationPage} />
+      <Route exact path="/visualizations" component={VisualizationsPage} />
       <Route path="/visualization/:id" component={ViewVisualizationPage} />
     </Router>
   );

@@ -24,7 +24,6 @@ const getStyles = (errors, fieldName) => {
 
 const LoginForm = ({ setIsModalVisible, login, token }) => {
   const [jwtToken, setJwtToken] = useState(getToken());
-
   useEffect(() => {
     if (token) {
       setJwtToken(token);
@@ -39,7 +38,7 @@ const LoginForm = ({ setIsModalVisible, login, token }) => {
   return (
     <Formik
       initialValues={{ email: '', password: '' }}
-      // validationSchema={SignInSchema}
+      validationSchema={SignInSchema}
       onSubmit={(values) => login(values)}
     >
       {({ errors }) => (

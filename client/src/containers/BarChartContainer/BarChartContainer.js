@@ -41,6 +41,7 @@ class BarChartContainer extends Component {
             value: 1400,
             label: 'Goal',
           },
+          color: "#4AA1DE",
           showTrendLine: false,
           showDataPointsValues: true,
         },

@@ -7,7 +7,7 @@ import * as actions from './actions';
 import { ViewVisualizationSidebar, ViewVisualizationMain } from '../../components';
 import InitialTable from '../InitialTableContainer/InitialTableContainer';
 
-import { getVisualizationComponent, getVisualizationIcon, getVisualization } from './helper';
+import { getVisualizationComponent, getVisualizationIcon, getVisualizationSettings, getVisualization } from './helper';
 
 import './ViewVisualizationContainer.css';
 
@@ -28,6 +28,13 @@ const ViewVisualizationContainer = (props) => {
     updateVisualizationConfig
   );
   const visualizationIcon = getVisualizationIcon(currentVisualization.type);
+
+  const visualizationSettings = getVisualizationSettings(
+    currentVisualization.type,
+    currentVisualization.config,
+    updateVisualizationConfig
+  );
+
   const contentViewComponent = currentView === 'table' ? <InitialTable /> : visualizationComponent;
 
   const onSwitchContentView = (viewType) => setCurrentView(viewType);
@@ -35,7 +42,7 @@ const ViewVisualizationContainer = (props) => {
 
   return (
     <Grid container className="view-visualization-container">
-      {isSideBarOpen && <ViewVisualizationSidebar />}
+      {isSideBarOpen && <ViewVisualizationSidebar component={visualizationSettings} />}
       <ViewVisualizationMain
         contentViewComponent={contentViewComponent}
         currentContentView={currentView}
@@ -50,7 +57,7 @@ const ViewVisualizationContainer = (props) => {
 const mapStateToProps = (state) => {
   return {
     currentVisualization: state.currentVisualization,
-    visualizations: state.visualizations,
+    visualizations: state.visualizations.visualizations,
   };
 };
 

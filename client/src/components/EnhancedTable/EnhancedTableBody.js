@@ -6,10 +6,10 @@ import TableCell from '@material-ui/core/TableCell';
 import TableRow from '@material-ui/core/TableRow';
 
 const EnhancedTableBody = (props) => {
-  const { rows, sortOrder, sortOrderBy, stableSort, getComparator } = props;
+  const { rows } = props;
   return (
     <TableBody>
-      {stableSort(rows, getComparator(sortOrder, sortOrderBy)).map((row) => {
+      {rows.map((row) => {
         return (
           <TableRow>
             {Object.keys(row).map((key) => {
@@ -24,10 +24,6 @@ const EnhancedTableBody = (props) => {
 
 EnhancedTableBody.propTypes = {
   rows: PropTypes.array,
-  sortOrder: PropTypes.string,
-  sortOrderBy: PropTypes.string,
-  stableSort: PropTypes.func,
-  getComparator: PropTypes.func,
 };
 
 export default EnhancedTableBody;

@@ -8,6 +8,8 @@ import BarChart from '../BarChartContainer/BarChartContainer';
 import LineChart from '../LineChartContainer/LineChartContainer';
 import TableVisualization from '../TableVisualizationContainer/TableVisualizationContainer';
 
+import { BarChartSettings, TableSettingsSidebar } from '../../components';
+
 export const getVisualizationComponent = (visualizationType, config, updateConfig) => {
   switch (visualizationType) {
     case 'BAR_CHART':
@@ -29,6 +31,19 @@ export const getVisualizationIcon = (visualizationType) => {
       return <TimelineOutlinedIcon />;
     case 'TABLE':
       return <TableChartOutlinedIcon />;
+    default:
+      return null;
+  }
+};
+
+export const getVisualizationSettings = (visualizationType, config, updateConfig) => {
+  switch (visualizationType) {
+    case 'BAR_CHART':
+      return <BarChartSettings config={config} updateConfig={updateConfig} />;
+    case 'LINE_CHART':
+      return 'settings';
+    case 'TABLE':
+      return <TableSettingsSidebar config={config} updateConfig={updateConfig} />;
     default:
       return null;
   }

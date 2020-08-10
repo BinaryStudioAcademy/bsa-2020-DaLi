@@ -1,7 +1,5 @@
 .view-visualization-sidebar {
   display: flex;
-  justify-content: center;
-  align-items: center;
   width: 400px;
   padding: 20px;
   box-sizing: border-box;

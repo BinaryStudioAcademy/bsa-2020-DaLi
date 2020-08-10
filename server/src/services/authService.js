@@ -11,9 +11,10 @@ export const login = async (user) => {
     // if (bcrypt.compareSync(user.password, candidate.password)) {
     // not hashed password
     if (candidate.password === user.password) {
+      const { id, email, firstName, lastName } = candidate;
       const token = jwt.sign(
         {
-          id: candidate.id,
+          id,
         },
         jwtConfig.secretKey,
         { expiresIn: jwtConfig.expiresIn }
@@ -23,6 +24,7 @@ export const login = async (user) => {
         response: {
           success: true,
           token,
+          user: { email, firstName, lastName },
         },
       };
     }

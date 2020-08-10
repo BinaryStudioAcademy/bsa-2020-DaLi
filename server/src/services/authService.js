@@ -82,13 +82,14 @@ export const getUserByToken = async (token) => {
       },
     };
   }
+
   const { firstName, lastName, email } = candidate;
   return {
     status: 200,
     response: {
-      firstName,
-      lastName,
-      email,
+      success: true,
+      token: token.replace('Bearer ', ''),
+      user: { email, firstName, lastName },
     },
   };
 };

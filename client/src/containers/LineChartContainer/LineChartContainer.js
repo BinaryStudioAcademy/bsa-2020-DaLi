@@ -38,6 +38,7 @@ class LineChartContainer extends Component {
             value: 100,
             label: 'Goal',
           },
+          color: '#4aa1de',
           lineType: lineType.natural,
           showTrendLine: true,
           showDataPointsValues: true,

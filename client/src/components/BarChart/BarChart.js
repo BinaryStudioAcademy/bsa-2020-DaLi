@@ -11,7 +11,7 @@ import './BarChart.css';
 function BarChart(props) {
   useEffect(() => {
     const { margin, width, height } = props.settings.chart;
-    const { goal, showTrendLine, showDataPointsValues } = props.settings.display;
+    const { goal, showTrendLine, showDataPointsValues, color } = props.settings.display;
     const XAxis = props.settings.axisData.XAxis;
     const YAxis = props.settings.axisData.YAxis;
     const chart = d3.select('svg');
@@ -64,7 +64,7 @@ function BarChart(props) {
       .data(data)
       .join('rect')
       .attr('class', 'bar')
-      .attr('fill', '#4AA1DE')
+      .attr('fill', color)
       .attr('x', (d) => xScale(d[XAxis.key]))
       .attr('y', (d) => yScale(d[YAxis.key]))
       .attr('height', (d) => yScale(yDataRange.min) - yScale(d[YAxis.key]))

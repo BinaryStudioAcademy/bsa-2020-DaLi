@@ -12,7 +12,7 @@ import './LineChart.css';
 function LineChart(props) {
   useEffect(() => {
     const { margin, width, height } = props.settings.chart;
-    const { goal, showTrendLine, showDataPointsValues, lineType } = props.settings.display;
+    const { goal, showTrendLine, showDataPointsValues, lineType, color } = props.settings.display;
     const XAxis = props.settings.axisData.XAxis;
     const YAxis = props.settings.axisData.YAxis;
     const chart = d3.select('svg');
@@ -20,11 +20,11 @@ function LineChart(props) {
     const yDataRange = {
       min: calcMinYDataValue(
         d3.min(data, (d) => d[YAxis.key]),
-        goal,
+        goal
       ),
       max: calcMaxYDataValue(
         d3.max(data, (d) => d[YAxis.key]),
-        goal,
+        goal
       ),
     };
 
@@ -45,7 +45,7 @@ function LineChart(props) {
         (d) => `
       <div><span>${XAxis.label}:</span> <span style='color:white'>${d[XAxis.key]}</span></div>
       <div><span>${YAxis.label}:</span> <span style='color:white'>${d[YAxis.key]}</span></div>
-    `,
+    `
       );
     chart.call(tip).attr('viewBox', [0, 0, width, height]);
 
@@ -55,7 +55,7 @@ function LineChart(props) {
       .y((d) => yScale(d[YAxis.key]))
       .curve(d3[lineType]);
 
-    chart.append('path').datum(data).attr('class', 'line').attr('d', line);
+    chart.append('path').datum(data).attr('class', 'line').attr('d', line).style('stroke', color);
 
     chart
       .selectAll('.dot')
@@ -66,6 +66,7 @@ function LineChart(props) {
       .attr('cx', (d) => xScale(d[XAxis.key]) + xScale.bandwidth() / 2)
       .attr('cy', (d) => yScale(d[YAxis.key]))
       .attr('r', 5)
+      .style('stroke', color)
       .on('mouseover', tip.show)
       .on('mouseout', tip.hide);
 

@@ -1,8 +1,6 @@
 div#container {
   width: 1000px;
   height: 600px;
-  padding: 80px;
-  position: absolute;
 }
 
 .label {

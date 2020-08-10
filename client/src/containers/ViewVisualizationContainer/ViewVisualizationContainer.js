@@ -1,20 +1,40 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 
 import Grid from '@material-ui/core/Grid';
+import * as actions from './actions';
 import { ViewVisualizationSidebar, ViewVisualizationMain } from '../../components';
 import InitialTable from '../InitialTableContainer/InitialTableContainer';
 
-import { getVisualizationComponent, getVisualizationIcon } from './helper';
+import { getVisualizationComponent, getVisualizationIcon, getVisualizationSettings, getVisualization } from './helper';
 
 import './ViewVisualizationContainer.css';
 
-const ViewVisualizationContainer = ({ visualizationType }) => {
+const ViewVisualizationContainer = (props) => {
+  const { id, visualizations, currentVisualization, setVisualization, updateVisualizationConfig } = props;
+
+  useEffect(() => {
+    const visualization = getVisualization(visualizations, id);
+    setVisualization(visualization);
+  }, []);
+
   const [currentView, setCurrentView] = useState('table');
   const [isSideBarOpen, setIsSideBarOpen] = useState(false);
 
-  const visualizationComponent = getVisualizationComponent(visualizationType);
-  const visualizationIcon = getVisualizationIcon(visualizationType);
+  const visualizationComponent = getVisualizationComponent(
+    currentVisualization.type,
+    currentVisualization.config,
+    updateVisualizationConfig
+  );
+  const visualizationIcon = getVisualizationIcon(currentVisualization.type);
+
+  const visualizationSettings = getVisualizationSettings(
+    currentVisualization.type,
+    currentVisualization.config,
+    updateVisualizationConfig
+  );
+
   const contentViewComponent = currentView === 'table' ? <InitialTable /> : visualizationComponent;
 
   const onSwitchContentView = (viewType) => setCurrentView(viewType);
@@ -22,7 +42,7 @@ const ViewVisualizationContainer = ({ visualizationType }) => {
 
   return (
     <Grid container className="view-visualization-container">
-      {isSideBarOpen && <ViewVisualizationSidebar />}
+      {isSideBarOpen && <ViewVisualizationSidebar component={visualizationSettings} />}
       <ViewVisualizationMain
         contentViewComponent={contentViewComponent}
         currentContentView={currentView}
@@ -34,8 +54,23 @@ const ViewVisualizationContainer = ({ visualizationType }) => {
   );
 };
 
-ViewVisualizationContainer.propTypes = {
-  visualizationType: PropTypes.string,
+const mapStateToProps = (state) => {
+  return {
+    currentVisualization: state.currentVisualization,
+    visualizations: state.visualizations.visualizations,
+  };
 };
 
-export default ViewVisualizationContainer;
+const mapDispatchToProps = {
+  ...actions,
+};
+
+ViewVisualizationContainer.propTypes = {
+  id: PropTypes.string,
+  visualizations: PropTypes.array,
+  currentVisualization: PropTypes.object,
+  setVisualization: PropTypes.func,
+  updateVisualizationConfig: PropTypes.func,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(ViewVisualizationContainer);

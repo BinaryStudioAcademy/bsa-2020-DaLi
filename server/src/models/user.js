@@ -1,11 +1,19 @@
-const User = (sequelize, DataTypes) => {
-  const user = sequelize.define(
-    'user',
+import { Model } from 'sequelize';
+
+export default (sequelize, DataTypes) => {
+  class User extends Model {
+    static associate(models) {
+      User.hasMany(models.Visualization);
+    }
+  }
+  User.init(
     {
       id: {
-        type: DataTypes.INTEGER,
-        autoIncrement: true,
+        type: DataTypes.UUID,
+        allowNull: false,
+        autoIncrement: false,
         primaryKey: true,
+        defaultValue: DataTypes.UUIDV4,
       },
       firstName: {
         type: DataTypes.STRING,
@@ -28,10 +36,11 @@ const User = (sequelize, DataTypes) => {
       createdAt: DataTypes.DATE,
       updatedAt: DataTypes.DATE,
     },
-    {}
+    {
+      sequelize,
+      modelName: 'User',
+    }
   );
 
-  return user;
+  return User;
 };
-
-export default User;

@@ -6,21 +6,37 @@ import './App.css';
 import { login } from './containers/LoginPageContainer/actions';
 import { getToken } from './helpers/jwtToken';
 import routes from './routes/routes';
+import { Header } from './components';
 
-function App({ login }) {
+function App({ isAuthorized, isLoading, login }) {
   const token = getToken();
   useEffect(() => {
     if (token) {
       login();
     }
   }, [login, token]);
-  return <Router>{routes}</Router>;
+
+  return !isLoading ? (
+    'Loading'
+  ) : (
+    <Router>
+      {isAuthorized ? <Header /> : null}
+      {routes}
+    </Router>
+  );
 }
 
 App.propTypes = {
   login: PropTypes.func,
+  isAuthorized: PropTypes.bool,
+  isLoading: PropTypes.bool,
 };
 
 const mapDispatchToProps = { login };
 
-export default connect(null, mapDispatchToProps)(App);
+const mapStateToProps = ({ currentUser }) => ({
+  isAuthorized: currentUser.isAuthorized,
+  isLoading: currentUser.isLoading,
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);

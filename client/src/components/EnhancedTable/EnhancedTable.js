@@ -7,25 +7,21 @@ import TableContainer from '@material-ui/core/TableContainer';
 import EnhancedTableHead from './EnhancedTableHead';
 import EnhancedTableBody from './EnhancedTableBody';
 
+import './EnhancedTable.css';
+
 const EnhancedTable = (props) => {
-  const { columns, rows, sortOrder, sortOrderBy, handleRequestSort, stableSort, getComparator } = props;
+  const { columns, rows, sortOrder, sortOrderBy, handleRequestSort } = props;
 
   return (
-    <TableContainer>
-      <Table aria-labelledby="tableTitle" size="medium" aria-label="enhanced table">
+    <TableContainer className="enhanced-table">
+      <Table>
         <EnhancedTableHead
           columns={columns}
           sortOrder={sortOrder}
           sortOrderBy={sortOrderBy}
           onRequestSort={handleRequestSort}
         />
-        <EnhancedTableBody
-          rows={rows}
-          sortOrder={sortOrder}
-          sortOrderBy={sortOrderBy}
-          stableSort={stableSort}
-          getComparator={getComparator}
-        />
+        <EnhancedTableBody rows={rows} />
       </Table>
     </TableContainer>
   );
@@ -37,8 +33,6 @@ EnhancedTable.propTypes = {
   sortOrder: PropTypes.string,
   sortOrderBy: PropTypes.string,
   handleRequestSort: PropTypes.func,
-  stableSort: PropTypes.func,
-  getComparator: PropTypes.func,
 };
 
 export default EnhancedTable;

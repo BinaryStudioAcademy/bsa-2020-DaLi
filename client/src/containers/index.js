@@ -7,6 +7,7 @@ import ViewVisualizationContainer from './ViewVisualizationContainer/ViewVisuali
 import InitialTableContainer from './InitialTableContainer/InitialTableContainer';
 import ProtectedRoute from './ProtectedRoute/ProtectedRoute';
 import PublicRoute from './PublicRoute/PublicRoute';
+import VisualizationsListContainer from './VisualizationsListContainer/VisualizationsListContainer';
 
 export {
   LoginPageContainer,
@@ -18,4 +19,5 @@ export {
   InitialTableContainer,
   ProtectedRoute,
   PublicRoute,
+  VisualizationsListContainer,
 };

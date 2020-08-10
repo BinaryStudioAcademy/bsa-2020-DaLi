@@ -5,6 +5,7 @@ import LineChartContainer from './LineChartContainer/LineChartContainer';
 import TableVisualizationContainer from './TableVisualizationContainer/TableVisualizationContainer';
 import ViewVisualizationContainer from './ViewVisualizationContainer/ViewVisualizationContainer';
 import InitialTableContainer from './InitialTableContainer/InitialTableContainer';
+import VisualizationsListContainer from './VisualizationsListContainer/VisualizationsListContainer';
 
 export {
   LoginPageContainer,
@@ -14,4 +15,5 @@ export {
   TableVisualizationContainer,
   ViewVisualizationContainer,
   InitialTableContainer,
+  VisualizationsListContainer,
 };

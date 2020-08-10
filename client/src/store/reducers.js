@@ -1,6 +1,8 @@
 import { combineReducers } from 'redux';
-import loginReducer from '../containers/LoginPageContainer/reducer';
+import loginreducer from '../containers/LoginPageContainer/reducer';
+import visualizationsListReducer from '../containers/VisualizationsListContainer/reducer';
 
 export default combineReducers({
-  currentUser: loginReducer,
+  currentUser: loginreducer,
+  visualizations: visualizationsListReducer,
 });

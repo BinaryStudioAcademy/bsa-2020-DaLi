@@ -36,8 +36,8 @@ VisualizationsListContainer.propTypes = {
 
 const mapStateToProps = (state) => {
   return {
-    visualizations: state.visualizationsListReducer.visualizations,
-    isLoading: state.visualizationsListReducer.isLoading,
+    visualizations: state.visualizations.visualizations,
+    isLoading: state.visualizations.isLoading,
   };
 };
 

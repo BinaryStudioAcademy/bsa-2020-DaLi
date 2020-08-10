@@ -8,6 +8,8 @@ import LineChart from './LineChart/LineChart';
 import EnhancedTable from './EnhancedTable/EnhancedTable';
 import InitialTable from './InitialTable/InitialTable';
 import SelectVisualization from './SelectVisualization/SelectVisualization';
+import ViewVisualizationSidebar from './ViewVisualizationSidebar';
+import ViewVisualizationMain from './ ViewVisualizationMain';
 
 export {
   BarChart,
@@ -20,4 +22,6 @@ export {
   EnhancedTable,
   InitialTable,
   SelectVisualization,
+  ViewVisualizationSidebar,
+  ViewVisualizationMain,
 };

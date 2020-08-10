@@ -1,25 +1,23 @@
 import React from 'react';
 import { Route, Redirect } from 'react-router-dom';
 import PropTypes from 'prop-types';
-
-// mock isAuthenticated value
-const isAuthenticated = true;
+import { connect } from 'react-redux';
 
 // sample use case
 // <ProtectedRoute exact path="/path" component={Component} />
 
-const ProtectedRoute = ({ component: Component, ...rest }) => {
+const ProtectedRoute = ({ isAuthorized, component: Component, ...rest }) => {
   return (
     <Route
       {...rest}
       render={(props) => {
-        if (isAuthenticated) {
+        if (isAuthorized) {
           return <Component {...props} />;
         }
         return (
           <Redirect
             to={{
-              pathname: '/',
+              pathname: '/login',
               state: {
                 from: props.location,
               },
@@ -32,8 +30,13 @@ const ProtectedRoute = ({ component: Component, ...rest }) => {
 };
 
 ProtectedRoute.propTypes = {
-  location: PropTypes.string.isRequired,
+  isAuthorized: PropTypes.bool,
+  location: PropTypes.any,
   component: PropTypes.elementType,
 };
 
-export default ProtectedRoute;
+const mapStateToProps = ({ currentUser }) => ({
+  isAuthorized: currentUser.isAuthorized,
+});
+
+export default connect(mapStateToProps)(ProtectedRoute);

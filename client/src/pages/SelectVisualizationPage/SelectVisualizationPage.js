@@ -1,8 +1,14 @@
 import React from 'react';
 import SelectVisualization from '../../components/SelectVisualization/SelectVisualization';
+import { Header } from '../../components';
 
 const SelectVisualizationPage = () => {
-  return <SelectVisualization />;
+  return (
+    <>
+      <Header />
+      <SelectVisualization />
+    </>
+  );
 };
 
 export default SelectVisualizationPage;

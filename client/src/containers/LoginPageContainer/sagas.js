@@ -1,6 +1,6 @@
 import { put, call, takeEvery, all } from 'redux-saga/effects';
 import { authAPIService } from '../../services/api/AuthAPI.service';
-import { getToken, setToken } from '../../helpers/jwtToken';
+import { getToken, setToken, removeToken } from '../../helpers/jwtToken';
 import {
   LOGIN_USER_SUCCESS,
   LOGIN_USER_ERROR,
@@ -33,6 +33,7 @@ export function* watchLoginSaga() {
 export function* logoutSaga() {
   try {
     yield put({ type: LOGOUT_USER_SUCCESS });
+    removeToken();
   } catch (error) {
     yield put({ type: LOGOUT_USER_ERROR, error });
   }

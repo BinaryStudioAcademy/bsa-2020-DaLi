@@ -1,35 +1,42 @@
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { BrowserRouter as Router, Route } from 'react-router-dom';
+import { BrowserRouter as Router } from 'react-router-dom';
 import './App.css';
-import { Header } from './components';
 import { login } from './containers/LoginPageContainer/actions';
 import { getToken } from './helpers/jwtToken';
-import { LoginPage, SelectVisualizationPage, VisualizationsPage, ViewVisualizationPage } from './pages';
+import routes from './routes/routes';
+import { Header } from './components';
 
-function App({ login }) {
+function App({ isAuthorized, isLoading, login }) {
   const token = getToken();
   useEffect(() => {
     if (token) {
       login();
     }
   }, [login, token]);
-  return (
+
+  return isLoading ? (
+    'Loading'
+  ) : (
     <Router>
-      <Route exact path="/" component={Header} />
-      <Route exact path="/login" component={LoginPage} />
-      <Route exact path="/select-visualization" component={SelectVisualizationPage} />
-      <Route exact path="/visualizations" component={VisualizationsPage} />
-      <Route path="/visualization/:id" component={ViewVisualizationPage} />
+      {isAuthorized ? <Header /> : null}
+      {routes}
     </Router>
   );
 }
 
 App.propTypes = {
   login: PropTypes.func,
+  isAuthorized: PropTypes.bool,
+  isLoading: PropTypes.bool,
 };
 
 const mapDispatchToProps = { login };
 
-export default connect(null, mapDispatchToProps)(App);
+const mapStateToProps = ({ currentUser }) => ({
+  isAuthorized: currentUser.isAuthorized,
+  isLoading: currentUser.isLoading,
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);

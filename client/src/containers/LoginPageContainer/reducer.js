@@ -4,7 +4,6 @@ const initialState = {
   user: '',
   error: '',
   isAuthorized: false,
-  isLoading: false,
   token: '',
 };
 
@@ -16,7 +15,7 @@ const loginReducer = (state = initialState, { type, payload }) => {
         user: payload.user,
         error: '',
         isAuthorized: Boolean(payload.user),
-        isLoading: true,
+        isLoading: false,
         token: payload.token,
       };
     }
@@ -26,7 +25,7 @@ const loginReducer = (state = initialState, { type, payload }) => {
         user: null,
         error: '',
         isAuthorized: false,
-        isLoading: true,
+        isLoading: false,
         token: '',
       };
     }

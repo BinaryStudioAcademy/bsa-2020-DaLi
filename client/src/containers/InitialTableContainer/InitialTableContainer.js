@@ -20,11 +20,7 @@ class InitialTableContainer extends Component {
 
   render() {
     const { data } = this.state;
-    return (
-      <div>
-        <InitialTable data={data} />
-      </div>
-    );
+    return <InitialTable data={data} />;
   }
 }
 

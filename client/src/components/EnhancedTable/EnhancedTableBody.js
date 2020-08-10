@@ -18,9 +18,6 @@ const EnhancedTableBody = (props) => {
           </TableRow>
         );
       })}
-      <TableRow>
-        <TableCell />
-      </TableRow>
     </TableBody>
   );
 };

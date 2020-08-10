@@ -11,6 +11,7 @@ import SelectVisualization from './SelectVisualization/SelectVisualization';
 import ViewVisualizationSidebar from './ViewVisualizationSidebar';
 import ViewVisualizationMain from './ ViewVisualizationMain';
 import TableSettingsSidebar from './TableSettingsSidebar/TableSettingsSidebar';
+import BarChartSettings from './BarChartSettings';
 
 export {
   BarChart,
@@ -26,4 +27,5 @@ export {
   ViewVisualizationSidebar,
   ViewVisualizationMain,
   TableSettingsSidebar,
+  BarChartSettings,
 };

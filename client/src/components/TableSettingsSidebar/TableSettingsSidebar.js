@@ -22,7 +22,7 @@ const testConfig = {
   },
 };
 
-const TableSettingsSidebar = ({ config }) => {
+const TableSettingsSidebar = ({ config, updateConfig }) => {
   config = config || testConfig;
 
   const [tableConfig, setTableConfig] = useState(config);
@@ -64,7 +64,9 @@ const TableSettingsSidebar = ({ config }) => {
     updateColumnConfig(result);
   };
 
-  const saveConfig = () => {};
+  const saveConfig = () => {
+    updateConfig(tableConfig);
+  };
 
   const getListStyle = (isDraggingOver) => ({
     paddingBottom: isDraggingOver ? '50px' : '0px',
@@ -107,6 +109,7 @@ const TableSettingsSidebar = ({ config }) => {
 
 TableSettingsSidebar.propTypes = {
   config: PropTypes.object,
+  updateConfig: PropTypes.func,
 };
 
 export default TableSettingsSidebar;

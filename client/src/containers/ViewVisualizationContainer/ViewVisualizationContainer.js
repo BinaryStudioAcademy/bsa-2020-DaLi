@@ -11,6 +11,7 @@ import * as actions from './actions';
 import { visualizationsAPIService } from '../../services/api/visualizationsAPI.service';
 
 import { getVisualizationComponent, getVisualizationIcon, getVisualizationSettings, getVisualization } from './helper';
+import mockData from './mockData';
 
 import './ViewVisualizationContainer.css';
 
@@ -28,7 +29,8 @@ const ViewVisualizationContainer = (props) => {
   const visualizationComponent = getVisualizationComponent(
     currentVisualization.type,
     currentVisualization.config,
-    updateVisualizationConfig
+    updateVisualizationConfig,
+    mockData
   );
   const visualizationIcon = getVisualizationIcon(currentVisualization.type);
 
@@ -38,7 +40,7 @@ const ViewVisualizationContainer = (props) => {
     updateVisualizationConfig
   );
 
-  const contentViewComponent = currentView === 'table' ? <InitialTable /> : visualizationComponent;
+  const contentViewComponent = currentView === 'table' ? <InitialTable data={mockData} /> : visualizationComponent;
 
   const onSwitchContentView = (viewType) => setCurrentView(viewType);
   const onToggleSideBar = () => setIsSideBarOpen(!isSideBarOpen);

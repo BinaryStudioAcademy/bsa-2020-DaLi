@@ -9,14 +9,26 @@ import { findLineByLeastSquares } from '../../utils/trendline';
 
 import './LineChart.css';
 
+import {orders} from '../../mock_orders'
+import { useRef } from 'react';
+
 function LineChart(props) {
+  const svgRef = useRef()
   useEffect(() => {
-    const { margin, width, height } = props.settings.chart;
+    const margin = {
+      top: 40,
+      right: 40,
+      bottom: 60,
+      left: 60,
+    };
+    const height = 600;
+    const width = 1000;
     const { goal, showTrendLine, showDataPointsValues, lineType, color } = props.settings.display;
     const XAxis = props.settings.axisData.XAxis;
     const YAxis = props.settings.axisData.YAxis;
-    const chart = d3.select('svg');
-    const { data } = props;
+    const chart = d3.select(svgRef.current);
+    // const { data } = props;
+    const  data  = orders;
     const yDataRange = {
       min: calcMinYDataValue(
         d3.min(data, (d) => d[YAxis.key]),
@@ -142,7 +154,7 @@ function LineChart(props) {
 
   return (
     <div id="container">
-      <svg />
+      <svg ref={svgRef} />
     </div>
   );
 }

@@ -34,7 +34,7 @@ const initialState = {
             label: 'Goal',
           },
           color: '#4aa1de',
-
+          lineType: 'curveNatural',
           showTrendLine: true,
           showDataPointsValues: true,
         },

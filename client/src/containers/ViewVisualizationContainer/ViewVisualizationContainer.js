@@ -8,9 +8,18 @@ import { ViewVisualizationSidebar, ViewVisualizationMain } from '../../component
 import InitialTable from '../InitialTableContainer/InitialTableContainer';
 
 import * as actions from './actions';
-import { visualizationsAPIService } from '../../services/api/visualizationsAPI.service';
 
-import { getVisualizationComponent, getVisualizationIcon, getVisualizationSettings, getVisualization } from './helper';
+/* import { visualizationsAPIService } from '../../services/api/visualizationsAPI.service'; */
+
+import {
+  getVisualizationComponent,
+  getVisualizationIcon,
+  getVisualizationSettings,
+  getVisualization,
+  checkIsVisualizationNew,
+  createNewVisualization,
+} from './helper';
+
 import mockData from './mockData';
 
 import './ViewVisualizationContainer.css';
@@ -19,9 +28,12 @@ const ViewVisualizationContainer = (props) => {
   const { id, visualizations, currentVisualization, setVisualization, updateVisualizationConfig } = props;
 
   useEffect(() => {
-    const visualization = getVisualization(visualizations, id);
+    const isNewVisualization = checkIsVisualizationNew(id);
+    const visualization = isNewVisualization
+      ? createNewVisualization(id, mockData[0])
+      : getVisualization(visualizations, id);
     setVisualization(visualization);
-  }, []);
+  }, [id]);
 
   const [currentView, setCurrentView] = useState('table');
   const [isSideBarOpen, setIsSideBarOpen] = useState(false);
@@ -44,8 +56,11 @@ const ViewVisualizationContainer = (props) => {
 
   const onSwitchContentView = (viewType) => setCurrentView(viewType);
   const onToggleSideBar = () => setIsSideBarOpen(!isSideBarOpen);
-  const onVisualizationSave = () =>
-    visualizationsAPIService.patchData(`/api/visualizations/${id}`, currentVisualization);
+  const onVisualizationSave = () => {
+    /* visualizationsAPIService.patchData(`/api/visualizations/${id}`, currentVisualization); */
+    // eslint-disable-next-line no-console
+    console.log(currentVisualization);
+  };
 
   return (
     <>

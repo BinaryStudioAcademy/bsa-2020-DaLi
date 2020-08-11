@@ -1,3 +1,6 @@
+/* eslint-disable react/prop-types */
+/* eslint-disable react/destructuring-assignment */
+/* eslint-disable no-unused-vars */
 import React, { Component } from 'react';
 import { InitialTable } from '../../components/index';
 
@@ -20,11 +23,7 @@ class InitialTableContainer extends Component {
 
   render() {
     const { data } = this.state;
-    return (
-      <div>
-        <InitialTable data={data} />
-      </div>
-    );
+    return <InitialTable data={this.props.data} />;
   }
 }
 

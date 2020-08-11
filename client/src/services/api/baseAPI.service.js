@@ -1,4 +1,5 @@
 import * as axios from 'axios';
+import { getToken } from '../../helpers/jwtToken';
 
 const baseRequest = async (request) => {
   try {
@@ -11,49 +12,74 @@ const baseRequest = async (request) => {
 class baseAPIService {
   constructor(baseURL) {
     this.baseURL = baseURL;
+    this.accessToken = getToken() || '';
   }
 
-  getData(endpoint, params) {
-    return baseRequest({
-      method: 'get',
+  getData = async (endpoint, params) => {
+    const response = await baseRequest({
+      method: 'GET',
       url: `${this.baseURL}${endpoint}`,
+      headers: { Authorization: `Bearer ${this.accessToken}` },
       params,
     });
-  }
 
-  // endpoint example = 'users/12'
-  getDataById(endpoint, params) {
-    return baseRequest({
+    return response;
+  };
+
+  getDataById = async (endpoint, params) => {
+    const response = await baseRequest({
       method: 'get',
       url: `${this.baseURL}${endpoint}`,
+      headers: { Authorization: `Bearer ${this.accessToken}` },
       params,
     });
-  }
 
-  postData(endpoint, data) {
-    return baseRequest({
+    return response;
+  };
+
+  postData = async (endpoint, data) => {
+    const response = await baseRequest({
       method: 'post',
       url: `${this.baseURL}${endpoint}`,
+      headers: { Authorization: `Bearer ${this.accessToken}` },
       data,
     });
-  }
 
-  putData(endpoint, data) {
-    return baseRequest({
+    return response;
+  };
+
+  putData = async (endpoint, data) => {
+    const response = await baseRequest({
       method: 'put',
       url: `${this.baseURL}${endpoint}`,
+      headers: { Authorization: `Bearer ${this.accessToken}` },
       data,
     });
-  }
 
-  // endpoint example = 'users/12'
-  deleteData(endpoint, params) {
-    return baseRequest({
-      method: 'delete',
+    return response;
+  };
+
+  patchData = async (endpoint, data) => {
+    const response = await baseRequest({
+      method: 'patch',
       url: `${this.baseURL}${endpoint}`,
+      headers: { Authorization: `Bearer ${this.accessToken}` },
+      data,
+    });
+
+    return response;
+  };
+
+  deleteData = async (endpoint, params) => {
+    const response = await baseRequest({
+      method: 'delete',
+      url: `${this.baseURL}/${endpoint}`,
+      headers: { Authorization: `Bearer ${this.accessToken}` },
       params,
     });
-  }
+
+    return response;
+  };
 }
 
 export default baseAPIService;

@@ -1,0 +1,8 @@
+.view-visualization-sidebar {
+  display: flex;
+  width: 400px;
+  padding: 20px;
+  box-sizing: border-box;
+
+  border-right: 2px solid #f4f4f4;
+}

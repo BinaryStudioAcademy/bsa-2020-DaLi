@@ -1,21 +1,39 @@
-import * as types from './actionTypes';
+import { LOGIN_USER_SUCCESS, LOGIN_USER_ERROR, LOGOUT_USER_SUCCESS, LOGOUT_USER_ERROR } from './actionTypes';
 
-const loginReducer = (state = {}, action) => {
-  switch (action.type) {
-    case types.LOGIN_USER: {
-      return { ...state };
-    }
-    case types.LOGIN_USER_SUCCESS: {
+const initialState = {
+  user: '',
+  error: '',
+  isAuthorized: false,
+  token: '',
+};
+
+const loginReducer = (state = initialState, { type, payload }) => {
+  switch (type) {
+    case LOGIN_USER_SUCCESS: {
       return {
         ...state,
-        user: action.user,
-        isAuthorized: Boolean(action.user?.id),
+        user: payload.user,
+        error: '',
+        isAuthorized: Boolean(payload.user),
         isLoading: false,
+        token: payload.token,
       };
     }
-    case types.LOGIN_USER_ERROR:
+    case LOGOUT_USER_SUCCESS: {
       return {
         ...state,
+        user: null,
+        error: '',
+        isAuthorized: false,
+        isLoading: false,
+        token: '',
+      };
+    }
+    case LOGIN_USER_ERROR:
+    case LOGOUT_USER_ERROR:
+      return {
+        ...state,
+        error: payload.message,
         isLoading: false,
       };
     default:

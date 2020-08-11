@@ -1,20 +1,48 @@
 import { put, call, takeEvery, all } from 'redux-saga/effects';
-import { loginService } from '../../services/loginService';
-import * as types from './actionTypes';
+import { authAPIService } from '../../services/api/AuthAPI.service';
+import { getToken, setToken, removeToken } from '../../helpers/jwtToken';
+import {
+  LOGIN_USER_SUCCESS,
+  LOGIN_USER_ERROR,
+  LOGOUT_USER,
+  LOGOUT_USER_SUCCESS,
+  LOGOUT_USER_ERROR,
+  LOGIN_USER,
+} from './actionTypes';
 
 export function* loginSaga(payload) {
   try {
-    const response = yield call(loginService, payload);
-    yield put({ type: types.LOGIN_USER_SUCCESS, response });
+    const token = getToken();
+    let response;
+    if (token) {
+      response = yield call(authAPIService.getCurrentUser);
+    } else {
+      response = yield call(authAPIService.loginUser, payload.request);
+      setToken(response.token);
+    }
+    yield put({ type: LOGIN_USER_SUCCESS, payload: response });
   } catch (error) {
-    yield put({ type: types.LOGIN_USER_ERROR, error });
+    yield put({ type: LOGIN_USER_ERROR, payload: error });
   }
 }
 
-function* watchLoginSaga() {
-  yield takeEvery(types.LOGIN_USER, loginSaga);
+export function* watchLoginSaga() {
+  yield takeEvery(LOGIN_USER, loginSaga);
 }
 
-export default function* loginSagas() {
-  yield all([watchLoginSaga()]);
+export function* logoutSaga() {
+  try {
+    yield put({ type: LOGOUT_USER_SUCCESS });
+    removeToken();
+  } catch (error) {
+    yield put({ type: LOGOUT_USER_ERROR, error });
+  }
+}
+
+export function* watchLogoutSaga() {
+  yield takeEvery(LOGOUT_USER, logoutSaga);
+}
+
+export default function* authSaga() {
+  yield all([watchLoginSaga(), watchLogoutSaga()]);
 }

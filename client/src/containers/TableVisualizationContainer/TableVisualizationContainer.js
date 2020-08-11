@@ -1,9 +1,12 @@
 import React, { useState } from 'react';
-import { EnhancedTable } from '../../components';
-import { mockData, initConfig, stableSort, getComparator } from './helpers';
+import PropTypes from 'prop-types';
 
-const TableVisualizationContainer = () => {
-  const { columns, sort } = initConfig;
+import { EnhancedTable } from '../../components';
+
+import { updateColumnsOrder, getRows } from './helper';
+
+const TableVisualizationContainer = ({ config, updateConfig, data }) => {
+  const { columns, sort } = config;
 
   const [sortOrder, setSortOrder] = useState(sort.order);
   const [sortOrderBy, setSortOrderBy] = useState(sort.orderBy);
@@ -12,18 +15,28 @@ const TableVisualizationContainer = () => {
     const isAsc = sortOrderBy === property && sortOrder === 'asc';
     setSortOrder(isAsc ? 'desc' : 'asc');
     setSortOrderBy(property);
+    const updatedConfig = { ...config, sort: { order: sortOrder, orderBy: sortOrderBy } };
+    updateConfig(updatedConfig);
   };
+
+  const updatedColumns = updateColumnsOrder(columns);
+  const rows = getRows(data, updatedColumns, sortOrder, sortOrderBy);
 
   return (
     <EnhancedTable
-      columns={columns}
-      rows={mockData}
+      columns={updatedColumns}
+      rows={rows}
       sortOrder={sortOrder}
       sortOrderBy={sortOrderBy}
       handleRequestSort={handleRequestSort}
-      stableSort={stableSort}
-      getComparator={getComparator}
     />
   );
 };
+
+TableVisualizationContainer.propTypes = {
+  config: PropTypes.object,
+  updateConfig: PropTypes.func,
+  data: PropTypes.object,
+};
+
 export default TableVisualizationContainer;

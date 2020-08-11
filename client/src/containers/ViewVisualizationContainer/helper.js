@@ -37,10 +37,10 @@ export const getVisualizationIcon = (visualizationType) => {
   }
 };
 
-export const getVisualizationSettings = (visualizationType, config, updateConfig) => {
+export const getVisualizationSettings = (visualizationType, config, updateConfig, data) => {
   switch (visualizationType) {
     case 'BAR_CHART':
-      return <BarChartSettings config={config} updateConfig={updateConfig} />;
+      return <BarChartSettings config={config} updateConfig={updateConfig} data={data} />;
     case 'LINE_CHART':
       return <LineChartSettings config={config} updateConfig={updateConfig} />;
     case 'TABLE':

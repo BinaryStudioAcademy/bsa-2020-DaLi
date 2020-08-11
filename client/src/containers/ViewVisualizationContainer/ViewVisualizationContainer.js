@@ -37,7 +37,8 @@ const ViewVisualizationContainer = (props) => {
   const visualizationSettings = getVisualizationSettings(
     currentVisualization.type,
     currentVisualization.config,
-    updateVisualizationConfig
+    updateVisualizationConfig,
+    mockData
   );
 
   const contentViewComponent = currentView === 'table' ? <InitialTable data={mockData} /> : visualizationComponent;

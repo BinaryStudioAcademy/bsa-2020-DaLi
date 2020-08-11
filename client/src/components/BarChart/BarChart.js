@@ -26,8 +26,8 @@ function BarChart(props) {
     const XAxis = props.settings.axisData.XAxis;
     const YAxis = props.settings.axisData.YAxis;
     const chart = d3.select(svgRef.current);
-    // const { data } = props;
-    const  data  = orders;
+    const { data } = props;
+    //const  data  = orders;
     const yDataRange = {
       min: calcMinYDataValue(
         d3.min(data, (d) => d[YAxis.key]),
@@ -143,6 +143,7 @@ function BarChart(props) {
     }
 
     if (goal.display) {
+      console.log(goal.value,'goal');
       const y = yScale(goal.value);
       chart.append('line').attr('id', 'goal').attr('x1', 0).attr('y1', y).attr('x2', width).attr('y2', y);
 

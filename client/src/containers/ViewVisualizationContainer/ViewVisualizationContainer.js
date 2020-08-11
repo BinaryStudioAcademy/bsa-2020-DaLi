@@ -1,24 +1,24 @@
+/* eslint-disable no-console */
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
 import { Grid, Button } from '@material-ui/core';
 import SaveIcon from '@material-ui/icons/Save';
+import * as actions from './actions';
+
 import { ViewVisualizationSidebar, ViewVisualizationMain } from '../../components';
 import InitialTable from '../InitialTableContainer/InitialTableContainer';
 
-import * as actions from './actions';
-
-/* import { visualizationsAPIService } from '../../services/api/visualizationsAPI.service'; */
-
 import {
-  getVisualizationComponent,
-  getVisualizationIcon,
-  getVisualizationSettings,
   getVisualization,
+  getVisualizationComponent,
+  getVisualizationSettings,
+  getVisualizationIcon,
   checkIsVisualizationNew,
+  createDataSample,
   createNewVisualization,
-} from './helper';
+} from './helpers';
 
 import mockData from './mockData';
 
@@ -27,16 +27,22 @@ import './ViewVisualizationContainer.css';
 const ViewVisualizationContainer = (props) => {
   const { id, visualizations, currentVisualization, setVisualization, updateVisualizationConfig } = props;
 
-  useEffect(() => {
-    const isNewVisualization = checkIsVisualizationNew(id);
-    const visualization = isNewVisualization
-      ? createNewVisualization(id, mockData[0])
-      : getVisualization(visualizations, id);
-    setVisualization(visualization);
-  }, [id]);
-
   const [currentView, setCurrentView] = useState('table');
   const [isSideBarOpen, setIsSideBarOpen] = useState(false);
+  const [isVisualizationExist, setIsVisualizationExist] = useState(true);
+
+  useEffect(() => {
+    let visualization;
+    const isNewVisualization = checkIsVisualizationNew(id);
+    if (isNewVisualization) {
+      setIsVisualizationExist(false);
+      const dataSample = createDataSample(mockData);
+      visualization = createNewVisualization(id, dataSample);
+    } else {
+      visualization = getVisualization(visualizations, id);
+    }
+    setVisualization(visualization);
+  }, []);
 
   const visualizationComponent = getVisualizationComponent(
     currentVisualization.type,
@@ -44,7 +50,6 @@ const ViewVisualizationContainer = (props) => {
     updateVisualizationConfig,
     mockData
   );
-  const visualizationIcon = getVisualizationIcon(currentVisualization.type);
 
   const visualizationSettings = getVisualizationSettings(
     currentVisualization.type,
@@ -52,14 +57,22 @@ const ViewVisualizationContainer = (props) => {
     updateVisualizationConfig
   );
 
+  const visualizationIcon = getVisualizationIcon(currentVisualization.type);
+
   const contentViewComponent = currentView === 'table' ? <InitialTable data={mockData} /> : visualizationComponent;
 
   const onSwitchContentView = (viewType) => setCurrentView(viewType);
+
   const onToggleSideBar = () => setIsSideBarOpen(!isSideBarOpen);
+
   const onVisualizationSave = () => {
-    /* visualizationsAPIService.patchData(`/api/visualizations/${id}`, currentVisualization); */
-    // eslint-disable-next-line no-console
-    console.log(currentVisualization);
+    if (isVisualizationExist) {
+      console.log(currentVisualization);
+      console.log('Visualization is updated');
+    } else {
+      console.log(currentVisualization);
+      console.log('Visualization is created');
+    }
   };
 
   return (

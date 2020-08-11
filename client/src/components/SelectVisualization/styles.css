@@ -12,6 +12,8 @@
     border: 2px solid gray;
     padding: 0 25px;
     border-radius: 5px;
+    text-decoration: none;
+    color: #000;
 }
 
 .visualization-container:hover {

@@ -13,7 +13,7 @@ const iconStyles = {
 
 const myVisualizations = [
   { id: 1, name: 'Line Chart', icon: <TimelineOutlinedIcon style={iconStyles} />, type: 'line-chart' },
-  { id: 2, name: 'Bar Chart', icon: <EqualizerOutlinedIcon style={iconStyles} />, type: 'bar_chart' },
+  { id: 2, name: 'Bar Chart', icon: <EqualizerOutlinedIcon style={iconStyles} />, type: 'bar-chart' },
   { id: 3, name: 'Table', icon: <TableChartOutlinedIcon style={iconStyles} />, type: 'table' },
 ];
 

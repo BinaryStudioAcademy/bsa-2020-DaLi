@@ -46,9 +46,9 @@ const ViewVisualizationContent = (props) => {
 };
 
 ViewVisualizationContent.propTypes = {
-  contentViewComponent: PropTypes.func,
+  contentViewComponent: PropTypes.object,
   currentContentView: PropTypes.string,
-  visualizationIcon: PropTypes.func,
+  visualizationIcon: PropTypes.object,
   onToggleSideBar: PropTypes.func,
   onSwitchContentView: PropTypes.func,
 };

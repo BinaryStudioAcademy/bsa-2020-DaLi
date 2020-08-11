@@ -8,7 +8,11 @@ import { findLineByLeastSquares } from '../../utils/trendline';
 import { calcMaxYDataValue, calcMinYDataValue } from '../../utils/calcCriticalYAxisValue';
 import './BarChart.css';
 
+import {orders} from '../../mock_orders'
+import { useRef } from 'react';
+
 function BarChart(props) {
+  const svgRef = useRef()
   useEffect(() => {
     const margin = {
       top: 40,
@@ -21,19 +25,20 @@ function BarChart(props) {
     const { goal, showTrendLine, showDataPointsValues, color } = props.settings.display;
     const XAxis = props.settings.axisData.XAxis;
     const YAxis = props.settings.axisData.YAxis;
-    const chart = d3.select('svg');
-    const { data } = props;
+    const chart = d3.select(svgRef.current);
+    // const { data } = props;
+    const  data  = orders;
     const yDataRange = {
       min: calcMinYDataValue(
         d3.min(data, (d) => d[YAxis.key]),
         goal
-      ),
-      max: calcMaxYDataValue(
+        ),
+        max: calcMaxYDataValue(
         d3.max(data, (d) => d[YAxis.key]),
         goal
-      ),
-    };
-
+        ),
+      };
+    
     const tip = d3Tip()
       .attr('class', 'd3-tip')
       .offset([-10, 0])
@@ -153,7 +158,7 @@ function BarChart(props) {
 
   return (
     <div id="container">
-      <svg />
+      <svg ref={svgRef} />
     </div>
   );
 }

@@ -14,7 +14,6 @@ const initialState = {
       name: 'First visualization',
       type: 'LINE_CHART',
       description: '',
-
       config: {
         axisData: {
           XAxis: {
@@ -27,16 +26,6 @@ const initialState = {
             label: 'Date',
             displayLabel: true,
           },
-        },
-        chart: {
-          margin: {
-            top: 40,
-            right: 40,
-            bottom: 60,
-            left: 60,
-          },
-          height: 600,
-          width: 1000,
         },
         display: {
           goal: {

@@ -14,7 +14,6 @@ const initialState = {
       name: 'First visualization',
       type: 'LINE_CHART',
       description: '',
-
       config: {
         axisData: {
           XAxis: {
@@ -28,16 +27,6 @@ const initialState = {
             displayLabel: true,
           },
         },
-        chart: {
-          margin: {
-            top: 40,
-            right: 40,
-            bottom: 60,
-            left: 60,
-          },
-          height: 600,
-          width: 1000,
-        },
         display: {
           goal: {
             display: true,
@@ -45,7 +34,7 @@ const initialState = {
             label: 'Goal',
           },
           color: '#4aa1de',
-
+          lineType: 'curveNatural',
           showTrendLine: true,
           showDataPointsValues: true,
         },
@@ -77,7 +66,7 @@ const initialState = {
             label: 'Goal',
           },
           color: '#4AA1DE',
-          showTrendLine: false,
+          showTrendLine: true,
           showDataPointsValues: true,
         },
       },

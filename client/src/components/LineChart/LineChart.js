@@ -11,7 +11,14 @@ import './LineChart.css';
 
 function LineChart(props) {
   useEffect(() => {
-    const { margin, width, height } = props.settings.chart;
+    const margin = {
+      top: 40,
+      right: 40,
+      bottom: 60,
+      left: 60,
+    };
+    const height = 600;
+    const width = 1000;
     const { goal, showTrendLine, showDataPointsValues, lineType, color } = props.settings.display;
     const XAxis = props.settings.axisData.XAxis;
     const YAxis = props.settings.axisData.YAxis;

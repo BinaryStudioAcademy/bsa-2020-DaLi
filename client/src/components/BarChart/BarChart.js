@@ -10,7 +10,14 @@ import './BarChart.css';
 
 function BarChart(props) {
   useEffect(() => {
-    const { margin, width, height } = props.settings.chart;
+    const margin = {
+      top: 40,
+      right: 40,
+      bottom: 60,
+      left: 60,
+    };
+    const height = 600;
+    const width = 1000;
     const { goal, showTrendLine, showDataPointsValues, color } = props.settings.display;
     const XAxis = props.settings.axisData.XAxis;
     const YAxis = props.settings.axisData.YAxis;
@@ -19,11 +26,11 @@ function BarChart(props) {
     const yDataRange = {
       min: calcMinYDataValue(
         d3.min(data, (d) => d[YAxis.key]),
-        goal,
+        goal
       ),
       max: calcMaxYDataValue(
         d3.max(data, (d) => d[YAxis.key]),
-        goal,
+        goal
       ),
     };
 
@@ -34,7 +41,7 @@ function BarChart(props) {
         (d) => `
       <div><span>${XAxis.label}:</span> <span style='color:white'>${d[XAxis.key]}</span></div>
       <div><span>${YAxis.label}:</span> <span style='color:white'>${d[YAxis.key]}</span></div>
-    `,
+    `
       );
     chart.call(tip).attr('viewBox', [0, 0, width, height]);
 
@@ -82,12 +89,11 @@ function BarChart(props) {
       .on('mouseover', tip.show)
       .on('mouseout', tip.hide);
 
-
     if (showTrendLine && data.length) {
       const xValues = data.map((d) => d[XAxis.key]);
       const yValues = data.map((d) => d[YAxis.key]);
       const lineCoords = findLineByLeastSquares(xValues, yValues);
-      
+
       chart
         .select('.bars')
         .append('line')

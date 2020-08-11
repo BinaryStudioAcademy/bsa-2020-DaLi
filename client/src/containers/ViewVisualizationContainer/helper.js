@@ -11,14 +11,14 @@ import TableVisualization from '../TableVisualizationContainer/TableVisualizatio
 import { BarChartSettings, TableSettingsSidebar } from '../../components';
 import LineChartSettings from '../LineChartSettings';
 
-export const getVisualizationComponent = (visualizationType, config, updateConfig) => {
+export const getVisualizationComponent = (visualizationType, config, updateConfig, data) => {
   switch (visualizationType) {
     case 'BAR_CHART':
-      return <BarChart config={config} />;
+      return <BarChart config={config} data={data} />;
     case 'LINE_CHART':
-      return <LineChart config={config} />;
+      return <LineChart config={config} data={data} />;
     case 'TABLE':
-      return <TableVisualization config={config} updateConfig={updateConfig} />;
+      return <TableVisualization config={config} updateConfig={updateConfig} data={data} />;
     default:
       return null;
   }

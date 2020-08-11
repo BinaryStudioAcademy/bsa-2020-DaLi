@@ -5,9 +5,7 @@ import { EnhancedTable } from '../../components';
 
 import { updateColumnsOrder, getRows } from './helper';
 
-import mockData from './mockData';
-
-const TableVisualizationContainer = ({ config, updateConfig }) => {
+const TableVisualizationContainer = ({ config, updateConfig, data }) => {
   const { columns, sort } = config;
 
   const [sortOrder, setSortOrder] = useState(sort.order);
@@ -22,7 +20,7 @@ const TableVisualizationContainer = ({ config, updateConfig }) => {
   };
 
   const updatedColumns = updateColumnsOrder(columns);
-  const rows = getRows(mockData, updatedColumns, sortOrder, sortOrderBy);
+  const rows = getRows(data, updatedColumns, sortOrder, sortOrderBy);
 
   return (
     <EnhancedTable
@@ -38,6 +36,7 @@ const TableVisualizationContainer = ({ config, updateConfig }) => {
 TableVisualizationContainer.propTypes = {
   config: PropTypes.object,
   updateConfig: PropTypes.func,
+  data: PropTypes.object,
 };
 
 export default TableVisualizationContainer;

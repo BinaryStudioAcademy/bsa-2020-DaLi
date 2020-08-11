@@ -15,6 +15,7 @@ const routes = (
     <ProtectedRoute exact path="/" component={VisualizationsPage} />
     <ProtectedRoute path="/visualizations/:id" component={ViewVisualizationPage} />
     <ProtectedRoute exact path="/select-visualization" component={SelectVisualizationPage} />
+    <ProtectedRoute exact path="/select-visualization/:id" component={ViewVisualizationPage} />
     <ProtectedRoute exact path="/account-settings" component={AccountSettingsPage} />
   </Switch>
 );

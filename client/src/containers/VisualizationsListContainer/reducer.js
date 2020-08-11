@@ -66,7 +66,7 @@ const initialState = {
             label: 'Goal',
           },
           color: '#4AA1DE',
-          showTrendLine: false,
+          showTrendLine: true,
           showDataPointsValues: true,
         },
       },

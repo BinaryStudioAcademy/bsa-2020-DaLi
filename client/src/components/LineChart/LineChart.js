@@ -65,8 +65,8 @@ function LineChart(props) {
       .line()
       .x((d) => xScale(d[XAxis.key]) + xScale.bandwidth() / 2)
       .y((d) => yScale(d[YAxis.key]))
-      .curve(d3[lineType]);
-
+      // .curve(d3[lineType]);
+      
     chart.append('path').datum(data).attr('class', 'line').attr('d', line).style('stroke', color);
 
     chart

@@ -17,11 +17,13 @@ const initialState = {
       config: {
         axisData: {
           XAxis: {
+            availableKeys: ['total', 'createdAt'],
             key: 'createdAt',
             label: 'Total',
             displayLabel: true,
           },
           YAxis: {
+            availableKeys: ['total', 'createdAt'],
             key: 'total',
             label: 'Date',
             displayLabel: true,
@@ -49,11 +51,13 @@ const initialState = {
       config: {
         axisData: {
           XAxis: {
+            availableKeys: ['total', 'createdAt'],
             key: 'createdAt',
             label: 'Total',
             displayLabel: true,
           },
           YAxis: {
+            availableKeys: ['total', 'createdAt'],
             key: 'total',
             label: 'Date',
             displayLabel: true,
@@ -122,11 +126,13 @@ const initialState = {
       config: {
         axisData: {
           XAxis: {
+            availableKeys: ['total', 'createdAt'],
             key: 'createdAt',
             label: 'Total',
             displayLabel: true,
           },
           YAxis: {
+            availableKeys: ['total', 'createdAt'],
             key: 'total',
             label: 'Date',
             displayLabel: true,

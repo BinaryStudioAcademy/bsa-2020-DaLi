@@ -7,7 +7,7 @@ import { Grid, Button } from '@material-ui/core';
 import SaveIcon from '@material-ui/icons/Save';
 import * as actions from './actions';
 
-import { ViewVisualizationSidebar, ViewVisualizationMain } from '../../components';
+import { ViewVisualizationSidebar, ViewVisualizationMain, SaveVisualizationModal } from '../../components';
 import InitialTable from '../InitialTableContainer/InitialTableContainer';
 
 import {
@@ -25,11 +25,19 @@ import mockData from './mockData';
 import './ViewVisualizationContainer.css';
 
 const ViewVisualizationContainer = (props) => {
-  const { id, visualizations, currentVisualization, setVisualization, updateVisualizationConfig } = props;
+  const {
+    id,
+    visualizations,
+    currentVisualization,
+    setVisualization,
+    updateVisualizationConfig,
+    updateVisualizationName,
+  } = props;
 
   const [currentView, setCurrentView] = useState('table');
   const [isSideBarOpen, setIsSideBarOpen] = useState(false);
   const [isVisualizationExist, setIsVisualizationExist] = useState(true);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
     let visualization;
@@ -65,13 +73,23 @@ const ViewVisualizationContainer = (props) => {
 
   const onToggleSideBar = () => setIsSideBarOpen(!isSideBarOpen);
 
+  const createVisualization = (values) => {
+    updateVisualizationName(values);
+    console.log({ ...currentVisualization, ...values });
+    console.log('Visualization is created');
+    setIsModalOpen(false);
+  };
+
+  const updateVisualization = () => {
+    console.log(currentVisualization);
+    console.log('Visualization is updated');
+  };
+
   const onVisualizationSave = () => {
     if (isVisualizationExist) {
-      console.log(currentVisualization);
-      console.log('Visualization is updated');
+      updateVisualization();
     } else {
-      console.log(currentVisualization);
-      console.log('Visualization is created');
+      setIsModalOpen(true);
     }
   };
 
@@ -88,6 +106,13 @@ const ViewVisualizationContainer = (props) => {
         </Button>
       </div>
       <Grid container className="view-visualization-container">
+        <SaveVisualizationModal
+          closeModal={() => {
+            setIsModalOpen(false);
+          }}
+          saveVisualization={createVisualization}
+          isVisible={isModalOpen}
+        />
         {isSideBarOpen && <ViewVisualizationSidebar component={visualizationSettings} />}
         <ViewVisualizationMain
           contentViewComponent={contentViewComponent}
@@ -118,6 +143,7 @@ ViewVisualizationContainer.propTypes = {
   currentVisualization: PropTypes.object,
   setVisualization: PropTypes.func,
   updateVisualizationConfig: PropTypes.func,
+  updateVisualizationName: PropTypes.func,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(ViewVisualizationContainer);

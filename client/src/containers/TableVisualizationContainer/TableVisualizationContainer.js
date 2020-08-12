@@ -36,7 +36,7 @@ const TableVisualizationContainer = ({ config, updateConfig, data }) => {
 TableVisualizationContainer.propTypes = {
   config: PropTypes.object,
   updateConfig: PropTypes.func,
-  data: PropTypes.object,
+  data: PropTypes.array,
 };
 
 export default TableVisualizationContainer;

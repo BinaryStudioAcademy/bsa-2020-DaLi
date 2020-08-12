@@ -13,7 +13,7 @@ const ViewVisualizationSidebar = ({ component }) => {
 };
 
 ViewVisualizationSidebar.propTypes = {
-  component: PropTypes.func,
+  component: PropTypes.object,
 };
 
 export default ViewVisualizationSidebar;

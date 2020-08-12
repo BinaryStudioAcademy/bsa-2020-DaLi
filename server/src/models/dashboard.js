@@ -3,7 +3,11 @@ import { Model } from 'sequelize';
 export default (sequelize, DataTypes) => {
   class Dashboard extends Model {
     static associate(models) {
-      Dashboard.belongsToMany(models.Visualization, {through: models.DashboardVisualizations, foreignKey:'dashboards_id',otherKey:'visualizations_id'});
+      Dashboard.belongsToMany(models.Visualization, {
+        through: models.DashboardVisualizations,
+        foreignKey: 'dashboards_id',
+        otherKey: 'visualizations_id',
+      });
     }
   }
   Dashboard.init(

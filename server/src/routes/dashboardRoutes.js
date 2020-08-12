@@ -5,6 +5,7 @@ const router = Router();
 
 router.get('/', async (req, res, next) => {
   const result = await DashboardService.getDashboards();
+  console.log(result);
   res.status(200).json({ error: false, result });
   next();
 });
@@ -50,14 +51,39 @@ router.patch('/:id', async (req, res, next) => {
 });
 
 router.delete('/:id', async (req, res, next) => {
-  const result = await DashboardService.deleteDashboard({
-    id: req.params.id,
-  });
+  let result = null;
+  if (req.query.dashboardVisualizationsId) {
+    result = await DashboardService.deleteVisualization({
+      id: req.query.dashboardVisualizationsId,
+    });
+  } else {
+    result = await DashboardService.deleteDashboard({
+      id: req.params.id,
+    });
+  }
+  if (result) {
+    res.status(200).json({ error: false, result });
+    next();
+  } else if (req.query.dashboardVisualizationsId) {
+    const err = new Error('Visualization not found');
+    next(err);
+  } else {
+    const err = new Error(`Dashboard with id of ${req.params.id} not found`);
+    next(err);
+  }
+});
+
+router.post('/:id', async (req, res, next) => {
+  const data = {
+    ...req.body,
+    dashboards_id: req.params.id,
+  };
+  const result = await DashboardService.addVisualization(data);
   if (result) {
     res.status(200).json({ error: false, result });
     next();
   } else {
-    const err = new Error(`Dashboard with id of ${req.params.id} not found`);
+    const err = new Error('Visualization has not been added');
     next(err);
   }
 });

@@ -2,13 +2,19 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { Grid, Button } from '@material-ui/core';
-import SaveIcon from '@material-ui/icons/Save';
+import { withRouter } from 'react-router-dom';
+import { Grid } from '@material-ui/core';
 
 import * as actions from './actions';
+import { deleteVisualization } from '../VisualizationsListContainer/actions';
 import { visualizationsAPIService } from '../../services/api/visualizationsAPI.service';
 
-import { ViewVisualizationSidebar, ViewVisualizationMain, SaveVisualizationModal } from '../../components';
+import {
+  ViewVisualizationSidebar,
+  ViewVisualizationMain,
+  ViewVisualizationHeader,
+  SaveVisualizationModal,
+} from '../../components';
 import InitialTable from '../InitialTableContainer/InitialTableContainer';
 
 import {
@@ -36,11 +42,12 @@ const ViewVisualizationContainer = (props) => {
     setVisualization,
     updateVisualizationConfig,
     updateVisualizationName,
+    deleteVisualization,
   } = props;
 
   const [currentView, setCurrentView] = useState('table');
   const [isSideBarOpen, setIsSideBarOpen] = useState(false);
-  const [isVisualizationExist, setIsVisualizationExist] = useState(true);
+  const [isVisualizationExist, setIsVisualizationExist] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
@@ -52,6 +59,7 @@ const ViewVisualizationContainer = (props) => {
       visualization = createInitVisualization(id, dataSample, userId);
     } else {
       visualization = getVisualization(visualizations, id);
+      setIsVisualizationExist(true);
     }
     setVisualization(visualization);
   }, []);
@@ -86,6 +94,7 @@ const ViewVisualizationContainer = (props) => {
     const newVisualization = createNewVisualization(currentVisualization, name, description);
     visualizationsAPIService.createVisualization(newVisualization);
     closeModal();
+    setIsVisualizationExist(true);
   };
 
   const updateVisualization = () => {
@@ -101,23 +110,39 @@ const ViewVisualizationContainer = (props) => {
     }
   };
 
+  const onVisualizationNameEdit = () => {
+    openModal();
+  };
+
+  const editVisualizationName = ({ name, description }) => {
+    updateVisualizationName({ name, description });
+    closeModal();
+  };
+
+  const onVisualizationDelete = () => {
+    deleteVisualization(id);
+    props.history.push('/');
+  };
+
   return (
     <>
-      <div className="view-visualization-header">
-        <Button
-          className="view-visualization-button"
-          variant="contained"
-          startIcon={<SaveIcon />}
-          onClick={onVisualizationSave}
-        >
-          Save
-        </Button>
-      </div>
+      <ViewVisualizationHeader
+        onVisualizationSave={onVisualizationSave}
+        onVisualizationNameEdit={onVisualizationNameEdit}
+        onVisualizationDelete={onVisualizationDelete}
+        isVisualizationExist={isVisualizationExist}
+        name={currentVisualization.name}
+        description={currentVisualization.description}
+        visualizationType={id}
+      />
       <Grid container className="view-visualization-container">
         <SaveVisualizationModal
           closeModal={closeModal}
-          saveVisualization={createVisualization}
+          saveVisualization={isVisualizationExist ? editVisualizationName : createVisualization}
           isVisible={isModalOpen}
+          title={isVisualizationExist ? 'Edit visualization name' : 'Save visualization'}
+          name={currentVisualization.name}
+          description={currentVisualization.description}
         />
         {isSideBarOpen && <ViewVisualizationSidebar component={visualizationSettings} />}
         <ViewVisualizationMain
@@ -142,16 +167,19 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = {
   ...actions,
+  deleteVisualization,
 };
 
 ViewVisualizationContainer.propTypes = {
   id: PropTypes.string,
   visualizations: PropTypes.array,
-  userId: PropTypes.array,
+  userId: PropTypes.string,
   currentVisualization: PropTypes.object,
   setVisualization: PropTypes.func,
   updateVisualizationConfig: PropTypes.func,
   updateVisualizationName: PropTypes.func,
+  deleteVisualization: PropTypes.func,
+  history: PropTypes.object,
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(ViewVisualizationContainer);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(ViewVisualizationContainer));

@@ -14,7 +14,7 @@ class VisualizationsAPIService extends baseAPIService {
 
   updateVisualization = (id, updatedVisualization) => this.patchData(`/${id}`, updatedVisualization);
 
-  deleteVisualization = (visualizationId) => this.deleteData('', visualizationId);
+  deleteVisualization = (id) => this.deleteData(`${id}`);
 }
 
 export const visualizationsAPIService = new VisualizationsAPIService();

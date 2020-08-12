@@ -30,7 +30,7 @@ const visualizationsListReducer = (state = initialState, { type, payload }) => {
     case DELETE_VISUALISATIONS_SUCCESS: {
       return {
         ...state,
-        visualizations: payload,
+        isLoading: false,
       };
     }
     case DELETE_VISUALISATIONS_ERROR: {

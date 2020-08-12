@@ -2,11 +2,10 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-
 import { Grid, Button } from '@material-ui/core';
 import SaveIcon from '@material-ui/icons/Save';
-import * as actions from './actions';
 
+import * as actions from './actions';
 import { visualizationsAPIService } from '../../services/api/visualizationsAPI.service';
 
 import { ViewVisualizationSidebar, ViewVisualizationMain, SaveVisualizationModal } from '../../components';
@@ -30,6 +29,7 @@ const ViewVisualizationContainer = (props) => {
   const {
     id,
     visualizations,
+    userId,
     currentVisualization,
     setVisualization,
     updateVisualizationConfig,
@@ -47,7 +47,7 @@ const ViewVisualizationContainer = (props) => {
     if (isNewVisualization) {
       setIsVisualizationExist(false);
       const dataSample = createDataSample(mockData);
-      visualization = createNewVisualization(id, dataSample);
+      visualization = createNewVisualization(id, dataSample, userId);
     } else {
       visualization = getVisualization(visualizations, id);
     }
@@ -139,6 +139,7 @@ const mapStateToProps = (state) => {
   return {
     currentVisualization: state.currentVisualization,
     visualizations: state.visualizations.visualizations,
+    userId: state.currentUser.user.id,
   };
 };
 
@@ -149,6 +150,7 @@ const mapDispatchToProps = {
 ViewVisualizationContainer.propTypes = {
   id: PropTypes.string,
   visualizations: PropTypes.array,
+  userId: PropTypes.array,
   currentVisualization: PropTypes.object,
   setVisualization: PropTypes.func,
   updateVisualizationConfig: PropTypes.func,

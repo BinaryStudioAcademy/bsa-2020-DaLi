@@ -5,12 +5,13 @@ export const checkIsVisualizationNew = (id) => VISUALIZATIONS_TYPES_TO_CREATE.in
 
 export const createDataSample = (data) => data[0];
 
-export const createNewVisualization = (visualizationType, dataSample) => {
+export const createNewVisualization = (visualizationType, dataSample, userId) => {
   const newVisualization = {
     name: '',
     description: '',
     config: '',
     type: '',
+    UserId: userId,
   };
   switch (visualizationType) {
     case 'bar-chart':

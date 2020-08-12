@@ -1,11 +1,7 @@
 import { Model } from 'sequelize';
 
 export default (sequelize, DataTypes) => {
-  class Visualization extends Model {
-    static associate(models) {
-      console.log(models)
-    }
-  }
+  class Visualization extends Model {}
   Visualization.init(
     {
       id: {

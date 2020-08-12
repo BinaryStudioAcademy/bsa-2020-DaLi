@@ -5,7 +5,7 @@ const router = Router();
 
 router.get('/', async (req, res, next) => {
   const result = await DashboardService.getDashboards();
-  res.json(result);
+  res.status(200).json({ error: false, result });
   next();
 });
 
@@ -14,10 +14,10 @@ router.get('/:id', async (req, res, next) => {
     id: req.params.id,
   });
   if (result) {
-    res.json(result);
+    res.status(200).json({ error: false, result });
     next();
   } else {
-    const err = new Error('User not found');
+    const err = new Error('Dashboard not found');
     next(err);
   }
 });
@@ -25,10 +25,10 @@ router.get('/:id', async (req, res, next) => {
 router.post('/', async (req, res, next) => {
   const result = await DashboardService.createDashboard(req.body);
   if (result) {
-    res.json(result);
+    res.status(200).json({ error: false, result });
     next();
   } else {
-    const err = new Error('User creation failed');
+    const err = new Error('Dashboard creation failed');
     next(err);
   }
 });
@@ -41,10 +41,10 @@ router.patch('/:id', async (req, res, next) => {
     req.body
   );
   if (result) {
-    res.json(result);
+    res.status(200).json({ error: false, result });
     next();
   } else {
-    const err = new Error(`User with id of ${req.params.id} not found`);
+    const err = new Error(`Dashboard with id of ${req.params.id} not found`);
     next(err);
   }
 });
@@ -54,10 +54,10 @@ router.delete('/:id', async (req, res, next) => {
     id: req.params.id,
   });
   if (result) {
-    res.json(result);
+    res.status(200).json({ error: false, result });
     next();
   } else {
-    const err = new Error(`User with id of ${req.params.id} not found`);
+    const err = new Error(`Dashboard with id of ${req.params.id} not found`);
     next(err);
   }
 });

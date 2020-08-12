@@ -45,7 +45,7 @@ const ViewVisualizationMain = (props) => {
   );
 };
 
-ViewVisualizationContent.propTypes = {
+ViewVisualizationMain.propTypes = {
   contentViewComponent: PropTypes.object,
   currentContentView: PropTypes.string,
   visualizationIcon: PropTypes.object,

@@ -1,5 +1,4 @@
 export const setToken = (token, rememberMe=false) =>{
-    console.log(rememberMe)
     rememberMe ? localStorage.setItem('token', token)
                : sessionStorage.setItem('token', token);}
 export const getToken = () => {

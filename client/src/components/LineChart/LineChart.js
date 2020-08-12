@@ -1,5 +1,5 @@
 /* eslint-disable */
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import * as d3 from 'd3';
 import d3Tip from 'd3-tip';
 import PropTypes from 'prop-types';
@@ -9,22 +9,28 @@ import { findLineByLeastSquares } from '../../utils/trendline';
 
 import './LineChart.css';
 
-function LineChart(props) {
+function LineChart({settings, data, chart:chartSize}) {
+  const { goal, showTrendLine, showDataPointsValues, lineType = "curveNatural", color } = settings.display;
+  const XAxis = settings.axisData.XAxis;
+  const YAxis = settings.axisData.YAxis;
+
+  const [config, setConfig] = useState({});
   useEffect(() => {
-    const { margin, width, height } = props.settings.chart;
-    const { goal, showTrendLine, showDataPointsValues, lineType, color } = props.settings.display;
-    const XAxis = props.settings.axisData.XAxis;
-    const YAxis = props.settings.axisData.YAxis;
-    const chart = d3.select('svg');
-    const { data } = props;
+    setConfig(settings);
+    const { margin, width, height } = chartSize;
+    
+    const chart = d3.select('#chart');
+
+    chart.selectAll("*").remove();
+
     const yDataRange = {
       min: calcMinYDataValue(
         d3.min(data, (d) => d[YAxis.key]),
-        goal
+        goal.value
       ),
       max: calcMaxYDataValue(
         d3.max(data, (d) => d[YAxis.key]),
-        goal
+        goal.value
       ),
     };
 
@@ -51,9 +57,9 @@ function LineChart(props) {
 
     const line = d3
       .line()
+      .curve(d3[lineType])
       .x((d) => xScale(d[XAxis.key]) + xScale.bandwidth() / 2)
-      .y((d) => yScale(d[YAxis.key]))
-      .curve(d3[lineType]);
+      .y((d) => yScale(d[YAxis.key]));
 
     chart.append('path').datum(data).attr('class', 'line').attr('d', line).style('stroke', color);
 
@@ -138,11 +144,11 @@ function LineChart(props) {
         .attr('class', 'goal__label')
         .text(goal.label);
     }
-  }, []);
+  }, [goal, showTrendLine, showDataPointsValues, lineType, color, data, chartSize]);
 
   return (
     <div id="container">
-      <svg />
+      <svg id="chart" />
     </div>
   );
 }

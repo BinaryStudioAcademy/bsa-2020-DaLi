@@ -46,7 +46,6 @@ const ViewVisualizationContainer = (props) => {
   const onToggleSideBar = () => setIsSideBarOpen(!isSideBarOpen);
   const onVisualizationSave = () =>
     visualizationsAPIService.patchData(`/api/visualizations/${id}`, currentVisualization);
-
   return (
     <>
       <div className="view-visualization-header">

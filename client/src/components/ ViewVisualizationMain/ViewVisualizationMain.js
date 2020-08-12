@@ -10,7 +10,7 @@ import SettingsIcon from '@material-ui/icons/Settings';
 import { getButtonClasses } from './helper';
 import './ViewVisualizationMain.css';
 
-const ViewVisualizationContent = (props) => {
+const ViewVisualizationMain = (props) => {
   const { contentViewComponent, currentContentView, visualizationIcon, onToggleSideBar, onSwitchContentView } = props;
   return (
     <Grid className="view-visualization-main" container item xs direction="column" justify="center" alignItems="center">
@@ -45,7 +45,7 @@ const ViewVisualizationContent = (props) => {
   );
 };
 
-ViewVisualizationContent.propTypes = {
+ViewVisualizationMain.propTypes = {
   contentViewComponent: PropTypes.func,
   currentContentView: PropTypes.string,
   visualizationIcon: PropTypes.func,
@@ -53,4 +53,4 @@ ViewVisualizationContent.propTypes = {
   onSwitchContentView: PropTypes.func,
 };
 
-export default ViewVisualizationContent;
+export default ViewVisualizationMain;

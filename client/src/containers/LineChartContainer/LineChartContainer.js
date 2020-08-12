@@ -1,60 +1,62 @@
-import React, { Component } from 'react';
-
-import { orders } from '../../mock_orders';
+import React from 'react';
+import PropTypes from 'prop-types';
 import LineChart from '../../components/LineChart/LineChart';
-import { lineType } from './types';
 
-class LineChartContainer extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      data: orders,
-      settings: {
-        axisData: {
-          XAxis: {
-            key: 'createdAt',
-            label: 'Total',
-            displayLabel: true,
-          },
-          YAxis: {
-            key: 'total',
-            label: 'Date',
-            displayLabel: true,
-          },
-        },
-        chart: {
-          margin: {
-            top: 40,
-            right: 40,
-            bottom: 60,
-            left: 60,
-          },
-          height: 600,
-          width: 1000,
-        },
-        display: {
-          goal: {
-            display: true,
-            value: 100,
-            label: 'Goal',
-          },
-          color: '#4aa1de',
-          lineType: lineType.natural,
-          showTrendLine: true,
-          showDataPointsValues: true,
-        },
-      },
-    };
-  }
+const LineChartContainer = ({ config, data }) => {
+  const chart = {
+    margin: {
+      top: 40,
+      right: 40,
+      bottom: 60,
+      left: 60,
+    },
+    height: 600,
+    width: 1000,
+  };
 
-  render() {
-    const { data, settings } = this.state;
-    return (
-      <div>
-        <LineChart data={data} settings={settings} />
-      </div>
-    );
-  }
-}
+  return (
+    <div>
+      <LineChart data={data} settings={config} chart={chart} />
+    </div>
+  );
+};
+
+LineChartContainer.propTypes = {
+  data: PropTypes.array,
+  config: PropTypes.shape({
+    axisData: PropTypes.shape({
+      XAxis: PropTypes.shape({
+        key: PropTypes.string,
+        label: PropTypes.string,
+        displayLabel: PropTypes.bool,
+      }),
+      YAxis: PropTypes.shape({
+        key: PropTypes.string,
+        label: PropTypes.string,
+        displayLabel: PropTypes.bool,
+      }),
+    }),
+    chart: PropTypes.shape({
+      margin: PropTypes.shape({
+        top: PropTypes.number,
+        right: PropTypes.number,
+        bottom: PropTypes.number,
+        left: PropTypes.number,
+      }),
+      height: PropTypes.number,
+      width: PropTypes.number,
+    }),
+    display: PropTypes.shape({
+      goal: PropTypes.shape({
+        display: PropTypes.bool,
+        value: PropTypes.number,
+        label: PropTypes.string,
+      }),
+      lineType: PropTypes.string,
+      showTrendLine: PropTypes.bool,
+      showDataPointsValues: PropTypes.bool,
+    }),
+  }),
+};
 
 export default LineChartContainer;

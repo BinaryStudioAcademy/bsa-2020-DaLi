@@ -3,7 +3,9 @@ import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
-import { Grid } from '@material-ui/core';
+import { Grid, Snackbar } from '@material-ui/core';
+
+import Alert from '@material-ui/lab/Alert';
 
 import * as actions from './actions';
 import { deleteVisualization } from '../VisualizationsListContainer/actions';
@@ -49,6 +51,8 @@ const ViewVisualizationContainer = (props) => {
   const [isSideBarOpen, setIsSideBarOpen] = useState(false);
   const [isVisualizationExist, setIsVisualizationExist] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isNotificationVisible, setIsNotificationVisible] = useState(false);
+  const [notificationMessage, setNotificationMessage] = useState('');
 
   useEffect(() => {
     let visualization;
@@ -89,17 +93,25 @@ const ViewVisualizationContainer = (props) => {
 
   const closeModal = () => setIsModalOpen(false);
 
+  const displayNotification = () => setIsNotificationVisible(true);
+
+  const hideNotification = () => setIsNotificationVisible(false);
+
   const createVisualization = ({ name, description }) => {
     updateVisualizationName({ name, description });
     const newVisualization = createNewVisualization(currentVisualization, name, description);
     visualizationsAPIService.createVisualization(newVisualization);
     closeModal();
+    setNotificationMessage('Visualization has been successfully created');
+    displayNotification(true);
     setIsVisualizationExist(true);
   };
 
   const updateVisualization = () => {
     const updatedVisualization = createUpdatedVisualization(currentVisualization);
     visualizationsAPIService.updateVisualization(id, updatedVisualization);
+    setNotificationMessage('Visualization has been successfully updated');
+    displayNotification(true);
   };
 
   const onVisualizationSave = () => {
@@ -144,6 +156,16 @@ const ViewVisualizationContainer = (props) => {
           name={currentVisualization.name}
           description={currentVisualization.description}
         />
+        <Snackbar
+          anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+          open={isNotificationVisible}
+          autoHideDuration={6000}
+          onClose={hideNotification}
+        >
+          <Alert elevation={6} variant="filled" severity="success" onClose={hideNotification}>
+            {notificationMessage}
+          </Alert>
+        </Snackbar>
         {isSideBarOpen && <ViewVisualizationSidebar component={visualizationSettings} />}
         <ViewVisualizationMain
           contentViewComponent={contentViewComponent}

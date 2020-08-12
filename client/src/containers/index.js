@@ -10,6 +10,7 @@ import ProtectedRoute from './ProtectedRoute/ProtectedRoute';
 import PublicRoute from './PublicRoute/PublicRoute';
 import VisualizationsListContainer from './VisualizationsListContainer/VisualizationsListContainer';
 import AccountSettingsContainer from './AccountSettingsContainer';
+import DashboardContainer from './DashboardContainer/DashboardContainer';
 
 export {
   LoginPageContainer,
@@ -24,4 +25,5 @@ export {
   LineChartSettings,
   VisualizationsListContainer,
   AccountSettingsContainer,
+  DashboardContainer,
 };

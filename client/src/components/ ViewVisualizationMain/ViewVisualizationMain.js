@@ -45,10 +45,10 @@ const ViewVisualizationMain = (props) => {
   );
 };
 
-ViewVisualizationMain.propTypes = {
-  contentViewComponent: PropTypes.func,
+ViewVisualizationContent.propTypes = {
+  contentViewComponent: PropTypes.object,
   currentContentView: PropTypes.string,
-  visualizationIcon: PropTypes.func,
+  visualizationIcon: PropTypes.object,
   onToggleSideBar: PropTypes.func,
   onSwitchContentView: PropTypes.func,
 };

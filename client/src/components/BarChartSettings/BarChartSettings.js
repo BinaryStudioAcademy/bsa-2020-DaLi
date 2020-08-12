@@ -170,12 +170,12 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const BarChartSettings = ({ updateConfig, config: oldConfig }) => {
-  const xAxisValues = ['createdAt'];
-  const yAxisValues = ['total'];
+  const xAxisValues = oldConfig.axisData.XAxis.availableKeys;
+  const yAxisValues = oldConfig.axisData.XAxis.availableKeys;
   const classes = useStyles();
   const [value, setValue] = useState(0);
-  const [xAxis, setXAxis] = useState('a');
-  const [yAxis, setYAxis] = useState('b');
+  const [xAxis, setXAxis] = useState(xAxisValues[0]);
+  const [yAxis, setYAxis] = useState(yAxisValues[0]);
   const [isGoalLine, setIsGoalLine] = useState(false);
   const [goalLine, setGoalLine] = useState(0);
   const [color, setColor] = useState('#000');
@@ -183,10 +183,10 @@ const BarChartSettings = ({ updateConfig, config: oldConfig }) => {
   const [isLabelYAxis, setIsLabelYAxis] = useState(false);
   const [labelXAxis, setLabelXAxis] = useState('');
   const [labelYAxis, setLabelYAxis] = useState('');
-  const [config, setConfig] = useState({});
+  const [config, setConfig] = useState(oldConfig);
 
   useEffect(() => {
-    // updateConfig(...oldConfig, ...config);
+    updateConfig(config);
   }, [config]);
 
   const handleChange = (event, newValue) => {
@@ -197,11 +197,13 @@ const BarChartSettings = ({ updateConfig, config: oldConfig }) => {
     setConfig({
       axisData: {
         XAxis: {
+          availableKeys: xAxisValues,
           key: xAxis,
           label: labelXAxis,
           displayLabel: isLabelXAxis,
         },
         YAxis: {
+          availableKeys: yAxisValues,
           key: yAxis,
           label: labelYAxis,
           displayLabel: isLabelYAxis,
@@ -210,7 +212,7 @@ const BarChartSettings = ({ updateConfig, config: oldConfig }) => {
       display: {
         goal: {
           display: isGoalLine,
-          value: goalLine,
+          value: Number.parseInt(goalLine),
           label: 'Goal',
         },
         color,
@@ -364,6 +366,7 @@ const BarChartSettings = ({ updateConfig, config: oldConfig }) => {
 BarChartSettings.propTypes = {
   config: PropTypes.object,
   updateConfig: PropTypes.func,
+  data: PropTypes.array,
 };
 
 export default BarChartSettings;

@@ -1,5 +1,5 @@
 /* eslint-disable */
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import * as d3 from 'd3';
 import d3Tip from 'd3-tip';
 import PropTypes from 'prop-types';
@@ -15,11 +15,12 @@ function LineChart({settings, data, chart:chartSize}) {
   const YAxis = settings.axisData.YAxis;
 
   const [config, setConfig] = useState({});
+  const svgRef = useRef()
   useEffect(() => {
     setConfig(settings);
     const { margin, width, height } = chartSize;
-    
-    const chart = d3.select('#chart');
+
+    const chart = d3.select(svgRef.current);
 
     chart.selectAll("*").remove();
 
@@ -148,7 +149,7 @@ function LineChart({settings, data, chart:chartSize}) {
 
   return (
     <div id="container">
-      <svg id="chart" />
+      <svg ref={svgRef} />
     </div>
   );
 }

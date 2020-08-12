@@ -8,25 +8,37 @@ import { findLineByLeastSquares } from '../../utils/trendline';
 import { calcMaxYDataValue, calcMinYDataValue } from '../../utils/calcCriticalYAxisValue';
 import './BarChart.css';
 
+import { useRef } from 'react';
+
 function BarChart(props) {
+  const svgRef = useRef()
   useEffect(() => {
-    const { margin, width, height } = props.settings.chart;
+    const margin = {
+      top: 40,
+      right: 40,
+      bottom: 60,
+      left: 60,
+    };
+    const height = 600;
+    const width = 1000;
     const { goal, showTrendLine, showDataPointsValues, color } = props.settings.display;
     const XAxis = props.settings.axisData.XAxis;
     const YAxis = props.settings.axisData.YAxis;
-    const chart = d3.select('svg');
+  
+    const chart = d3.select(svgRef.current);
+    chart.selectAll("*").remove();
     const { data } = props;
     const yDataRange = {
       min: calcMinYDataValue(
         d3.min(data, (d) => d[YAxis.key]),
-        goal,
-      ),
-      max: calcMaxYDataValue(
+        goal
+        ),
+        max: calcMaxYDataValue(
         d3.max(data, (d) => d[YAxis.key]),
-        goal,
-      ),
-    };
-
+        goal
+        ),
+      };
+    
     const tip = d3Tip()
       .attr('class', 'd3-tip')
       .offset([-10, 0])
@@ -34,7 +46,7 @@ function BarChart(props) {
         (d) => `
       <div><span>${XAxis.label}:</span> <span style='color:white'>${d[XAxis.key]}</span></div>
       <div><span>${YAxis.label}:</span> <span style='color:white'>${d[YAxis.key]}</span></div>
-    `,
+    `
       );
     chart.call(tip).attr('viewBox', [0, 0, width, height]);
 
@@ -82,12 +94,11 @@ function BarChart(props) {
       .on('mouseover', tip.show)
       .on('mouseout', tip.hide);
 
-
     if (showTrendLine && data.length) {
       const xValues = data.map((d) => d[XAxis.key]);
       const yValues = data.map((d) => d[YAxis.key]);
       const lineCoords = findLineByLeastSquares(xValues, yValues);
-      
+
       chart
         .select('.bars')
         .append('line')
@@ -143,11 +154,11 @@ function BarChart(props) {
         .attr('class', 'goal__label')
         .text(goal.label);
     }
-  }, []);
+  }, [props]);
 
   return (
     <div id="container">
-      <svg />
+      <svg ref={svgRef} />
     </div>
   );
 }

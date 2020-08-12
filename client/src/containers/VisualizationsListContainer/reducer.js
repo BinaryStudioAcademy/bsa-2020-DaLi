@@ -14,29 +14,20 @@ const initialState = {
       name: 'First visualization',
       type: 'LINE_CHART',
       description: '',
-
       config: {
         axisData: {
           XAxis: {
+            availableKeys: ['total', 'createdAt'],
             key: 'createdAt',
             label: 'Total',
             displayLabel: true,
           },
           YAxis: {
+            availableKeys: ['total', 'createdAt'],
             key: 'total',
             label: 'Date',
             displayLabel: true,
           },
-        },
-        chart: {
-          margin: {
-            top: 40,
-            right: 40,
-            bottom: 60,
-            left: 60,
-          },
-          height: 600,
-          width: 1000,
         },
         display: {
           goal: {
@@ -45,7 +36,7 @@ const initialState = {
             label: 'Goal',
           },
           color: '#4aa1de',
-
+          lineType: 'curveNatural',
           showTrendLine: true,
           showDataPointsValues: true,
         },
@@ -60,11 +51,13 @@ const initialState = {
       config: {
         axisData: {
           XAxis: {
+            availableKeys: ['total', 'createdAt'],
             key: 'createdAt',
             label: 'Total',
             displayLabel: true,
           },
           YAxis: {
+            availableKeys: ['total', 'createdAt'],
             key: 'total',
             label: 'Date',
             displayLabel: true,
@@ -77,7 +70,7 @@ const initialState = {
             label: 'Goal',
           },
           color: '#4AA1DE',
-          showTrendLine: false,
+          showTrendLine: true,
           showDataPointsValues: true,
         },
       },
@@ -133,11 +126,13 @@ const initialState = {
       config: {
         axisData: {
           XAxis: {
+            availableKeys: ['total', 'createdAt'],
             key: 'createdAt',
             label: 'Total',
             displayLabel: true,
           },
           YAxis: {
+            availableKeys: ['total', 'createdAt'],
             key: 'total',
             label: 'Date',
             displayLabel: true,

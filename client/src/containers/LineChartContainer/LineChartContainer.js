@@ -59,4 +59,9 @@ LineChartContainer.propTypes = {
   }),
 };
 
+LineChartContainer.propTypes = {
+  data: PropTypes.array,
+  config: PropTypes.object,
+};
+
 export default LineChartContainer;

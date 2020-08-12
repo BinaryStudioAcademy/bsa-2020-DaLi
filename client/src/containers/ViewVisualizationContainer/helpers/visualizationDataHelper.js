@@ -4,12 +4,12 @@ import EqualizerOutlinedIcon from '@material-ui/icons/EqualizerOutlined';
 import TimelineOutlinedIcon from '@material-ui/icons/TimelineOutlined';
 import TableChartOutlinedIcon from '@material-ui/icons/TableChartOutlined';
 
-import BarChart from '../BarChartContainer/BarChartContainer';
-import LineChart from '../LineChartContainer/LineChartContainer';
-import TableVisualization from '../TableVisualizationContainer/TableVisualizationContainer';
+import BarChart from '../../BarChartContainer/BarChartContainer';
+import LineChart from '../../LineChartContainer/LineChartContainer';
+import TableVisualization from '../../TableVisualizationContainer/TableVisualizationContainer';
 
-import { BarChartSettings, TableSettingsSidebar } from '../../components';
-import LineChartSettings from '../LineChartSettings';
+import { BarChartSettings, TableSettingsSidebar } from '../../../components';
+import LineChartSettings from '../../LineChartSettings';
 
 export const getVisualizationComponent = (visualizationType, config, updateConfig, data) => {
   switch (visualizationType) {
@@ -49,6 +49,3 @@ export const getVisualizationSettings = (visualizationType, config, updateConfig
       return null;
   }
 };
-
-export const getVisualization = (visualizations, id) =>
-  visualizations.filter((visualization) => visualization.id === Number(id))[0];

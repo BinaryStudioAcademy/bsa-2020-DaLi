@@ -1,7 +1,14 @@
 import React from 'react';
-import { Switch } from 'react-router-dom';
+import { Switch, Route } from 'react-router-dom';
 import { ProtectedRoute, PublicRoute } from '../containers';
-import { LoginPage, SelectVisualizationPage, VisualizationsPage, ViewVisualizationPage } from '../pages';
+import {
+  LoginPage,
+  SelectVisualizationPage,
+  VisualizationsPage,
+  ViewVisualizationPage,
+  AccountSettingsPage,
+  DashboardPage,
+} from '../pages';
 
 const routes = (
   <Switch>
@@ -9,6 +16,10 @@ const routes = (
     <ProtectedRoute exact path="/" component={VisualizationsPage} />
     <ProtectedRoute path="/visualizations/:id" component={ViewVisualizationPage} />
     <ProtectedRoute exact path="/select-visualization" component={SelectVisualizationPage} />
+    <ProtectedRoute exact path="/select-visualization/:id" component={ViewVisualizationPage} />
+    <ProtectedRoute exact path="/account-settings" component={AccountSettingsPage} />
+
+    <Route path="/dashboard/:id" component={DashboardPage} />
   </Switch>
 );
 

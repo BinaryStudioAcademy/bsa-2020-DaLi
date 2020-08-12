@@ -3,11 +3,13 @@ import PropTypes from 'prop-types';
 import { makeStyles, withStyles } from '@material-ui/core/styles';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
-import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
 import Button from '@material-ui/core/Button';
 import InputLabel from '@material-ui/core/InputLabel';
+import RadioGroup from '@material-ui/core/RadioGroup';
+import Radio from '@material-ui/core/Radio';
 import FormControl from '@material-ui/core/FormControl';
+import FormLabel from '@material-ui/core/FormLabel';
 import NativeSelect from '@material-ui/core/NativeSelect';
 import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
@@ -82,7 +84,8 @@ function TabPanel(props) {
     >
       {value === index && (
         <Box p={3}>
-          <Typography>{children}</Typography>
+          {/* <Typography>{children}</Typography> */}
+          {children}
         </Box>
       )}
     </div>
@@ -169,63 +172,60 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function LineChartSettings({ updateConfig, config: oldConfig }) {
+const testConfig = {
+  axisData: {
+    XAxis: {
+      availableKeys: ['key1', 'key2', 'key3'],
+      key: 'createdAt',
+      label: 'Total',
+      displayLabel: true,
+    },
+    YAxis: {
+      availableKeys: ['key4', 'key5', 'key6'],
+      key: 'total',
+      label: 'Date',
+      displayLabel: true,
+    },
+  },
+  display: {
+    goal: {
+      display: true,
+      value: 100,
+      label: 'Goal',
+    },
+    color: '#4aa1de',
+    lineType: 'curveNatural',
+    showTrendLine: true,
+    showDataPointsValues: true,
+  },
+};
+
+function LineChartSettings({ updateConfig /* , config: oldConfig */ }, oldConfig = testConfig) {
   const classes = useStyles();
-  const xAxisValues = ['createdAt'];
-  const yAxisValues = ['total'];
   const [value, setValue] = useState(0);
-  const [xAxis, setXAxis] = useState('a');
-  const [yAxis, setYAxis] = useState('b');
-  const [isGoalLine, setIsGoalLine] = useState(false);
-  const [goalLine, setGoalLine] = useState(0);
-  const [color, setColor] = useState('#000');
-  const [isLabelXAxis, setIsLabelXAxis] = useState(false);
-  const [isLabelYAxis, setIsLabelYAxis] = useState(false);
-  const [labelXAxis, setLabelXAxis] = useState('');
-  const [labelYAxis, setLabelYAxis] = useState('');
-  const [config, setConfig] = useState({});
+  const [config, setConfig] = useState(testConfig);
 
   useEffect(() => {
-    updateConfig(...oldConfig, ...config);
+    setConfig(testConfig);
   }, [config]);
 
+  const { axisData, display } = config;
+  const { XAxis, YAxis } = axisData;
+  const { goal, color, showDataPointsValues, showTrendLine, lineType } = display;
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
 
   const onDoneButton = () => {
-    setConfig({
-      axisData: {
-        XAxis: {
-          key: xAxis,
-          label: labelXAxis,
-          displayLabel: isLabelXAxis,
-        },
-        YAxis: {
-          key: yAxis,
-          label: labelYAxis,
-          displayLabel: isLabelYAxis,
-        },
-      },
-      display: {
-        goal: {
-          display: isGoalLine,
-          value: goalLine,
-          label: 'Goal',
-        },
-        color,
-        showTrendLine: false,
-        showDataPointsValues: true,
-      },
-    });
+    updateConfig(config);
   };
 
-  const valuesX = xAxisValues.map((value) => (
+  const valuesX = XAxis.availableKeys.map((value) => (
     <option value={value} key={value}>
       {value}
     </option>
   ));
-  const valuesY = yAxisValues.map((value) => (
+  const valuesY = YAxis.availableKeys.map((value) => (
     <option value={value} key={value}>
       {value}
     </option>
@@ -258,13 +258,10 @@ function LineChartSettings({ updateConfig, config: oldConfig }) {
           </InputLabel>
           <NativeSelect
             className={classes.select}
-            value={xAxis}
+            value={XAxis.key}
             onChange={(event) => {
-              setXAxis(event.target.value);
-            }}
-            inputProps={{
-              xAxis: 'xAxis',
-              id: 'x-native-label-placeholder',
+              axisData.XAxis.key = event.target.value;
+              setConfig({ ...config, axisData });
             }}
           >
             {valuesX}
@@ -276,11 +273,10 @@ function LineChartSettings({ updateConfig, config: oldConfig }) {
           </InputLabel>
           <NativeSelect
             className={classes.select}
-            value={yAxis}
-            onChange={(event) => setYAxis(event.target.value)}
-            inputProps={{
-              yAxis: 'products',
-              id: 'y-native-label-placeholder',
+            value={YAxis.key}
+            onChange={(event) => {
+              axisData.YAxis.key = event.target.value;
+              setConfig({ ...config, axisData });
             }}
           >
             {valuesY}
@@ -289,38 +285,102 @@ function LineChartSettings({ updateConfig, config: oldConfig }) {
       </TabPanel>
       <TabPanel value={value} index={1}>
         <FormControlLabel
-          control={<PrettySwitch checked={isGoalLine} onChange={(event) => setIsGoalLine(event.target.checked)} />}
+          control={
+            <PrettySwitch
+              checked={goal.display}
+              onChange={(event) => {
+                display.goal.display = event.target.checked;
+                setConfig({ ...config, display });
+              }}
+            />
+          }
           label="Goal line"
         />
-        {isGoalLine ? (
+        {goal.display ? (
           <TextField
             id="standard-basic"
-            label="Goal line"
+            label={goal.label}
             className={classes.input}
             type="number"
             InputLabelProps={{
               shrink: true,
             }}
-            value={goalLine}
+            value={goal.value}
             onChange={(event) => {
-              setGoalLine(event.target.value);
+              display.goal.value = event.target.value;
+              setConfig({ ...config, display });
             }}
           />
         ) : null}
+        <FormControlLabel
+          control={
+            <PrettySwitch
+              checked={showDataPointsValues}
+              onChange={(event) => {
+                display.showDataPointsValues = event.target.checked;
+                setConfig({ ...config, display });
+              }}
+            />
+          }
+          label="Show values on data points"
+        />
+        {/* {showDataPointsValues ? (
+          <TextField
+            id="standard-basic"
+            label="for future purposes"
+            className={classes.input}
+            type="number"
+            InputLabelProps={{
+              shrink: true,
+            }}
+            // value={goal.value}
+            // onChange={(event) => {
+            //   display.goal.label = event.target.value;
+            //   setConfig({ ...config, display });
+            // }}
+          />
+        ) : null} */}
         <ColorPicker
           className={classes.colorPicker}
           name="color"
           defaultValue="Сhoose your color"
           value={color}
-          onChange={(color) => setColor(color)}
+          onChange={(color) => {
+            display.color = color;
+            setConfig({ ...config, display });
+          }}
         />
+        <FormControl component="fieldset">
+          <FormLabel component="legend">Line style</FormLabel>
+          <RadioGroup
+            aria-label="line-style"
+            name="lineType"
+            value={lineType}
+            onChange={(event) => {
+              display.lineType = event.target.value;
+              setConfig({ ...config, display });
+            }}
+          >
+            <FormControlLabel value="curveNatural" control={<Radio />} label="Natural" />
+            <FormControlLabel value="curveLinear" control={<Radio />} label="Linear" />
+            <FormControlLabel value="curveStep" control={<Radio />} label="Step" />
+          </RadioGroup>
+        </FormControl>
       </TabPanel>
       <TabPanel value={value} index={2}>
         <FormControlLabel
-          control={<PrettySwitch checked={isLabelXAxis} onChange={(event) => setIsLabelXAxis(event.target.checked)} />}
+          control={
+            <PrettySwitch
+              checked={XAxis.displayLabel}
+              onChange={(event) => {
+                axisData.XAxis.displayLabel = event.target.checked;
+                setConfig({ ...config, axisData });
+              }}
+            />
+          }
           label="Show label on x-axis"
         />
-        {isLabelXAxis ? (
+        {XAxis.displayLabel ? (
           <TextField
             id="standard-basic"
             label="X-axis label"
@@ -328,27 +388,36 @@ function LineChartSettings({ updateConfig, config: oldConfig }) {
             InputLabelProps={{
               shrink: true,
             }}
-            value={labelXAxis}
+            value={XAxis.label}
             onChange={(event) => {
-              setLabelXAxis(event.target.value);
+              axisData.XAxis.label = event.target.value;
+              setConfig({ ...config, axisData });
             }}
           />
         ) : null}
         <FormControlLabel
-          control={<PrettySwitch checked={isLabelYAxis} onChange={(event) => setIsLabelYAxis(event.target.checked)} />}
+          control={
+            <PrettySwitch
+              checked={YAxis.displayLabel}
+              onChange={(event) => {
+                axisData.YAxis.displayLabel = event.target.checked;
+                setConfig({ ...config, axisData });
+              }}
+            />
+          }
           label="Show label on y-axis"
         />
-        {isLabelYAxis ? (
+        {YAxis.displayLabel ? (
           <TextField
-            id="standard-basic"
             label="Y-axis label"
             className={classes.input}
             InputLabelProps={{
               shrink: true,
             }}
-            value={labelYAxis}
+            value={YAxis.label}
             onChange={(event) => {
-              setLabelYAxis(event.target.value);
+              axisData.YAxis.label = event.target.value;
+              setConfig({ ...config, axisData });
             }}
           />
         ) : null}

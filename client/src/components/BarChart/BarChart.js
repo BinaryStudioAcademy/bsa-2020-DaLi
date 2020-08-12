@@ -24,7 +24,9 @@ function BarChart(props) {
     const { goal, showTrendLine, showDataPointsValues, color } = props.settings.display;
     const XAxis = props.settings.axisData.XAxis;
     const YAxis = props.settings.axisData.YAxis;
+  
     const chart = d3.select(svgRef.current);
+    chart.selectAll("*").remove();
     const { data } = props;
     const yDataRange = {
       min: calcMinYDataValue(
@@ -152,7 +154,7 @@ function BarChart(props) {
         .attr('class', 'goal__label')
         .text(goal.label);
     }
-  }, []);
+  }, [props]);
 
   return (
     <div id="container">

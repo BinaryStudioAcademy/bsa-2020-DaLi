@@ -169,9 +169,9 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const BarChartSettings = ({ updateConfig, config: oldConfig, data }) => {
-  const xAxisValues = Object.keys(data[0]);
-  const yAxisValues = Object.keys(data[0]);
+const BarChartSettings = ({ updateConfig, config: oldConfig }) => {
+  const xAxisValues = oldConfig.axisData.XAxis.availableKeys;
+  const yAxisValues = oldConfig.axisData.XAxis.availableKeys;
   const classes = useStyles();
   const [value, setValue] = useState(0);
   const [xAxis, setXAxis] = useState(xAxisValues[0]);
@@ -197,11 +197,13 @@ const BarChartSettings = ({ updateConfig, config: oldConfig, data }) => {
     setConfig({
       axisData: {
         XAxis: {
+          availableKeys: xAxisValues,
           key: xAxis,
           label: labelXAxis,
           displayLabel: isLabelXAxis,
         },
         YAxis: {
+          availableKeys: yAxisValues,
           key: yAxis,
           label: labelYAxis,
           displayLabel: isLabelYAxis,

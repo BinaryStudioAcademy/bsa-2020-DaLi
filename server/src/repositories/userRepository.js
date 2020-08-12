@@ -9,6 +9,10 @@ class UserRepository extends BaseRepository {
   getByEmail(email) {
     return this.model.findOne({ where: { email } });
   }
+
+  updateDate(id) {
+    return this.updateById({ id }, { id });
+  }
 }
 
 export default new UserRepository(models.User);

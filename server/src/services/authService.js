@@ -1,6 +1,7 @@
 import jwt from 'jsonwebtoken';
 import jwtDecode from 'jwt-decode';
 import bcrypt from 'bcrypt';
+import moment from 'moment';
 import UserRepository from '../repositories/userRepository';
 import jwtConfig from '../config/jwt.config';
 
@@ -19,6 +20,7 @@ export const login = async (user) => {
         jwtConfig.secretKey,
         { expiresIn: jwtConfig.expiresIn }
       );
+      await UserRepository.updateDate(id);
       return {
         status: 200,
         response: {
@@ -82,8 +84,20 @@ export const getUserByToken = async (token) => {
       },
     };
   }
-
-  const { firstName, lastName, email } = candidate;
+  const { firstName, lastName, email, updatedAt } = candidate;
+  const start = moment(updatedAt);
+  const end = moment(new Date());
+  const tokenTerm = end.diff(start, 'days');
+  if (tokenTerm > 30) {
+    return {
+      status: 404,
+      response: {
+        success: false,
+        message: 'Token expired',
+      },
+    };
+  }
+  await UserRepository.updateDate(id);
   return {
     status: 200,
     response: {

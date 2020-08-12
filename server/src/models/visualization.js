@@ -27,7 +27,7 @@ export default (sequelize, DataTypes) => {
         allowNull: true,
       },
       config: {
-        type: DataTypes.STRING,
+        type: DataTypes.JSON,
         allowNull: false,
       },
       createdAt: DataTypes.DATE,

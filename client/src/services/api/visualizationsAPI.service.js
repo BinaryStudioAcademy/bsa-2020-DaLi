@@ -1,12 +1,20 @@
 import baseAPIService from './baseAPI.service';
 import config from '../../config/index';
 
-const API_URL = config.api.url;
+const API_URL = `${config.api.url}/api/visualizations`;
 
 class VisualizationsAPIService extends baseAPIService {
   constructor() {
     super(API_URL);
   }
+
+  getVisualizations = () => this.getData('');
+
+  createVisualization = (newVisualization) => this.postData('', newVisualization);
+
+  updateVisualization = (id, updatedVisualization) => this.patchData(`/${id}`, updatedVisualization);
+
+  deleteVisualization = (visualizationId) => this.deleteData('', visualizationId);
 }
 
 export const visualizationsAPIService = new VisualizationsAPIService();

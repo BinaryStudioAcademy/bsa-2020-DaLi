@@ -7,6 +7,8 @@ import { Grid, Button } from '@material-ui/core';
 import SaveIcon from '@material-ui/icons/Save';
 import * as actions from './actions';
 
+import { visualizationsAPIService } from '../../services/api/visualizationsAPI.service';
+
 import { ViewVisualizationSidebar, ViewVisualizationMain, SaveVisualizationModal } from '../../components';
 import InitialTable from '../InitialTableContainer/InitialTableContainer';
 
@@ -75,14 +77,21 @@ const ViewVisualizationContainer = (props) => {
 
   const createVisualization = (values) => {
     updateVisualizationName(values);
-    console.log({ ...currentVisualization, ...values });
-    console.log('Visualization is created');
+    const newVisualization = {
+      ...currentVisualization,
+      ...values,
+      config: JSON.stringify(currentVisualization.config),
+    };
+    visualizationsAPIService.createVisualization(newVisualization);
     setIsModalOpen(false);
   };
 
   const updateVisualization = () => {
-    console.log(currentVisualization);
-    console.log('Visualization is updated');
+    const updatedVisualization = {
+      ...currentVisualization,
+      config: JSON.stringify(currentVisualization.config),
+    };
+    visualizationsAPIService.updateVisualization(id, updatedVisualization);
   };
 
   const onVisualizationSave = () => {

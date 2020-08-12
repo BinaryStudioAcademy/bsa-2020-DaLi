@@ -5,7 +5,7 @@ export const checkIsVisualizationNew = (id) => VISUALIZATIONS_TYPES_TO_CREATE.in
 
 export const createDataSample = (data) => data[0];
 
-export const createNewVisualization = (visualizationType, dataSample, userId) => {
+export const createInitVisualization = (visualizationType, dataSample, userId) => {
   const newVisualization = {
     name: '',
     description: '',

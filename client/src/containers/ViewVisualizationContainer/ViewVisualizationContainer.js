@@ -18,7 +18,9 @@ import {
   getVisualizationIcon,
   checkIsVisualizationNew,
   createDataSample,
+  createInitVisualization,
   createNewVisualization,
+  createUpdatedVisualization,
 } from './helpers';
 
 import mockData from './mockData';
@@ -47,7 +49,7 @@ const ViewVisualizationContainer = (props) => {
     if (isNewVisualization) {
       setIsVisualizationExist(false);
       const dataSample = createDataSample(mockData);
-      visualization = createNewVisualization(id, dataSample, userId);
+      visualization = createInitVisualization(id, dataSample, userId);
     } else {
       visualization = getVisualization(visualizations, id);
     }
@@ -75,22 +77,19 @@ const ViewVisualizationContainer = (props) => {
 
   const onToggleSideBar = () => setIsSideBarOpen(!isSideBarOpen);
 
-  const createVisualization = (values) => {
-    updateVisualizationName(values);
-    const newVisualization = {
-      ...currentVisualization,
-      ...values,
-      config: JSON.stringify(currentVisualization.config),
-    };
+  const openModal = () => setIsModalOpen(true);
+
+  const closeModal = () => setIsModalOpen(false);
+
+  const createVisualization = ({ name, description }) => {
+    updateVisualizationName({ name, description });
+    const newVisualization = createNewVisualization(currentVisualization, name, description);
     visualizationsAPIService.createVisualization(newVisualization);
-    setIsModalOpen(false);
+    closeModal();
   };
 
   const updateVisualization = () => {
-    const updatedVisualization = {
-      ...currentVisualization,
-      config: JSON.stringify(currentVisualization.config),
-    };
+    const updatedVisualization = createUpdatedVisualization(currentVisualization);
     visualizationsAPIService.updateVisualization(id, updatedVisualization);
   };
 
@@ -98,7 +97,7 @@ const ViewVisualizationContainer = (props) => {
     if (isVisualizationExist) {
       updateVisualization();
     } else {
-      setIsModalOpen(true);
+      openModal();
     }
   };
 
@@ -116,9 +115,7 @@ const ViewVisualizationContainer = (props) => {
       </div>
       <Grid container className="view-visualization-container">
         <SaveVisualizationModal
-          closeModal={() => {
-            setIsModalOpen(false);
-          }}
+          closeModal={closeModal}
           saveVisualization={createVisualization}
           isVisible={isModalOpen}
         />

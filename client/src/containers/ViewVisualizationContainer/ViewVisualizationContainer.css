@@ -2,22 +2,5 @@
   height: calc(100vh - 115px);
 
   border: 2px solid #f4f4f4;
-}
-
-.view-visualization-header{
-  height: 60px;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  justify-content: center;
-  padding-right: 50px;
-
-}
-
-.view-visualization-button{
-  color: white !important;
-  text-transform: none !important;
-
-  background: #3ca1de !important;
-  border-radius: 5px !important;
+  max-height:  calc(100vh - 115px);
 }

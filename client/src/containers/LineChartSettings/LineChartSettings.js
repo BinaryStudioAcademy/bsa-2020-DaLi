@@ -200,13 +200,13 @@ const testConfig = {
   },
 };
 
-function LineChartSettings({ updateConfig /* , config: oldConfig */ }, oldConfig = testConfig) {
+function LineChartSettings({ updateConfig, config: oldConfig } /* , oldConfig = testConfig */) {
   const classes = useStyles();
   const [value, setValue] = useState(0);
   const [config, setConfig] = useState(testConfig);
 
   useEffect(() => {
-    setConfig(testConfig);
+    setConfig(oldConfig);
   }, [config]);
 
   const { axisData, display } = config;
@@ -261,6 +261,7 @@ function LineChartSettings({ updateConfig /* , config: oldConfig */ }, oldConfig
             value={XAxis.key}
             onChange={(event) => {
               axisData.XAxis.key = event.target.value;
+              axisData.XAxis.label = event.target.value;
               setConfig({ ...config, axisData });
             }}
           >
@@ -276,6 +277,7 @@ function LineChartSettings({ updateConfig /* , config: oldConfig */ }, oldConfig
             value={YAxis.key}
             onChange={(event) => {
               axisData.YAxis.key = event.target.value;
+              axisData.YAxis.label = event.target.value;
               setConfig({ ...config, axisData });
             }}
           >

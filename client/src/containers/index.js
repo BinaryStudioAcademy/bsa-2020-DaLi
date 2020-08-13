@@ -11,6 +11,7 @@ import PublicRoute from './PublicRoute/PublicRoute';
 import VisualizationsListContainer from './VisualizationsListContainer/VisualizationsListContainer';
 import AccountSettingsContainer from './AccountSettingsContainer';
 import DashboardContainer from './DashboardContainer/DashboardContainer';
+import AnalyticsTabsContainer from './AnalyticsTabsContainer/AnalyticsTabsContainer';
 
 export {
   LoginPageContainer,
@@ -26,4 +27,5 @@ export {
   VisualizationsListContainer,
   AccountSettingsContainer,
   DashboardContainer,
+  AnalyticsTabsContainer,
 };

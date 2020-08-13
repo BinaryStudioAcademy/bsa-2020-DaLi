@@ -2,10 +2,13 @@ import 'dotenv/config';
 import cors from 'cors';
 import express from 'express';
 import passport from 'passport';
+import swaggerUi from 'swagger-ui-express';
 import { sequelize } from './src/models';
 import routes from './src/routes';
 import errorHandlerMiddleware from './src/middlewares/errorHandlerMiddleware';
 import { passportMiddleware } from './src/middlewares/passport';
+
+import * as swaggerDocument from './src/docs';
 
 const app = express();
 
@@ -15,6 +18,7 @@ passportMiddleware(passport);
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 routes(app);
 

@@ -31,7 +31,6 @@ export default (sequelize, DataTypes) => {
       password: {
         allowNull: false,
         type: DataTypes.STRING,
-        unique: true,
       },
       createdAt: DataTypes.DATE,
       updatedAt: DataTypes.DATE,

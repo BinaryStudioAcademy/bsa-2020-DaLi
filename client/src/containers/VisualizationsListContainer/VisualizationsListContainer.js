@@ -17,7 +17,7 @@ const VisualizationsListContainer = ({
     return () => {
       resetError();
     };
-  }, []);
+  }, [getVisualizations, resetError]);
 
   const deleteItem = (id) => () => {
     deleteVisualization(id);

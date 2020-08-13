@@ -12,6 +12,7 @@ import './styles.css';
 
 const Header = ({ logout }) => {
   const history = useHistory();
+  console.log(history);
   const [anchorEl, setAnchorEl] = React.useState(null);
 
   const handleClick = (event) => {

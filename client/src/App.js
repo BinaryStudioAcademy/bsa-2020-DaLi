@@ -15,12 +15,13 @@ function App({ isAuthorized, isLoading, login }) {
       login();
     }
   }, [login, token]);
+  const pathname = window.location.pathname;
 
   return isLoading ? (
     'Loading'
   ) : (
     <Router>
-      {isAuthorized ? <Header /> : null}
+      {isAuthorized ? pathname !== '/admin' ? <Header /> : null : null}
       {routes}
     </Router>
   );

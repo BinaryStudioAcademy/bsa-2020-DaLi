@@ -5,7 +5,7 @@ import passport from 'passport';
 import swaggerUi from 'swagger-ui-express';
 import { sequelize } from './src/models';
 import routes from './src/routes';
-// import errorHandlerMiddleware from './src/middlewares/errorHandlerMiddleware';
+import errorHandlerMiddleware from './src/middlewares/errorHandlerMiddleware';
 import { passportMiddleware } from './src/middlewares/passport';
 
 import * as swaggerDocument from './src/docs';
@@ -22,7 +22,7 @@ app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 routes(app);
 
-// app.use(errorHandlerMiddleware);
+app.use(errorHandlerMiddleware);
 
 sequelize.sync();
 

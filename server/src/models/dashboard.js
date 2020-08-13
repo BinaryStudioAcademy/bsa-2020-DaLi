@@ -1,18 +1,23 @@
 import { Model } from 'sequelize';
 
 export default (sequelize, DataTypes) => {
-  class Visualization extends Model {}
-  Visualization.init(
+  class Dashboard extends Model {
+    static associate(models) {
+      Dashboard.belongsToMany(models.Visualization, {
+        through: models.DashboardVisualizations,
+        foreignKey: 'dashboards_id',
+        otherKey: 'visualizations_id',
+      });
+    }
+  }
+  Dashboard.init(
     {
       id: {
         type: DataTypes.UUID,
+        allowNull: false,
         autoIncrement: false,
         primaryKey: true,
         defaultValue: DataTypes.UUIDV4,
-      },
-      type: {
-        type: DataTypes.ENUM(['LINE_CHART', 'BAR_CHART', 'TABLE']),
-        allowNull: false,
       },
       name: {
         type: DataTypes.STRING,
@@ -20,19 +25,15 @@ export default (sequelize, DataTypes) => {
       },
       description: {
         type: DataTypes.STRING,
-        allowNull: true,
-      },
-      config: {
-        type: DataTypes.JSON,
-        allowNull: false,
       },
       createdAt: DataTypes.DATE,
       updatedAt: DataTypes.DATE,
     },
     {
       sequelize,
-      modelName: 'Visualization',
+      modelName: 'Dashboard',
     }
   );
-  return Visualization;
+
+  return Dashboard;
 };

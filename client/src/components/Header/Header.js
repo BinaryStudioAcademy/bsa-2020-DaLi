@@ -19,6 +19,10 @@ const Header = ({ logout }) => {
   };
 
   const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  const handleLogout = () => {
     logout();
     setAnchorEl(null);
   };
@@ -38,7 +42,7 @@ const Header = ({ logout }) => {
         <MenuItem onClick={handleClose} disabled>
           Admin
         </MenuItem>
-        <MenuItem onClick={handleClose}>Sign out</MenuItem>
+        <MenuItem onClick={handleLogout}>Sign out</MenuItem>
       </Menu>
     </header>
   );

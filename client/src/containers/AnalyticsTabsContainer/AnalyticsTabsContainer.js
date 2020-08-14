@@ -1,10 +1,8 @@
 import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { makeStyles } from '@material-ui/core/styles';
-import Tab from '@material-ui/core/Tab';
-import { TabsPanel, TabsHeader } from '../../components';
 import { getVisualizations, deleteVisualization, resetError } from '../VisualizationsListContainer/actions';
+import AnalyticsTabs from '../../components/AnalyticsTabs/AnalyticsTabs';
 
 const mockDashboards = [
   {
@@ -33,27 +31,7 @@ const mockDashboards = [
   },
 ];
 
-const useStyles = makeStyles(() => ({
-  tabsButtons: {
-    color: '#000000',
-    fontWeight: 900,
-    maxWidth: `${100 / 3}%`,
-    width: '100%',
-    borderBottom: '1px solid #f0f0f0',
-    '&$selected': {
-      color: '#509ee3',
-    },
-  },
-  selected: {},
-}));
-
-function AnalyticsTabsContainer({ visualizations, getVisualizations, deleteVisualization, resetError, isLoading }) {
-  const classes = useStyles();
-  const [value, setValue] = React.useState(0);
-
-  function handleChange(event, newValue) {
-    setValue(newValue);
-  }
+const AnalyticsTabsContainer = ({ visualizations, getVisualizations, deleteVisualization, resetError, isLoading }) => {
   useEffect(() => {
     getVisualizations();
     return () => {
@@ -61,38 +39,15 @@ function AnalyticsTabsContainer({ visualizations, getVisualizations, deleteVisua
     };
   }, [getVisualizations, resetError]);
 
-  const deleteItem = (id) => () => {
-    deleteVisualization(id);
-  };
-
-  const sortData = (data) => {
-    return data.sort((elem, nextElem) => {
-      return new Date(elem.updatedAt) - new Date(nextElem.updatedAt);
-    });
-  };
-
   return (
-    <>
-      <TabsHeader value={value} onChange={handleChange}>
-        <Tab classes={{ root: classes.tabsButtons, selected: classes.selected }} label="Everything" fullWidth />
-        <Tab classes={{ root: classes.tabsButtons, selected: classes.selected }} label="Dashboards" fullWidth />
-        <Tab classes={{ root: classes.tabsButtons, selected: classes.selected }} label="Visualizations" fullWidth />
-      </TabsHeader>
-      {!isLoading ? (
-        <>
-          <TabsPanel
-            value={value}
-            index={0}
-            deleteItem={deleteItem}
-            data={sortData([...visualizations, ...mockDashboards])}
-          />
-          <TabsPanel value={value} index={1} deleteItem={deleteItem} data={sortData(mockDashboards)} />
-          <TabsPanel value={value} index={2} deleteItem={deleteItem} data={sortData(visualizations)} />
-        </>
-      ) : null}
-    </>
+    <AnalyticsTabs
+      visualizations={visualizations}
+      dashboards={mockDashboards}
+      deleteVisualization={deleteVisualization}
+      isLoading={isLoading}
+    />
   );
-}
+};
 
 AnalyticsTabsContainer.propTypes = {
   visualizations: PropTypes.array,

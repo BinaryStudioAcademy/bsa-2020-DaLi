@@ -14,7 +14,7 @@ import { Link } from 'react-router-dom';
 
 import { useStyles } from './styles';
 
-function TabsPanel({ value, index, data, deleteItem }) {
+function AnalyticsTabsPanel({ value, index, data, deleteItem }) {
   const classes = useStyles();
 
   const chooseIcon = (type) => {
@@ -72,11 +72,11 @@ function TabsPanel({ value, index, data, deleteItem }) {
   );
 }
 
-TabsPanel.propTypes = {
+AnalyticsTabsPanel.propTypes = {
   data: PropTypes.array,
   deleteItem: PropTypes.func,
   index: PropTypes.any.isRequired,
   value: PropTypes.any.isRequired,
 };
 
-export default TabsPanel;
+export default AnalyticsTabsPanel;

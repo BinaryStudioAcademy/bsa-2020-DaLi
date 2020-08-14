@@ -13,8 +13,7 @@ import ViewVisualizationMain from './ViewVisualizationMain';
 import ViewVisualizationHeader from './ViewVisualizationHeader/ViewVisualizationHeader';
 import TableSettingsSidebar from './TableSettingsSidebar/TableSettingsSidebar';
 import BarChartSettings from './BarChartSettings';
-import TabsPanel from './TabsPanel/TabsPanel';
-import TabsHeader from './TabsHeader/TabsHeader';
+import AnalyticsTabs from './AnalyticsTabs/AnalyticsTabs';
 
 export {
   BarChart,
@@ -32,6 +31,5 @@ export {
   ViewVisualizationHeader,
   TableSettingsSidebar,
   BarChartSettings,
-  TabsPanel,
-  TabsHeader,
+  AnalyticsTabs,
 };

@@ -26,7 +26,16 @@ const Header = ({ logout }) => {
   };
 
   const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  const onSignOut = () => {
     logout();
+    handleClose();
+  };
+
+  const onAccountSettings = () => {
+    history.push('/account-settings');
     setAnchorEl(null);
   };
 
@@ -62,13 +71,11 @@ const Header = ({ logout }) => {
         open={Boolean(anchorEl)}
         onClose={() => setAnchorEl(null)}
       >
-        <MenuItem onClick={handleClose} disabled>
-          Account Setting
-        </MenuItem>
+        <MenuItem onClick={onAccountSettings}>Account Setting</MenuItem>
         <MenuItem onClick={handleClose} disabled>
           Admin
         </MenuItem>
-        <MenuItem onClick={handleClose}>Sign out</MenuItem>
+        <MenuItem onClick={onSignOut}>Sign out</MenuItem>
       </Menu>
     </header>
   );

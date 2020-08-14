@@ -1,4 +1,4 @@
-import { LOGIN_USER, LOGOUT_USER } from './actionTypes';
+import { LOGIN_USER, LOGOUT_USER, UPDATE_USER } from './actionTypes';
 
 export const login = (request) => {
   return {
@@ -10,5 +10,12 @@ export const login = (request) => {
 export const logout = () => {
   return {
     type: LOGOUT_USER,
+  };
+};
+
+export const updateUser = (payload) => {
+  return {
+    type: UPDATE_USER,
+    payload,
   };
 };

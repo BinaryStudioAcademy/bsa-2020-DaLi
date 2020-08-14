@@ -14,7 +14,7 @@ import { Link } from 'react-router-dom';
 
 import { useStyles } from './styles';
 
-function AnalyticsTabsPanel({ value, index, data, deleteItem }) {
+const AnalyticsTabsPanel = ({ value, index, data, deleteItem }) => {
   const classes = useStyles();
 
   const chooseIcon = (type) => {
@@ -70,7 +70,7 @@ function AnalyticsTabsPanel({ value, index, data, deleteItem }) {
       </Box>
     </Typography>
   );
-}
+};
 
 AnalyticsTabsPanel.propTypes = {
   data: PropTypes.array,

@@ -42,7 +42,7 @@ const Header = ({ logout, changeView }) => {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = useState(null);
   const [addMenuAnchorEl, setAddMenuAnchorEl] = useState(null);
-  const [addDashboaradModalVisible, setAddDashboradModalVisible] = useState(false);
+  const [addDashboradModalVisible, setAddDashboradModalVisible] = useState(false);
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);

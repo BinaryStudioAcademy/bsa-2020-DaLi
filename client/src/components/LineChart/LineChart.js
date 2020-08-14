@@ -95,9 +95,11 @@ function LineChart({settings, data, chart:chartSize}) {
     };
     const yAxis = (g) => g.attr('transform', `translate(${margin.left},0)`).call(d3.axisLeft(yScale));
 
-    chart.append('g').attr('class', 'x-axis').call(xAxis);
+    chart.append('g').attr('class', 'x-axis axis').call(xAxis);
+    chart.append('g').attr('class', 'y-axis axis').call(yAxis);
 
-    chart.append('g').attr('class', 'y-axis').call(yAxis);
+    // delete axis values
+    chart.selectAll('.axis').selectAll('text').remove()
 
     if (showTrendLine && data.length) {
       const xValues = data.map((d) => d[XAxis.key]);
@@ -148,9 +150,7 @@ function LineChart({settings, data, chart:chartSize}) {
   }, [goal, showTrendLine, showDataPointsValues, lineType, color, data, chartSize]);
 
   return (
-    <div id="container">
       <svg ref={svgRef} />
-    </div>
   );
 }
 

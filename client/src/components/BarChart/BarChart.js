@@ -153,9 +153,7 @@ function BarChart(props) {
   }, [props]);
 
   return (
-    <div id="container">
       <svg ref={svgRef} />
-    </div>
   );
 }
 

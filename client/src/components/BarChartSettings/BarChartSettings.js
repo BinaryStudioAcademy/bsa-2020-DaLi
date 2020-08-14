@@ -178,7 +178,7 @@ const BarChartSettings = ({ updateConfig, config: oldConfig }) => {
   const [yAxis, setYAxis] = useState(yAxisValues[0]);
   const [isGoalLine, setIsGoalLine] = useState(false);
   const [goalLine, setGoalLine] = useState(0);
-  const [color, setColor] = useState('#000');
+  const [color, setColor] = useState(oldConfig.display.color);
   const [isLabelXAxis, setIsLabelXAxis] = useState(false);
   const [isLabelYAxis, setIsLabelYAxis] = useState(false);
   const [labelXAxis, setLabelXAxis] = useState('');

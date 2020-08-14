@@ -19,7 +19,7 @@ function LineChart({settings, data, chart:chartSize}) {
   useEffect(() => {
     setConfig(settings);
     const { margin, width, height } = chartSize;
-
+    
     const chart = d3.select(svgRef.current);
 
     chart.selectAll("*").remove();
@@ -27,11 +27,11 @@ function LineChart({settings, data, chart:chartSize}) {
     const yDataRange = {
       min: calcMinYDataValue(
         d3.min(data, (d) => d[YAxis.key]),
-        goal.value
+        goal
       ),
       max: calcMaxYDataValue(
         d3.max(data, (d) => d[YAxis.key]),
-        goal.value
+        goal
       ),
     };
 

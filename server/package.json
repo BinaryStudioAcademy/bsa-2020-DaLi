@@ -24,6 +24,7 @@
     "passport-local": "^1.0.0",
     "pg": "^8.3.0",
     "sequelize": "^6.3.3",
+    "swagger-ui-express": "^4.1.4",
     "validator": "^13.1.1"
   },
   "devDependencies": {
@@ -40,7 +41,8 @@
     "husky": "^4.2.5",
     "lint-staged": ">=10",
     "nodemon": "^2.0.4",
-    "prettier": "^2.0.5"
+    "prettier": "^2.0.5",
+    "swagger-ui-express": "^4.1.4"
   },
   "husky": {
     "hooks": {

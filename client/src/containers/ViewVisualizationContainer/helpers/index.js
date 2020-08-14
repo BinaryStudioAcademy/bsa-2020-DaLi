@@ -1,6 +1,7 @@
 import getVisualization from './getVisualizationHelper';
 import { getVisualizationComponent, getVisualizationSettings, getVisualizationIcon } from './visualizationDataHelper';
-import { checkIsVisualizationNew, createDataSample, createNewVisualization } from './createVisualizationHelper';
+import { checkIsVisualizationNew, createDataSample, createInitVisualization } from './initVisualizationHelper';
+import { createNewVisualization, createUpdatedVisualization } from './saveVisualizationHelper';
 
 export {
   getVisualization,
@@ -9,5 +10,7 @@ export {
   getVisualizationIcon,
   checkIsVisualizationNew,
   createDataSample,
+  createInitVisualization,
   createNewVisualization,
+  createUpdatedVisualization,
 };

@@ -16,7 +16,7 @@ const ValidationSchema = Yup.object({
   name: Yup.string().required('Name is required'),
 });
 // eslint-disable-next-line
-const SaveVisualizationModal = ({closeModal, saveVisualization, isVisible}) => {
+const SaveVisualizationModal = ({closeModal, saveVisualization, isVisible, title, name, description}) => {
 
   const cancel = (resetForm) => () => {
     resetForm();
@@ -29,7 +29,7 @@ const SaveVisualizationModal = ({closeModal, saveVisualization, isVisible}) => {
   return (
     <Dialog open={isVisible || false} maxWidth="sm" fullWidth>
       <DialogTitle>
-        Save visualization
+        {title}
         <IconButton
           aria-label="close"
           size="small"
@@ -41,7 +41,7 @@ const SaveVisualizationModal = ({closeModal, saveVisualization, isVisible}) => {
       </DialogTitle>
 
       <Formik
-        initialValues={{ name: '', description: '' }}
+        initialValues={{ name, description }}
         validationSchema={ValidationSchema}
         onSubmit={(values) => save(values)}
       >
@@ -90,6 +90,9 @@ SaveVisualizationModal.propTypes = {
   closeModal: PropTypes.func,
   saveVisualization: PropTypes.func,
   isVisible: PropTypes.bool,
+  title: PropTypes.string,
+  name: PropTypes.string,
+  description: PropTypes.string,
 };
 
 MyForm.propTypes = {

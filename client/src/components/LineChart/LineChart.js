@@ -1,5 +1,5 @@
 /* eslint-disable */
-import React, { useEffect } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import * as d3 from 'd3';
 import d3Tip from 'd3-tip';
 import PropTypes from 'prop-types';
@@ -9,34 +9,29 @@ import { findLineByLeastSquares } from '../../utils/trendline';
 
 import './LineChart.css';
 
-import {orders} from '../../mock_orders'
-import { useRef } from 'react';
+function LineChart({settings, data, chart:chartSize}) {
+  const { goal, showTrendLine, showDataPointsValues, lineType = "curveNatural", color } = settings.display;
+  const XAxis = settings.axisData.XAxis;
+  const YAxis = settings.axisData.YAxis;
 
-function LineChart(props) {
+  const [config, setConfig] = useState({});
   const svgRef = useRef()
   useEffect(() => {
-    const margin = {
-      top: 40,
-      right: 40,
-      bottom: 60,
-      left: 60,
-    };
-    const height = 600;
-    const width = 1000;
-    const { goal, showTrendLine, showDataPointsValues, lineType, color } = props.settings.display;
-    const XAxis = props.settings.axisData.XAxis;
-    const YAxis = props.settings.axisData.YAxis;
+    setConfig(settings);
+    const { margin, width, height } = chartSize;
+
     const chart = d3.select(svgRef.current);
-    // const { data } = props;
-    const  data  = orders;
+
+    chart.selectAll("*").remove();
+
     const yDataRange = {
       min: calcMinYDataValue(
         d3.min(data, (d) => d[YAxis.key]),
-        goal
+        goal.value
       ),
       max: calcMaxYDataValue(
         d3.max(data, (d) => d[YAxis.key]),
-        goal
+        goal.value
       ),
     };
 
@@ -63,9 +58,9 @@ function LineChart(props) {
 
     const line = d3
       .line()
+      .curve(d3[lineType])
       .x((d) => xScale(d[XAxis.key]) + xScale.bandwidth() / 2)
-      .y((d) => yScale(d[YAxis.key]))
-      .curve(d3[lineType]);
+      .y((d) => yScale(d[YAxis.key]));
 
     chart.append('path').datum(data).attr('class', 'line').attr('d', line).style('stroke', color);
 
@@ -150,7 +145,7 @@ function LineChart(props) {
         .attr('class', 'goal__label')
         .text(goal.label);
     }
-  }, []);
+  }, [goal, showTrendLine, showDataPointsValues, lineType, color, data, chartSize]);
 
   return (
     <div id="container">

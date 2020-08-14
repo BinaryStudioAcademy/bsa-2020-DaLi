@@ -19,12 +19,13 @@ export const login = async (user) => {
         jwtConfig.secretKey,
         { expiresIn: jwtConfig.expiresIn }
       );
+
       return {
         status: 200,
         response: {
           success: true,
           token,
-          user: { email, firstName, lastName },
+          user: { id, email, firstName, lastName },
         },
       };
     }
@@ -84,12 +85,13 @@ export const getUserByToken = async (token) => {
   }
 
   const { firstName, lastName, email } = candidate;
+  console.log(candidate);
   return {
     status: 200,
     response: {
       success: true,
       token: token.replace('Bearer ', ''),
-      user: { email, firstName, lastName, id },
+      user: { id, email, firstName, lastName },
     },
   };
 };

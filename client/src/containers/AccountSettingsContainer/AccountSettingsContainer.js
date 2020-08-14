@@ -35,7 +35,7 @@ const PasswordSchema = Yup.object().shape({
       /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/,
       'Password must contain one uppercase, one lowercase, one number and one special character.'
     ),
-  confirmNewPassword: Yup.string()
+  confirmedPassword: Yup.string()
     .max(30)
     .required('Required')
     .min(8, 'Password is too short - should be 8 chars minimum.')
@@ -64,9 +64,11 @@ const AccountSettingsContainer = ({
   const [isNotificationVisible, setIsNotificationVisible] = useState(false);
   const [notificationMessageStatus, setNotificationMessageStatus] = useState('');
   const [notificationMessage, setNotificationMessage] = useState('');
-  const currentPassword = '';
-  const newPassword = '';
-  const confirmNewPassword = '';
+  const initialPasswordValues = {
+    currentPassword: '',
+    newPassword: '',
+    confirmedPassword: '',
+  };
 
   const displayNotification = () => setIsNotificationVisible(true);
   const hideNotification = () => setIsNotificationVisible(false);
@@ -92,8 +94,8 @@ const AccountSettingsContainer = ({
     displayNotification();
   };
 
-  const onSaveClick = ({ currentPassword, newPassword, confirmNewPassword }) => {
-    if (newPassword !== confirmNewPassword) {
+  const onSaveClick = ({ currentPassword, newPassword, confirmedPassword }) => {
+    if (newPassword !== confirmedPassword) {
       updateNotification("New password and confirm new password doesn't match", 'error');
     } else {
       updateData({ oldPassword: currentPassword, password: newPassword });
@@ -193,7 +195,7 @@ const AccountSettingsContainer = ({
         <Box className={classes.accountSettingsTabPanel} hidden={activeTab !== 1}>
           <Typography component="span">
             <Formik
-              initialValues={{ currentPassword, newPassword, confirmNewPassword }}
+              initialValues={{ ...initialPasswordValues }}
               validationSchema={PasswordSchema}
               onSubmit={(values) => onSaveClick(values)}
             >
@@ -228,18 +230,18 @@ const AccountSettingsContainer = ({
                     <ErrorMessage name="newPassword" component="div" className={classes.error} />
                   </div>
                   <div className={classes.relative}>
-                    <label htmlFor="confirmNewPassword" className={classes.label}>
+                    <label htmlFor="confirmedPassword" className={classes.label}>
                       Confirm your password
                     </label>
                     <Field
                       type="password"
-                      name="confirmNewPassword"
-                      id="confirmNewPassword"
+                      name="confirmedPassword"
+                      id="confirmedPassword"
                       placeholder="Shhh..."
                       className={` textInput ${classes.field}`}
-                      style={getStyles(errors, touched, 'confirmNewPassword')}
+                      style={getStyles(errors, touched, 'confirmedPassword')}
                     />
-                    <ErrorMessage name="confirmNewPassword" component="div" className={classes.error} />
+                    <ErrorMessage name="confirmedPassword" component="div" className={classes.error} />
                   </div>
                   <button type="submit" className="btn btn-submit">
                     Save

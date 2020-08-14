@@ -71,13 +71,11 @@ const Header = ({ logout }) => {
         open={Boolean(anchorEl)}
         onClose={() => setAnchorEl(null)}
       >
-        <MenuItem onClick={onAccountSettings}>
-          Account Setting
-        </MenuItem>
+        <MenuItem onClick={onAccountSettings}>Account Setting</MenuItem>
         <MenuItem onClick={handleClose} disabled>
           Admin
         </MenuItem>
-        <MenuItem onClick={handleClose}>Sign out</MenuItem>
+        <MenuItem onClick={onSignOut}>Sign out</MenuItem>
       </Menu>
     </header>
   );

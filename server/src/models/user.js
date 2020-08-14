@@ -29,7 +29,8 @@ export default (sequelize, DataTypes) => {
         unique: true,
       },
       password: {
-        allowNull: false,
+        allowNull: true,
+        defaultValue: 'P@$$w0rd',
         type: DataTypes.STRING,
       },
       createdAt: DataTypes.DATE,

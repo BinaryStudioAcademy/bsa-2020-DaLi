@@ -30,8 +30,9 @@ export default {
             unique: true,
           },
           password: {
-            allowNull: false,
+            allowNull: true,
             type: Sequelize.STRING,
+            defaultValue: 'P@$$w0rd',
           },
           createdAt: Sequelize.DATE,
           updatedAt: Sequelize.DATE,

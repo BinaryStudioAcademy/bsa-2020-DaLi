@@ -13,6 +13,10 @@ import ViewVisualizationMain from './ViewVisualizationMain';
 import ViewVisualizationHeader from './ViewVisualizationHeader/ViewVisualizationHeader';
 import TableSettingsSidebar from './TableSettingsSidebar/TableSettingsSidebar';
 import BarChartSettings from './BarChartSettings';
+import PeopleList from './PeopleList';
+import PeopleListHeader from './PeopleListHeader';
+import GroupList from './GroupList';
+import AddUserModal from './AddUserModal';
 
 export {
   BarChart,
@@ -30,4 +34,8 @@ export {
   ViewVisualizationHeader,
   TableSettingsSidebar,
   BarChartSettings,
+  PeopleList,
+  PeopleListHeader,
+  GroupList,
+  AddUserModal,
 };

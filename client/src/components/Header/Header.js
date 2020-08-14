@@ -3,8 +3,10 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { useHistory, NavLink } from 'react-router-dom';
 import AddIcon from '@material-ui/icons/Add';
+import BarChartIcon from '@material-ui/icons/BarChart';
 import SettingsIcon from '@material-ui/icons/Settings';
 import Typography from '@material-ui/core/Typography';
+import DashboardIcon from '@material-ui/icons/Dashboard';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import { makeStyles } from '@material-ui/core/styles';
@@ -38,9 +40,14 @@ const Header = ({ logout, changeView }) => {
   const history = useHistory();
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState(null);
+  const [addMenuAnchorEl, setAddMenuAnchorEl] = React.useState(null);
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
+  };
+
+  const handleAddMenuClick = (event) => {
+    setAddMenuAnchorEl(event.currentTarget);
   };
 
   const handleClose = () => {
@@ -50,6 +57,7 @@ const Header = ({ logout, changeView }) => {
 
   const addVisualization = () => {
     history.push('/select-visualization');
+    setAddMenuAnchorEl(null);
   };
 
   const handleClickOnAdmin = () => {
@@ -119,7 +127,23 @@ const Header = ({ logout, changeView }) => {
         </>
       ) : (
         <>
-          <AddIcon className="header-icons" fontSize="large" onClick={addVisualization} />
+          <AddIcon className="header-icons" fontSize="large" onClick={handleAddMenuClick} />
+          <Menu
+            id="add-menu"
+            anchorEl={addMenuAnchorEl}
+            keepMounted
+            open={Boolean(addMenuAnchorEl)}
+            onClose={() => setAddMenuAnchorEl(null)}
+          >
+            <MenuItem onClick={addVisualization}>
+              <BarChartIcon />
+              Add Visualization
+            </MenuItem>
+            <MenuItem onClick={() => {}} disabled>
+              <DashboardIcon />
+              Add Dashboard
+            </MenuItem>
+          </Menu>
           <SettingsIcon className="header-icons" fontSize="large" onClick={handleClick} />
         </>
       )}

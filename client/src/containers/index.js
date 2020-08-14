@@ -12,6 +12,7 @@ import VisualizationsListContainer from './VisualizationsListContainer/Visualiza
 import AccountSettingsContainer from './AccountSettingsContainer';
 import DashboardContainer from './DashboardContainer/DashboardContainer';
 import AdminContainer from './AdminContainer/AdminContainer';
+import AnalyticsTabsContainer from './AnalyticsTabsContainer/AnalyticsTabsContainer';
 
 export {
   LoginPageContainer,
@@ -27,5 +28,6 @@ export {
   VisualizationsListContainer,
   AccountSettingsContainer,
   DashboardContainer,
-  AdminContainer
+  AdminContainer,
+  AnalyticsTabsContainer,
 };

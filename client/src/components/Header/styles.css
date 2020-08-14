@@ -31,3 +31,7 @@ header {
 .admin-header-nav .MuiTabs-indicator {
   display: none;
 }
+
+.MuiListItem-root.MuiMenuItem-root svg {
+    margin-right: 10px;
+}

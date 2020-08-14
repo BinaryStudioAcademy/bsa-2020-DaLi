@@ -2,6 +2,8 @@ import Sequelize from 'sequelize';
 import DATABASE_URL from '../config/dbConfig';
 import User from './user';
 import Visualization from './visualization';
+import Dashboard from './dashboard';
+import DashboardVisualizations from './dashboardVisualizations';
 
 export const sequelize = new Sequelize(DATABASE_URL, {
   dialect: 'postgres',
@@ -9,6 +11,8 @@ export const sequelize = new Sequelize(DATABASE_URL, {
 
 User(sequelize, Sequelize.DataTypes);
 Visualization(sequelize, Sequelize.DataTypes, Sequelize.Deferrable);
+Dashboard(sequelize, Sequelize.DataTypes);
+DashboardVisualizations(sequelize, Sequelize.DataTypes);
 
 const models = sequelize.models;
 

@@ -37,7 +37,7 @@ const AddVisualizationToDashboardModal = ({closeModal, addVisualization, search,
 
       <Formik initialValues={{ search: '' }} onSubmit={(values) => searchVisualizations(values)}>
         {/* eslint-disable-next-line */}
-        {(props) => <MySearchForm {...props}/>}
+        {(props) => <SearchVisualizationForm {...props}/>}
       </Formik>
       {visualizations && (
         <div className="visualizationToDashboardModalFooter">
@@ -55,7 +55,7 @@ const AddVisualizationToDashboardModal = ({closeModal, addVisualization, search,
   );
 };
 
-const MySearchForm = ({ handleSubmit }) => (
+const SearchVisualizationForm = ({ handleSubmit }) => (
   <Form className="visualizationToDashboardModalForm" onSubmit={handleSubmit}>
     <DialogContent className="MyFieldContainer">
       <div className="search-field">
@@ -74,7 +74,7 @@ AddVisualizationToDashboardModal.propTypes = {
   visualizations: PropTypes.array,
 };
 
-MySearchForm.propTypes = {
+SearchVisualizationForm.propTypes = {
   handleSubmit: PropTypes.func,
 };
 

@@ -45,8 +45,8 @@ const PasswordSchema = Yup.object().shape({
     ),
 });
 
-const getStyles = (errors, fieldName) => {
-  return getIn(errors, fieldName) ? { border: '1px solid red' } : {};
+const getStyles = (errors, touched, fieldName) => {
+  return getIn(errors, fieldName) && getIn(touched, fieldName) ? { border: '1px solid red' } : {};
 };
 
 const AccountSettingsContainer = ({
@@ -141,7 +141,7 @@ const AccountSettingsContainer = ({
               validationSchema={ProfileSchema}
               onSubmit={(values) => onUpdateClick(values)}
             >
-              {({ errors }) => (
+              {({ errors, touched }) => (
                 <Form>
                   <div className={classes.relative}>
                     <label htmlFor="firstName" className={classes.label}>
@@ -152,7 +152,7 @@ const AccountSettingsContainer = ({
                       name="firstName"
                       id="firstName"
                       className={` textInput ${classes.field}`}
-                      style={getStyles(errors, 'firstName')}
+                      style={getStyles(errors, touched, 'firstName')}
                     />
                     <ErrorMessage name="firstName" component="div" className={classes.error} />
                   </div>
@@ -165,7 +165,7 @@ const AccountSettingsContainer = ({
                       name="lastName"
                       id="lastName"
                       className={` textInput ${classes.field}`}
-                      style={getStyles(errors, 'lastName')}
+                      style={getStyles(errors, touched, 'lastName')}
                     />
                     <ErrorMessage name="lastName" component="div" className={classes.error} />
                   </div>
@@ -178,7 +178,7 @@ const AccountSettingsContainer = ({
                       name="email"
                       id="email"
                       className={` textInput ${classes.field}`}
-                      style={getStyles(errors, 'email')}
+                      style={getStyles(errors, touched, 'email')}
                     />
                     <ErrorMessage name="email" component="div" className={classes.error} />
                   </div>
@@ -197,7 +197,7 @@ const AccountSettingsContainer = ({
               validationSchema={PasswordSchema}
               onSubmit={(values) => onSaveClick(values)}
             >
-              {({ errors }) => (
+              {({ errors, touched }) => (
                 <Form>
                   <div className={classes.relative}>
                     <label htmlFor="currentPassword" className={classes.label}>
@@ -209,7 +209,7 @@ const AccountSettingsContainer = ({
                       id="currentPassword"
                       placeholder="Shhh..."
                       className={` textInput ${classes.field}`}
-                      style={getStyles(errors, 'currentPassword')}
+                      style={getStyles(errors, touched, 'currentPassword')}
                     />
                     <ErrorMessage name="currentPassword" component="div" className={classes.error} />
                   </div>
@@ -223,7 +223,7 @@ const AccountSettingsContainer = ({
                       id="newPassword"
                       placeholder="Shhh..."
                       className={` textInput ${classes.field}`}
-                      style={getStyles(errors, 'newPassword')}
+                      style={getStyles(errors, touched, 'newPassword')}
                     />
                     <ErrorMessage name="newPassword" component="div" className={classes.error} />
                   </div>
@@ -237,7 +237,7 @@ const AccountSettingsContainer = ({
                       id="confirmNewPassword"
                       placeholder="Shhh..."
                       className={` textInput ${classes.field}`}
-                      style={getStyles(errors, 'confirmNewPassword')}
+                      style={getStyles(errors, touched, 'confirmNewPassword')}
                     />
                     <ErrorMessage name="confirmNewPassword" component="div" className={classes.error} />
                   </div>

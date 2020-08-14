@@ -1,12 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { useHistory } from 'react-router-dom';
+import { useHistory, NavLink } from 'react-router-dom';
 import AddIcon from '@material-ui/icons/Add';
 import SettingsIcon from '@material-ui/icons/Settings';
 import Typography from '@material-ui/core/Typography';
-import Tabs from '@material-ui/core/Tabs';
-import Tab from '@material-ui/core/Tab';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import { makeStyles } from '@material-ui/core/styles';
@@ -18,14 +16,15 @@ import './styles.css';
 const useStyles = makeStyles({
   typography: {
     fontSize: '15px',
+    marginRight: '25px',
   },
-  buttons: {
-    textTransform: 'capitalize',
+  link: {
     color: 'white',
-    fontWeight: 300,
-    minWidth: 'auto',
     padding: '0 20px',
-    minHeight: '35px',
+    minHeight: '26px',
+    fontWeight: '300',
+    textDecoration: 'none',
+    opacity: '0.7',
   },
   settingBtn: {
     marginLeft: 'auto',
@@ -39,11 +38,6 @@ const Header = ({ logout, changeView }) => {
   const history = useHistory();
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState(null);
-  const [value, setValue] = React.useState(0);
-
-  const handleChange = (event, newValue) => {
-    setValue(newValue);
-  };
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -58,19 +52,8 @@ const Header = ({ logout, changeView }) => {
     history.push('/select-visualization');
   };
 
-  const a11yProps = (index) => {
-    return {
-      id: `simple-tab-${index}`,
-      'aria-controls': `simple-tabpanel-${index}`,
-    };
-  };
-
-  const changeAdminPageView = (index) => {
-    changeView(index);
-  };
-
   const handleClickOnAdmin = () => {
-    history.push('/admin');
+    history.push('/admin/people');
     handleClose();
   };
 
@@ -79,7 +62,11 @@ const Header = ({ logout, changeView }) => {
     handleClose();
   };
 
-  const isAdminPage = history.location.pathname === '/admin';
+  const handleChangeAdminView = (viewName) => {
+    changeView(viewName);
+  };
+
+  const isAdminPage = history.location.pathname.includes('/admin');
 
   return (
     <header className={isAdminPage ? 'admin-header' : ''}>
@@ -89,21 +76,45 @@ const Header = ({ logout, changeView }) => {
           <Typography variant="h6" className={classes.typography}>
             DaLi Admin
           </Typography>
-          <Tabs value={value} onChange={handleChange} className={`${classes.tabs} admin-header-nav`}>
-            <Tab className={classes.buttons} label="People" onClick={() => changeAdminPageView(0)} {...a11yProps(0)} />
-            <Tab
-              className={classes.buttons}
-              label="Databases"
-              onClick={() => changeAdminPageView(1)}
-              {...a11yProps(1)}
-            />
-            <Tab
-              className={classes.buttons}
-              label="Permissions"
-              onClick={() => changeAdminPageView(2)}
-              {...a11yProps(2)}
-            />
-          </Tabs>
+          <NavLink
+            activeStyle={{
+              opacity: '1',
+            }}
+            className={classes.link}
+            to={{
+              pathname: '/admin/people',
+            }}
+            key="people"
+            onClick={() => handleChangeAdminView('people')}
+          >
+            People
+          </NavLink>
+          <NavLink
+            activeStyle={{
+              opacity: '1',
+            }}
+            className={classes.link}
+            to={{
+              pathname: '/admin/databases',
+            }}
+            key="databases"
+            onClick={() => handleChangeAdminView('databases')}
+          >
+            Databases
+          </NavLink>
+          <NavLink
+            activeStyle={{
+              opacity: '1',
+            }}
+            className={classes.link}
+            to={{
+              pathname: '/admin/permissions',
+            }}
+            key="permissions"
+            onClick={() => handleChangeAdminView('permissions')}
+          >
+            Permissions
+          </NavLink>
           <SettingsIcon className={`${classes.settingBtn} header-icons`} fontSize="large" onClick={handleClick} />
         </>
       ) : (

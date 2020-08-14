@@ -19,7 +19,7 @@ const routes = (
     <ProtectedRoute exact path="/select-visualization" component={SelectVisualizationPage} />
     <ProtectedRoute exact path="/select-visualization/:id" component={ViewVisualizationPage} />
     <ProtectedRoute exact path="/account-settings" component={AccountSettingsPage} />
-    <ProtectedRoute exact path="/admin" component={AdminPage} />
+    <ProtectedRoute path="/admin" component={AdminPage} />
 
     <Route path="/dashboard/:id" component={DashboardPage} />
   </Switch>

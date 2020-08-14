@@ -1,8 +1,8 @@
 import { CHANGE_VIEW } from './actionTypes';
 
-export const changeView = (viewValue) => {
+export const changeView = (viewName) => {
   return {
     type: CHANGE_VIEW,
-    payload: { viewValue },
+    payload: { viewName },
   };
 };

@@ -1,14 +1,14 @@
 import { CHANGE_VIEW } from './actionTypes';
 
 const initialValue = {
-  viewValue: 0,
+  viewName: 'people',
 };
 
 const adminReducer = (state = initialValue, { type, payload }) => {
   switch (type) {
     case CHANGE_VIEW: {
-      const { viewValue } = payload;
-      return { ...state, viewValue };
+      const { viewName } = payload;
+      return { ...state, viewName };
     }
     default:
       return state;

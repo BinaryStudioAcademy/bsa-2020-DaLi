@@ -13,14 +13,7 @@ import { useRef } from 'react';
 function BarChart(props) {
   const svgRef = useRef()
   useEffect(() => {
-    const margin = {
-      top: 40,
-      right: 40,
-      bottom: 60,
-      left: 60,
-    };
-    const height = 600;
-    const width = 1000;
+    const { margin, width, height } = props.chart;
     const { goal, showTrendLine, showDataPointsValues, color } = props.settings.display;
     const XAxis = props.settings.axisData.XAxis;
     const YAxis = props.settings.axisData.YAxis;
@@ -119,8 +112,11 @@ function BarChart(props) {
         .text((a) => `${a[YAxis.key]}`);
     }
 
-    chart.append('g').attr('class', 'x-axis').call(xAxis);
-    chart.append('g').attr('class', 'y-axis').call(yAxis);
+    chart.append('g').attr('class', 'x-axis axis').call(xAxis);
+    chart.append('g').attr('class', 'y-axis axis').call(yAxis);
+
+    // delete axis values
+    chart.selectAll('.axis').selectAll('text').remove()
 
     if (YAxis.displayLabel) {
       chart
@@ -157,9 +153,7 @@ function BarChart(props) {
   }, [props]);
 
   return (
-    <div id="container">
       <svg ref={svgRef} />
-    </div>
   );
 }
 

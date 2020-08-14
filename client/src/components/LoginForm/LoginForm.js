@@ -16,8 +16,8 @@ const SignInSchema = Yup.object().shape({
     ),
 });
 
-const getStyles = (errors, fieldName) => {
-  return getIn(errors, fieldName) ? { border: '1px solid red' } : {};
+const getStyles = (errors, touched, fieldName) => {
+  return getIn(errors, fieldName) && getIn(touched, fieldName) ? { border: '1px solid red' } : {};
 };
 
 const LoginForm = ({ setIsModalVisible, login }) => {
@@ -27,7 +27,7 @@ const LoginForm = ({ setIsModalVisible, login }) => {
       validationSchema={SignInSchema}
       onSubmit={(values) => login(values)}
     >
-      {({ errors }) => (
+      {({ errors, touched }) => (
         <Form>
           <div className="email-wrapper">
             <label htmlFor="email">Email address</label>
@@ -37,7 +37,7 @@ const LoginForm = ({ setIsModalVisible, login }) => {
               id="email"
               className="textInput"
               placeholder="youlooknicetoday@email.com"
-              style={getStyles(errors, 'email')}
+              style={getStyles(errors, touched, 'email')}
             />
             <ErrorMessage name="email" component="div" className="error" />
           </div>
@@ -48,7 +48,7 @@ const LoginForm = ({ setIsModalVisible, login }) => {
               name="password"
               className="textInput"
               placeholder="Shhh..."
-              style={getStyles(errors, 'password')}
+              style={getStyles(errors, touched, 'password')}
             />
             <ErrorMessage name="password" component="div" className="error" />
           </div>

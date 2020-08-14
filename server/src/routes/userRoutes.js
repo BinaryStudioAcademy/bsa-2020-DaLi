@@ -34,18 +34,20 @@ router.post('/', async (req, res, next) => {
 });
 
 router.patch('/:id', async (req, res, next) => {
-  const result = await UserService.updateUser(
-    {
-      id: req.params.id,
-    },
-    req.body
-  );
-  if (result) {
+  try {
+    const result = await UserService.updateUser(
+      {
+        id: req.params.id,
+      },
+      req.body
+    );
     res.json(result);
-    next();
-  } else {
-    const err = new Error(`User with id of ${req.params.id} not found`);
-    next(err);
+  } catch (err) {
+    res.status(err.code);
+    res.json({
+      error: true,
+      message: err.message,
+    });
   }
 });
 

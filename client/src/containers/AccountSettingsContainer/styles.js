@@ -64,6 +64,35 @@ const useStyles = makeStyles((theme) => ({
     padding: '30px',
     boxSizing: 'border-box',
   },
+  label: {
+    color: 'grey',
+    fontSize: '14px',
+    fontWeight: '900',
+    display: 'block',
+    marginBottom: '5px',
+  },
+  field: {
+    width: '100%',
+    fontWeight: '600',
+    color: '#333333f5',
+  },
+  update: {
+    backgroundColor: '#5BA4CF',
+    color: '#fff',
+    border: 'none',
+  },
+  error: {
+    position: 'absolute',
+    fontWeight: 'bold',
+    fontStyle: 'italic',
+    color: 'red',
+    bottom: '2.5rem',
+    left: '110%',
+    width: '600px',
+  },
+  relative: {
+    position: 'relative',
+  },
 }));
 
 export default useStyles;

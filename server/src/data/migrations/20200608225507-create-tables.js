@@ -40,13 +40,13 @@ export default {
           transaction,
         },
       ),
-    ]),
-    ),
-    ),
 
-  down: (queryInterface) => queryInterface.sequelize.transaction((transaction) => Promise.all([
-    queryInterface.dropTable('users', {
-      transaction,
-    }),
-  ])),
+  down: (queryInterface) =>
+    queryInterface.sequelize.transaction((transaction) =>
+      Promise.all([
+        queryInterface.dropTable('users', {
+          transaction,
+        }),
+      ])
+    ),
 };

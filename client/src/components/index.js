@@ -1,5 +1,6 @@
 import Header from './Header/Header';
 import SaveVisualizationModal from './SaveVisualizationModal/SaveVisualizationModal';
+import AddDashboardModal from './AddDashboardModal/AddDashboardModal';
 import SignUp from './SignUp/SignUp';
 import BarChart from './BarChart/BarChart';
 import LoginForm from './LoginForm';
@@ -17,12 +18,14 @@ import PeopleList from './PeopleList';
 import PeopleListHeader from './PeopleListHeader';
 import GroupList from './GroupList';
 import AddUserModal from './AddUserModal';
+import AddVisualizationToDashboardModal from './AddVisualizationToDashboardModal/AddVisualizationToDashboardModal';
 import AnalyticsTabs from './AnalyticsTabs/AnalyticsTabs';
 
 export {
   BarChart,
   Header,
   SaveVisualizationModal,
+  AddDashboardModal,
   LoginForm,
   Modal,
   LineChart,
@@ -39,5 +42,6 @@ export {
   PeopleListHeader,
   GroupList,
   AddUserModal,
+  AddVisualizationToDashboardModal,
   AnalyticsTabs,
 };

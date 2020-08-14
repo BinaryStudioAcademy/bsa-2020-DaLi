@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { useHistory, NavLink } from 'react-router-dom';
@@ -12,6 +12,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import { makeStyles } from '@material-ui/core/styles';
 import { logout } from '../../containers/LoginPageContainer/actions';
 import { changeView } from '../../containers/AdminContainer/actions';
+import AddDashboardModal from '../AddDashboardModal/AddDashboardModal';
 
 import './styles.css';
 
@@ -39,8 +40,9 @@ const useStyles = makeStyles({
 const Header = ({ logout, changeView }) => {
   const history = useHistory();
   const classes = useStyles();
-  const [anchorEl, setAnchorEl] = React.useState(null);
-  const [addMenuAnchorEl, setAddMenuAnchorEl] = React.useState(null);
+  const [anchorEl, setAnchorEl] = useState(null);
+  const [addMenuAnchorEl, setAddMenuAnchorEl] = useState(null);
+  const [addDashboaradModalVisible, setAddDashboradModalVisible] = useState(false);
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -51,7 +53,16 @@ const Header = ({ logout, changeView }) => {
   };
 
   const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  const onSignOut = () => {
     logout();
+    handleClose();
+  };
+
+  const onAccountSettings = () => {
+    history.push('/account-settings');
     setAnchorEl(null);
   };
 
@@ -75,6 +86,16 @@ const Header = ({ logout, changeView }) => {
   };
 
   const isAdminPage = history.location.pathname.includes('/admin');
+
+  const hideAddDashboardModal = () => {
+    setAddDashboradModalVisible(false);
+  };
+
+  const showAddDashboardModal = () => {
+    // history.push('/select-visualization');
+    setAddMenuAnchorEl(null);
+    setAddDashboradModalVisible(true);
+  };
 
   return (
     <header className={isAdminPage ? 'admin-header' : ''}>
@@ -139,7 +160,7 @@ const Header = ({ logout, changeView }) => {
               <BarChartIcon />
               Add Visualization
             </MenuItem>
-            <MenuItem onClick={() => {}} disabled>
+            <MenuItem onClick={showAddDashboardModal}>
               <DashboardIcon />
               Add Dashboard
             </MenuItem>
@@ -158,6 +179,11 @@ const Header = ({ logout, changeView }) => {
         )}
         <MenuItem onClick={handleClose}>Sign out</MenuItem>
       </Menu>
+      <AddDashboardModal
+        isVisible={addDashboradModalVisible}
+        closeModal={hideAddDashboardModal}
+        addDashboard={console.log}
+      />
     </header>
   );
 };

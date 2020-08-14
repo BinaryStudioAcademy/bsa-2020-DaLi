@@ -89,7 +89,7 @@ export const getUserByToken = async (token) => {
     response: {
       success: true,
       token: token.replace('Bearer ', ''),
-      user: { email, firstName, lastName },
+      user: { email, firstName, lastName, id },
     },
   };
 };

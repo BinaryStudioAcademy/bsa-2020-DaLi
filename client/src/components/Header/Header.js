@@ -19,8 +19,17 @@ const Header = ({ logout }) => {
   };
 
   const handleClose = () => {
-    logout();
     setAnchorEl(null);
+  };
+
+  const onSignOut = () => {
+    logout();
+    handleClose();
+  };
+
+  const onAccountSettings = () => {
+    history.push('/account-settings');
+    handleClose();
   };
 
   const addVisualization = () => {
@@ -32,13 +41,8 @@ const Header = ({ logout }) => {
       <AddIcon className="header-icons" fontSize="large" onClick={addVisualization} />
       <SettingsIcon className="header-icons" fontSize="large" onClick={handleClick} />
       <Menu id="simple-menu" anchorEl={anchorEl} keepMounted open={Boolean(anchorEl)} onClose={handleClose}>
-        <MenuItem onClick={handleClose} disabled>
-          Account Setting
-        </MenuItem>
-        <MenuItem onClick={handleClose} disabled>
-          Admin
-        </MenuItem>
-        <MenuItem onClick={handleClose}>Sign out</MenuItem>
+        <MenuItem onClick={onAccountSettings}>Account Setting</MenuItem>
+        <MenuItem onClick={onSignOut}>Sign out</MenuItem>
       </Menu>
     </header>
   );

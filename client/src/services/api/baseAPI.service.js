@@ -5,7 +5,9 @@ const baseRequest = async (request) => {
   try {
     return (await axios(request)).data;
   } catch (error) {
-    throw new Error(error.response?.data?.error || error.response?.data?.message || error.message);
+    throw new Error(
+      error.response?.data?.message || error.message || error.response.message || error.response?.data?.error
+    );
   }
 };
 

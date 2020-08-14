@@ -1,5 +1,6 @@
 import { put, call, takeEvery, all } from 'redux-saga/effects';
 import { authAPIService } from '../../services/api/AuthAPI.service';
+import { userAPIService } from '../../services/api/userAPI.service';
 import { getToken, setToken, removeToken } from '../../helpers/jwtToken';
 import {
   LOGIN_USER_SUCCESS,
@@ -8,6 +9,9 @@ import {
   LOGOUT_USER_SUCCESS,
   LOGOUT_USER_ERROR,
   LOGIN_USER,
+  UPDATE_USER,
+  UPDATE_USER_SUCCESS,
+  UPDATE_USER_ERROR,
 } from './actionTypes';
 
 export function* loginSaga(payload) {
@@ -43,6 +47,19 @@ export function* watchLogoutSaga() {
   yield takeEvery(LOGOUT_USER, logoutSaga);
 }
 
+export function* updateUser({ payload }) {
+  try {
+    const res = yield call(userAPIService.updateUserData, payload.id, payload.data);
+    yield put({ type: UPDATE_USER_SUCCESS, payload: res });
+  } catch (error) {
+    yield put({ type: UPDATE_USER_ERROR, payload: error });
+  }
+}
+
+export function* watchUpdateUserData() {
+  yield takeEvery(UPDATE_USER, updateUser);
+}
+
 export default function* authSaga() {
-  yield all([watchLoginSaga(), watchLogoutSaga()]);
+  yield all([watchLoginSaga(), watchLogoutSaga(), watchUpdateUserData()]);
 }

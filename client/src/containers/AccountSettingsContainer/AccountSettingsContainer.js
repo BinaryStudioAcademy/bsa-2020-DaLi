@@ -289,11 +289,3 @@ const mapDispatchToProps = {
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(AccountSettingsContainer);
-
-/* position: absolute;
-    font-weight: bold;
-    font-style: italic;
-    color: red;
-    bottom: 2.5rem;
-    left: 110%;
-    width: 600px; */

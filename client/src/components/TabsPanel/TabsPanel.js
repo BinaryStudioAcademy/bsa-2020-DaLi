@@ -41,19 +41,25 @@ function TabsPanel({ value, index, data, deleteItem }) {
           data.map((item) => {
             return (
               <div className={classes.itemContainer} key={item.name}>
-                <Link to="/aaa" className={classes.item}>
-                  {chooseIcon(item.type)}
-                  <span>{item.name}</span>
-                </Link>
                 {!item.type ? (
                   <>
+                    <Link to={`/dashboards/${item.id}`} className={classes.item}>
+                      {chooseIcon(item.type)}
+                      <span>{item.name}</span>
+                    </Link>
                     <Tooltip title={item.description} placement="left" className={classes.description}>
                       <InfoIcon />
                     </Tooltip>
                     <DeleteIcon className={classes.menuIcon} id={item.id} />
                   </>
                 ) : (
-                  <DeleteIcon className={classes.menuIcon} id={item.id} onClick={deleteItem(item.id)} />
+                  <>
+                    <Link to={`/visualizations/${item.id}`} className={classes.item}>
+                      {chooseIcon(item.type)}
+                      <span>{item.name}</span>
+                    </Link>
+                    <DeleteIcon className={classes.menuIcon} id={item.id} onClick={deleteItem(item.id)} />
+                  </>
                 )}
               </div>
             );

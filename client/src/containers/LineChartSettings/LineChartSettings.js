@@ -287,7 +287,7 @@ function LineChartSettings({ updateConfig, config: oldConfig } /* , oldConfig = 
       </TabPanel>
       <TabPanel value={value} index={1}>
         <FormControlLabel
-          control={
+          control={(() => (
             <PrettySwitch
               checked={goal.display}
               onChange={(event) => {
@@ -295,7 +295,7 @@ function LineChartSettings({ updateConfig, config: oldConfig } /* , oldConfig = 
                 setConfig({ ...config, display });
               }}
             />
-          }
+          ))()}
           label="Goal line"
         />
         {goal.display ? (
@@ -315,7 +315,7 @@ function LineChartSettings({ updateConfig, config: oldConfig } /* , oldConfig = 
           />
         ) : null}
         <FormControlLabel
-          control={
+          control={(() => (
             <PrettySwitch
               checked={showDataPointsValues}
               onChange={(event) => {
@@ -323,25 +323,21 @@ function LineChartSettings({ updateConfig, config: oldConfig } /* , oldConfig = 
                 setConfig({ ...config, display });
               }}
             />
-          }
+          ))()}
           label="Show values on data points"
         />
-        {/* {showDataPointsValues ? (
-          <TextField
-            id="standard-basic"
-            label="for future purposes"
-            className={classes.input}
-            type="number"
-            InputLabelProps={{
-              shrink: true,
-            }}
-            // value={goal.value}
-            // onChange={(event) => {
-            //   display.goal.label = event.target.value;
-            //   setConfig({ ...config, display });
-            // }}
-          />
-        ) : null} */}
+        <FormControlLabel
+          control={(() => (
+            <PrettySwitch
+              checked={showTrendLine}
+              onChange={(event) => {
+                display.showTrendLine = event.target.checked;
+                setConfig({ ...config, display });
+              }}
+            />
+          ))()}
+          label="Show trendline"
+        />
         <ColorPicker
           className={classes.colorPicker}
           name="color"
@@ -371,7 +367,7 @@ function LineChartSettings({ updateConfig, config: oldConfig } /* , oldConfig = 
       </TabPanel>
       <TabPanel value={value} index={2}>
         <FormControlLabel
-          control={
+          control={(() => (
             <PrettySwitch
               checked={XAxis.displayLabel}
               onChange={(event) => {
@@ -379,7 +375,7 @@ function LineChartSettings({ updateConfig, config: oldConfig } /* , oldConfig = 
                 setConfig({ ...config, axisData });
               }}
             />
-          }
+          ))()}
           label="Show label on x-axis"
         />
         {XAxis.displayLabel ? (
@@ -398,7 +394,7 @@ function LineChartSettings({ updateConfig, config: oldConfig } /* , oldConfig = 
           />
         ) : null}
         <FormControlLabel
-          control={
+          control={(() => (
             <PrettySwitch
               checked={YAxis.displayLabel}
               onChange={(event) => {
@@ -406,7 +402,7 @@ function LineChartSettings({ updateConfig, config: oldConfig } /* , oldConfig = 
                 setConfig({ ...config, axisData });
               }}
             />
-          }
+          ))()}
           label="Show label on y-axis"
         />
         {YAxis.displayLabel ? (

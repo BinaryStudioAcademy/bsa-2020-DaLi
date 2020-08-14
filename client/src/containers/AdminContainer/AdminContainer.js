@@ -1,12 +1,7 @@
-import React from 'react';
-import SettingsIcon from '@material-ui/icons/Settings';
+import React, { useState, useEffect } from 'react';
+import { connect } from 'react-redux';
 import Typography from '@material-ui/core/Typography';
-import Tabs from '@material-ui/core/Tabs';
-import Tab from '@material-ui/core/Tab';
 import Box from '@material-ui/core/Box';
-import { makeStyles } from '@material-ui/core/styles';
-
-import './styles.css';
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -28,58 +23,39 @@ function TabPanel(props) {
   );
 }
 
-function a11yProps(index) {
-  return {
-    id: `simple-tab-${index}`,
-    'aria-controls': `simple-tabpanel-${index}`,
-  };
-}
+function AdminContainer(props) {
+  // const { currentViewValue } = props;
+  const [viewValue, setViewValue] = useState(props.currentViewValue);
+  // console.log(viewValue)
 
-const useStyles = makeStyles({
-  typography: {
-    fontSize: '15px',
-  },
-  buttons: {
-    textTransform: 'capitalize',
-    color: 'white',
-    fontWeight: 300,
-  },
-});
-
-function AdminContainer() {
-  const classes = useStyles();
-  const [value, setValue] = React.useState(0);
-
-  const handleChange = (event, newValue) => {
-    setValue(newValue);
-  };
+  useEffect(() => {
+    console.log(props.currentViewValue)
+    setViewValue(props.currentViewValue);
+  }, [props.currentViewValue]);
 
   return (
-    <>
-      <header className="admin-header">
-        <SettingsIcon className="admin-header-icon" fontSize="large" />
-        <Typography variant="h6" className={classes.typography}>
-          DaLi Admin
-        </Typography>
-        <Tabs value={value} onChange={handleChange} className="admin-header-nav">
-          <Tab className={classes.buttons} label="People" {...a11yProps(0)} />
-          <Tab className={classes.buttons} label="Databases" {...a11yProps(1)} />
-          <Tab className={classes.buttons} label="Permissions" {...a11yProps(2)} />
-        </Tabs>
-      </header>
-      <main>
-        <TabPanel value={value} index={0}>
-          People
-        </TabPanel>
-        <TabPanel value={value} index={1}>
-          Databases
-        </TabPanel>
-        <TabPanel value={value} index={2}>
-          Permissions
-        </TabPanel>
-      </main>
-    </>
+    <main>
+      <TabPanel value={viewValue} index={0}>
+        People
+      </TabPanel>
+      <TabPanel value={viewValue} index={1}>
+        Databases
+      </TabPanel>
+      <TabPanel value={viewValue} index={2}>
+        Permissions
+      </TabPanel>
+    </main>
   );
 }
 
-export default AdminContainer;
+// AdminContainer.defaultProps = {
+//   viewValue: 1,
+// };
+
+const mapStateToProps = (state) => {
+  return {
+    currentViewValue: state.adminPage.viewValue,
+  };
+};
+
+export default connect(mapStateToProps, null)(AdminContainer);

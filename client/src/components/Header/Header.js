@@ -25,6 +25,13 @@ const useStyles = makeStyles({
     fontWeight: 300,
     minWidth: 'auto',
     padding: '0 20px',
+    minHeight: '35px',
+  },
+  settingBtn: {
+    marginLeft: 'auto',
+  },
+  tabs: {
+    minHeight: '35px',
   },
 });
 
@@ -60,38 +67,63 @@ const Header = ({ logout, changeView }) => {
 
   const changeAdminPageView = (index) => {
     changeView(index);
-  }
+  };
+
+  const handleClickOnAdmin = () => {
+    history.push('/admin');
+    handleClose();
+  };
+
+  const handleClickOnExitAdmin = () => {
+    history.push('/');
+    handleClose();
+  };
+
+  const isAdminPage = history.location.pathname === '/admin';
 
   return (
-    <>
-      {history.location.pathname === '/admin' ? (
-        <header className="admin-header">
+    <header className={isAdminPage ? 'admin-header' : ''}>
+      {isAdminPage ? (
+        <>
           <SettingsIcon className="admin-header-icon" fontSize="large" />
           <Typography variant="h6" className={classes.typography}>
             DaLi Admin
           </Typography>
-          <Tabs value={value} onChange={handleChange} className="admin-header-nav">
+          <Tabs value={value} onChange={handleChange} className={`${classes.tabs} admin-header-nav`}>
             <Tab className={classes.buttons} label="People" onClick={() => changeAdminPageView(0)} {...a11yProps(0)} />
-            <Tab className={classes.buttons} label="Databases" onClick={() => changeAdminPageView(1)} {...a11yProps(1)} />
-            <Tab className={classes.buttons} label="Permissions" onClick={() => changeAdminPageView(2)} {...a11yProps(2)} />
+            <Tab
+              className={classes.buttons}
+              label="Databases"
+              onClick={() => changeAdminPageView(1)}
+              {...a11yProps(1)}
+            />
+            <Tab
+              className={classes.buttons}
+              label="Permissions"
+              onClick={() => changeAdminPageView(2)}
+              {...a11yProps(2)}
+            />
           </Tabs>
-        </header>
+          <SettingsIcon className={`${classes.settingBtn} header-icons`} fontSize="large" onClick={handleClick} />
+        </>
       ) : (
-        <header>
+        <>
           <AddIcon className="header-icons" fontSize="large" onClick={addVisualization} />
           <SettingsIcon className="header-icons" fontSize="large" onClick={handleClick} />
-          <Menu id="simple-menu" anchorEl={anchorEl} keepMounted open={Boolean(anchorEl)} onClose={handleClose}>
-            <MenuItem onClick={handleClose} disabled>
-              Account Setting
-            </MenuItem>
-            <MenuItem onClick={handleClose} disabled>
-              Admin
-            </MenuItem>
-            <MenuItem onClick={handleClose}>Sign out</MenuItem>
-          </Menu>
-        </header>
+        </>
       )}
-    </>
+      <Menu id="simple-menu" anchorEl={anchorEl} keepMounted open={Boolean(anchorEl)} onClose={handleClose}>
+        <MenuItem onClick={handleClose} disabled>
+          Account Setting
+        </MenuItem>
+        {isAdminPage ? (
+          <MenuItem onClick={handleClickOnExitAdmin}>Exit Admin</MenuItem>
+        ) : (
+          <MenuItem onClick={handleClickOnAdmin}>Admin</MenuItem>
+        )}
+        <MenuItem onClick={handleClose}>Sign out</MenuItem>
+      </Menu>
+    </header>
   );
 };
 

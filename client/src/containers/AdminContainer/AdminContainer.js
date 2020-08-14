@@ -24,12 +24,9 @@ function TabPanel(props) {
 }
 
 function AdminContainer(props) {
-  // const { currentViewValue } = props;
   const [viewValue, setViewValue] = useState(props.currentViewValue);
-  // console.log(viewValue)
 
   useEffect(() => {
-    console.log(props.currentViewValue)
     setViewValue(props.currentViewValue);
   }, [props.currentViewValue]);
 
@@ -47,10 +44,6 @@ function AdminContainer(props) {
     </main>
   );
 }
-
-// AdminContainer.defaultProps = {
-//   viewValue: 1,
-// };
 
 const mapStateToProps = (state) => {
   return {

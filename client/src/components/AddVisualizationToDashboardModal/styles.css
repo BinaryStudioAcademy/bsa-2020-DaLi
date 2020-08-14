@@ -1,0 +1,67 @@
+.visualizationToDashboardModalForm {
+    display: flex;
+    flex-direction: column;
+}
+
+.visualizationToDashboardModalForm input {
+    border: none;
+    border-bottom: 1px solid #dadada;
+    padding: 10px;
+    margin-bottom: 15px;
+    font-size: 15px;
+    font-family: 'Roboto';
+    text-transform: uppercase;
+}
+
+.visualizationToDashboardModalForm input::placeholder {
+    color: #c6cfd4;
+    font-size: 15px;
+    font-family: 'Roboto';
+    font-weight: bold;
+}
+
+.visualizationToDashboardModalForm input:focus {
+    outline: none;
+    border-bottom: 1px solid #33a1de;
+}
+
+.search-field {
+    position: relative;
+}
+
+.search-field input {
+    width: calc(100% - 25px);
+}
+
+.search-field svg {
+    position: absolute;
+    top: 8px;
+    right: 10px;
+}
+
+.visualizationToDashboardModalFooter {
+    margin-bottom: 23px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    padding: 0 24px;
+}
+
+.visualizationToDashboardModalFooter button {
+    text-align: start;
+    border: none;
+    background: none;
+    font-size: 16px;
+    font-family: 'Roboto';
+    outline: none;
+    position: relative;
+    line-height: 30px;
+    padding-left: 30px;
+    cursor: pointer;
+}
+
+.visualizationToDashboardModalFooter button svg {
+    position: absolute;
+    top: 2px;
+    left: 0;
+}

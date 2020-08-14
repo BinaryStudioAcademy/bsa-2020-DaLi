@@ -26,7 +26,7 @@ export const login = async (user) => {
         response: {
           success: true,
           token,
-          user: { email, firstName, lastName },
+          user: { id, email, firstName, lastName },
         },
       };
     }
@@ -103,7 +103,7 @@ export const getUserByToken = async (token) => {
     response: {
       success: true,
       token: token.replace('Bearer ', ''),
-      user: { email, firstName, lastName },
+      user: { id, email, firstName, lastName },
     },
   };
 };

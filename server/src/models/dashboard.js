@@ -1,12 +1,16 @@
 import { Model } from 'sequelize';
 
 export default (sequelize, DataTypes) => {
-  class User extends Model {
+  class Dashboard extends Model {
     static associate(models) {
-      User.hasMany(models.Visualization);
+      Dashboard.belongsToMany(models.Visualization, {
+        through: models.DashboardVisualizations,
+        foreignKey: 'dashboards_id',
+        otherKey: 'visualizations_id',
+      });
     }
   }
-  User.init(
+  Dashboard.init(
     {
       id: {
         type: DataTypes.UUID,
@@ -15,21 +19,11 @@ export default (sequelize, DataTypes) => {
         primaryKey: true,
         defaultValue: DataTypes.UUIDV4,
       },
-      firstName: {
+      name: {
         type: DataTypes.STRING,
         allowNull: false,
       },
-      lastName: {
-        type: DataTypes.STRING,
-        allowNull: false,
-      },
-      email: {
-        type: DataTypes.STRING,
-        allowNull: false,
-        unique: true,
-      },
-      password: {
-        allowNull: false,
+      description: {
         type: DataTypes.STRING,
       },
       createdAt: DataTypes.DATE,
@@ -37,9 +31,9 @@ export default (sequelize, DataTypes) => {
     },
     {
       sequelize,
-      modelName: 'User',
+      modelName: 'Dashboard',
     }
   );
 
-  return User;
+  return Dashboard;
 };

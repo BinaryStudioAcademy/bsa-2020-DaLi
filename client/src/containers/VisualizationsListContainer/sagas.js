@@ -10,10 +10,10 @@ import {
 import { visualizationsAPIService } from '../../services/api/visualizationsAPI.service';
 import { SetIsLoading } from './actions';
 
-export function* getVisualisationsSaga(payload) {
+export function* getVisualisationsSaga() {
   try {
     yield put(SetIsLoading(true));
-    const res = yield call(visualizationsAPIService.getData, payload);
+    const res = yield call(visualizationsAPIService.getVisualizations);
     yield put({ type: GET_VISUALISATIONS_SUCCESS, payload: res });
     yield put(SetIsLoading(false));
   } catch (error) {
@@ -29,9 +29,9 @@ export function* watchGetVisualizationsSaga() {
 export function* deleteVisualisationSaga(payload) {
   try {
     yield put(SetIsLoading(true));
-    const res = yield call(visualizationsAPIService.deleteData, payload);
-    yield put({ type: DELETE_VISUALISATIONS_SUCCESS, payload: res });
-    yield put(SetIsLoading(false));
+    yield call(visualizationsAPIService.deleteVisualization, payload.id);
+    yield put({ type: DELETE_VISUALISATIONS_SUCCESS });
+    yield put({ type: GET_VISUALISATIONS });
   } catch (error) {
     yield put({ type: DELETE_VISUALISATIONS_ERROR, error });
     yield put(SetIsLoading(false));

@@ -14,6 +14,7 @@ import ViewVisualizationHeader from './ViewVisualizationHeader/ViewVisualization
 import TableSettingsSidebar from './TableSettingsSidebar/TableSettingsSidebar';
 import BarChartSettings from './BarChartSettings';
 import AddVisualizationToDashboardModal from './AddVisualizationToDashboardModal/AddVisualizationToDashboardModal';
+import AnalyticsTabs from './AnalyticsTabs/AnalyticsTabs';
 
 export {
   BarChart,
@@ -32,4 +33,5 @@ export {
   TableSettingsSidebar,
   BarChartSettings,
   AddVisualizationToDashboardModal,
+  AnalyticsTabs,
 };

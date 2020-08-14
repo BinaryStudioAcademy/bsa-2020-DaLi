@@ -17,7 +17,7 @@ const Header = ({ logout }) => {
   const history = useHistory();
   const [anchorEl, setAnchorEl] = useState(null);
   const [addMenuAnchorEl, setAddMenuAnchorEl] = useState(null);
-  const [addDashboradModalVisible, setAddDashboradModalVisible] = useState(false);
+  const [addDashboardModalVisible, setAddDashboardModalVisible] = useState(false);
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -47,13 +47,13 @@ const Header = ({ logout }) => {
   };
 
   const hideAddDashboardModal = () => {
-    setAddDashboradModalVisible(false);
+    setAddDashboardModalVisible(false);
   };
 
   const showAddDashboardModal = () => {
     // history.push('/select-visualization');
     setAddMenuAnchorEl(null);
-    setAddDashboradModalVisible(true);
+    setAddDashboardModalVisible(true);
   };
 
   return (
@@ -90,8 +90,9 @@ const Header = ({ logout }) => {
         <MenuItem onClick={onSignOut}>Sign out</MenuItem>
       </Menu>
       <AddDashboardModal
-        isVisible={addDashboradModalVisible}
+        isVisible={addDashboardModalVisible}
         closeModal={hideAddDashboardModal}
+        // eslint-disable-next-line
         addDashboard={console.log}
       />
     </header>

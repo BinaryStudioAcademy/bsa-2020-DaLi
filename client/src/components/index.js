@@ -1,5 +1,6 @@
 import Header from './Header/Header';
 import SaveVisualizationModal from './SaveVisualizationModal/SaveVisualizationModal';
+import AddDashboardModal from './AddDashboardModal/AddDashboardModal';
 import SignUp from './SignUp/SignUp';
 import BarChart from './BarChart/BarChart';
 import LoginForm from './LoginForm';
@@ -19,6 +20,7 @@ export {
   BarChart,
   Header,
   SaveVisualizationModal,
+  AddDashboardModal,
   LoginForm,
   Modal,
   LineChart,

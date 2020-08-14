@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { useHistory } from 'react-router-dom';
@@ -9,13 +9,15 @@ import DashboardIcon from '@material-ui/icons/Dashboard';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import { logout } from '../../containers/LoginPageContainer/actions';
+import AddDashboardModal from '../AddDashboardModal/AddDashboardModal';
 
 import './styles.css';
 
 const Header = ({ logout }) => {
   const history = useHistory();
-  const [anchorEl, setAnchorEl] = React.useState(null);
-  const [addMenuAnchorEl, setAddMenuAnchorEl] = React.useState(null);
+  const [anchorEl, setAnchorEl] = useState(null);
+  const [addMenuAnchorEl, setAddMenuAnchorEl] = useState(null);
+  const [addDashboradModalVisible, setAddDashboradModalVisible] = useState(false);
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -44,6 +46,16 @@ const Header = ({ logout }) => {
     setAddMenuAnchorEl(null);
   };
 
+  const hideAddDashboardModal = () => {
+    setAddDashboradModalVisible(false);
+  };
+
+  const showAddDashboardModal = () => {
+    // history.push('/select-visualization');
+    setAddMenuAnchorEl(null);
+    setAddDashboradModalVisible(true);
+  };
+
   return (
     <header>
       <AddIcon className="header-icons" fontSize="large" onClick={handleAddMenuClick} />
@@ -58,7 +70,7 @@ const Header = ({ logout }) => {
           <BarChartIcon />
           Add Visualization
         </MenuItem>
-        <MenuItem onClick={() => {}} disabled>
+        <MenuItem onClick={showAddDashboardModal}>
           <DashboardIcon />
           Add Dashboard
         </MenuItem>
@@ -77,6 +89,11 @@ const Header = ({ logout }) => {
         </MenuItem>
         <MenuItem onClick={onSignOut}>Sign out</MenuItem>
       </Menu>
+      <AddDashboardModal
+        isVisible={addDashboradModalVisible}
+        closeModal={hideAddDashboardModal}
+        addDashboard={console.log}
+      />
     </header>
   );
 };

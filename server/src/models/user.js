@@ -33,6 +33,10 @@ export default (sequelize, DataTypes) => {
         defaultValue: 'P@$$w0rd',
         type: DataTypes.STRING,
       },
+      lastLogin: {
+        allowNull: true,
+        type: DataTypes.DATE,
+      },
       createdAt: DataTypes.DATE,
       updatedAt: DataTypes.DATE,
     },

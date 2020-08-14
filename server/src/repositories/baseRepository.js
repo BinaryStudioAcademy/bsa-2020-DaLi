@@ -19,6 +19,9 @@ export default class BaseRepository {
   }
 
   async updateById({ id }, data) {
+    console.log('update');
+    console.log(id);
+    console.log(data);
     const result = await this.model.update(data, {
       where: { id },
       returning: true,

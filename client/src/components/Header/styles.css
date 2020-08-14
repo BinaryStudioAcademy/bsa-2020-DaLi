@@ -10,3 +10,7 @@ header {
     margin-right: 35px;
     cursor: pointer;
 }
+
+.MuiListItem-root.MuiMenuItem-root svg {
+    margin-right: 10px;
+}

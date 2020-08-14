@@ -1,11 +1,7 @@
 import { Model } from 'sequelize';
 
 export default (sequelize, DataTypes) => {
-  class Visualization extends Model {
-    static associate(models) {
-      Visualization.belongsTo(models.User);
-    }
-  }
+  class Visualization extends Model {}
   Visualization.init(
     {
       id: {
@@ -27,7 +23,7 @@ export default (sequelize, DataTypes) => {
         allowNull: true,
       },
       config: {
-        type: DataTypes.STRING,
+        type: DataTypes.JSON,
         allowNull: false,
       },
       createdAt: DataTypes.DATE,

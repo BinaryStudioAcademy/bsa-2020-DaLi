@@ -6,7 +6,7 @@ export const getVisualizations = () => {
   };
 };
 
-export const dltVisualizations = (id) => {
+export const deleteVisualization = (id) => {
   return {
     type: DELETE_VISUALISATIONS,
     id,

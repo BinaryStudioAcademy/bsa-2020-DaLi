@@ -2,14 +2,14 @@ import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
-import { getVisualizations, dltVisualizations, resetError } from './actions';
+import { getVisualizations, deleteVisualization, resetError } from './actions';
 import VisualizationsList from '../../components/VisualizationsList/VisualizationsList';
 
 const VisualizationsListContainer = ({
   visualizations,
   isLoading,
   getVisualizations,
-  dltVisualizations,
+  deleteVisualization,
   resetError,
 }) => {
   useEffect(() => {
@@ -20,7 +20,7 @@ const VisualizationsListContainer = ({
   }, []);
 
   const deleteItem = (id) => () => {
-    dltVisualizations(id);
+    deleteVisualization(id);
   };
 
   return <VisualizationsList visualizations={visualizations} isLoading={isLoading} deleteItem={deleteItem} />;
@@ -30,7 +30,7 @@ VisualizationsListContainer.propTypes = {
   visualizations: PropTypes.array,
   isLoading: PropTypes.bool,
   getVisualizations: PropTypes.func,
-  dltVisualizations: PropTypes.func,
+  deleteVisualization: PropTypes.func,
   resetError: PropTypes.func,
 };
 
@@ -41,6 +41,6 @@ const mapStateToProps = (state) => {
   };
 };
 
-export default connect(mapStateToProps, { getVisualizations, dltVisualizations, resetError })(
+export default connect(mapStateToProps, { getVisualizations, deleteVisualization, resetError })(
   VisualizationsListContainer
 );

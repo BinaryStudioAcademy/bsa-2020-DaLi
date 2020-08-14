@@ -1,4 +1,4 @@
-import { SET_VISUALIZATION, UPDATE_VISUALIZATION_CONFIG } from './actionTypes';
+import { SET_VISUALIZATION, UPDATE_VISUALIZATION_CONFIG, UPDATE_VISUALIZATION_NAME } from './actionTypes';
 
 const viewVisualizationReducer = (state = {}, { type, payload }) => {
   switch (type) {
@@ -14,6 +14,15 @@ const viewVisualizationReducer = (state = {}, { type, payload }) => {
       return {
         ...state,
         config: updateConfig,
+      };
+    }
+
+    case UPDATE_VISUALIZATION_NAME: {
+      const { name, description } = payload;
+      return {
+        ...state,
+        name,
+        description,
       };
     }
 

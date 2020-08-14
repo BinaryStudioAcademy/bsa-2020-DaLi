@@ -9,7 +9,8 @@ import EnhancedTable from './EnhancedTable/EnhancedTable';
 import InitialTable from './InitialTable/InitialTable';
 import SelectVisualization from './SelectVisualization/SelectVisualization';
 import ViewVisualizationSidebar from './ViewVisualizationSidebar';
-import ViewVisualizationMain from './ ViewVisualizationMain';
+import ViewVisualizationMain from './ViewVisualizationMain';
+import ViewVisualizationHeader from './ViewVisualizationHeader/ViewVisualizationHeader';
 import TableSettingsSidebar from './TableSettingsSidebar/TableSettingsSidebar';
 import BarChartSettings from './BarChartSettings';
 
@@ -26,6 +27,7 @@ export {
   SelectVisualization,
   ViewVisualizationSidebar,
   ViewVisualizationMain,
+  ViewVisualizationHeader,
   TableSettingsSidebar,
   BarChartSettings,
 };

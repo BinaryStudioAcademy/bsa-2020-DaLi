@@ -2,12 +2,21 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
+import { Grid, Snackbar } from '@material-ui/core';
 
-import { Grid, Button } from '@material-ui/core';
-import SaveIcon from '@material-ui/icons/Save';
+import Alert from '@material-ui/lab/Alert';
+
 import * as actions from './actions';
+import { deleteVisualization } from '../VisualizationsListContainer/actions';
+import { visualizationsAPIService } from '../../services/api/visualizationsAPI.service';
 
-import { ViewVisualizationSidebar, ViewVisualizationMain } from '../../components';
+import {
+  ViewVisualizationSidebar,
+  ViewVisualizationMain,
+  ViewVisualizationHeader,
+  SaveVisualizationModal,
+} from '../../components';
 import InitialTable from '../InitialTableContainer/InitialTableContainer';
 
 import {
@@ -17,7 +26,9 @@ import {
   getVisualizationIcon,
   checkIsVisualizationNew,
   createDataSample,
+  createInitVisualization,
   createNewVisualization,
+  createUpdatedVisualization,
 } from './helpers';
 
 import mockData from './mockData';
@@ -25,11 +36,23 @@ import mockData from './mockData';
 import './ViewVisualizationContainer.css';
 
 const ViewVisualizationContainer = (props) => {
-  const { id, visualizations, currentVisualization, setVisualization, updateVisualizationConfig } = props;
+  const {
+    id,
+    visualizations,
+    userId,
+    currentVisualization,
+    setVisualization,
+    updateVisualizationConfig,
+    updateVisualizationName,
+    deleteVisualization,
+  } = props;
 
   const [currentView, setCurrentView] = useState('table');
   const [isSideBarOpen, setIsSideBarOpen] = useState(false);
-  const [isVisualizationExist, setIsVisualizationExist] = useState(true);
+  const [isVisualizationExist, setIsVisualizationExist] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isNotificationVisible, setIsNotificationVisible] = useState(false);
+  const [notificationMessage, setNotificationMessage] = useState('');
 
   useEffect(() => {
     let visualization;
@@ -37,9 +60,10 @@ const ViewVisualizationContainer = (props) => {
     if (isNewVisualization) {
       setIsVisualizationExist(false);
       const dataSample = createDataSample(mockData);
-      visualization = createNewVisualization(id, dataSample);
+      visualization = createInitVisualization(id, dataSample, userId);
     } else {
       visualization = getVisualization(visualizations, id);
+      setIsVisualizationExist(true);
     }
     setVisualization(visualization);
   }, []);
@@ -65,29 +89,83 @@ const ViewVisualizationContainer = (props) => {
 
   const onToggleSideBar = () => setIsSideBarOpen(!isSideBarOpen);
 
+  const openModal = () => setIsModalOpen(true);
+
+  const closeModal = () => setIsModalOpen(false);
+
+  const displayNotification = () => setIsNotificationVisible(true);
+
+  const hideNotification = () => setIsNotificationVisible(false);
+
+  const createVisualization = ({ name, description }) => {
+    updateVisualizationName({ name, description });
+    const newVisualization = createNewVisualization(currentVisualization, name, description);
+    visualizationsAPIService.createVisualization(newVisualization);
+    closeModal();
+    setNotificationMessage('Visualization has been successfully created');
+    displayNotification(true);
+    setIsVisualizationExist(true);
+  };
+
+  const updateVisualization = () => {
+    const updatedVisualization = createUpdatedVisualization(currentVisualization);
+    visualizationsAPIService.updateVisualization(id, updatedVisualization);
+    setNotificationMessage('Visualization has been successfully updated');
+    displayNotification(true);
+  };
+
   const onVisualizationSave = () => {
     if (isVisualizationExist) {
-      console.log(currentVisualization);
-      console.log('Visualization is updated');
+      updateVisualization();
     } else {
-      console.log(currentVisualization);
-      console.log('Visualization is created');
+      openModal();
     }
+  };
+
+  const onVisualizationNameEdit = () => {
+    openModal();
+  };
+
+  const editVisualizationName = ({ name, description }) => {
+    updateVisualizationName({ name, description });
+    closeModal();
+  };
+
+  const onVisualizationDelete = () => {
+    deleteVisualization(id);
+    props.history.push('/');
   };
 
   return (
     <>
-      <div className="view-visualization-header">
-        <Button
-          className="view-visualization-button"
-          variant="contained"
-          startIcon={<SaveIcon />}
-          onClick={onVisualizationSave}
-        >
-          Save
-        </Button>
-      </div>
+      <ViewVisualizationHeader
+        onVisualizationSave={onVisualizationSave}
+        onVisualizationNameEdit={onVisualizationNameEdit}
+        onVisualizationDelete={onVisualizationDelete}
+        isVisualizationExist={isVisualizationExist}
+        name={currentVisualization.name}
+        description={currentVisualization.description}
+        visualizationType={id}
+      />
       <Grid container className="view-visualization-container">
+        <SaveVisualizationModal
+          closeModal={closeModal}
+          saveVisualization={isVisualizationExist ? editVisualizationName : createVisualization}
+          isVisible={isModalOpen}
+          title={isVisualizationExist ? 'Edit visualization name' : 'Save visualization'}
+          name={currentVisualization.name}
+          description={currentVisualization.description}
+        />
+        <Snackbar
+          anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+          open={isNotificationVisible}
+          autoHideDuration={6000}
+          onClose={hideNotification}
+        >
+          <Alert elevation={6} variant="filled" severity="success" onClose={hideNotification}>
+            {notificationMessage}
+          </Alert>
+        </Snackbar>
         {isSideBarOpen && <ViewVisualizationSidebar component={visualizationSettings} />}
         <ViewVisualizationMain
           contentViewComponent={contentViewComponent}
@@ -105,19 +183,25 @@ const mapStateToProps = (state) => {
   return {
     currentVisualization: state.currentVisualization,
     visualizations: state.visualizations.visualizations,
+    userId: state.currentUser.user.id,
   };
 };
 
 const mapDispatchToProps = {
   ...actions,
+  deleteVisualization,
 };
 
 ViewVisualizationContainer.propTypes = {
   id: PropTypes.string,
   visualizations: PropTypes.array,
+  userId: PropTypes.string,
   currentVisualization: PropTypes.object,
   setVisualization: PropTypes.func,
   updateVisualizationConfig: PropTypes.func,
+  updateVisualizationName: PropTypes.func,
+  deleteVisualization: PropTypes.func,
+  history: PropTypes.object,
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(ViewVisualizationContainer);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(ViewVisualizationContainer));

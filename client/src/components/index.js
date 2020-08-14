@@ -17,6 +17,7 @@ import PeopleList from './PeopleList';
 import PeopleListHeader from './PeopleListHeader';
 import GroupList from './GroupList';
 import AddUserModal from './AddUserModal';
+import AnalyticsTabs from './AnalyticsTabs/AnalyticsTabs';
 
 export {
   BarChart,
@@ -38,4 +39,5 @@ export {
   PeopleListHeader,
   GroupList,
   AddUserModal,
+  AnalyticsTabs,
 };

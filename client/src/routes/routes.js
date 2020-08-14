@@ -4,24 +4,25 @@ import { ProtectedRoute, PublicRoute } from '../containers';
 import {
   LoginPage,
   SelectVisualizationPage,
-  VisualizationsPage,
   ViewVisualizationPage,
   AccountSettingsPage,
   DashboardPage,
+  AdminPage,
+  AnalyticsPage,
 } from '../pages';
 import PeoplePageContainer from '../containers/PeoplePageContainer/PeoplePageContainer';
 
 const routes = (
   <Switch>
     <PublicRoute exact path="/login" component={LoginPage} />
-    <ProtectedRoute exact path="/" component={VisualizationsPage} />
+    <ProtectedRoute exact path="/" component={AnalyticsPage} />
     <ProtectedRoute path="/visualizations/:id" component={ViewVisualizationPage} />
     <ProtectedRoute exact path="/select-visualization" component={SelectVisualizationPage} />
     <ProtectedRoute exact path="/select-visualization/:id" component={ViewVisualizationPage} />
     <ProtectedRoute exact path="/account-settings" component={AccountSettingsPage} />
-
     <Route path="/admin/people" component={PeoplePageContainer} />
     <Route path="/admin/groups/:id" component={PeoplePageContainer} />
+    <ProtectedRoute path="/admin" component={AdminPage} />
     <Route path="/dashboard/:id" component={DashboardPage} />
   </Switch>
 );

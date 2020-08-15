@@ -34,7 +34,7 @@ const GroupList = () => {
   // };
 
   return (
-    <div>
+    <div className={classes.root}>
       <GroupListHeader />
       <TableContainer>
         <Table aria-label="simple table">

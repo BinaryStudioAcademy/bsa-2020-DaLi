@@ -169,15 +169,13 @@ const Header = ({ logout, changeView }) => {
         </>
       )}
       <Menu id="simple-menu" anchorEl={anchorEl} keepMounted open={Boolean(anchorEl)} onClose={handleClose}>
-        <MenuItem onClick={handleClose} disabled>
-          Account Setting
-        </MenuItem>
+        <MenuItem onClick={onAccountSettings}>Account Setting</MenuItem>
         {isAdminPage ? (
           <MenuItem onClick={handleClickOnExitAdmin}>Exit Admin</MenuItem>
         ) : (
           <MenuItem onClick={handleClickOnAdmin}>Admin</MenuItem>
         )}
-        <MenuItem onClick={handleClose}>Sign out</MenuItem>
+        <MenuItem onClick={onSignOut}>Sign out</MenuItem>
       </Menu>
       <AddDashboardModal
         isVisible={addDashboradModalVisible}

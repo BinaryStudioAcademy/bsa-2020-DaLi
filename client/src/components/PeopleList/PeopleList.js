@@ -18,6 +18,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import PeopleListHeader from '../PeopleListHeader';
 import { colorStyles, useStyles } from './styles';
+import { formatDate } from './helpers/formatdate';
 import { mockPeople } from './mockPeople';
 
 const getInitials = (person) => {
@@ -55,7 +56,7 @@ const PeopleList = ({ people = mockPeople, addUser }) => {
   // };
 
   return (
-    <div>
+    <div className={classes.root}>
       <PeopleListHeader addUser={addUser} />
       <TableContainer>
         <Table aria-label="simple table">
@@ -96,7 +97,7 @@ const PeopleList = ({ people = mockPeople, addUser }) => {
                     </Select> */}
                   </FormControl>
                 </TableCell>
-                <TableCell align="left">{person.lastLogin}</TableCell>
+                <TableCell align="left">{formatDate(person.lastLogin)}</TableCell>
                 <TableCell align="left">
                   <MoreHorizIcon className={classes.dots} onClick={handleMenuClick} />
                   <Menu

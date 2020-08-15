@@ -10,6 +10,11 @@ export const colorStyles = makeStyles({
 });
 
 export const useStyles = makeStyles({
+  root: {
+    flex: 1,
+    padding: '0 4rem',
+    boxSizing: 'border-box',
+  },
   name: {
     display: 'flex',
     alignItems: 'center',

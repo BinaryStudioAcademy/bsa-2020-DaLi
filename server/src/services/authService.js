@@ -5,52 +5,52 @@ import UserRepository from '../repositories/userRepository';
 import jwtConfig from '../config/jwt.config';
 
 export const login = async (user) => {
-  try {
-    const candidate = await UserRepository.getByEmail(user.email);
-    if (candidate) {
-      // hashed password
-      // if (bcrypt.compareSync(user.password, candidate.password)) {
-      // not hashed password
-      if (candidate.password === user.password) {
-        const { id, email, firstName, lastName } = candidate;
-        // await UserRepository.updateById({ id }, { lastLogin: new Date(Date.now()) });
-        const token = jwt.sign(
-          {
-            id,
-          },
-          jwtConfig.secretKey,
-          { expiresIn: jwtConfig.expiresIn }
-        );
-        console.log('candidate');
-        console.log(id, email, firstName, lastName);
-
-        return {
-          status: 200,
-          response: {
-            success: true,
-            token,
-            user: { id, email, firstName, lastName },
-          },
-        };
-      }
+  // try {
+  const candidate = await UserRepository.getByEmail(user.email);
+  debugger;
+  if (candidate) {
+    // hashed password
+    // if (bcrypt.compareSync(user.password, candidate.password)) {
+    // not hashed password
+    if (candidate.password === user.password) {
+      const { id, email, firstName, lastName } = candidate;
+      debugger;
+      await UserRepository.updateById({ id }, { lastLogin: new Date(Date.now()) });
+      const token = jwt.sign(
+        {
+          id,
+        },
+        jwtConfig.secretKey,
+        { expiresIn: jwtConfig.expiresIn }
+      );
+      debugger;
       return {
-        status: 401,
+        status: 200,
         response: {
-          success: false,
-          message: 'Wrong password entered',
+          success: true,
+          token,
+          user: { id, email, firstName, lastName },
         },
       };
     }
     return {
-      status: 404,
+      status: 401,
       response: {
         success: false,
-        message: 'User with such email was not found',
+        message: 'Wrong password entered',
       },
     };
-  } catch (error) {
-    console.log(error);
   }
+  return {
+    status: 404,
+    response: {
+      success: false,
+      message: 'User with such email was not found',
+    },
+  };
+  // } catch (error) {
+  // console.log(error);
+  // }
 };
 
 export const register = async (user) => {

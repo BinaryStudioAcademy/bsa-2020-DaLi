@@ -1,5 +1,11 @@
 import { put, call, takeEvery, all } from 'redux-saga/effects';
-import { GET_ANALYTICS, GET_ANALYTICS_SUCCESS, GET_ANALYTICS_ERROR, DELETE_VISUALIZATION } from './actionsTypes';
+import {
+  GET_ANALYTICS,
+  GET_ANALYTICS_SUCCESS,
+  GET_ANALYTICS_ERROR,
+  DELETE_VISUALIZATION,
+  ADD_DASHBOARD,
+} from './actionsTypes';
 import { visualizationsAPIService } from '../../services/api/visualizationsAPI.service';
 import { dashboardsAPIService } from '../../services/api/dashboardsAPI.service';
 
@@ -25,6 +31,15 @@ export function* deleteVisualizationSaga(payload) {
 export function* watchDeleteVisualizationSaga() {
   yield takeEvery(DELETE_VISUALIZATION, deleteVisualizationSaga);
 }
+
+export function* addDashboardSaga(payload) {
+  yield call(dashboardsAPIService.createDashboard, payload.newDashboard);
+  yield put({ type: GET_ANALYTICS });
+}
+
+export function* watchAddDashboardSaga() {
+  yield takeEvery(ADD_DASHBOARD, addDashboardSaga);
+}
 export default function* analyticsSaga() {
-  yield all([watchGetAnalyticsSaga(), watchDeleteVisualizationSaga()]);
+  yield all([watchGetAnalyticsSaga(), watchDeleteVisualizationSaga(), watchAddDashboardSaga()]);
 }

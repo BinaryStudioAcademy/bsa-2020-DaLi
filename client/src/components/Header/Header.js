@@ -10,10 +10,11 @@ import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import { logout } from '../../containers/LoginPageContainer/actions';
 import AddDashboardModal from '../AddDashboardModal/AddDashboardModal';
+import { addDashboard } from '../../containers/AnalyticsTabsContainer/actions';
 
 import './styles.css';
 
-const Header = ({ logout }) => {
+const Header = ({ logout, addDashboard }) => {
   const history = useHistory();
   const [anchorEl, setAnchorEl] = useState(null);
   const [addMenuAnchorEl, setAddMenuAnchorEl] = useState(null);
@@ -92,7 +93,7 @@ const Header = ({ logout }) => {
       <AddDashboardModal
         isVisible={addDashboradModalVisible}
         closeModal={hideAddDashboardModal}
-        addDashboard={console.log}
+        addDashboard={addDashboard}
       />
     </header>
   );
@@ -100,8 +101,9 @@ const Header = ({ logout }) => {
 
 Header.propTypes = {
   logout: PropTypes.func,
+  addDashboard: PropTypes.func,
 };
 
-const mapDispatchToProps = { logout };
+const mapDispatchToProps = { logout, addDashboard };
 
 export default connect(null, mapDispatchToProps)(Header);

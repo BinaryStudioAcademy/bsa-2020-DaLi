@@ -5,6 +5,7 @@ import {
   GET_ANALYTICS_ERROR,
   DELETE_VISUALIZATION,
   ADD_DASHBOARD,
+  DELETE_DASHBOARD,
 } from './actionsTypes';
 import { visualizationsAPIService } from '../../services/api/visualizationsAPI.service';
 import { dashboardsAPIService } from '../../services/api/dashboardsAPI.service';
@@ -40,6 +41,21 @@ export function* addDashboardSaga(payload) {
 export function* watchAddDashboardSaga() {
   yield takeEvery(ADD_DASHBOARD, addDashboardSaga);
 }
+
+export function* deleteDashboardSaga(payload) {
+  yield call(dashboardsAPIService.deleteDashboard, payload.id);
+  yield put({ type: GET_ANALYTICS });
+}
+
+export function* watchDeleteDashboardSaga() {
+  yield takeEvery(DELETE_DASHBOARD, deleteDashboardSaga);
+}
+
 export default function* analyticsSaga() {
-  yield all([watchGetAnalyticsSaga(), watchDeleteVisualizationSaga(), watchAddDashboardSaga()]);
+  yield all([
+    watchGetAnalyticsSaga(),
+    watchDeleteVisualizationSaga(),
+    watchAddDashboardSaga(),
+    watchDeleteDashboardSaga(),
+  ]);
 }

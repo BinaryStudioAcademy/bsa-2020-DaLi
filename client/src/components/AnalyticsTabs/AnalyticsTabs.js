@@ -20,7 +20,7 @@ const useStyles = makeStyles(() => ({
   selected: {},
 }));
 
-const AnalyticsTabs = ({ visualizations, dashboards, deleteVisualization, isLoading }) => {
+const AnalyticsTabs = ({ visualizations, dashboards, deleteVisualization, deleteDashboard, isLoading }) => {
   const classes = useStyles();
   const [value, setValue] = React.useState(0);
 
@@ -30,6 +30,14 @@ const AnalyticsTabs = ({ visualizations, dashboards, deleteVisualization, isLoad
 
   const deleteItem = (id) => () => {
     deleteVisualization(id);
+  };
+
+  const removeVisualization = (id) => () => {
+    deleteVisualization(id);
+  };
+
+  const removeDashboard = (id) => () => {
+    deleteDashboard(id);
   };
 
   const sortData = (data) => {
@@ -53,10 +61,24 @@ const AnalyticsTabs = ({ visualizations, dashboards, deleteVisualization, isLoad
             value={value}
             index={0}
             deleteItem={deleteItem}
+            deleteVisualization={removeVisualization}
+            deleteDashboard={removeDashboard}
             data={sortData([...visualizations, ...dashboards])}
           />
-          <AnalyticsTabsPanel value={value} index={1} deleteItem={deleteItem} data={sortData(dashboards)} />
-          <AnalyticsTabsPanel value={value} index={2} deleteItem={deleteItem} data={sortData(visualizations)} />
+          <AnalyticsTabsPanel
+            value={value}
+            index={1}
+            deleteVisualization={removeVisualization}
+            deleteDashboard={removeDashboard}
+            data={sortData(dashboards)}
+          />
+          <AnalyticsTabsPanel
+            value={value}
+            index={2}
+            deleteVisualization={removeVisualization}
+            deleteDashboard={removeDashboard}
+            data={sortData(visualizations)}
+          />
         </>
       )}
     </>
@@ -68,6 +90,7 @@ AnalyticsTabs.propTypes = {
   dashboards: PropTypes.array,
   isLoading: PropTypes.bool,
   deleteVisualization: PropTypes.func,
+  deleteDashboard: PropTypes.func,
 };
 
 export default AnalyticsTabs;

@@ -13,7 +13,7 @@ import { Link } from 'react-router-dom';
 
 import { useStyles } from './styles';
 
-const AnalyticsTabsPanel = ({ value, index, data, deleteItem }) => {
+const AnalyticsTabsPanel = ({ value, index, data, deleteVisualization, deleteDashboard }) => {
   const classes = useStyles();
 
   const chooseIcon = (type) => {
@@ -48,7 +48,7 @@ const AnalyticsTabsPanel = ({ value, index, data, deleteItem }) => {
                   <Tooltip title={item.description} placement="left" className={classes.description}>
                     <InfoIcon />
                   </Tooltip>
-                  <DeleteIcon className={classes.menuIcon} id={item.id} />
+                  <DeleteIcon className={classes.menuIcon} id={item.id} onClick={deleteDashboard(item.id)} />
                 </>
               ) : (
                 <>
@@ -56,7 +56,7 @@ const AnalyticsTabsPanel = ({ value, index, data, deleteItem }) => {
                     {chooseIcon(item.type)}
                     <span>{item.name}</span>
                   </Link>
-                  <DeleteIcon className={classes.menuIcon} id={item.id} onClick={deleteItem(item.id)} />
+                  <DeleteIcon className={classes.menuIcon} id={item.id} onClick={deleteVisualization(item.id)} />
                 </>
               )}
             </div>
@@ -69,7 +69,8 @@ const AnalyticsTabsPanel = ({ value, index, data, deleteItem }) => {
 
 AnalyticsTabsPanel.propTypes = {
   data: PropTypes.array,
-  deleteItem: PropTypes.func,
+  deleteVisualization: PropTypes.func,
+  deleteDashboard: PropTypes.func,
   index: PropTypes.any.isRequired,
   value: PropTypes.any.isRequired,
 };

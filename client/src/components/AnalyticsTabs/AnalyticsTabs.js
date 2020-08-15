@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 import Tab from '@material-ui/core/Tab';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import AnalyticsTabsHeader from './AnalyticsTabsHeader/AnalyticsTabsHeader';
 import AnalyticsTabsPanel from './AnalyticsTabsPanel/AnalyticsTabsPanel';
 
@@ -44,7 +45,9 @@ const AnalyticsTabs = ({ visualizations, dashboards, deleteVisualization, isLoad
         <Tab classes={{ root: classes.tabsButtons, selected: classes.selected }} label="Dashboards" />
         <Tab classes={{ root: classes.tabsButtons, selected: classes.selected }} label="Visualizations" />
       </AnalyticsTabsHeader>
-      {!isLoading ? (
+      {isLoading ? (
+        <CircularProgress />
+      ) : (
         <>
           <AnalyticsTabsPanel
             value={value}
@@ -55,7 +58,7 @@ const AnalyticsTabs = ({ visualizations, dashboards, deleteVisualization, isLoad
           <AnalyticsTabsPanel value={value} index={1} deleteItem={deleteItem} data={sortData(dashboards)} />
           <AnalyticsTabsPanel value={value} index={2} deleteItem={deleteItem} data={sortData(visualizations)} />
         </>
-      ) : null}
+      )}
     </>
   );
 };

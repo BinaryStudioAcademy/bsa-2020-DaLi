@@ -15,6 +15,8 @@ class DashboardsAPIService extends baseAPIService {
   updateDashboard = (id, updatedDashboard) => this.patchData(`/${id}`, updatedDashboard);
 
   deleteDashboard = (id) => this.deleteData(`${id}`);
+
+  getDashboard = (id) => this.getDataById(`/${id}`);
 }
 
 export const dashboardsAPIService = new DashboardsAPIService();

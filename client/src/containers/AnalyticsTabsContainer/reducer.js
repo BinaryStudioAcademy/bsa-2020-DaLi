@@ -7,7 +7,7 @@ const initialState = {
   error: false,
 };
 
-const visualizationsListReducer = (state = initialState, { type, payload }) => {
+const analyticsReducer = (state = initialState, { type, payload }) => {
   switch (type) {
     case GET_ANALYTICS: {
       return {
@@ -37,4 +37,4 @@ const visualizationsListReducer = (state = initialState, { type, payload }) => {
   }
 };
 
-export default visualizationsListReducer;
+export default analyticsReducer;

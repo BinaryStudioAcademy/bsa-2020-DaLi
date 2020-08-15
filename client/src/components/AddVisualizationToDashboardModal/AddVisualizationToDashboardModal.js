@@ -16,6 +16,7 @@ const AddVisualizationToDashboardModal = ({closeModal, addVisualization, search,
 
   const addNewVisualization = (id) => () => {
     addVisualization(id);
+    closeModal();
   };
   const searchVisualizations = (value) => {
     search(value.search);

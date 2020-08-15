@@ -6,7 +6,19 @@ import './DashboardLayoutStyles.css';
 
 const ResponsiveReactGridLayout = WidthProvider(Responsive);
 const DashboardLayout = (props) => {
-  const { layout, layouts, isEdit, onLayoutChange, onBreakpointChange } = props;
+  const {
+    layout,
+    layouts,
+    isEdit,
+    onLayoutChange,
+    onBreakpointChange,
+    getVisualization,
+    getLayoutItem,
+    getVisualizationComponent,
+    visualizations,
+    dashboardVisualizations,
+    data,
+  } = props;
 
   const dashboardLayoutClasses = isEdit ? 'dashboard-container dashboard-container--edit' : 'dashboard-container';
 
@@ -22,11 +34,16 @@ const DashboardLayout = (props) => {
         onLayoutChange={onLayoutChange}
         onBreakpointChange={onBreakpointChange}
       >
-        {layout.map((item) => (
-          <div className="dashboard-layout__item" key={item.i} data-grid={item}>
-            <span className="text">{item.i}</span>
-          </div>
-        ))}
+        {dashboardVisualizations.map((id) => {
+          const visualization = getVisualization(visualizations, id);
+          const layoutItem = getLayoutItem(layout, id);
+          const visualizationComponent = getVisualizationComponent(visualization.type, visualization.config, data);
+          return (
+            <div className="dashboard-layout__item" key={id} data-grid={layoutItem}>
+              {visualizationComponent}
+            </div>
+          );
+        })}
       </ResponsiveReactGridLayout>
     </div>
   );
@@ -38,6 +55,12 @@ DashboardLayout.propTypes = {
   layouts: PropTypes.object,
   onLayoutChange: PropTypes.func,
   onBreakpointChange: PropTypes.func,
+  getVisualization: PropTypes.func,
+  getLayoutItem: PropTypes.func,
+  getVisualizationComponent: PropTypes.func,
+  visualizations: PropTypes.array,
+  dashboardVisualizations: PropTypes.array,
+  data: PropTypes.array,
 };
 
 export default DashboardLayout;

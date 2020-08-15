@@ -128,7 +128,7 @@ function LineChart({ settings, data, chart: chartSize }) {
         order: polynomial.order
       }
 
-      const trendlineCreator = new TrendlineCreator('polynomial', chart, xScale, yScale)
+      const trendlineCreator = new TrendlineCreator(trendlineType, chart, xScale, yScale)
       trendlineCreator.render(domain, trendlineData, config)
     }
 

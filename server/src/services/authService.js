@@ -7,14 +7,12 @@ import jwtConfig from '../config/jwt.config';
 export const login = async (user) => {
   // try {
   const candidate = await UserRepository.getByEmail(user.email);
-  debugger;
   if (candidate) {
     // hashed password
     // if (bcrypt.compareSync(user.password, candidate.password)) {
     // not hashed password
     if (candidate.password === user.password) {
       const { id, email, firstName, lastName } = candidate;
-      debugger;
       await UserRepository.updateById({ id }, { lastLogin: new Date(Date.now()) });
       const token = jwt.sign(
         {
@@ -23,7 +21,6 @@ export const login = async (user) => {
         jwtConfig.secretKey,
         { expiresIn: jwtConfig.expiresIn }
       );
-      debugger;
       return {
         status: 200,
         response: {

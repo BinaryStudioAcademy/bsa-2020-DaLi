@@ -17,6 +17,9 @@ import Switch from '@material-ui/core/Switch';
 import TextField from '@material-ui/core/TextField';
 import ColorPicker from 'material-ui-color-picker';
 
+import ToggleButton from '@material-ui/lab/ToggleButton';
+import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup';
+
 const PrettySwitch = withStyles((theme) => ({
   root: {
     width: 60,
@@ -359,7 +362,26 @@ function LineChartSettings({ updateConfig, config: oldConfig } /* , oldConfig = 
         />
         <FormControl component="fieldset">
           <FormLabel component="legend">Line style</FormLabel>
-          <RadioGroup
+          <ToggleButtonGroup
+            value={lineType}
+            exclusive
+            onChange={(event, newLineType) => {
+              display.lineType = newLineType;
+              setConfig({ ...config, display });
+            }}
+            aria-label="lineType"
+          >
+            <ToggleButton value="curveNatural" aria-label="natural">
+              Natural
+            </ToggleButton>
+            <ToggleButton value="curveLinear" aria-label="linear">
+              Linear
+            </ToggleButton>
+            <ToggleButton value="curveStep" aria-label="step">
+              Step
+            </ToggleButton>
+          </ToggleButtonGroup>
+          {/* <RadioGroup
             aria-label="line-style"
             name="lineType"
             value={lineType}
@@ -371,7 +393,7 @@ function LineChartSettings({ updateConfig, config: oldConfig } /* , oldConfig = 
             <FormControlLabel value="curveNatural" control={<Radio />} label="Natural" />
             <FormControlLabel value="curveLinear" control={<Radio />} label="Linear" />
             <FormControlLabel value="curveStep" control={<Radio />} label="Step" />
-          </RadioGroup>
+          </RadioGroup> */}
         </FormControl>
       </TabPanel>
       <TabPanel value={value} index={2}>

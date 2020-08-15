@@ -19,6 +19,7 @@ function LineChart({ settings, data, chart: chartSize }) {
   useEffect(() => {
     setConfig(settings);
     // const { margin, width, height } = chartSize;
+    console.log(settings);
     const margin = {
       top: 40,
       right: 40,
@@ -164,7 +165,7 @@ function LineChart({ settings, data, chart: chartSize }) {
         .attr('class', 'goal__label')
         .text(goal.label);
     }
-  }, [goal, trendline.display, showDataPointsValues, lineType, color, data]);
+  }, [settings.axisData, goal.display, trendline.display, showDataPointsValues, lineType, color, data]);
 
   return <svg id="" ref={svgRef} />;
 }

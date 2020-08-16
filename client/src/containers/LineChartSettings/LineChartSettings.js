@@ -283,7 +283,9 @@ function LineChartSettings({ updateConfig, config: oldConfig } /* , oldConfig = 
         />
         {trendline.display ? (
           <FormControl component="fieldset">
-            <FormLabel component="legend">Trendline type</FormLabel>
+            <FormLabel component="legend" className={classes.legend}>
+              Trendline type
+            </FormLabel>
             <ToggleButtonGroup
               className={classes.btnGroup}
               value={trendline.trendlineType}
@@ -295,20 +297,31 @@ function LineChartSettings({ updateConfig, config: oldConfig } /* , oldConfig = 
               aria-label="trendlineType"
             >
               <ToggleButton
-                // className={classes.btnItem}
                 classes={{ root: classes.btnItem, selected: classes.selected }}
                 value="linear"
                 aria-label="linear"
               >
                 Line
               </ToggleButton>
-              <ToggleButton className={classes.btnItem} value="polynomial" aria-label="polynomial">
+              <ToggleButton
+                classes={{ root: classes.btnItem, selected: classes.selected }}
+                value="polynomial"
+                aria-label="polynomial"
+              >
                 Poly
               </ToggleButton>
-              <ToggleButton className={classes.btnItem} value="exponential" aria-label="exponential">
+              <ToggleButton
+                classes={{ root: classes.btnItem, selected: classes.selected }}
+                value="exponential"
+                aria-label="exponential"
+              >
                 Exp
               </ToggleButton>
-              <ToggleButton className={classes.btnItem} value="logarithmical" aria-label="logarithmical">
+              <ToggleButton
+                classes={{ root: classes.btnItem, selected: classes.selected }}
+                value="logarithmical"
+                aria-label="logarithmical"
+              >
                 Log
               </ToggleButton>
             </ToggleButtonGroup>
@@ -316,7 +329,9 @@ function LineChartSettings({ updateConfig, config: oldConfig } /* , oldConfig = 
         ) : null}
         {trendline.display && trendline.trendlineType === 'polynomial' ? (
           <FormControl component="fieldset">
-            <FormLabel component="legend">Order</FormLabel>
+            <FormLabel component="legend" className={classes.legend}>
+              Order
+            </FormLabel>
             <ToggleButtonGroup
               className={classes.btnGroup}
               value={trendline.polynomial.order.toString()}
@@ -327,16 +342,16 @@ function LineChartSettings({ updateConfig, config: oldConfig } /* , oldConfig = 
               }}
               aria-label="trendlinePolynomialOrder"
             >
-              <ToggleButton className={classes.btnItem} value="2" aria-label="2">
+              <ToggleButton classes={{ root: classes.btnItem, selected: classes.selected }} value="2" aria-label="2">
                 2
               </ToggleButton>
-              <ToggleButton className={classes.btnItem} value="3" aria-label="3">
+              <ToggleButton classes={{ root: classes.btnItem, selected: classes.selected }} value="3" aria-label="3">
                 3
               </ToggleButton>
-              <ToggleButton className={classes.btnItem} value="4" aria-label="4">
+              <ToggleButton classes={{ root: classes.btnItem, selected: classes.selected }} value="4" aria-label="4">
                 4
               </ToggleButton>
-              <ToggleButton className={classes.btnItem} value="5" aria-label="5">
+              <ToggleButton classes={{ root: classes.btnItem, selected: classes.selected }} value="5" aria-label="5">
                 5
               </ToggleButton>
             </ToggleButtonGroup>
@@ -353,7 +368,9 @@ function LineChartSettings({ updateConfig, config: oldConfig } /* , oldConfig = 
           }}
         />
         <FormControl component="fieldset">
-          <FormLabel component="legend">Line style</FormLabel>
+          <FormLabel component="legend" className={classes.legend}>
+            Line style
+          </FormLabel>
           <ToggleButtonGroup
             className={classes.btnGroup}
             value={lineType}
@@ -364,13 +381,25 @@ function LineChartSettings({ updateConfig, config: oldConfig } /* , oldConfig = 
             }}
             aria-label="lineType"
           >
-            <ToggleButton className={classes.btnItem} value="curveNatural" aria-label="natural">
+            <ToggleButton
+              classes={{ root: classes.btnItem, selected: classes.selected }}
+              value="curveNatural"
+              aria-label="natural"
+            >
               Natural
             </ToggleButton>
-            <ToggleButton className={classes.btnItem} value="curveLinear" aria-label="linear">
+            <ToggleButton
+              classes={{ root: classes.btnItem, selected: classes.selected }}
+              value="curveLinear"
+              aria-label="linear"
+            >
               Linear
             </ToggleButton>
-            <ToggleButton className={classes.btnItem} value="curveStep" aria-label="step">
+            <ToggleButton
+              classes={{ root: classes.btnItem, selected: classes.selected }}
+              value="curveStep"
+              aria-label="step"
+            >
               Step
             </ToggleButton>
           </ToggleButtonGroup>

@@ -73,12 +73,18 @@ export const useStyles = makeStyles((theme) => ({
     marginTop: '5px',
     marginBottom: '10px',
     borderColor: '#519ee3',
+    color: 'black',
     textTransform: 'none',
     '&$selected': {
-      backgroundColor: '86BBEB',
+      backgroundColor: '#86BBEB',
+      color: 'white',
     },
   },
   selected: {
     backgroundColor: '#86BBEB',
+  },
+  legend: {
+    color: 'black',
+    marginTop: '5px',
   },
 }));

@@ -165,7 +165,7 @@ function LineChart({ settings, data, chart: chartSize }) {
         .attr('class', 'goal__label')
         .text(goal.label);
     }
-  }, [XAxis, YAxis, goal.display, trendline.display, showDataPointsValues, lineType, color, data]);
+  }, [JSON.stringify(settings), data]);
 
   return <svg id="" ref={svgRef} />;
 }

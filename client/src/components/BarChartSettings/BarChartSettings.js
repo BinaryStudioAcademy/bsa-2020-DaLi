@@ -14,6 +14,9 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Switch from '@material-ui/core/Switch';
 import TextField from '@material-ui/core/TextField';
 import ColorPicker from 'material-ui-color-picker';
+import ToggleButton from '@material-ui/lab/ToggleButton';
+import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup';
+import FormLabel from '@material-ui/core/FormLabel';
 
 const PrettySwitch = withStyles((theme) => ({
   root: {
@@ -167,6 +170,31 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     margin: '25px 25px 25px 0',
   },
+  btnGroup: {
+    display: 'flex',
+  },
+  btnItem: {
+    flex: 1,
+    marginTop: '5px',
+    marginBottom: '10px',
+    borderColor: '#519ee3',
+    color: 'black',
+    textTransform: 'none',
+    '&$selected': {
+      backgroundColor: '#86BBEB',
+      color: 'white',
+    },
+  },
+  selected: {
+    backgroundColor: '#86BBEB',
+  },
+  trendlineSwitch: {
+    marginBottom: '20px',
+  },
+  legend: {
+    color: 'black',
+    marginTop: '10px',
+  },
 }));
 
 const BarChartSettings = ({ updateConfig, config: oldConfig }) => {
@@ -187,6 +215,8 @@ const BarChartSettings = ({ updateConfig, config: oldConfig }) => {
   const [labelYAxis, setLabelYAxis] = useState(YAxis.label);
   const [showDataPointsValues, setShowDataPointsValues] = useState(incomingShowDataPointsValues);
   const [showTrendline, setShowTrendline] = useState(trendline.display);
+  const [trendlineType, setTrendlineType] = useState(trendline.trendlineType);
+  const [polynomialOrder, setPolynomialOrder] = useState(trendline.polynomial.order);
   const [config, setConfig] = useState(oldConfig);
 
   useEffect(() => {
@@ -222,11 +252,11 @@ const BarChartSettings = ({ updateConfig, config: oldConfig }) => {
         color,
         trendline: {
           display: showTrendline,
-          trendlineType: 'linear',
+          trendlineType,
           availableTrendlineTypes: ['linear', 'polynomial', 'exponential', 'logarithmical'],
           polynomial: {
             availableOrders: [2, 3, 4, 5],
-            order: 2,
+            order: polynomialOrder,
           },
         },
         showDataPointsValues,
@@ -337,6 +367,80 @@ const BarChartSettings = ({ updateConfig, config: oldConfig }) => {
           ))()}
           label="Show trendline"
         />
+        {showTrendline ? (
+          <FormControl component="fieldset">
+            <FormLabel component="legend" className={classes.legend}>
+              Trendline type
+            </FormLabel>
+            <ToggleButtonGroup
+              className={classes.btnGroup}
+              value={trendlineType}
+              exclusive
+              onChange={(event, newTrendLineType) => {
+                setTrendlineType(newTrendLineType);
+              }}
+              aria-label="trendlineType"
+            >
+              <ToggleButton
+                classes={{ root: classes.btnItem, selected: classes.selected }}
+                value="linear"
+                aria-label="linear"
+              >
+                Line
+              </ToggleButton>
+              <ToggleButton
+                classes={{ root: classes.btnItem, selected: classes.selected }}
+                value="polynomial"
+                aria-label="polynomial"
+              >
+                Poly
+              </ToggleButton>
+              <ToggleButton
+                classes={{ root: classes.btnItem, selected: classes.selected }}
+                value="exponential"
+                aria-label="exponential"
+              >
+                Exp
+              </ToggleButton>
+              <ToggleButton
+                classes={{ root: classes.btnItem, selected: classes.selected }}
+                value="logarithmical"
+                aria-label="logarithmical"
+              >
+                Log
+              </ToggleButton>
+            </ToggleButtonGroup>
+          </FormControl>
+        ) : null}
+        {showTrendline && trendlineType === 'polynomial' ? (
+          <FormControl component="fieldset">
+            <FormLabel component="legend" className={classes.legend}>
+              Order
+            </FormLabel>
+            <ToggleButtonGroup
+              className={classes.btnGroup}
+              value={polynomialOrder.toString()}
+              exclusive
+              onChange={(event, order) => {
+                setPolynomialOrder(parseInt(order));
+              }}
+              aria-label="trendlinePolynomialOrder"
+            >
+              <ToggleButton classes={{ root: classes.btnItem, selected: classes.selected }} value="2" aria-label="2">
+                2
+              </ToggleButton>
+              <ToggleButton classes={{ root: classes.btnItem, selected: classes.selected }} value="3" aria-label="3">
+                3
+              </ToggleButton>
+              <ToggleButton classes={{ root: classes.btnItem, selected: classes.selected }} value="4" aria-label="4">
+                4
+              </ToggleButton>
+              <ToggleButton classes={{ root: classes.btnItem, selected: classes.selected }} value="5" aria-label="5">
+                5
+              </ToggleButton>
+            </ToggleButtonGroup>
+          </FormControl>
+        ) : null}
         <ColorPicker
           className={classes.colorPicker}
           name="color"

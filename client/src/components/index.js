@@ -6,6 +6,7 @@ import BarChart from './BarChart/BarChart';
 import LoginForm from './LoginForm';
 import Modal from './Modal';
 import LineChart from './LineChart/LineChart';
+import LineChartSettings from './LineChartSettings';
 import EnhancedTable from './EnhancedTable/EnhancedTable';
 import InitialTable from './InitialTable/InitialTable';
 import SelectVisualization from './SelectVisualization/SelectVisualization';
@@ -33,6 +34,7 @@ export {
   ViewVisualizationMain,
   ViewVisualizationHeader,
   TableSettingsSidebar,
+  LineChartSettings,
   BarChartSettings,
   AddVisualizationToDashboardModal,
   AnalyticsTabs,

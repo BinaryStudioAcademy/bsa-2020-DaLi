@@ -166,7 +166,7 @@ function BarChart(props) {
     setHeight(svgRef.current.parentElement.offsetHeight);
     setWidth(svgRef.current.parentElement.offsetWidth);
     draw();
-  }, [props, width, height]);
+  }, [JSON.stringify(props), width, height]);
 
   window.addEventListener('resize', () => {
     setHeight(svgRef.current.parentElement.offsetHeight);

@@ -119,16 +119,21 @@ function LineChart({ settings, data, chart: chartSize }) {
         min: data[0][XAxis.key],
         max: data[data.length - 1][XAxis.key]
       }
+      const xScaleForTrendline = d3
+      .scaleLinear()
+      .domain([xDataRange.min, xDataRange.max])
+      .range([margin.left, width - margin.right])
       const {polynomial,trendlineType} = trendline
 
       const trendlineData = data.map(item => [item[XAxis.key], item[YAxis.key]])
-      const domain = [xDataRange.min, xDataRange.max]
+      const barUnitWidth = (xDataRange.max - xDataRange.min) / data.length
+      const domain = [xDataRange.min, xDataRange.max - barUnitWidth]
       const config = {
-        xOffset: margin.left / 2,
+        xOffset: xScale.bandwidth() / 2,
         order: polynomial.order
       }
 
-      const trendlineCreator = new TrendlineCreator(trendlineType, chart, xScale, yScale)
+      const trendlineCreator = new TrendlineCreator(trendlineType, chart, xScaleForTrendline, yScale)
       trendlineCreator.render(domain, trendlineData, config)
     }
 

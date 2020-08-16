@@ -13,6 +13,54 @@
   min-height: calc(100vh - 235px);
 }
 
+.dashboard-container .dashboard-layout-item__header{
+  height: 50px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0px 20px;
+  box-sizing: border-box;
+  border-bottom: 1px solid #f3f4f4;
+}
+
+.dashboard-container .dashboard-layout-item__title{
+  font-size: 15px;
+}
+
+.dashboard-container .dashboard-layout-item__delete{
+  font-size: 19px;
+  color: gray;
+  border: none;
+  display: none;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  border-radius: 50%;
+  width: 35px;
+  height: 35px;
+  background: #f9fbfc;
+}
+
+.dashboard-container--edit .dashboard-layout-item__delete{
+  display: flex;
+}
+
+.dashboard-container .dashboard-layout-item__delete:hover {
+  color: red;
+  cursor: pointer;
+}
+.dashboard-container .dashboard-layout-item__delete:focus {
+  outline-color: gray;
+  outline-width: 1px;
+}
+
+.dashboard-container .dashboard-layout-item__visualization{
+  height:calc(100% - 50px);
+  width: 100%;
+  padding: 10px;
+  box-sizing: border-box;
+}
+
 .dashboard-container--edit .react-grid-layout{
   min-height: calc(100vh - 340px);
   background-image: linear-gradient(to bottom, transparent 50%, #f9fbfc 50%),

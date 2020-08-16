@@ -1,4 +1,5 @@
 import React from 'react';
+import DeleteIcon from '@material-ui/icons/Delete';
 import BarChart from '../BarChartContainer/BarChartContainer';
 import LineChart from '../LineChartContainer/LineChartContainer';
 import TableVisualization from '../TableVisualizationContainer/TableVisualizationContainer';
@@ -46,8 +47,14 @@ export const getDashboardItems = (dashboardVisualizations, layout, data) => {
     const layoutItem = getLayoutItem(layout, visualization.id);
     const visualizationComponent = getVisualizationComponent(visualization.type, visualization.config, data);
     return (
-      <div className="dashboard-layout__item" key={visualization.id} data-grid={layoutItem}>
-        {visualizationComponent}
+      <div className="dashboard-layout-item" key={visualization.id} data-grid={layoutItem}>
+        <div className="dashboard-layout-item__header">
+          <h3 className="dashboard-layout-item__title">{visualization.name}</h3>
+          <button type="button" className="dashboard-layout-item__delete">
+            <DeleteIcon className="dashboard-layout-item__delete-icon" />
+          </button>
+        </div>
+        <div className="dashboard-layout-item__visualization">{visualizationComponent}</div>
       </div>
     );
   });

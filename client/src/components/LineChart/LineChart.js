@@ -16,17 +16,12 @@ function LineChart({ settings, data, chart: chartSize }) {
   data = data.sort((a, b) => a[XAxis.key] - b[XAxis.key]);
   const [config, setConfig] = useState({});
   const svgRef = useRef();
-  useEffect(() => {
+  const [width, setWidth] = useState(chartSize.width);
+  const [height, setHeight] = useState(chartSize.height);
+  
+  const draw = () => {
     setConfig(settings);
-    // const { margin, width, height } = chartSize;
-    const margin = {
-      top: 40,
-      right: 40,
-      bottom: 60,
-      left: 60,
-    };
-    const height = 600;
-    const width = 1000;
+    const { margin } = chartSize;
 
     const chart = d3.select(svgRef.current);
 
@@ -53,16 +48,18 @@ function LineChart({ settings, data, chart: chartSize }) {
       .domain([yDataRange.min, yDataRange.max])
       .range([height - margin.bottom, margin.top]);
 
+    d3.select('.d3-tip').remove();
     const tip = d3Tip()
       .attr('class', 'd3-tip')
       .offset([-10, 0])
       .html(
         (d) => `
-          <div><span>${XAxis.label}:</span> <span style='color:white'>${d[XAxis.key]}</span></div>
-          <div><span>${YAxis.label}:</span> <span style='color:white'>${d[YAxis.key]}</span></div>
-          `
+    <div><span>${XAxis.label}:</span> <span style='color:white'>${d[XAxis.key]}</span></div>
+    <div><span>${YAxis.label}:</span> <span style='color:white'>${d[YAxis.key]}</span></div>
+  `
       );
-    chart.call(tip).attr('viewBox', [0, 0, width, height]);
+
+    chart.call(tip).attr('height', '100%').attr('width', '100%');
 
     const line = d3
       .line()
@@ -169,9 +166,20 @@ function LineChart({ settings, data, chart: chartSize }) {
         .attr('class', 'goal__label')
         .text(goal.label);
     }
-  }, [goal, trendline.display, showDataPointsValues, lineType, color, data]);
+  };
 
-  return <svg id="" ref={svgRef} />;
+  useEffect(() => {
+    setHeight(svgRef.current.parentElement.offsetHeight);
+    setWidth(svgRef.current.parentElement.offsetWidth);
+    draw();
+  }, [goal, trendline, showDataPointsValues, lineType, color, data, chartSize, width, height]);
+
+  window.addEventListener('resize', () => {
+    setHeight(svgRef.current.parentElement.offsetHeight);
+    setWidth(svgRef.current.parentElement.offsetWidth);
+  });
+
+  return <svg ref={svgRef} />;
 }
 
 LineChart.propTypes = {

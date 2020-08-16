@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import { getDashboard, updateDashboard } from './actions';
 
 import { DashboardHeader, DashboardLayout, AddVisualizationToDashboardModal } from '../../components';
@@ -147,7 +148,7 @@ const DashboardContainer = (props) => {
   };
 
   return isLoading ? (
-    'Loading'
+    <CircularProgress size={40} left={-20} top={-20} style={{ marginLeft: '50%', marginTop: '50%' }} />
   ) : (
     <>
       <AddVisualizationToDashboardModal

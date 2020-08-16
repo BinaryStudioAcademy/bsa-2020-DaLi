@@ -54,7 +54,7 @@ const AnalyticsTabs = ({ visualizations, dashboards, deleteVisualization, delete
         <Tab classes={{ root: classes.tabsButtons, selected: classes.selected }} label="Visualizations" />
       </AnalyticsTabsHeader>
       {isLoading ? (
-        <CircularProgress />
+        <CircularProgress size={40} left={-20} top={-40} style={{ marginLeft: '50%', marginTop: '50%' }} />
       ) : (
         <>
           <AnalyticsTabsPanel

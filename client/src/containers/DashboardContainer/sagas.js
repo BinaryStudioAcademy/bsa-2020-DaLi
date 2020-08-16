@@ -3,9 +3,6 @@ import {
   GET_DASHBOARD,
   GET_DASHBOARD_ERROR,
   GET_DASHBOARD_SUCCESS,
-  ADD_VISUALIZATIONS_TO_DASHBOARD,
-  ADD_VISUALIZATIONS_TO_DASHBOARD_SUCCESS,
-  ADD_VISUALIZATIONS_TO_DASHBOARD_ERROR,
   UPDATE_DASHBOARD,
   UPDATE_DASHBOARD_SUCCESS,
   UPDATE_DASHBOARD_ERROR,
@@ -25,27 +22,23 @@ export function* watchGetDashboardSaga() {
   yield takeEvery(GET_DASHBOARD, getDashboard);
 }
 
-export function* addVisualizationsToDashboard({ dashboardId, visualizations, updatedDashboard }) {
+export function* updateDashboard({
+  dashboardId,
+  addedVisualizationsId,
+  deletedDashboardVisualizationsId,
+  updatedDashboard,
+}) {
   try {
     yield all(
-      visualizations.map((visualization) =>
-        call(dashboardsAPIService.addVisualizationsToDashboard, dashboardId, visualization)
+      deletedDashboardVisualizationsId.map((dashboardVisualizationId) =>
+        call(dashboardsAPIService.deleteVisualizationFromDashboard, dashboardId, dashboardVisualizationId)
       )
     );
-    yield call(dashboardsAPIService.updateDashboard, dashboardId, updatedDashboard);
-    const dashboard = yield call(dashboardsAPIService.getDashboard, dashboardId);
-    yield put({ type: ADD_VISUALIZATIONS_TO_DASHBOARD_SUCCESS, payload: { dashboard } });
-  } catch (error) {
-    yield put({ type: ADD_VISUALIZATIONS_TO_DASHBOARD_ERROR, payload: error });
-  }
-}
-
-export function* watchAddVisualizationsToDashboardSaga() {
-  yield takeEvery(ADD_VISUALIZATIONS_TO_DASHBOARD, addVisualizationsToDashboard);
-}
-
-export function* updateDashboard({ dashboardId, updatedDashboard }) {
-  try {
+    yield all(
+      addedVisualizationsId.map((visualizationId) =>
+        call(dashboardsAPIService.addVisualizationToDashboard, dashboardId, visualizationId)
+      )
+    );
     yield call(dashboardsAPIService.updateDashboard, dashboardId, updatedDashboard);
     const dashboard = yield call(dashboardsAPIService.getDashboard, dashboardId);
     yield put({ type: UPDATE_DASHBOARD_SUCCESS, payload: { dashboard } });
@@ -59,5 +52,5 @@ export function* watchUpdateDashboardSaga() {
 }
 
 export default function* currentDashboardSaga() {
-  yield all([watchGetDashboardSaga(), watchAddVisualizationsToDashboardSaga(), watchUpdateDashboardSaga()]);
+  yield all([watchGetDashboardSaga(), watchUpdateDashboardSaga()]);
 }

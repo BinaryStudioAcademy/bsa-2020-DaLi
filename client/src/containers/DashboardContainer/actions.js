@@ -1,4 +1,4 @@
-import { GET_DASHBOARD, ADD_VISUALIZATIONS_TO_DASHBOARD, UPDATE_DASHBOARD } from './actionsTypes';
+import { GET_DASHBOARD, UPDATE_DASHBOARD } from './actionsTypes';
 
 export const getDashboard = (id) => {
   return {
@@ -7,19 +7,17 @@ export const getDashboard = (id) => {
   };
 };
 
-export const addVisualizationsToDashboard = ({ dashboardId, visualizations, updatedDashboard }) => {
-  return {
-    type: ADD_VISUALIZATIONS_TO_DASHBOARD,
-    dashboardId,
-    visualizations,
-    updatedDashboard,
-  };
-};
-
-export const updateDashboard = ({ dashboardId, updatedDashboard }) => {
+export const updateDashboard = ({
+  dashboardId,
+  addedVisualizationsId,
+  deletedDashboardVisualizationsId,
+  updatedDashboard,
+}) => {
   return {
     type: UPDATE_DASHBOARD,
     dashboardId,
+    addedVisualizationsId,
+    deletedDashboardVisualizationsId,
     updatedDashboard,
   };
 };

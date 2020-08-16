@@ -1,24 +1,34 @@
-/* eslint-disable */
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import {getDashboard, addVisualizationsToDashboard, updateDashboard} from './actions';
+import { getDashboard, updateDashboard } from './actions';
 
 import { DashboardHeader, DashboardLayout, AddVisualizationToDashboardModal } from '../../components';
-import {getDashboardItems, getDashboardConfig, createUpdatedDashboard, getVisualization} from './helper';
+import {
+  getDashboardItems,
+  getDashboardConfig,
+  createUpdatedDashboard,
+  getVisualization,
+  updateVisualizationsId,
+  createNewLayoutItem,
+  updateLayout,
+  updateDashboardVisualization,
+  getDashboardVisualizationsId,
+} from './helper';
 import mockData from './mockData';
 
-
 const DashboardContainer = (props) => {
-  const {id, currentDashboard, isLoading, getDashboard, visualizations, addVisualizationsToDashboard, updateDashboard } = props;
+  const { id, currentDashboard, isLoading, getDashboard, visualizations, updateDashboard } = props;
 
   const [oldLayout, setOldLayout] = useState([]);
   const [currentLayout, setCurrentLayout] = useState([]);
   const [oldLayouts, setOldLayouts] = useState([]);
   const [currentLayouts, setCurrentLayouts] = useState({});
-  const [oldDashboardVisualizations, setOldDashboardVisualizations] = useState([])
+  const [oldDashboardVisualizations, setOldDashboardVisualizations] = useState([]);
   const [dashboardVisualizations, setDashboardVisualizations] = useState([]);
-  const [newDashboardVisualizations, setNewDashboardVisualizations] = useState([]);
+
+  const [addedVisualizationsId, setAddedVisualizationsId] = useState([]);
+  const [deletedVisualizationsId, setDeletedVisualizationsId] = useState([]);
 
   const [breakpoint, setBreakpoint] = useState('lg');
   const [cols, setCols] = useState(null);
@@ -32,47 +42,30 @@ const DashboardContainer = (props) => {
 
   useEffect(() => {
     getDashboard(id);
-  }, [id]);
+  }, [id, getDashboard]);
 
-  useEffect(() => {      
+  useEffect(() => {
     setName(currentDashboard.name);
     setDescription(currentDashboard.description);
     setDashboardVisualizations(currentDashboard.Visualizations || []);
-    console.log(currentDashboard.Visualizations);
     const dashboardConfig = getDashboardConfig(currentDashboard);
     setCurrentLayout(dashboardConfig?.layout || []);
-    setCurrentLayouts(dashboardConfig?.layouts || []);    
-    setNewDashboardVisualizations([]);
-}, [currentDashboard])
+    setCurrentLayouts(dashboardConfig?.layouts || []);
 
+    setAddedVisualizationsId([]);
+    setDeletedVisualizationsId([]);
+  }, [currentDashboard]);
 
- 
   const onLayoutChange = (layout, layouts) => {
     setCurrentLayout(layout);
-    setCurrentLayouts(layouts)
-  }
-
-  const onAddItem = (visualizationId) => {
-    setCurrentLayout(
-      currentLayout.concat({
-        i: visualizationId,
-        x: (currentLayout.length * 4) % (cols && cols[breakpoint] || 12),
-        y: Infinity, 
-        w: 4,
-        h: 3,
-        minW: 4,
-        minH: 3,
-       
-      }),
-    );
-  }
+    setCurrentLayouts(layouts);
+  };
 
   const onBreakpointChange = (breakpoint, cols) => {
     setBreakpoint(breakpoint);
     setCols(cols);
-  }
+  };
 
-  
   const onSetEdit = () => {
     setOldLayout(currentLayout);
     setOldLayouts(currentLayouts);
@@ -80,7 +73,7 @@ const DashboardContainer = (props) => {
     setOldName(name);
     setOldDescription(description);
     setIsEdit(true);
-  }
+  };
 
   const onCancelChanges = () => {
     setCurrentLayout(oldLayout);
@@ -89,35 +82,57 @@ const DashboardContainer = (props) => {
     setName(oldName);
     setDescription(oldDescription);
     setIsEdit(false);
-  }
+    setAddedVisualizationsId([]);
+    setDeletedVisualizationsId([]);
+  };
 
   const onSaveChanges = () => {
-    if(!name.length){
+    if (!name.length) {
       return;
     }
     const updatedDashboard = createUpdatedDashboard(name, description, currentLayout, currentLayouts);
-    if(newDashboardVisualizations.length) {    
-      addVisualizationsToDashboard({dashboardId: id, visualizations: newDashboardVisualizations, updatedDashboard});
-    } else {
-      updateDashboard({dashboardId: id, updatedDashboard});
-    }
+    const deletedDashboardVisualizationsId = getDashboardVisualizationsId(
+      deletedVisualizationsId,
+      currentDashboard.Visualizations
+    );
+    updateDashboard({
+      dashboardId: id,
+      addedVisualizationsId,
+      deletedDashboardVisualizationsId,
+      updatedDashboard,
+    });
     setIsEdit(false);
-  }
-  
+  };
+
   const onVisualizationAdd = (visualizationId) => {
-    setNewDashboardVisualizations(newDashboardVisualizations.concat(visualizationId));
+    const newLayoutItem = createNewLayoutItem(visualizationId, currentLayout, cols, breakpoint);
     const visualization = getVisualization(visualizationId, visualizations);
+    const updatedDeletedVisualizationsId = updateVisualizationsId(visualizationId, deletedVisualizationsId);
+
     setDashboardVisualizations(dashboardVisualizations.concat(visualization));
-    onAddItem(visualizationId);
-  }
-  
+    setAddedVisualizationsId(addedVisualizationsId.concat(visualizationId));
+    setCurrentLayout(currentLayout.concat(newLayoutItem));
+    setDeletedVisualizationsId(updatedDeletedVisualizationsId);
+  };
+
+  const onVisualizationDelete = (visualizationId) => {
+    const updatedLayout = updateLayout(visualizationId, currentLayout);
+    const updatedAddedVisualizationsId = updateVisualizationsId(visualizationId, addedVisualizationsId);
+    const updatedDashboardVisualizations = updateDashboardVisualization(visualizationId, dashboardVisualizations);
+
+    setDashboardVisualizations(updatedDashboardVisualizations);
+    setAddedVisualizationsId(updatedAddedVisualizationsId);
+    setDeletedVisualizationsId(deletedVisualizationsId.concat(visualizationId));
+    setCurrentLayout(currentLayout.concat(updatedLayout));
+  };
+
   const onOpenModal = () => {
     setIsModalVisible(true);
-  }
+  };
 
   const onCloseModal = () => {
     setIsModalVisible(false);
-  }
+  };
 
   const onNameChange = (event) => {
     setName(event.target.value);
@@ -126,60 +141,58 @@ const DashboardContainer = (props) => {
   const onDescriptionChange = (event) => {
     setDescription(event.target.value);
   };
-
- 
-  return isLoading ? 'Loading' : (
+  return isLoading ? (
+    'Loading'
+  ) : (
     <>
-    <AddVisualizationToDashboardModal 
-      isVisible={isModalVisible} 
-      visualizations={visualizations} 
-      closeModal={onCloseModal} 
-      search='' 
-      addVisualization={onVisualizationAdd}
-    />
-    <DashboardHeader 
-     name={name} 
-     description={description} 
-     isEdit={isEdit} onSetEdit={onSetEdit} 
-     onCancelChanges={onCancelChanges} 
-     onSaveChanges={onSaveChanges} 
-     onVisualizationAdd={onOpenModal}
-     onNameChange={onNameChange}
-     onDescriptionChange={onDescriptionChange}
-   />
-   <DashboardLayout 
-     layout={currentLayout} 
-     layouts={currentLayouts} 
-     cols={cols} isEdit={isEdit} 
-     onLayoutChange={onLayoutChange} 
-     onBreakpointChange={onBreakpointChange}
-     dashboardVisualizations={dashboardVisualizations}
-     data={mockData}
-     getDashboardItems={getDashboardItems}
-
-   />
- </>
- );
-      
-    
-  
-}
+      <AddVisualizationToDashboardModal
+        isVisible={isModalVisible}
+        visualizations={visualizations}
+        closeModal={onCloseModal}
+        search=""
+        addVisualization={onVisualizationAdd}
+      />
+      <DashboardHeader
+        name={name}
+        description={description}
+        isEdit={isEdit}
+        onSetEdit={onSetEdit}
+        onCancelChanges={onCancelChanges}
+        onSaveChanges={onSaveChanges}
+        onVisualizationAdd={onOpenModal}
+        onNameChange={onNameChange}
+        onDescriptionChange={onDescriptionChange}
+      />
+      <DashboardLayout
+        layout={currentLayout}
+        layouts={currentLayouts}
+        cols={cols}
+        isEdit={isEdit}
+        onLayoutChange={onLayoutChange}
+        onBreakpointChange={onBreakpointChange}
+        dashboardVisualizations={dashboardVisualizations}
+        data={mockData}
+        getDashboardItems={getDashboardItems}
+        onVisualizationDelete={onVisualizationDelete}
+      />
+    </>
+  );
+};
 DashboardContainer.propTypes = {
   id: PropTypes.string,
   currentDashboard: PropTypes.object,
-  visualization: PropTypes.array,
+  visualizations: PropTypes.array,
   isLoading: PropTypes.bool,
   getDashboard: PropTypes.func,
-  addVisualizationsToDashboard: PropTypes.func,
   updateDashboard: PropTypes.func,
 };
 
 const mapStateToProps = ({ currentDashboard, analytics }) => ({
   currentDashboard: currentDashboard.dashboard,
   isLoading: currentDashboard.isLoading,
-  visualizations: analytics.visualizations
+  visualizations: analytics.visualizations,
 });
 
-const mapDispatchToProps = { getDashboard, addVisualizationsToDashboard, updateDashboard };
+const mapDispatchToProps = { getDashboard, updateDashboard };
 
 export default connect(mapStateToProps, mapDispatchToProps)(DashboardContainer);

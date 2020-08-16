@@ -47,7 +47,9 @@ export const addVisualization = async (data) => {
 };
 
 export const deleteVisualization = async (id) => {
+  console.log(id);
   const item = await DashboardVisualizationsRepository.getById(id);
+  console.log(item);
   if (!item) {
     return null;
   }

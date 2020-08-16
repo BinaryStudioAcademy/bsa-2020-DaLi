@@ -18,8 +18,11 @@ class DashboardsAPIService extends baseAPIService {
 
   getDashboard = (id) => this.getDataById(`/${id}`);
 
-  addVisualizationsToDashboard = (dashboardId, visualizationId) =>
-    this.postData(`/${dashboardId}`, { visualizationId });
+  addVisualizationToDashboard = (dashboardId, visualizationId) => this.postData(`/${dashboardId}`, { visualizationId });
+
+  deleteVisualizationFromDashboard = (dashboardId, dashboardVisualizationsId) => {
+    this.deleteData(`${dashboardId}`, { dashboardVisualizationsId });
+  };
 }
 
 export const dashboardsAPIService = new DashboardsAPIService();

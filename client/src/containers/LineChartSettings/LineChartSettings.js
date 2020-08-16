@@ -6,8 +6,6 @@ import Tab from '@material-ui/core/Tab';
 import Box from '@material-ui/core/Box';
 import Button from '@material-ui/core/Button';
 import InputLabel from '@material-ui/core/InputLabel';
-import RadioGroup from '@material-ui/core/RadioGroup';
-import Radio from '@material-ui/core/Radio';
 import FormControl from '@material-ui/core/FormControl';
 import FormLabel from '@material-ui/core/FormLabel';
 import NativeSelect from '@material-ui/core/NativeSelect';
@@ -16,9 +14,9 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Switch from '@material-ui/core/Switch';
 import TextField from '@material-ui/core/TextField';
 import ColorPicker from 'material-ui-color-picker';
-
 import ToggleButton from '@material-ui/lab/ToggleButton';
 import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup';
+import { useStyles } from './styles';
 
 const PrettySwitch = withStyles((theme) => ({
   root: {
@@ -108,73 +106,6 @@ function a11yProps(index) {
   };
 }
 
-const useStyles = makeStyles((theme) => ({
-  root: {
-    flexGrow: 1,
-    backgroundColor: theme.palette.background.paper,
-    display: 'flex',
-    height: '100%',
-    maxWidth: '400px',
-    flexDirection: 'column',
-  },
-  backBtn: {
-    marginBottom: '2rem',
-    alignSelf: 'flex-start',
-  },
-  tabs: {
-    display: 'flex',
-    justifyContent: 'center',
-    marginBottom: '3rem',
-  },
-  tab: {
-    minWidth: 100,
-    backgroundColor: '#519ee3',
-    color: 'white',
-    borderRadius: '2rem',
-    marginRight: '1rem',
-    padding: '0.5rem',
-  },
-  indicator: {
-    display: 'none',
-  },
-  btn: {
-    backgroundColor: '#519ee3',
-    color: 'white',
-    borderRadius: '2rem',
-    padding: '1rem 4rem',
-  },
-  btnWrapper: {
-    marginTop: 'auto',
-    marginBottom: '2rem',
-    display: 'flex',
-    justifyContent: 'center',
-    width: 300,
-  },
-  formControl: {
-    margin: theme.spacing(1),
-    width: 300,
-    maxWidth: 300,
-    display: 'block',
-    marginBottom: '3rem',
-  },
-  select: {
-    maxWidth: '300px',
-    width: 300,
-  },
-  label: {
-    fontSize: 'bold',
-    fontWeight: '2rem',
-  },
-  input: {
-    display: 'flex',
-    margin: '25px 0px',
-  },
-  colorPicker: {
-    display: 'flex',
-    margin: '25px 25px 25px 0',
-  },
-}));
-
 const testConfig = {
   axisData: {
     XAxis: {
@@ -223,7 +154,7 @@ function LineChartSettings({ updateConfig, config: oldConfig } /* , oldConfig = 
   const { axisData, display } = config;
   const { XAxis, YAxis } = axisData;
   const { goal, color, showDataPointsValues, trendline, lineType } = display;
-  const { display: showTrendline } = trendline;
+  // const { display: showTrendline } = trendline;
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
@@ -341,7 +272,7 @@ function LineChartSettings({ updateConfig, config: oldConfig } /* , oldConfig = 
         <FormControlLabel
           control={(() => (
             <PrettySwitch
-              checked={showTrendline}
+              checked={trendline.display}
               onChange={(event) => {
                 display.trendline.display = event.target.checked;
                 setConfig({ ...config, display });
@@ -350,6 +281,67 @@ function LineChartSettings({ updateConfig, config: oldConfig } /* , oldConfig = 
           ))()}
           label="Show trendline"
         />
+        {trendline.display ? (
+          <FormControl component="fieldset">
+            <FormLabel component="legend">Trendline type</FormLabel>
+            <ToggleButtonGroup
+              className={classes.btnGroup}
+              value={trendline.trendlineType}
+              exclusive
+              onChange={(event, newTrendLineType) => {
+                display.trendline.trendlineType = newTrendLineType;
+                setConfig({ ...config, display });
+              }}
+              aria-label="trendlineType"
+            >
+              <ToggleButton
+                // className={classes.btnItem}
+                classes={{ root: classes.btnItem, selected: classes.selected }}
+                value="linear"
+                aria-label="linear"
+              >
+                Line
+              </ToggleButton>
+              <ToggleButton className={classes.btnItem} value="polynomial" aria-label="polynomial">
+                Poly
+              </ToggleButton>
+              <ToggleButton className={classes.btnItem} value="exponential" aria-label="exponential">
+                Exp
+              </ToggleButton>
+              <ToggleButton className={classes.btnItem} value="logarithmical" aria-label="logarithmical">
+                Log
+              </ToggleButton>
+            </ToggleButtonGroup>
+          </FormControl>
+        ) : null}
+        {trendline.display && trendline.trendlineType === 'polynomial' ? (
+          <FormControl component="fieldset">
+            <FormLabel component="legend">Order</FormLabel>
+            <ToggleButtonGroup
+              className={classes.btnGroup}
+              value={trendline.polynomial.order.toString()}
+              exclusive
+              onChange={(event, order) => {
+                display.trendline.polynomial.order = parseInt(order);
+                setConfig({ ...config, display });
+              }}
+              aria-label="trendlinePolynomialOrder"
+            >
+              <ToggleButton className={classes.btnItem} value="2" aria-label="2">
+                2
+              </ToggleButton>
+              <ToggleButton className={classes.btnItem} value="3" aria-label="3">
+                3
+              </ToggleButton>
+              <ToggleButton className={classes.btnItem} value="4" aria-label="4">
+                4
+              </ToggleButton>
+              <ToggleButton className={classes.btnItem} value="5" aria-label="5">
+                5
+              </ToggleButton>
+            </ToggleButtonGroup>
+          </FormControl>
+        ) : null}
         <ColorPicker
           className={classes.colorPicker}
           name="color"
@@ -363,6 +355,7 @@ function LineChartSettings({ updateConfig, config: oldConfig } /* , oldConfig = 
         <FormControl component="fieldset">
           <FormLabel component="legend">Line style</FormLabel>
           <ToggleButtonGroup
+            className={classes.btnGroup}
             value={lineType}
             exclusive
             onChange={(event, newLineType) => {
@@ -371,29 +364,16 @@ function LineChartSettings({ updateConfig, config: oldConfig } /* , oldConfig = 
             }}
             aria-label="lineType"
           >
-            <ToggleButton value="curveNatural" aria-label="natural">
+            <ToggleButton className={classes.btnItem} value="curveNatural" aria-label="natural">
               Natural
             </ToggleButton>
-            <ToggleButton value="curveLinear" aria-label="linear">
+            <ToggleButton className={classes.btnItem} value="curveLinear" aria-label="linear">
               Linear
             </ToggleButton>
-            <ToggleButton value="curveStep" aria-label="step">
+            <ToggleButton className={classes.btnItem} value="curveStep" aria-label="step">
               Step
             </ToggleButton>
           </ToggleButtonGroup>
-          {/* <RadioGroup
-            aria-label="line-style"
-            name="lineType"
-            value={lineType}
-            onChange={(event) => {
-              display.lineType = event.target.value;
-              setConfig({ ...config, display });
-            }}
-          >
-            <FormControlLabel value="curveNatural" control={<Radio />} label="Natural" />
-            <FormControlLabel value="curveLinear" control={<Radio />} label="Linear" />
-            <FormControlLabel value="curveStep" control={<Radio />} label="Step" />
-          </RadioGroup> */}
         </FormControl>
       </TabPanel>
       <TabPanel value={value} index={2}>

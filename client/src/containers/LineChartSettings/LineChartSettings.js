@@ -270,6 +270,7 @@ function LineChartSettings({ updateConfig, config: oldConfig } /* , oldConfig = 
           label="Show values on data points"
         />
         <FormControlLabel
+          className={classes.trendlineSwitch}
           control={(() => (
             <PrettySwitch
               checked={trendline.display}

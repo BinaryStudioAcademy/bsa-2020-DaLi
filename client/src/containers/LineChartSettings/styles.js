@@ -83,8 +83,11 @@ export const useStyles = makeStyles((theme) => ({
   selected: {
     backgroundColor: '#86BBEB',
   },
+  trendlineSwitch: {
+    marginBottom: '20px',
+  },
   legend: {
     color: 'black',
-    marginTop: '5px',
+    marginTop: '10px',
   },
 }));

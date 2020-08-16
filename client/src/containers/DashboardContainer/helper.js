@@ -101,3 +101,14 @@ export const getDashboardVisualizationsId = (visualizationsId, dashboardVisualiz
   });
   return dashboardVisualizationsId;
 };
+
+export const getNewVisualizationsId = (visualizationsId, dashboardVisualizations) => {
+  const newVisualizationsId = [];
+  visualizationsId.forEach((visualizationId) => {
+    const visualization = dashboardVisualizations.filter((visualization) => visualization.id === visualizationId)[0];
+    if (!visualization) {
+      newVisualizationsId.push(visualizationId);
+    }
+  });
+  return newVisualizationsId;
+};

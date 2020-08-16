@@ -9,14 +9,14 @@ export const getDashboard = (id) => {
 
 export const updateDashboard = ({
   dashboardId,
-  addedVisualizationsId,
+  newVisualizationsId,
   deletedDashboardVisualizationsId,
   updatedDashboard,
 }) => {
   return {
     type: UPDATE_DASHBOARD,
     dashboardId,
-    addedVisualizationsId,
+    newVisualizationsId,
     deletedDashboardVisualizationsId,
     updatedDashboard,
   };

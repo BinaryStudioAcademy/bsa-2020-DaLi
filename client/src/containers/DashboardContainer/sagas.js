@@ -24,7 +24,7 @@ export function* watchGetDashboardSaga() {
 
 export function* updateDashboard({
   dashboardId,
-  addedVisualizationsId,
+  newVisualizationsId,
   deletedDashboardVisualizationsId,
   updatedDashboard,
 }) {
@@ -35,7 +35,7 @@ export function* updateDashboard({
       )
     );
     yield all(
-      addedVisualizationsId.map((visualizationId) =>
+      newVisualizationsId.map((visualizationId) =>
         call(dashboardsAPIService.addVisualizationToDashboard, dashboardId, visualizationId)
       )
     );

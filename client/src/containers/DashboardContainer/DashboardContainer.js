@@ -14,6 +14,7 @@ import {
   updateLayout,
   updateDashboardVisualization,
   getDashboardVisualizationsId,
+  getNewVisualizationsId,
 } from './helper';
 import mockData from './mockData';
 
@@ -91,13 +92,15 @@ const DashboardContainer = (props) => {
       return;
     }
     const updatedDashboard = createUpdatedDashboard(name, description, currentLayout, currentLayouts);
+    const newVisualizationsId = getNewVisualizationsId(addedVisualizationsId, currentDashboard.Visualizations);
     const deletedDashboardVisualizationsId = getDashboardVisualizationsId(
       deletedVisualizationsId,
       currentDashboard.Visualizations
     );
+
     updateDashboard({
       dashboardId: id,
-      addedVisualizationsId,
+      newVisualizationsId,
       deletedDashboardVisualizationsId,
       updatedDashboard,
     });

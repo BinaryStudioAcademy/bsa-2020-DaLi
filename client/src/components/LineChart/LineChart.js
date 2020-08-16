@@ -9,20 +9,22 @@ import { findLineByLeastSquares } from '../../utils/trendline';
 
 import './LineChart.css';
 
-function LineChart({settings, data, chart:chartSize}) {
-  const { goal, showTrendLine, showDataPointsValues, lineType = "curveNatural", color } = settings.display;
+function LineChart({ settings, data, chart: chartSize }) {
+  const { goal, showTrendLine, showDataPointsValues, lineType = 'curveNatural', color } = settings.display;
   const XAxis = settings.axisData.XAxis;
   const YAxis = settings.axisData.YAxis;
 
   const [config, setConfig] = useState({});
-  const svgRef = useRef()
-  useEffect(() => {
+  const svgRef = useRef();
+  const [width, setWidth] = useState(chartSize.width);
+  const [height, setHeight] = useState(chartSize.height);
+  const draw = () => {
     setConfig(settings);
-    const { margin, width, height } = chartSize;
-    
+    const { margin } = chartSize;
+
     const chart = d3.select(svgRef.current);
 
-    chart.selectAll("*").remove();
+    chart.selectAll('*').remove();
 
     const yDataRange = {
       min: calcMinYDataValue(
@@ -45,16 +47,18 @@ function LineChart({settings, data, chart:chartSize}) {
       .domain([yDataRange.min, yDataRange.max])
       .range([height - margin.bottom, margin.top]);
 
+    d3.select('.d3-tip').remove();
     const tip = d3Tip()
       .attr('class', 'd3-tip')
       .offset([-10, 0])
       .html(
         (d) => `
-      <div><span>${XAxis.label}:</span> <span style='color:white'>${d[XAxis.key]}</span></div>
-      <div><span>${YAxis.label}:</span> <span style='color:white'>${d[YAxis.key]}</span></div>
-    `
+    <div><span>${XAxis.label}:</span> <span style='color:white'>${d[XAxis.key]}</span></div>
+    <div><span>${YAxis.label}:</span> <span style='color:white'>${d[YAxis.key]}</span></div>
+  `
       );
-    chart.call(tip).attr('viewBox', [0, 0, width, height]);
+
+    chart.call(tip).attr('height', '100%').attr('width', '100%');
 
     const line = d3
       .line()
@@ -99,7 +103,7 @@ function LineChart({settings, data, chart:chartSize}) {
     chart.append('g').attr('class', 'y-axis axis').call(yAxis);
 
     // delete axis values
-    chart.selectAll('.axis').selectAll('text').remove()
+    chart.selectAll('.axis').selectAll('text').remove();
 
     if (showTrendLine && data.length) {
       const xValues = data.map((d) => d[XAxis.key]);
@@ -147,11 +151,20 @@ function LineChart({settings, data, chart:chartSize}) {
         .attr('class', 'goal__label')
         .text(goal.label);
     }
-  }, [goal, showTrendLine, showDataPointsValues, lineType, color, data, chartSize]);
+  };
 
-  return (
-      <svg ref={svgRef} />
-  );
+  useEffect(() => {
+    setHeight(svgRef.current.parentElement.offsetHeight);
+    setWidth(svgRef.current.parentElement.offsetWidth);
+    draw();
+  }, [goal, showTrendLine, showDataPointsValues, lineType, color, data, chartSize, width, height]);
+
+  window.addEventListener('resize', () => {
+    setHeight(svgRef.current.parentElement.offsetHeight);
+    setWidth(svgRef.current.parentElement.offsetWidth);
+  });
+
+  return <svg ref={svgRef} />;
 }
 
 LineChart.propTypes = {

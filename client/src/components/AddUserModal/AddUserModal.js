@@ -18,7 +18,7 @@ const ValidationSchema = Yup.object({
   email: Yup.string().required('Email is required'),
 });
 // eslint-disable-next-line
-const AddUserModal = ({closeModal, addUser, isVisible}) => {
+const AddUserModal = ({closeModal, submitHandler, isVisible, user}) => {
 
   const cancel = (resetForm) => () => {
     resetForm();
@@ -26,13 +26,13 @@ const AddUserModal = ({closeModal, addUser, isVisible}) => {
   };
   // eslint-disable-next-line
   const handleSubmit = (values) => {
-    addUser(values);
+    submitHandler(values);
     closeModal();
   };
   return (
     <Dialog open={isVisible || false} maxWidth="sm" fullWidth>
       <DialogTitle>
-        New user
+        {user ? 'Edit user' : 'New user'}
         <IconButton
           aria-label="close"
           size="small"
@@ -44,18 +44,22 @@ const AddUserModal = ({closeModal, addUser, isVisible}) => {
       </DialogTitle>
 
       <Formik
-        initialValues={{ firstName: '', lastName: '', email: '' }}
+        initialValues={
+          user
+            ? { firstName: user.firstName, lastName: user.lastName, email: user.email }
+            : { firstName: '', lastName: '', email: '' }
+        }
         validationSchema={ValidationSchema}
         onSubmit={handleSubmit}
       >
         {/* eslint-disable-next-line */}
-        {(props) => <MyForm cancel={cancel} {...props}/>}
+        {(props) => <MyForm editMode={!!user} cancel={cancel} {...props}/>}
       </Formik>
     </Dialog>
   );
 };
 
-const MyForm = ({ resetForm, isValid, dirty, cancel, errors, touched }) => (
+const MyForm = ({ resetForm, isValid, dirty, cancel, errors, touched, editMode }) => (
   <Form className="visualizationModalForm">
     <DialogContent className="MyFieldContainer">
       <div className="labelsContainer">
@@ -100,7 +104,7 @@ const MyForm = ({ resetForm, isValid, dirty, cancel, errors, touched }) => (
         style={{ textTransform: 'none', fontSize: 12 }}
         // onClick={console.log}
       >
-        Create
+        {editMode ? 'Update' : 'Create'}
       </Button>
     </MuiDialogActions>
   </Form>
@@ -110,6 +114,11 @@ AddUserModal.propTypes = {
   closeModal: PropTypes.func,
   addUser: PropTypes.func,
   isVisible: PropTypes.bool,
+  user: PropTypes.shape({
+    firstName: PropTypes.string,
+    lastName: PropTypes.string,
+    email: PropTypes.string,
+  }),
 };
 
 MyForm.propTypes = {
@@ -120,6 +129,7 @@ MyForm.propTypes = {
   cancel: PropTypes.func,
   touched: PropTypes.object,
   errors: PropTypes.object,
+  editMode: PropTypes.bool,
 };
 
 export default AddUserModal;

@@ -31,8 +31,12 @@ const PeoplePageContainer = ({ people, isLoading, getUsers, addUser, resetError 
       <PeoplePageMenu />
 
       <Switch>
-        <Route path="/admin/people" component={() => <PeopleList people={people} addUser={addUser} />} />
-        <Route path="/admin/groups" component={() => <GroupList />} />
+        <Route
+          exact
+          path="/admin/people"
+          component={() => <PeopleList people={people} addUser={addUser} isLoading={isLoading} />}
+        />
+        <Route exact path="/admin/people/groups" component={() => <GroupList />} />
       </Switch>
     </Grid>
   );

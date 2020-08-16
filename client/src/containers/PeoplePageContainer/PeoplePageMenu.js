@@ -12,6 +12,7 @@ const PeoplePageMenu = () => {
       <MenuList className={classes.menuList}>
         <MenuItem className={classes.menuItem}>
           <NavLink
+            exact
             activeClassName={classes.activeLink}
             className={classes.link}
             to={{
@@ -27,7 +28,7 @@ const PeoplePageMenu = () => {
             activeClassName={classes.activeLink}
             className={classes.link}
             to={{
-              pathname: '/admin/groups',
+              pathname: '/admin/people/groups',
             }}
             key="groups"
           >

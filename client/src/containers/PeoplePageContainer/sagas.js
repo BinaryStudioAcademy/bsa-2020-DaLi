@@ -6,6 +6,9 @@ import {
   ADD_USER,
   ADD_USER_SUCCESS,
   ADD_USER_ERROR,
+  UPDATE_USER,
+  UPDATE_USER_SUCCESS,
+  UPDATE_USER_ERROR,
   DELETE_USER,
   DELETE_USER_SUCCESS,
   DELETE_USER_ERROR,
@@ -61,6 +64,19 @@ export function* watchDeleteUserSaga() {
   yield takeEvery(DELETE_USER, deleteUserSaga);
 }
 
+export function* updateUser({ payload }) {
+  try {
+    const res = yield call(usersAPIService.updateUserData, payload.id, payload.data);
+    yield put({ type: UPDATE_USER_SUCCESS, payload: res });
+  } catch (error) {
+    yield put({ type: UPDATE_USER_ERROR, payload: error });
+  }
+}
+
+export function* watchUpdateUserData() {
+  yield takeEvery(UPDATE_USER, updateUser);
+}
+
 export default function* usersSaga() {
-  yield all([watchGetUsersSaga(), watchDeleteUserSaga(), watchAddUserSaga()]);
+  yield all([watchGetUsersSaga(), watchDeleteUserSaga(), watchAddUserSaga(), watchUpdateUserData()]);
 }

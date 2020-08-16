@@ -1,4 +1,4 @@
-import { GET_USERS, ADD_USER, DELETE_USER, IS_LOADING, RESET_ERROR } from './actionTypes';
+import { GET_USERS, ADD_USER, UPDATE_USER, DELETE_USER, IS_LOADING, RESET_ERROR } from './actionTypes';
 
 export const getUsers = () => {
   return {
@@ -14,10 +14,16 @@ export const deleteUser = (id) => {
 };
 
 export const addUser = (user) => {
-  console.log('add user action');
   return {
     type: ADD_USER,
     user,
+  };
+};
+
+export const updateUser = (payload) => {
+  return {
+    type: UPDATE_USER,
+    payload,
   };
 };
 

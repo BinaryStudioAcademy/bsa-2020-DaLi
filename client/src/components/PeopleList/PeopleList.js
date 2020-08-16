@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -10,12 +10,15 @@ import Avatar from '@material-ui/core/Avatar';
 import MoreHorizIcon from '@material-ui/icons/MoreHoriz';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
+import Backdrop from '@material-ui/core/Backdrop';
+import CircularProgress from '@material-ui/core/CircularProgress';
 // import Select from '@material-ui/core/Select';
 // import Checkbox from '@material-ui/core/Checkbox';
 // import Input from '@material-ui/core/Input';
 // import InputLabel from '@material-ui/core/InputLabel';
 // import ListItemText from '@material-ui/core/ListItemText';
 import FormControl from '@material-ui/core/FormControl';
+import AddUserModal from '../AddUserModal';
 import PeopleListHeader from '../PeopleListHeader';
 import { colorStyles, useStyles } from './styles';
 import { formatDate } from './helpers/formatdate';
@@ -29,10 +32,19 @@ const getInitials = (person) => {
     .join('');
 };
 
-const PeopleList = ({ people = mockPeople, addUser }) => {
+const PeopleList = ({ people = mockPeople, addUser, editUser, isLoading }) => {
   const [menuAnchorEl, setMenuAnchorEl] = React.useState(null);
   const classes = useStyles();
   const colors = colorStyles();
+  const [addUserModalVisible, setAddUserModalVisible] = useState(false);
+
+  const hideAddUserModal = () => {
+    setAddUserModalVisible(false);
+  };
+
+  const showAddUserModal = () => {
+    setAddUserModalVisible(true);
+  };
 
   // const [groups, setGroups] = React.useState(['Admin', 'Default']);
 
@@ -107,16 +119,27 @@ const PeopleList = ({ people = mockPeople, addUser }) => {
                     open={Boolean(menuAnchorEl)}
                     onClose={() => setMenuAnchorEl(null)}
                   >
-                    <MenuItem onClick={() => {}}>Edit user</MenuItem>
+                    <MenuItem onClick={showAddUserModal}>Edit user</MenuItem>
                     <MenuItem onClick={() => {}}>Reset password</MenuItem>
                     <MenuItem onClick={() => {}}>Deactivate user</MenuItem>
                   </Menu>
                 </TableCell>
+                <AddUserModal
+                  isVisible={addUserModalVisible}
+                  closeModal={hideAddUserModal}
+                  submitHandler={editUser}
+                  user={person}
+                />
               </TableRow>
             ))}
           </TableBody>
         </Table>
       </TableContainer>
+      {isLoading && (
+        // <Backdrop className={classes.backdrop} open onClick={() => {}}>
+        <CircularProgress color="blue" />
+        // </Backdrop>
+      )}
     </div>
   );
 };
@@ -124,6 +147,8 @@ const PeopleList = ({ people = mockPeople, addUser }) => {
 PeopleList.propTypes = {
   people: PropTypes.array,
   addUser: PropTypes.func,
+  editUser: PropTypes.func,
+  isLoading: PropTypes.bool,
 };
 
 export default PeopleList;

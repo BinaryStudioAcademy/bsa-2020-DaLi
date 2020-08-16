@@ -24,7 +24,7 @@ const PeopleListHeader = ({ addUser }) => {
           Add someone
         </Button>
       </Grid>
-      <AddUserModal isVisible={addUserModalVisible} closeModal={hideAddUserModal} addUser={addUser} />
+      <AddUserModal isVisible={addUserModalVisible} closeModal={hideAddUserModal} submitHandler={addUser} />
     </div>
   );
 };

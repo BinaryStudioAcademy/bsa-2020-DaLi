@@ -3,6 +3,8 @@ import {
   GET_USERS_ERROR,
   ADD_USER_SUCCESS,
   ADD_USER_ERROR,
+  UPDATE_USER_SUCCESS,
+  UPDATE_USER_ERROR,
   DELETE_USER_SUCCESS,
   DELETE_USER_ERROR,
   IS_LOADING,
@@ -25,6 +27,7 @@ const usersListReducer = (state = initialState, { type, payload }) => {
     }
     case ADD_USER_ERROR:
     case DELETE_USER_ERROR:
+    case UPDATE_USER_ERROR:
     case GET_USERS_ERROR: {
       return {
         ...state,
@@ -36,6 +39,20 @@ const usersListReducer = (state = initialState, { type, payload }) => {
       return {
         ...state,
         isLoading: false,
+      };
+    }
+    case UPDATE_USER_SUCCESS: {
+      const { firstName, lastName, email, id } = payload;
+      return {
+        ...state,
+        user: {
+          firstName,
+          lastName,
+          email,
+          id,
+        },
+        updateUserMessage: 'Data successfully updated',
+        updateUserStatus: 'success',
       };
     }
     case RESET_ERROR: {

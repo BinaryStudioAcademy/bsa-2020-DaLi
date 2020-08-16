@@ -51,7 +51,6 @@ router.patch('/:id', async (req, res, next) => {
 
 router.delete('/:id', async (req, res, next) => {
   let result = null;
-  console.log(req.query);
   if (req.query.dashboardVisualizationsId) {
     result = await DashboardService.deleteVisualization({
       id: req.query.dashboardVisualizationsId,
@@ -78,7 +77,6 @@ router.post('/:id', async (req, res, next) => {
     visualizations_id: req.body.visualizationId,
     dashboards_id: req.params.id,
   };
-  console.log(data);
   const result = await DashboardService.addVisualization(data);
   if (result) {
     res.status(200).json(result);

@@ -73,10 +73,12 @@ router.delete('/:id', async (req, res, next) => {
 });
 
 router.post('/:id', async (req, res, next) => {
+  console.log(req.body.visualizationId);
   const data = {
-    ...req.body,
+    visualizations_id: req.body.visualizationId,
     dashboards_id: req.params.id,
   };
+  console.log(data);
   const result = await DashboardService.addVisualization(data);
   if (result) {
     res.status(200).json(result);

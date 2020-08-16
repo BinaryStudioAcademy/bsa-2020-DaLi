@@ -2,15 +2,15 @@
 import React, {useState, useEffect} from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import {getDashboard} from './actions';
+import {getDashboard, addVisualizationsToDashboard} from './actions';
 
 import { DashboardHeader, DashboardLayout, AddVisualizationToDashboardModal } from '../../components';
-import {getVisualization, getLayoutItem, getVisualizationComponent} from './helper';
+import {getDashboardItems, getDashboardConfig, createUpdatedDashboard, getVisualization} from './helper';
 import mockData from './mockData';
 
 
 const DashboardContainer = (props) => {
-  const {id, currentDashboard, isLoading, getDashboard, visualizations} = props;
+  const {id, currentDashboard, isLoading, getDashboard, visualizations, addVisualizationsToDashboard} = props;
 
   const [oldLayout, setOldLayout] = useState([]);
   const [currentLayout, setCurrentLayout] = useState([]);
@@ -18,6 +18,7 @@ const DashboardContainer = (props) => {
   const [currentLayouts, setCurrentLayouts] = useState({});
   const [oldDashboardVisualizations, setOldDashboardVisualizations] = useState([])
   const [dashboardVisualizations, setDashboardVisualizations] = useState([]);
+  const [newDashboardVisualizations, setNewDashboardVisualizations] = useState([]);
 
   const [breakpoint, setBreakpoint] = useState('lg');
   const [cols, setCols] = useState(null);
@@ -35,8 +36,11 @@ const DashboardContainer = (props) => {
     setName(currentDashboard.name);
     setDescription(currentDashboard.description);
     setDashboardVisualizations(currentDashboard.Visualizations || []);
-    setCurrentLayout(currentDashboard.config?.layout || []);
-    setCurrentLayouts(currentDashboard.config?.layouts || []);    
+    console.log(currentDashboard.Visualizations);
+    const dashboardConfig = getDashboardConfig(currentDashboard);
+    setCurrentLayout(dashboardConfig?.layout || []);
+    setCurrentLayouts(dashboardConfig?.layouts || []);    
+    setNewDashboardVisualizations([]);
 }, [currentDashboard])
 
 
@@ -82,11 +86,18 @@ const DashboardContainer = (props) => {
 
   const onSaveChanges = () => {
     setIsEdit(false);
+    console.log(newDashboardVisualizations.length);
+    const updatedDashboard = createUpdatedDashboard(name, description, currentLayout, currentLayouts);
+    if(newDashboardVisualizations.length) {    
+      addVisualizationsToDashboard({dashboardId: id, visualizations: newDashboardVisualizations, updatedDashboard});
+    }
   }
   
-  const onVisualizationAdd = (id) => {
-    setDashboardVisualizations(dashboardVisualizations.concat(id));
-    onAddItem(id);
+  const onVisualizationAdd = (visualizationId) => {
+    setNewDashboardVisualizations(newDashboardVisualizations.concat(visualizationId));
+    const visualization = getVisualization(visualizationId, visualizations);
+    setDashboardVisualizations(dashboardVisualizations.concat(visualization));
+    onAddItem(visualizationId);
   }
   
   const onOpenModal = () => {
@@ -120,12 +131,9 @@ const DashboardContainer = (props) => {
      cols={cols} isEdit={isEdit} 
      onLayoutChange={onLayoutChange} 
      onBreakpointChange={onBreakpointChange}
-     getVisualization={getVisualization}
-     getLayoutItem={getLayoutItem}
-     getVisualizationComponent={getVisualizationComponent}
-     visualizations={visualizations}
      dashboardVisualizations={dashboardVisualizations}
      data={mockData}
+     getDashboardItems={getDashboardItems}
 
    />
  </>
@@ -140,6 +148,7 @@ DashboardContainer.propTypes = {
   visualization: PropTypes.array,
   isLoading: PropTypes.bool,
   getDashboard: PropTypes.func,
+  addVisualizationsToDashboard: PropTypes.func,
 };
 
 const mapStateToProps = ({ currentDashboard, analytics }) => ({
@@ -148,6 +157,6 @@ const mapStateToProps = ({ currentDashboard, analytics }) => ({
   visualizations: analytics.visualizations
 });
 
-const mapDispatchToProps = { getDashboard };
+const mapDispatchToProps = { getDashboard, addVisualizationsToDashboard };
 
 export default connect(mapStateToProps, mapDispatchToProps)(DashboardContainer);

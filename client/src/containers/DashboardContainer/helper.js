@@ -3,8 +3,11 @@ import BarChart from '../BarChartContainer/BarChartContainer';
 import LineChart from '../LineChartContainer/LineChartContainer';
 import TableVisualization from '../TableVisualizationContainer/TableVisualizationContainer';
 
-export const getVisualization = (visualizations, id) => {
-  const visualization = visualizations.filter((visualization) => visualization.id === id)[0];
+export const getVisualization = (visualizationId, visualizations) => {
+  return visualizations.filter((visualization) => visualization.id === visualizationId)[0];
+};
+
+export const getParsedVisualization = (visualization) => {
   return { ...visualization, config: JSON.parse(visualization.config) };
 };
 
@@ -24,4 +27,28 @@ export const getVisualizationComponent = (visualizationType, config, data) => {
     default:
       return null;
   }
+};
+
+export const getDashboardConfig = (dashboard) => (dashboard.config ? JSON.parse(dashboard.config) : null);
+
+export const createUpdatedDashboard = (name, description, layout, layouts) => {
+  const updatedDashboard = {
+    name,
+    description,
+    config: JSON.stringify({ layout, layouts }),
+  };
+  return updatedDashboard;
+};
+
+export const getDashboardItems = (dashboardVisualizations, layout, data) => {
+  return dashboardVisualizations.map((dashboardVisualization) => {
+    const visualization = getParsedVisualization(dashboardVisualization);
+    const layoutItem = getLayoutItem(layout, visualization.id);
+    const visualizationComponent = getVisualizationComponent(visualization.type, visualization.config, data);
+    return (
+      <div className="dashboard-layout__item" key={visualization.id} data-grid={layoutItem}>
+        {visualizationComponent}
+      </div>
+    );
+  });
 };

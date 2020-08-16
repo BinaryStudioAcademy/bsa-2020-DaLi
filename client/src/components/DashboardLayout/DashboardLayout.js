@@ -12,15 +12,13 @@ const DashboardLayout = (props) => {
     isEdit,
     onLayoutChange,
     onBreakpointChange,
-    getVisualization,
-    getLayoutItem,
-    getVisualizationComponent,
-    visualizations,
     dashboardVisualizations,
     data,
+    getDashboardItems,
   } = props;
 
   const dashboardLayoutClasses = isEdit ? 'dashboard-container dashboard-container--edit' : 'dashboard-container';
+  const dashboardItems = getDashboardItems(dashboardVisualizations, layout, data);
 
   return (
     <div className={dashboardLayoutClasses}>
@@ -34,16 +32,7 @@ const DashboardLayout = (props) => {
         onLayoutChange={onLayoutChange}
         onBreakpointChange={onBreakpointChange}
       >
-        {dashboardVisualizations.map((id) => {
-          const visualization = getVisualization(visualizations, id);
-          const layoutItem = getLayoutItem(layout, id);
-          const visualizationComponent = getVisualizationComponent(visualization.type, visualization.config, data);
-          return (
-            <div className="dashboard-layout__item" key={id} data-grid={layoutItem}>
-              {visualizationComponent}
-            </div>
-          );
-        })}
+        {dashboardItems}
       </ResponsiveReactGridLayout>
     </div>
   );
@@ -55,10 +44,7 @@ DashboardLayout.propTypes = {
   layouts: PropTypes.object,
   onLayoutChange: PropTypes.func,
   onBreakpointChange: PropTypes.func,
-  getVisualization: PropTypes.func,
-  getLayoutItem: PropTypes.func,
-  getVisualizationComponent: PropTypes.func,
-  visualizations: PropTypes.array,
+  getDashboardItems: PropTypes.func,
   dashboardVisualizations: PropTypes.array,
   data: PropTypes.array,
 };

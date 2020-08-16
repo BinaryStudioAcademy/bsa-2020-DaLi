@@ -112,3 +112,8 @@ export const getNewVisualizationsId = (visualizationsId, dashboardVisualizations
   });
   return newVisualizationsId;
 };
+
+export const getNotAddedVisualizations = (dashboardVisualizations, visualizations) => {
+  const dashboardVisualizationsId = dashboardVisualizations.map((dashboardVisualization) => dashboardVisualization.id);
+  return visualizations.filter((visualization) => !dashboardVisualizationsId.includes(visualization.id));
+};

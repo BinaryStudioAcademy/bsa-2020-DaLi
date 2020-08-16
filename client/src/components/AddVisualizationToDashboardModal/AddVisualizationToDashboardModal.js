@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import Dialog from '@material-ui/core/Dialog';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import DialogContent from '@material-ui/core/DialogContent';
@@ -12,14 +12,22 @@ import './styles.css';
 import chooseIcon from '../../helpers/chooseIcon';
 
 // eslint-disable-next-line
-const AddVisualizationToDashboardModal = ({closeModal, addVisualization, search, isVisible, visualizations}) => {
+const AddVisualizationToDashboardModal = ({closeModal, addVisualization, isVisible, visualizations}) => {
+
+  const [visibleVisualizations, setVisibleVisualizations] = useState(visualizations);
+
+  useEffect(() => {
+    setVisibleVisualizations(visualizations);
+  }, [visualizations]);
 
   const addNewVisualization = (id) => () => {
     addVisualization(id);
     closeModal();
   };
+
   const searchVisualizations = (value) => {
-    search(value.search);
+    const filteredVisualizations = visualizations.filter((visualization) => visualization.name.includes(value.search));
+    setVisibleVisualizations(filteredVisualizations);
   };
 
   return (
@@ -40,9 +48,9 @@ const AddVisualizationToDashboardModal = ({closeModal, addVisualization, search,
         {/* eslint-disable-next-line */}
         {(props) => <SearchVisualizationForm {...props}/>}
       </Formik>
-      {visualizations && (
+      {visibleVisualizations && (
         <div className="visualizationToDashboardModalFooter">
-          {visualizations.map((visualization) => {
+          {visibleVisualizations.map((visualization) => {
             return (
               <button key={visualization.id} type="button" onClick={addNewVisualization(visualization.id)}>
                 {chooseIcon(visualization.type, { color: 'inherit', fontSize: 25 })}

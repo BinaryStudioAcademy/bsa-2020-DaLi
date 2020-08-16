@@ -15,6 +15,7 @@ import {
   updateDashboardVisualization,
   getDashboardVisualizationsId,
   getNewVisualizationsId,
+  getNotAddedVisualizations,
 } from './helper';
 import mockData from './mockData';
 
@@ -144,15 +145,15 @@ const DashboardContainer = (props) => {
   const onDescriptionChange = (event) => {
     setDescription(event.target.value);
   };
+
   return isLoading ? (
     'Loading'
   ) : (
     <>
       <AddVisualizationToDashboardModal
         isVisible={isModalVisible}
-        visualizations={visualizations}
+        visualizations={getNotAddedVisualizations(dashboardVisualizations, visualizations)}
         closeModal={onCloseModal}
-        search=""
         addVisualization={onVisualizationAdd}
       />
       <DashboardHeader

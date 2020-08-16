@@ -68,10 +68,25 @@ const useStyles = makeStyles(() => ({
     height: '90px',
     justifyContent: 'space-between',
   },
+
   dashboardEditingHeaderInput: {
     '&:hover': {
       borderColor: '#52afe3',
     },
+    '& .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline': {
+      borderColor: '#eeeee',
+    },
+    '&:hover .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline': {
+      borderColor: '#000000',
+    },
+    '& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline': {
+      borderColor: '#52afe3',
+    },
+  },
+  dashboardEditingHeaderHelperText: {
+    position: 'absolute',
+    left: '0',
+    top: '-20px',
   },
 }));
 

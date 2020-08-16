@@ -2,7 +2,7 @@
 import React, {useState, useEffect} from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import {getDashboard, addVisualizationsToDashboard} from './actions';
+import {getDashboard, addVisualizationsToDashboard, updateDashboard} from './actions';
 
 import { DashboardHeader, DashboardLayout, AddVisualizationToDashboardModal } from '../../components';
 import {getDashboardItems, getDashboardConfig, createUpdatedDashboard, getVisualization} from './helper';
@@ -10,7 +10,7 @@ import mockData from './mockData';
 
 
 const DashboardContainer = (props) => {
-  const {id, currentDashboard, isLoading, getDashboard, visualizations, addVisualizationsToDashboard} = props;
+  const {id, currentDashboard, isLoading, getDashboard, visualizations, addVisualizationsToDashboard, updateDashboard } = props;
 
   const [oldLayout, setOldLayout] = useState([]);
   const [currentLayout, setCurrentLayout] = useState([]);
@@ -23,7 +23,9 @@ const DashboardContainer = (props) => {
   const [breakpoint, setBreakpoint] = useState('lg');
   const [cols, setCols] = useState(null);
   const [isEdit, setIsEdit] = useState(false);
+  const [oldName, setOldName] = useState('');
   const [name, setName] = useState(null);
+  const [oldDescription, setOldDescription] = useState('');
   const [description, setDescription] = useState(null);
 
   const [isModalVisible, setIsModalVisible] = useState(false);
@@ -70,10 +72,13 @@ const DashboardContainer = (props) => {
     setCols(cols);
   }
 
+  
   const onSetEdit = () => {
     setOldLayout(currentLayout);
     setOldLayouts(currentLayouts);
     setOldDashboardVisualizations(dashboardVisualizations);
+    setOldName(name);
+    setOldDescription(description);
     setIsEdit(true);
   }
 
@@ -81,16 +86,22 @@ const DashboardContainer = (props) => {
     setCurrentLayout(oldLayout);
     setCurrentLayouts(oldLayouts);
     setDashboardVisualizations(oldDashboardVisualizations);
+    setName(oldName);
+    setDescription(oldDescription);
     setIsEdit(false);
   }
 
   const onSaveChanges = () => {
-    setIsEdit(false);
-    console.log(newDashboardVisualizations.length);
+    if(!name.length){
+      return;
+    }
     const updatedDashboard = createUpdatedDashboard(name, description, currentLayout, currentLayouts);
     if(newDashboardVisualizations.length) {    
       addVisualizationsToDashboard({dashboardId: id, visualizations: newDashboardVisualizations, updatedDashboard});
+    } else {
+      updateDashboard({dashboardId: id, updatedDashboard});
     }
+    setIsEdit(false);
   }
   
   const onVisualizationAdd = (visualizationId) => {
@@ -103,9 +114,18 @@ const DashboardContainer = (props) => {
   const onOpenModal = () => {
     setIsModalVisible(true);
   }
+
   const onCloseModal = () => {
     setIsModalVisible(false);
   }
+
+  const onNameChange = (event) => {
+    setName(event.target.value);
+  };
+
+  const onDescriptionChange = (event) => {
+    setDescription(event.target.value);
+  };
 
  
   return isLoading ? 'Loading' : (
@@ -117,13 +137,15 @@ const DashboardContainer = (props) => {
       search='' 
       addVisualization={onVisualizationAdd}
     />
-     <DashboardHeader 
+    <DashboardHeader 
      name={name} 
      description={description} 
      isEdit={isEdit} onSetEdit={onSetEdit} 
      onCancelChanges={onCancelChanges} 
      onSaveChanges={onSaveChanges} 
      onVisualizationAdd={onOpenModal}
+     onNameChange={onNameChange}
+     onDescriptionChange={onDescriptionChange}
    />
    <DashboardLayout 
      layout={currentLayout} 
@@ -149,6 +171,7 @@ DashboardContainer.propTypes = {
   isLoading: PropTypes.bool,
   getDashboard: PropTypes.func,
   addVisualizationsToDashboard: PropTypes.func,
+  updateDashboard: PropTypes.func,
 };
 
 const mapStateToProps = ({ currentDashboard, analytics }) => ({
@@ -157,6 +180,6 @@ const mapStateToProps = ({ currentDashboard, analytics }) => ({
   visualizations: analytics.visualizations
 });
 
-const mapDispatchToProps = { getDashboard, addVisualizationsToDashboard };
+const mapDispatchToProps = { getDashboard, addVisualizationsToDashboard, updateDashboard };
 
 export default connect(mapStateToProps, mapDispatchToProps)(DashboardContainer);

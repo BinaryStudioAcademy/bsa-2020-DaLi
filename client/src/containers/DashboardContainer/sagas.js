@@ -6,6 +6,9 @@ import {
   ADD_VISUALIZATIONS_TO_DASHBOARD,
   ADD_VISUALIZATIONS_TO_DASHBOARD_SUCCESS,
   ADD_VISUALIZATIONS_TO_DASHBOARD_ERROR,
+  UPDATE_DASHBOARD,
+  UPDATE_DASHBOARD_SUCCESS,
+  UPDATE_DASHBOARD_ERROR,
 } from './actionsTypes';
 import { dashboardsAPIService } from '../../services/api/dashboardsAPI.service';
 
@@ -41,6 +44,20 @@ export function* watchAddVisualizationsToDashboardSaga() {
   yield takeEvery(ADD_VISUALIZATIONS_TO_DASHBOARD, addVisualizationsToDashboard);
 }
 
+export function* updateDashboard({ dashboardId, updatedDashboard }) {
+  try {
+    yield call(dashboardsAPIService.updateDashboard, dashboardId, updatedDashboard);
+    const dashboard = yield call(dashboardsAPIService.getDashboard, dashboardId);
+    yield put({ type: UPDATE_DASHBOARD_SUCCESS, payload: { dashboard } });
+  } catch (error) {
+    yield put({ type: UPDATE_DASHBOARD_ERROR, payload: error });
+  }
+}
+
+export function* watchUpdateDashboardSaga() {
+  yield takeEvery(UPDATE_DASHBOARD, updateDashboard);
+}
+
 export default function* currentDashboardSaga() {
-  yield all([watchGetDashboardSaga(), watchAddVisualizationsToDashboardSaga()]);
+  yield all([watchGetDashboardSaga(), watchAddVisualizationsToDashboardSaga(), watchUpdateDashboardSaga()]);
 }

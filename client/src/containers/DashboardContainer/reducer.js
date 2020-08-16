@@ -5,6 +5,9 @@ import {
   ADD_VISUALIZATIONS_TO_DASHBOARD,
   ADD_VISUALIZATIONS_TO_DASHBOARD_SUCCESS,
   ADD_VISUALIZATIONS_TO_DASHBOARD_ERROR,
+  UPDATE_DASHBOARD,
+  UPDATE_DASHBOARD_SUCCESS,
+  UPDATE_DASHBOARD_ERROR,
 } from './actionsTypes';
 
 const initialState = {
@@ -57,6 +60,31 @@ const currentDashboardReducer = (state = initialState, { type, payload }) => {
     }
 
     case ADD_VISUALIZATIONS_TO_DASHBOARD_ERROR: {
+      return {
+        ...state,
+        isLoading: false,
+        error: payload,
+      };
+    }
+
+    case UPDATE_DASHBOARD: {
+      return {
+        ...state,
+        isLoading: true,
+      };
+    }
+
+    case UPDATE_DASHBOARD_SUCCESS: {
+      const { dashboard } = payload;
+      return {
+        ...state,
+        isLoading: false,
+        success: 'Dashboard was updated',
+        dashboard,
+      };
+    }
+
+    case UPDATE_DASHBOARD_ERROR: {
       return {
         ...state,
         isLoading: false,

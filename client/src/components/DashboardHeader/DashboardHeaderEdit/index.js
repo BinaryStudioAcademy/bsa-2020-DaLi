@@ -6,7 +6,15 @@ import AddIcon from '@material-ui/icons/Add';
 import useStyles from './styles';
 
 const DashboardHeader = (props) => {
-  const { name, description, onCancelChanges, onSaveChanges, onVisualizationAdd } = props;
+  const {
+    name,
+    description,
+    onCancelChanges,
+    onSaveChanges,
+    onVisualizationAdd,
+    onNameChange,
+    onDescriptionChange,
+  } = props;
   const classes = useStyles();
   return (
     <Grid className={classes.dashboardEditingHeader} container>
@@ -33,23 +41,29 @@ const DashboardHeader = (props) => {
             inputProps={{
               style: { fontSize: 15 },
             }}
+            FormHelperTextProps={{
+              className: classes.dashboardEditingHeaderHelperText,
+            }}
             className={classes.dashboardEditingHeaderInput}
+            helperText={!name.length && 'Dashboard name is required'}
+            error={!name.length}
             id="outlined-error-helper-text"
             defaultValue={name}
             variant="outlined"
             size="small"
             placeholder="Dashboard name"
+            onChange={onNameChange}
           />
           <TextField
             inputProps={{
               style: { fontSize: 15 },
             }}
             className={classes.dashboardEditingHeaderInput}
-            id="outlined-error"
             defaultValue={description}
             variant="outlined"
             size="small"
             placeholder="Dashboard description"
+            onChange={onDescriptionChange}
           />
         </Grid>
         <AddIcon fontSize="large" onClick={onVisualizationAdd} />
@@ -64,6 +78,8 @@ DashboardHeader.propTypes = {
   onCancelChanges: PropTypes.func,
   onSaveChanges: PropTypes.func,
   onVisualizationAdd: PropTypes.func,
+  onNameChange: PropTypes.func,
+  onDescriptionChange: PropTypes.func,
 };
 
 export default DashboardHeader;

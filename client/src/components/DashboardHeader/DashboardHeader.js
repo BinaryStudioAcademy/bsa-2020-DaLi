@@ -4,7 +4,17 @@ import DashboardHeaderStatic from './DashboardHeaderStatic';
 import DashboardHeaderEdit from './DashboardHeaderEdit';
 
 const DashboardHeader = (props) => {
-  const { name, description, isEdit, onSetEdit, onCancelChanges, onSaveChanges, onVisualizationAdd } = props;
+  const {
+    name,
+    description,
+    isEdit,
+    onSetEdit,
+    onCancelChanges,
+    onSaveChanges,
+    onVisualizationAdd,
+    onNameChange,
+    onDescriptionChange,
+  } = props;
   const currentHeader = isEdit ? (
     <DashboardHeaderEdit
       name={name}
@@ -12,6 +22,8 @@ const DashboardHeader = (props) => {
       onCancelChanges={onCancelChanges}
       onSaveChanges={onSaveChanges}
       onVisualizationAdd={onVisualizationAdd}
+      onNameChange={onNameChange}
+      onDescriptionChange={onDescriptionChange}
     />
   ) : (
     <DashboardHeaderStatic name={name} description={description} onSetEdit={onSetEdit} />
@@ -27,6 +39,8 @@ DashboardHeader.propTypes = {
   onCancelChanges: PropTypes.func,
   onSaveChanges: PropTypes.func,
   onVisualizationAdd: PropTypes.func,
+  onNameChange: PropTypes.func,
+  onDescriptionChange: PropTypes.func,
 };
 
 export default DashboardHeader;

@@ -5,26 +5,16 @@ import LineChart from '../../components/LineChart/LineChart';
 const LineChartContainer = ({ config, data }) => {
   // const containerRef = useRef();
 
-  // const [chart, setChart] = useState({
-  //   margin: {
-  //     top: 40,
-  //     right: 40,
-  //     bottom: 60,
-  //     left: 60,
-  //   },
-  //   height: 600,
-  //   width: 1000,
-  // });
-
-  // useEffect(() => {
-  //   const { offsetHeight, offsetWidth } = containerRef.current.offsetParent;
-  //   console.log(containerRef.current.parentElement);
-  //   setChart((prevState) => {
-  //     prevState.width = offsetWidth - 100;
-  //     prevState.height = offsetHeight - 100;
-  //     return prevState;
-  //   });
-  // }, [containerRef.current]);
+  const chart = {
+    margin: {
+      top: 40,
+      right: 40,
+      bottom: 60,
+      left: 60,
+    },
+    height: 600,
+    width: 1000,
+  };
 
   return (
     <div
@@ -32,9 +22,8 @@ const LineChartContainer = ({ config, data }) => {
         width: '100%',
         height: '100%',
       }}
-      // ref={containerRef}
     >
-      <LineChart data={data} settings={config} />
+      <LineChart data={data} settings={config} chart={chart} />
     </div>
   );
 };

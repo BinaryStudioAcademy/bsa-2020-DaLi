@@ -16,18 +16,12 @@ function LineChart({ settings, data, chart: chartSize }) {
   data = data.sort((a, b) => a[XAxis.key] - b[XAxis.key]);
   const [config, setConfig] = useState({});
   const svgRef = useRef();
-  useEffect(() => {
+  const [width, setWidth] = useState(chartSize.width);
+  const [height, setHeight] = useState(chartSize.height);
+
+  const draw = () => {
     setConfig(settings);
-    // const { margin, width, height } = chartSize;
-    console.log(settings);
-    const margin = {
-      top: 40,
-      right: 40,
-      bottom: 60,
-      left: 60,
-    };
-    const height = 600;
-    const width = 1000;
+    const { margin } = chartSize;
 
     const chart = d3.select(svgRef.current);
 
@@ -54,16 +48,18 @@ function LineChart({ settings, data, chart: chartSize }) {
       .domain([yDataRange.min, yDataRange.max])
       .range([height - margin.bottom, margin.top]);
 
+    d3.select('.d3-tip').remove();
     const tip = d3Tip()
       .attr('class', 'd3-tip')
       .offset([-10, 0])
       .html(
         (d) => `
-          <div><span>${XAxis.label}:</span> <span style='color:white'>${d[XAxis.key]}</span></div>
-          <div><span>${YAxis.label}:</span> <span style='color:white'>${d[YAxis.key]}</span></div>
-          `
+    <div><span>${XAxis.label}:</span> <span style='color:white'>${d[XAxis.key]}</span></div>
+    <div><span>${YAxis.label}:</span> <span style='color:white'>${d[YAxis.key]}</span></div>
+  `
       );
-    chart.call(tip).attr('viewBox', [0, 0, width, height]);
+
+    chart.call(tip).attr('height', '100%').attr('width', '100%');
 
     const line = d3
       .line()
@@ -120,16 +116,21 @@ function LineChart({ settings, data, chart: chartSize }) {
         min: data[0][XAxis.key],
         max: data[data.length - 1][XAxis.key]
       }
+      const xScaleForTrendline = d3
+      .scaleLinear()
+      .domain([xDataRange.min, xDataRange.max])
+      .range([margin.left, width - margin.right])
       const {polynomial,trendlineType} = trendline
 
       const trendlineData = data.map(item => [item[XAxis.key], item[YAxis.key]])
-      const domain = [xDataRange.min, xDataRange.max]
+      const barUnitWidth = (xDataRange.max - xDataRange.min) / data.length
+      const domain = [xDataRange.min, xDataRange.max - barUnitWidth]
       const config = {
-        xOffset: margin.left / 2,
+        xOffset: xScale.bandwidth() / 2,
         order: polynomial.order
       }
 
-      const trendlineCreator = new TrendlineCreator(trendlineType, chart, xScale, yScale)
+      const trendlineCreator = new TrendlineCreator(trendlineType, chart, xScaleForTrendline, yScale)
       trendlineCreator.render(domain, trendlineData, config)
     }
 
@@ -165,9 +166,20 @@ function LineChart({ settings, data, chart: chartSize }) {
         .attr('class', 'goal__label')
         .text(goal.label);
     }
-  }, [XAxis, YAxis, goal.display, trendline.display, showDataPointsValues, lineType, color, data]);
+  };
 
-  return <svg id="" ref={svgRef} />;
+  useEffect(() => {
+    setHeight(svgRef.current.parentElement.offsetHeight);
+    setWidth(svgRef.current.parentElement.offsetWidth);
+    draw();
+  }, [goal, trendline, showDataPointsValues, lineType, color, data, chartSize, width, height]);
+
+  window.addEventListener('resize', () => {
+    setHeight(svgRef.current.parentElement.offsetHeight);
+    setWidth(svgRef.current.parentElement.offsetWidth);
+  });
+
+  return <svg ref={svgRef} />;
 }
 
 LineChart.propTypes = {

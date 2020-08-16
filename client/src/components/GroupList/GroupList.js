@@ -1,5 +1,5 @@
 import React from 'react';
-import { NavLink, useHistory } from 'react-router-dom';
+// import { NavLink, useHistory } from 'react-router-dom';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -12,7 +12,6 @@ import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import GroupListHeader from '../GroupListHeader';
 import { useStyles } from './styles';
-// import { mockPeople } from './mockPeople';
 
 const groups = [
   { name: 'Administrators', members: 2 },
@@ -20,7 +19,7 @@ const groups = [
 ];
 
 const GroupList = () => {
-  const history = useHistory();
+  // const history = useHistory();
   const [menuAnchorEl, setMenuAnchorEl] = React.useState(null);
   const classes = useStyles();
   // const [groups, setGroups] = React.useState(['Admin', 'Default']);

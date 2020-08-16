@@ -1,18 +1,15 @@
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
-import { withRouter, NavLink, Switch, Route } from 'react-router-dom';
+import { withRouter, Switch, Route } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import MenuItem from '@material-ui/core/MenuItem';
-import MenuList from '@material-ui/core/MenuList';
-import { Grid, Snackbar } from '@material-ui/core';
+import { Grid } from '@material-ui/core';
 import { PeopleList, GroupList } from '../../components';
 import PeoplePageMenu from './PeoplePageMenu';
-import { getUsers, addUser, resetError } from './actions';
+import { getUsers, addUser, updateUser, resetError } from './actions';
 import { useStyles } from './styles';
 
-const PeoplePageContainer = ({ people, isLoading, getUsers, addUser, resetError }) => {
+const PeoplePageContainer = ({ people, isLoading, message, status, getUsers, addUser, updateUser, resetError }) => {
   const classes = useStyles();
-  const [value, setValue] = React.useState(0);
 
   useEffect(() => {
     getUsers();
@@ -21,20 +18,23 @@ const PeoplePageContainer = ({ people, isLoading, getUsers, addUser, resetError 
     };
   }, []);
 
-  const handleChange = (event, newValue) => {
-    setValue(newValue);
-  };
-
   return (
-    // <div className={classes.root}>
     <Grid container className={classes.root}>
       <PeoplePageMenu />
-
       <Switch>
         <Route
           exact
           path="/admin/people"
-          component={() => <PeopleList people={people} addUser={addUser} isLoading={isLoading} />}
+          component={() => (
+            <PeopleList
+              people={people}
+              addUser={addUser}
+              updateUser={updateUser}
+              isLoading={isLoading}
+              message={message}
+              status={status}
+            />
+          )}
         />
         <Route exact path="/admin/people/groups" component={() => <GroupList />} />
       </Switch>
@@ -46,15 +46,20 @@ const mapStateToProps = (state) => {
   return {
     people: state.admin.people.users,
     isLoading: state.admin.people.isLoading,
+    message: state.admin.people.message,
+    status: state.admin.people.status,
   };
 };
 
 PeoplePageContainer.propTypes = {
+  message: PropTypes.string,
+  status: PropTypes.string,
   people: PropTypes.array,
   isLoading: PropTypes.bool,
   getUsers: PropTypes.func,
   addUser: PropTypes.func,
+  updateUser: PropTypes.func,
   resetError: PropTypes.func,
 };
 
-export default withRouter(connect(mapStateToProps, { getUsers, addUser, resetError })(PeoplePageContainer));
+export default withRouter(connect(mapStateToProps, { getUsers, addUser, updateUser, resetError })(PeoplePageContainer));

@@ -26,8 +26,12 @@ const AddUserModal = ({closeModal, submitHandler, isVisible, user}) => {
   };
   // eslint-disable-next-line
   const handleSubmit = (values) => {
-    submitHandler(values);
     closeModal();
+    if (user) {
+      submitHandler({ id: user.id, data: values });
+    } else {
+      submitHandler(values);
+    }
   };
   return (
     <Dialog open={isVisible || false} maxWidth="sm" fullWidth>
@@ -60,7 +64,7 @@ const AddUserModal = ({closeModal, submitHandler, isVisible, user}) => {
 };
 
 const MyForm = ({ resetForm, isValid, dirty, cancel, errors, touched, editMode }) => (
-  <Form className="visualizationModalForm">
+  <Form className="addUserModalForm">
     <DialogContent className="MyFieldContainer">
       <div className="labelsContainer">
         <span>First name</span>
@@ -93,7 +97,7 @@ const MyForm = ({ resetForm, isValid, dirty, cancel, errors, touched, editMode }
         style={touched.name && errors.name ? { borderColor: 'red' } : {}}
       />
     </DialogContent>
-    <MuiDialogActions className="visualizationModalFooter">
+    <MuiDialogActions className="addUserModalFooter">
       <Button onClick={cancel(resetForm)} variant="outlined" style={{ textTransform: 'none', fontSize: 12 }}>
         Cancel
       </Button>
@@ -102,7 +106,6 @@ const MyForm = ({ resetForm, isValid, dirty, cancel, errors, touched, editMode }
         variant="outlined"
         disabled={isValid && !dirty}
         style={{ textTransform: 'none', fontSize: 12 }}
-        // onClick={console.log}
       >
         {editMode ? 'Update' : 'Create'}
       </Button>
@@ -115,6 +118,7 @@ AddUserModal.propTypes = {
   addUser: PropTypes.func,
   isVisible: PropTypes.bool,
   user: PropTypes.shape({
+    id: PropTypes.string,
     firstName: PropTypes.string,
     lastName: PropTypes.string,
     email: PropTypes.string,

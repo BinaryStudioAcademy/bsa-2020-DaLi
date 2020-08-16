@@ -5,7 +5,6 @@ import UserRepository from '../repositories/userRepository';
 import jwtConfig from '../config/jwt.config';
 
 export const login = async (user) => {
-  // try {
   const candidate = await UserRepository.getByEmail(user.email);
   if (candidate) {
     // hashed password
@@ -45,9 +44,6 @@ export const login = async (user) => {
       message: 'User with such email was not found',
     },
   };
-  // } catch (error) {
-  // console.log(error);
-  // }
 };
 
 export const register = async (user) => {
@@ -89,7 +85,6 @@ export const getUserByToken = async (token) => {
   }
 
   const { firstName, lastName, email } = candidate;
-  console.log(candidate);
   return {
     status: 200,
     response: {

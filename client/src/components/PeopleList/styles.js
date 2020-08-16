@@ -9,7 +9,7 @@ export const colorStyles = makeStyles({
   },
 });
 
-export const useStyles = makeStyles({
+export const useStyles = makeStyles((theme) => ({
   root: {
     flex: 1,
     padding: '0 4rem',
@@ -25,4 +25,8 @@ export const useStyles = makeStyles({
   dots: {
     cursor: 'pointer',
   },
-});
+  backdrop: {
+    zIndex: theme.zIndex.drawer + 1,
+    color: '#fff',
+  },
+}));

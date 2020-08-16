@@ -13,7 +13,7 @@ function AdminContainer(props) {
     setViewName(currentViewName);
   }, [currentViewName]);
 
-  return <main className={classes.root}>{viewName === 'people' && <PeoplePageContainer />}</main>;
+  return <main className={classes.root}>{viewName === 'people' ? <PeoplePageContainer /> : { viewName }}</main>;
 }
 
 const mapStateToProps = (state) => {

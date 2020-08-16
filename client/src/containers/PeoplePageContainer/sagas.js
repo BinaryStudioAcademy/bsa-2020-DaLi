@@ -66,8 +66,9 @@ export function* watchDeleteUserSaga() {
 
 export function* updateUser({ payload }) {
   try {
-    const res = yield call(usersAPIService.updateUserData, payload.id, payload.data);
+    const res = yield call(usersAPIService.updateUser, payload.id, payload.data);
     yield put({ type: UPDATE_USER_SUCCESS, payload: res });
+    yield put({ type: GET_USERS });
   } catch (error) {
     yield put({ type: UPDATE_USER_ERROR, payload: error });
   }

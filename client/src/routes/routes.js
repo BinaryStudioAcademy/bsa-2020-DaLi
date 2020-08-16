@@ -22,7 +22,6 @@ const routes = (
     <ProtectedRoute exact path="/account-settings" component={AccountSettingsPage} />
     <ProtectedRoute exact path="/admin" component={AdminPage} />
     <ProtectedRoute path="/admin/people" component={PeoplePageContainer} />
-    {/* <ProtectedRoute exact path="/admin/people/groups" component={PeoplePageContainer} /> */}
     <Route path="/dashboard/:id" component={DashboardPage} />
   </Switch>
 );

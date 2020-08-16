@@ -1,4 +1,4 @@
-.visualizationModalForm {
+.addUserModalForm {
   display: flex;
   flex-direction: column;
 }
@@ -33,7 +33,7 @@
   border-color: red !important;
 }
 
-.visualizationModalForm input, textarea {
+.addUserModalForm input, textarea {
   border: 1px solid #dadada;
   padding: 10px;
   border-radius: 5px;
@@ -42,23 +42,23 @@
   font-family: 'Roboto';
 }
 
-.visualizationModalForm textarea {
+.addUserModalForm textarea {
   min-height: 80px;
 }
 
-.visualizationModalForm input::placeholder, textarea::placeholder {
+.addUserModalForm input::placeholder, textarea::placeholder {
   color: #c6cfd4;
   font-size: 15px;
   font-family: 'Roboto';
   font-weight: bold;
 }
 
-.visualizationModalForm input:focus, textarea:focus {
+.addUserModalForm input:focus, textarea:focus {
   outline: none;
   border: 1px solid #33a1de;
 }
 
-.visualizationModalFooter {
+.addUserModalFooter {
   padding-right: 24px !important;
   margin-bottom: 23px;
 }

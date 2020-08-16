@@ -15,14 +15,25 @@ const initialState = {
   users: [],
   isLoading: false,
   error: null,
+  message: '',
+  status: '',
 };
 
 const usersListReducer = (state = initialState, { type, payload }) => {
   switch (type) {
     case GET_USERS_SUCCESS: {
+      const users = [...payload].sort((a, b) => {
+        if (a.firstName < b.firstName) {
+          return -1;
+        }
+        if (a.firstName > b.firstName) {
+          return 1;
+        }
+        return 0;
+      });
       return {
         ...state,
-        users: payload,
+        users,
       };
     }
     case ADD_USER_ERROR:
@@ -32,33 +43,25 @@ const usersListReducer = (state = initialState, { type, payload }) => {
       return {
         ...state,
         error: payload,
+        message: payload.message,
+        status: 'error',
       };
     }
     case ADD_USER_SUCCESS:
+    case UPDATE_USER_SUCCESS:
     case DELETE_USER_SUCCESS: {
       return {
         ...state,
         isLoading: false,
-      };
-    }
-    case UPDATE_USER_SUCCESS: {
-      const { firstName, lastName, email, id } = payload;
-      return {
-        ...state,
-        user: {
-          firstName,
-          lastName,
-          email,
-          id,
-        },
-        updateUserMessage: 'Data successfully updated',
-        updateUserStatus: 'success',
+        message: 'Data successfully updated',
+        status: 'success',
       };
     }
     case RESET_ERROR: {
       return {
         ...state,
-        error: null,
+        message: null,
+        status: null,
       };
     }
     case IS_LOADING: {

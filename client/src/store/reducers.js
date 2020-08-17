@@ -1,7 +1,6 @@
 import { combineReducers } from 'redux';
 import loginReducer from '../containers/LoginPageContainer/reducer';
 import viewVisualizationReducer from '../containers/ViewVisualizationContainer/reducer';
-// import visualizationsListReducer from '../containers/VisualizationsListContainer/reducer';
 import usersListReducer from '../containers/PeoplePageContainer/reducer';
 import adminReducer from '../containers/AdminContainer/reducer';
 import accountSettingsReducer from '../containers/AccountSettingsContainer/reducer';

@@ -13,6 +13,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import { logout } from '../../containers/LoginPageContainer/actions';
 import { changeView } from '../../containers/AdminContainer/actions';
 import AddDashboardModal from '../AddDashboardModal/AddDashboardModal';
+import { addDashboard } from '../../containers/AnalyticsTabsContainer/actions';
 
 import './styles.css';
 
@@ -37,7 +38,8 @@ const useStyles = makeStyles({
   },
 });
 
-const Header = ({ logout, changeView }) => {
+const Header = ({ logout, changeView, addDashboard }) => {
+
   const history = useHistory();
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = useState(null);
@@ -97,6 +99,11 @@ const Header = ({ logout, changeView }) => {
     setAddDashboradModalVisible(true);
   };
 
+  const onHomePage = () => {
+    history.push('/');
+    setAnchorEl(null);
+  };
+
   return (
     <header className={isAdminPage ? 'admin-header' : ''}>
       {isAdminPage ? (
@@ -148,6 +155,10 @@ const Header = ({ logout, changeView }) => {
         </>
       ) : (
         <>
+        <div role="button" tabIndex="0" className="header-logo" onClick={onHomePage} aria-hidden="true">
+          Home page
+        </div>
+          <div className="header-controls">
           <AddIcon className="header-icons" fontSize="large" onClick={handleAddMenuClick} />
           <Menu
             id="add-menu"
@@ -180,8 +191,9 @@ const Header = ({ logout, changeView }) => {
       <AddDashboardModal
         isVisible={addDashboradModalVisible}
         closeModal={hideAddDashboardModal}
-        addDashboard={console.log}
+        addDashboard={addDashboard}
       />
+      </div>
     </header>
   );
 };
@@ -191,6 +203,7 @@ Header.propTypes = {
   changeView: PropTypes.func,
 };
 
-const mapDispatchToProps = { logout, changeView };
+const mapDispatchToProps = { logout, addDashboard, changeView };
+
 
 export default connect(null, mapDispatchToProps)(Header);

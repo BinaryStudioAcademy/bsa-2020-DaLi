@@ -24,7 +24,8 @@ const AddDashboardModal = ({closeModal, addDashboard, isVisible}) => {
   };
   // eslint-disable-next-line
   const createDashboard = (values) => {
-    addDashboard(values);
+    addDashboard({ ...values, config: null });
+    closeModal();
   };
   return (
     <Dialog open={isVisible || false} maxWidth="sm" fullWidth>

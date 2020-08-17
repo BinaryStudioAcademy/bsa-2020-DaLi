@@ -20,6 +20,8 @@ import GroupList from './GroupList';
 import AddUserModal from './AddUserModal';
 import AddVisualizationToDashboardModal from './AddVisualizationToDashboardModal/AddVisualizationToDashboardModal';
 import AnalyticsTabs from './AnalyticsTabs/AnalyticsTabs';
+import DashboardHeader from './DashboardHeader/DashboardHeader';
+import DashboardLayout from './DashboardLayout/DashboardLayout';
 
 export {
   BarChart,
@@ -44,4 +46,6 @@ export {
   AddUserModal,
   AddVisualizationToDashboardModal,
   AnalyticsTabs,
+  DashboardHeader,
+  DashboardLayout,
 };

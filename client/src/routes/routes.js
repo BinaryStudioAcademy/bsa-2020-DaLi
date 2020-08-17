@@ -1,5 +1,5 @@
 import React from 'react';
-import { Switch, Route } from 'react-router-dom';
+import { Switch } from 'react-router-dom';
 import { ProtectedRoute, PublicRoute } from '../containers';
 import {
   LoginPage,
@@ -22,7 +22,7 @@ const routes = (
     <ProtectedRoute exact path="/account-settings" component={AccountSettingsPage} />
     <ProtectedRoute exact path="/admin" component={AdminPage} />
     <ProtectedRoute path="/admin/people" component={PeoplePageContainer} />
-    <Route path="/dashboard/:id" component={DashboardPage} />
+    <ProtectedRoute exact path="/dashboards/:id" component={DashboardPage} />
   </Switch>
 );
 

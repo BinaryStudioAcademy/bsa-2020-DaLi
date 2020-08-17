@@ -152,18 +152,21 @@ function BarChart(props) {
         .text(goal.label);
     }
   };
-
+  
+  const resize = () => {
+      setHeight(svgRef.current.parentElement.offsetHeight);
+      setWidth(svgRef.current.parentElement.offsetWidth);
+  }
+  
   useEffect(() => {
     setHeight(svgRef.current.parentElement.offsetHeight);
     setWidth(svgRef.current.parentElement.offsetWidth);
     draw();
+    window.addEventListener('resize', resize);
+
+    return () => window.removeEventListener('resize', resize)
   }, [props, width, height]);
 
-  window.addEventListener('resize', () => {
-    setHeight(svgRef.current.parentElement.offsetHeight);
-    setWidth(svgRef.current.parentElement.offsetWidth);
-  });
-  
   return <svg ref={svgRef} />;
 }
 

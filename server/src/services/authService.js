@@ -50,10 +50,8 @@ export const register = async (user) => {
   const candidate = await UserRepository.getByEmail(user.email);
   if (!candidate) {
     const salt = bcrypt.genSaltSync(10);
-    const password = user.password;
-    candidate.password = bcrypt.hashSync(password, salt);
-
-    const newUser = await UserRepository.create(candidate);
+    user.password = bcrypt.hashSync(user.password, salt);
+    const newUser = await UserRepository.create(user);
     return {
       status: 201,
       response: {

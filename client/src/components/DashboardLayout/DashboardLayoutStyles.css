@@ -10,7 +10,18 @@
 .dashboard-container .react-grid-layout {
   position: relative;
   transition: height 200ms ease;
-  min-height: calc(100vh - 235px);
+  min-height: calc(100vh - 215px);
+}
+
+.dashboard-container--edit .react-grid-layout{
+  min-height: calc(100vh - 320px);
+  background-image: linear-gradient(to bottom, transparent 50%, #f9fbfc 50%),
+  linear-gradient(to right, #f3f4f4 50%, #f9fbfc 50%);
+  background-size: 30px 30px, 30px 30px;
+}
+
+.dashboard-container--full-screen .react-grid-layout{
+  min-height: calc(100vh - 135px);
 }
 
 .dashboard-container .dashboard-layout-item__header{
@@ -59,14 +70,6 @@
   width: 100%;
   padding: 10px;
   box-sizing: border-box;
-}
-
-.dashboard-container--edit .react-grid-layout{
-  min-height: calc(100vh - 340px);
-  background-image: linear-gradient(to bottom, transparent 50%, #f9fbfc 50%),
-  linear-gradient(to right, #f3f4f4 50%, #f9fbfc 50%);
-  background-size: 30px 30px, 30px 30px;
-
 }
 
 .dashboard-container .react-grid-item{

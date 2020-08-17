@@ -7,8 +7,10 @@ import {
   ViewVisualizationPage,
   AccountSettingsPage,
   DashboardPage,
+  AdminPage,
   AnalyticsPage,
 } from '../pages';
+import PeoplePageContainer from '../containers/PeoplePageContainer/PeoplePageContainer';
 
 const routes = (
   <Switch>
@@ -18,6 +20,8 @@ const routes = (
     <ProtectedRoute exact path="/select-visualization" component={SelectVisualizationPage} />
     <ProtectedRoute exact path="/select-visualization/:id" component={ViewVisualizationPage} />
     <ProtectedRoute exact path="/account-settings" component={AccountSettingsPage} />
+    <ProtectedRoute exact path="/admin" component={AdminPage} />
+    <ProtectedRoute path="/admin/people" component={PeoplePageContainer} />
     <ProtectedRoute exact path="/dashboards/:id" component={DashboardPage} />
   </Switch>
 );

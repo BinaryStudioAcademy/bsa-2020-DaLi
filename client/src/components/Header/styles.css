@@ -1,11 +1,32 @@
 header {
-    background-color: #519ee3;
-    display: flex;
-    justify-content: space-between;
-    padding: 0px 35px;
-    align-items: center;
-    box-sizing: border-box;
-    height: 55px;
+  background-color: #519ee3;
+  display: flex;
+  justify-content: space-between;
+  padding: 0px 35px;
+  align-items: center;
+  box-sizing: border-box;
+  height: 55px;
+}
+
+.admin-header {
+  background-color: #7073a9;
+  justify-content: flex-start;
+  align-items: center;
+  padding-left: 20px;
+  color: #fff;
+}
+
+.admin-header-icon {
+  margin-right: 10px;
+}
+
+.admin-header-nav {
+  display: flex;
+  margin-left: 25px;
+}
+
+.admin-header-nav .MuiTabs-indicator {
+  display: none;
 }
 
 .header-logo{

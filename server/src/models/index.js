@@ -14,7 +14,6 @@ Visualization(sequelize, Sequelize.DataTypes, Sequelize.Deferrable);
 Dashboard(sequelize, Sequelize.DataTypes);
 DashboardVisualizations(sequelize, Sequelize.DataTypes);
 
-
 const models = sequelize.models;
 
 Object.keys(models).forEach((key) => {

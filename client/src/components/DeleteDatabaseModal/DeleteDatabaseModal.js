@@ -14,7 +14,7 @@ import HINT_WORD from './constants';
 import './styles.css';
 
 const ValidationSchema = Yup.object({
-  hintWord: Yup.string().max(6)
+  hintWord: Yup.string().max(6),
 });
 
 const useStyles = makeStyles({
@@ -30,16 +30,25 @@ const useStyles = makeStyles({
   },
 });
 
-const DeleteDatabaseModal = ({ isVisible, closeModal }) => {
+const DeleteDatabaseModal = ({ isVisible, closeModal, deleteDatabase }) => {
   const cancel = (resetForm) => () => {
     resetForm();
     closeModal();
   };
 
+  const deleteDb = (id) => {
+    closeModal();
+    deleteDatabase(id);
+  }
+
   return (
     <Dialog open={isVisible || false} maxWidth="sm" fullWidth>
       <DialogTitle>Delete this database?</DialogTitle>
-      <Formik initialValues={{ hintWord: '' }} ValidationSchema={ValidationSchema}>
+      <Formik
+        initialValues={{ hintWord: '' }}
+        ValidationSchema={ValidationSchema}
+        onSubmit={(id) => deleteDb(id)}
+      >
         {/* eslint-disable-next-line */}
         {(props) => <MyForm cancel={cancel} {...props} />}
       </Formik>
@@ -67,7 +76,7 @@ const MyForm = ({ handleSubmit, resetForm, isValid, dirty, cancel, errors, touch
         <Field
           name="hintWord"
           as="input"
-          maxlength={6}
+          maxLength={6}
           validate={validateHintWord}
           style={touched.hintWord && errors.hintWord ? { borderColor: 'red' } : {}}
         />
@@ -94,6 +103,16 @@ const MyForm = ({ handleSubmit, resetForm, isValid, dirty, cancel, errors, touch
 DeleteDatabaseModal.propTypes = {
   isVisible: PropTypes.bool,
   closeModal: PropTypes.func,
+};
+
+MyForm.propTypes = {
+  handleSubmit: PropTypes.func,
+  resetForm: PropTypes.func,
+  isValid: PropTypes.bool,
+  dirty: PropTypes.bool,
+  cancel: PropTypes.func,
+  errors: PropTypes.object,
+  touched: PropTypes.object,
 };
 
 export default DeleteDatabaseModal;

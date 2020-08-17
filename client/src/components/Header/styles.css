@@ -1,13 +1,31 @@
 header {
     background-color: #519ee3;
     display: flex;
-    justify-content: flex-end;
-    padding: 10px 0;
+    justify-content: space-between;
+    padding: 0px 35px;
+    align-items: center;
+    box-sizing: border-box;
+    height: 55px;
+}
+
+.header-logo{
+    background-image: url('./logo.png');
+    background-position: center;
+    background-color: #fff;
+    width: 35px;
+    height: 35px;
+    background-repeat: no-repeat;
+    background-size: cover;
+    font-size: 0;
+}
+
+.header-logo:hover{
+    cursor: pointer;
 }
 
 .header-icons {
     color: #FFF;
-    margin-right: 35px;
+    margin-left: 35px;
     cursor: pointer;
 }
 

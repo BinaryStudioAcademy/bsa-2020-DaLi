@@ -1,4 +1,10 @@
 .visualizationModalFooter {
   padding-right: 24px !important;
-  margin-bottom: 23px;
+}
+
+.errorMessage {
+  color: red;
+  font-weight: bold;
+  font-size: 12px;
+  margin: 0 0 0 15px;
 }

@@ -1,10 +1,12 @@
 import { combineReducers } from 'redux';
 import loginReducer from '../containers/LoginPageContainer/reducer';
 import viewVisualizationReducer from '../containers/ViewVisualizationContainer/reducer';
-import visualizationsListReducer from '../containers/VisualizationsListContainer/reducer';
+import analyticsReducer from '../containers/AnalyticsTabsContainer/reducer';
+import currentDashboardReducer from '../containers/DashboardContainer/reducer';
 
 export default combineReducers({
   currentUser: loginReducer,
-  visualizations: visualizationsListReducer,
+  analytics: analyticsReducer,
   currentVisualization: viewVisualizationReducer,
+  currentDashboard: currentDashboardReducer,
 });

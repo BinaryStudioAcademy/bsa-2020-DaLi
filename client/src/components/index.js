@@ -16,6 +16,8 @@ import TableSettingsSidebar from './TableSettingsSidebar/TableSettingsSidebar';
 import BarChartSettings from './BarChartSettings';
 import AddVisualizationToDashboardModal from './AddVisualizationToDashboardModal/AddVisualizationToDashboardModal';
 import AnalyticsTabs from './AnalyticsTabs/AnalyticsTabs';
+import DashboardHeader from './DashboardHeader/DashboardHeader';
+import DashboardLayout from './DashboardLayout/DashboardLayout';
 
 export {
   BarChart,
@@ -36,4 +38,6 @@ export {
   BarChartSettings,
   AddVisualizationToDashboardModal,
   AnalyticsTabs,
+  DashboardHeader,
+  DashboardLayout,
 };

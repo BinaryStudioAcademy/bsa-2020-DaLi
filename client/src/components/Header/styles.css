@@ -2,17 +2,18 @@ header {
     background-color: #519ee3;
     display: flex;
     justify-content: space-between;
-    padding: 10px 35px;
+    padding: 0px 35px;
     align-items: center;
     box-sizing: border-box;
+    height: 55px;
 }
 
 .header-logo{
     background-image: url('./logo.png');
     background-position: center;
     background-color: #fff;
-    width: 50px;
-    height: 50px;
+    width: 35px;
+    height: 35px;
     background-repeat: no-repeat;
     background-size: cover;
     font-size: 0;

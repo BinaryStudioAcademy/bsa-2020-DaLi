@@ -70,11 +70,11 @@ export function* watchDeleteUserSaga() {
 export function* toggleUserStatus(payload) {
   try {
     yield put(SetIsLoading(true));
-    yield call(usersAPIService.toggleUserStatus, payload.id, payload.data);
-    yield put({ type: TOGGLE_USER_STATUS_SUCCESS });
+    const res = yield call(usersAPIService.toggleUserStatus, payload.id, payload.data);
+    yield put({ type: UPDATE_USER_SUCCESS, payload: res });
     yield put({ type: GET_USERS });
   } catch (error) {
-    yield put({ type: TOGGLE_USER_STATUS_ERROR, error });
+    yield put({ type: UPDATE_USER_ERROR, payload: error, error });
     yield put(SetIsLoading(false));
   }
 }

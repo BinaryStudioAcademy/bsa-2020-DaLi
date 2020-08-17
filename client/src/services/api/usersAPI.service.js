@@ -14,6 +14,12 @@ class UsersAPIService extends baseAPIService {
 
   updateUser = (id, updatedUser) => this.patchData(`/${id}`, updatedUser);
 
+  toggleUserStatus = (id, user) => {
+    const updatedStatus = !user.isActive;
+    const updatedUser = { ...user, isActive: updatedStatus };
+    this.patchData(`/${id}`, updatedUser);
+  };
+
   deleteUser = (id) => this.deleteData(`${id}`);
 }
 export const usersAPIService = new UsersAPIService();

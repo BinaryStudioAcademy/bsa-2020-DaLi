@@ -39,7 +39,6 @@ const useStyles = makeStyles({
 });
 
 const Header = ({ logout, changeView, addDashboard }) => {
-
   const history = useHistory();
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = useState(null);
@@ -155,28 +154,29 @@ const Header = ({ logout, changeView, addDashboard }) => {
         </>
       ) : (
         <>
-        <div role="button" tabIndex="0" className="header-logo" onClick={onHomePage} aria-hidden="true">
-          Home page
-        </div>
+          <div role="button" tabIndex="0" className="header-logo" onClick={onHomePage} aria-hidden="true">
+            Home page
+          </div>
           <div className="header-controls">
-          <AddIcon className="header-icons" fontSize="large" onClick={handleAddMenuClick} />
-          <Menu
-            id="add-menu"
-            anchorEl={addMenuAnchorEl}
-            keepMounted
-            open={Boolean(addMenuAnchorEl)}
-            onClose={() => setAddMenuAnchorEl(null)}
-          >
-            <MenuItem onClick={addVisualization}>
-              <BarChartIcon />
-              Add Visualization
-            </MenuItem>
-            <MenuItem onClick={showAddDashboardModal}>
-              <DashboardIcon />
-              Add Dashboard
-            </MenuItem>
-          </Menu>
-          <SettingsIcon className="header-icons" fontSize="large" onClick={handleClick} />
+            <AddIcon className="header-icons" fontSize="large" onClick={handleAddMenuClick} />
+            <Menu
+              id="add-menu"
+              anchorEl={addMenuAnchorEl}
+              keepMounted
+              open={Boolean(addMenuAnchorEl)}
+              onClose={() => setAddMenuAnchorEl(null)}
+            >
+              <MenuItem onClick={addVisualization}>
+                <BarChartIcon />
+                Add Visualization
+              </MenuItem>
+              <MenuItem onClick={showAddDashboardModal}>
+                <DashboardIcon />
+                Add Dashboard
+              </MenuItem>
+            </Menu>
+            <SettingsIcon className="header-icons" fontSize="large" onClick={handleClick} />
+          </div>
         </>
       )}
       <Menu id="simple-menu" anchorEl={anchorEl} keepMounted open={Boolean(anchorEl)} onClose={handleClose}>
@@ -193,7 +193,6 @@ const Header = ({ logout, changeView, addDashboard }) => {
         closeModal={hideAddDashboardModal}
         addDashboard={addDashboard}
       />
-      </div>
     </header>
   );
 };
@@ -204,6 +203,4 @@ Header.propTypes = {
 };
 
 const mapDispatchToProps = { logout, addDashboard, changeView };
-
-
 export default connect(null, mapDispatchToProps)(Header);

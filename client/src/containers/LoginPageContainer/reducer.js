@@ -3,8 +3,7 @@ import {
   LOGIN_USER_ERROR,
   LOGOUT_USER_SUCCESS,
   LOGOUT_USER_ERROR,
-  UPDATE_USER_SUCCESS,
-  UPDATE_USER_ERROR,
+  UPDATE_CURRENT_USER,
 } from './actionTypes';
 
 const initialState = {
@@ -12,7 +11,6 @@ const initialState = {
   error: '',
   isAuthorized: false,
   token: '',
-  updateUserMessage: '',
 };
 
 const loginReducer = (state = initialState, { type, payload }) => {
@@ -45,7 +43,7 @@ const loginReducer = (state = initialState, { type, payload }) => {
         isLoading: false,
       };
     }
-    case UPDATE_USER_SUCCESS: {
+    case UPDATE_CURRENT_USER: {
       const { firstName, lastName, email, id } = payload;
       return {
         ...state,
@@ -55,16 +53,8 @@ const loginReducer = (state = initialState, { type, payload }) => {
           email,
           id,
         },
-        updateUserMessage: 'Data successfully updated',
-        updateUserStatus: 'success',
       };
     }
-    case UPDATE_USER_ERROR:
-      return {
-        ...state,
-        updateUserMessage: payload.message,
-        updateUserStatus: 'error',
-      };
     default:
       return state;
   }

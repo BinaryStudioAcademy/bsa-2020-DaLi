@@ -97,12 +97,10 @@ const ViewVisualizationContainer = (props) => {
 
   const hideNotification = () => setIsNotificationVisible(false);
 
-  const createVisualization = ({ name, description }) => {
+  const createVisualization = async ({ name, description }) => {
     updateVisualizationName({ name, description });
     const newVisualization = createNewVisualization(currentVisualization, name, description);
-    visualizationsAPIService.createVisualization(newVisualization);
-    closeModal();
-    setIsVisualizationExist(true);
+    await visualizationsAPIService.createVisualization(newVisualization);
     props.history.push('/');
   };
 

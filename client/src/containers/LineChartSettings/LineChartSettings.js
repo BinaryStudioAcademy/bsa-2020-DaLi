@@ -183,7 +183,8 @@ function LineChartSettings({ updateConfig, config: oldConfig } /* , oldConfig = 
 
   const { axisData, display } = config;
   const { XAxis, YAxis } = axisData;
-  const { goal, color, showDataPointsValues, showTrendLine, lineType } = display;
+  const { goal, color, showDataPointsValues, trendline, lineType } = display;
+  const { display: showTrendline } = trendline;
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
@@ -301,9 +302,9 @@ function LineChartSettings({ updateConfig, config: oldConfig } /* , oldConfig = 
         <FormControlLabel
           control={(() => (
             <PrettySwitch
-              checked={showTrendLine}
+              checked={showTrendline}
               onChange={(event) => {
-                display.showTrendLine = event.target.checked;
+                display.trendline.display = event.target.checked;
                 setConfig({ ...config, display });
               }}
             />

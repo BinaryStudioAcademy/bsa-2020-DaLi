@@ -3,7 +3,8 @@ on:
   push:
     branches: [develop]
     paths: 'client/**/*.*'
-
+env:
+  CI: false
 jobs:
   build:
     runs-on: ubuntu-latest

@@ -153,16 +153,21 @@ function LineChart({ settings, data, chart: chartSize }) {
     }
   };
 
+  const resize = () => {
+    setHeight(svgRef.current.parentElement.offsetHeight);
+    setWidth(svgRef.current.parentElement.offsetWidth);
+}
+
   useEffect(() => {
     setHeight(svgRef.current.parentElement.offsetHeight);
     setWidth(svgRef.current.parentElement.offsetWidth);
     draw();
+    window.addEventListener('resize', resize);
+
+    return () => {window.removeEventListener('resize', resize);}
   }, [goal, showTrendLine, showDataPointsValues, lineType, color, data, chartSize, width, height]);
 
-  window.addEventListener('resize', () => {
-    setHeight(svgRef.current.parentElement.offsetHeight);
-    setWidth(svgRef.current.parentElement.offsetWidth);
-  });
+  
 
   return <svg ref={svgRef} />;
 }

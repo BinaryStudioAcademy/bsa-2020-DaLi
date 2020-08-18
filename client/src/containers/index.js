@@ -10,6 +10,7 @@ import PublicRoute from './PublicRoute/PublicRoute';
 import VisualizationsListContainer from './VisualizationsListContainer/VisualizationsListContainer';
 import AccountSettingsContainer from './AccountSettingsContainer';
 import DashboardContainer from './DashboardContainer/DashboardContainer';
+import AdminContainer from './AdminContainer/AdminContainer';
 import AnalyticsTabsContainer from './AnalyticsTabsContainer/AnalyticsTabsContainer';
 
 export {
@@ -25,5 +26,6 @@ export {
   VisualizationsListContainer,
   AccountSettingsContainer,
   DashboardContainer,
+  AdminContainer,
   AnalyticsTabsContainer,
 };

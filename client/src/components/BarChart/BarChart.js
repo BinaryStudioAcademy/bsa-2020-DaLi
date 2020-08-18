@@ -176,8 +176,6 @@ function BarChart(props) {
     return ()=>window.removeEventListener('resize', onResize);
   }, [JSON.stringify(props), width, height]);
 
-  
-  
   return <svg ref={svgRef} />;
 }
 

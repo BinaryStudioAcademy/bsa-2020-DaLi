@@ -4,6 +4,7 @@ import VisualizationsPage from './VisualizationsPage/VisualizationsPage';
 import ViewVisualizationPage from './ViewVisualizationPage';
 import AccountSettingsPage from './AccountSettingsPage/AccountSettingsPage';
 import DashboardPage from './DashboardPage/DashboardPage';
+import AdminPage from './AdminPage/AdminPage';
 import AnalyticsPage from './AnalyticsPage/AnalyticsPage';
 
 export {
@@ -13,5 +14,6 @@ export {
   ViewVisualizationPage,
   AccountSettingsPage,
   DashboardPage,
+  AdminPage,
   AnalyticsPage,
 };

@@ -25,6 +25,11 @@ export default (sequelize, DataTypes) => {
       },
       description: {
         type: DataTypes.STRING,
+        allowNull: true,
+      },
+      config: {
+        type: DataTypes.JSON,
+        allowNull: true,
       },
       createdAt: DataTypes.DATE,
       updatedAt: DataTypes.DATE,

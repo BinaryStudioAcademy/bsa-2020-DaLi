@@ -66,7 +66,7 @@ const ViewVisualizationContainer = (props) => {
       setIsVisualizationExist(true);
     }
     setVisualization(visualization);
-  }, []);
+  }, [id, visualizations, userId, setVisualization]);
 
   const visualizationComponent = getVisualizationComponent(
     currentVisualization.type,

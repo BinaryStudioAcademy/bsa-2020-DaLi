@@ -145,11 +145,11 @@ const testConfig = {
 function LineChartSettings({ updateConfig, config: oldConfig } /* , oldConfig = testConfig */) {
   const classes = useStyles();
   const [value, setValue] = useState(0);
-  const [config, setConfig] = useState(testConfig);
+  const [config, setConfig] = useState(oldConfig);
 
   useEffect(() => {
-    setConfig(oldConfig);
-  }, [config]);
+    updateConfig(config);
+  }, [updateConfig, config]);
 
   const { axisData, display } = config;
   const { XAxis, YAxis } = axisData;

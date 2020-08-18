@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -11,7 +10,6 @@ import TableRow from '@material-ui/core/TableRow';
 import DatabaseListItem from './DatabaseListItem';
 import DatabaseListHeader from '../DatabaseListHeader/DatabaseListHeader';
 import DeleteDatabaseModal from '../DeleteDatabaseModal/DeleteDatabaseModal';
-import { deleteDatabase } from '../../containers/DatabasesPageContainer/actions';
 import { useStyles } from './styles';
 
 import { mockDatabase } from './mockDatabase';
@@ -64,6 +62,4 @@ DatabaseList.propTypes = {
   deleteDatabase: PropTypes.func,
 };
 
-const mapDispatchToProps = { deleteDatabase };
-
-export default connect(null, mapDispatchToProps)(DatabaseList);
+export default DatabaseList;

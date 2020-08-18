@@ -11,7 +11,6 @@ import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import { makeStyles } from '@material-ui/core/styles';
 import { logout } from '../../containers/LoginPageContainer/actions';
-import { changeView } from '../../containers/AdminContainer/actions';
 import AddDashboardModal from '../AddDashboardModal/AddDashboardModal';
 import { addDashboard } from '../../containers/AnalyticsTabsContainer/actions';
 
@@ -38,7 +37,7 @@ const useStyles = makeStyles({
   },
 });
 
-const Header = ({ logout, changeView, addDashboard }) => {
+const Header = ({ logout, addDashboard }) => {
   const history = useHistory();
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = useState(null);
@@ -82,10 +81,6 @@ const Header = ({ logout, changeView, addDashboard }) => {
     handleClose();
   };
 
-  const handleChangeAdminView = (viewName) => {
-    changeView(viewName);
-  };
-
   const isAdminPage = history.location.pathname.includes('/admin');
 
   const hideAddDashboardModal = () => {
@@ -120,7 +115,6 @@ const Header = ({ logout, changeView, addDashboard }) => {
               pathname: '/admin/people',
             }}
             key="people"
-            onClick={() => handleChangeAdminView('people')}
           >
             People
           </NavLink>
@@ -133,7 +127,6 @@ const Header = ({ logout, changeView, addDashboard }) => {
               pathname: '/admin/databases',
             }}
             key="databases"
-            onClick={() => handleChangeAdminView('databases')}
           >
             Databases
           </NavLink>
@@ -146,7 +139,6 @@ const Header = ({ logout, changeView, addDashboard }) => {
               pathname: '/admin/permissions',
             }}
             key="permissions"
-            onClick={() => handleChangeAdminView('permissions')}
           >
             Permissions
           </NavLink>
@@ -199,8 +191,7 @@ const Header = ({ logout, changeView, addDashboard }) => {
 
 Header.propTypes = {
   logout: PropTypes.func,
-  changeView: PropTypes.func,
 };
 
-const mapDispatchToProps = { logout, addDashboard, changeView };
+const mapDispatchToProps = { logout, addDashboard };
 export default connect(null, mapDispatchToProps)(Header);

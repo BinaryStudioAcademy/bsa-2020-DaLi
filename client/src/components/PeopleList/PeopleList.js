@@ -76,13 +76,7 @@ const PeopleList = ({
   const displayNotification = () => setIsNotificationVisible(true);
   const hideNotification = () => setIsNotificationVisible(false);
 
-  const updateNotification = (message, messageStatus) => {
-    setNotificationMessage(message);
-    setNotificationMessageStatus(messageStatus);
-    if (message) {
-      displayNotification();
-    }
-  };
+
 
   useEffect(() => {
     const isDeactivatedUsers = people.filter((person) => !person.isActive).length > 0;
@@ -92,6 +86,15 @@ const PeopleList = ({
       setActiveUsers(people.filter((person) => person.isActive));
       setInactiveUsers(people.filter((person) => !person.isActive));
     }
+
+    const updateNotification = (message, messageStatus) => {
+      setNotificationMessage(message);
+      setNotificationMessageStatus(messageStatus);
+      if (message) {
+        displayNotification();
+      }
+    };
+
     updateNotification(notificationMessageProps, notificationMessageStatusProps);
   }, [notificationMessageStatusProps, notificationMessageProps]);
 

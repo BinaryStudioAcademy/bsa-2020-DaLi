@@ -22,7 +22,9 @@ jobs:
       - name: Build App
         run: yarn build
       - name: Generate Deployment Package
-        run: zip -r ../deploy.zip ./dist
+        run: |
+          cd dist
+          zip -r ../../deploy.zip .
       - name: Deploy to EB
         uses: einaregilsson/beanstalk-deploy@v7
         with:

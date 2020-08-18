@@ -4,7 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon --exec babel-node index.js",
+    "build": "babel ./ -D -d dist --ignore ./node_modules",
+    "start": "node index.js",
+    "start:dev": "nodemon --exec babel-node index.js",
     "test": "echo \"Error: no test specified\" && exit 1",
     "lint": "eslint",
     "lint:write": "eslint --fix",
@@ -28,8 +30,10 @@
     "validator": "^13.1.1"
   },
   "devDependencies": {
+    "@babel/cli": "^7.10.5",
     "@babel/core": "^7.10.5",
     "@babel/node": "^7.10.5",
+    "@babel/plugin-transform-runtime": "^7.11.0",
     "@babel/polyfill": "^7.10.4",
     "@babel/preset-env": "^7.10.4",
     "babel-eslint": "^10.1.0",

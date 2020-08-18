@@ -172,46 +172,19 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const testConfig = {
-  axisData: {
-    XAxis: {
-      availableKeys: ['key1', 'key2', 'key3'],
-      key: 'createdAt',
-      label: 'Total',
-      displayLabel: true,
-    },
-    YAxis: {
-      availableKeys: ['key4', 'key5', 'key6'],
-      key: 'total',
-      label: 'Date',
-      displayLabel: true,
-    },
-  },
-  display: {
-    goal: {
-      display: true,
-      value: 100,
-      label: 'Goal',
-    },
-    color: '#4aa1de',
-    lineType: 'curveNatural',
-    showTrendLine: true,
-    showDataPointsValues: true,
-  },
-};
-
 function LineChartSettings({ updateConfig, config: oldConfig } /* , oldConfig = testConfig */) {
   const classes = useStyles();
   const [value, setValue] = useState(0);
-  const [config, setConfig] = useState(testConfig);
+  const [config, setConfig] = useState(oldConfig);
 
   useEffect(() => {
-    setConfig(oldConfig);
-  }, [config]);
+    updateConfig(config);
+  }, [updateConfig, config]);
 
   const { axisData, display } = config;
   const { XAxis, YAxis } = axisData;
-  const { goal, color, showDataPointsValues, showTrendLine, lineType } = display;
+  const { goal, color, showDataPointsValues, trendline, lineType } = display;
+  const { display: showTrendline } = trendline;
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
@@ -329,9 +302,9 @@ function LineChartSettings({ updateConfig, config: oldConfig } /* , oldConfig = 
         <FormControlLabel
           control={(() => (
             <PrettySwitch
-              checked={showTrendLine}
+              checked={showTrendline}
               onChange={(event) => {
-                display.showTrendLine = event.target.checked;
+                display.trendline.display = event.target.checked;
                 setConfig({ ...config, display });
               }}
             />

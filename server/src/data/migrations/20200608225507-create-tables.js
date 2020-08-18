@@ -5,8 +5,7 @@ export default {
     // .then(() => queryInterface.sequelize.query('CREATE EXTENSION IF NOT EXISTS "uuid-ossp";'))
     .then(() => queryInterface.sequelize.transaction((transaction) => Promise.all([
       queryInterface.createTable(
-        'users',
-        {
+        'users', {
           id: {
             allowNull: false,
             autoIncrement: false,
@@ -36,14 +35,15 @@ export default {
           },
           lastLogin: {
             allowNull: true,
-            type: DataTypes.DATE,
+            type: Sequelize.DATE,
           },
           createdAt: Sequelize.DATE,
           updatedAt: Sequelize.DATE,
         }, {
           transaction,
         },
-      ),
+      )
+    ]))),
 
   down: (queryInterface) =>
     queryInterface.sequelize.transaction((transaction) =>

@@ -16,7 +16,7 @@ const PeoplePageContainer = ({ people, isLoading, message, status, getUsers, add
     return () => {
       resetError();
     };
-  }, []);
+  }, [getUsers, resetError]);
 
   return (
     <Grid container className={classes.root}>

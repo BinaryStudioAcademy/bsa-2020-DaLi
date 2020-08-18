@@ -26,6 +26,7 @@ jobs:
           zip -r deploy.zip ./dist
           ls -al
       - name: Deploy to EB
+        run: ls -al
         uses: einaregilsson/beanstalk-deploy@v7
         with:
           aws_access_key: ${{ secrets.AWS_ACCESS_KEY_ID }}

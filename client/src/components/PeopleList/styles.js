@@ -36,6 +36,8 @@ export const useStyles = makeStyles((theme) => ({
   appbar: {
     display: 'flex',
     justifyContent: 'space-between',
+    alignItems: 'center',
+    height: '60px',
   },
   tabs: {
     justifyContent: 'flex-start',
@@ -43,5 +45,15 @@ export const useStyles = makeStyles((theme) => ({
   tab: {
     textTransform: 'none',
     color: '#000',
+  },
+  addPersonButton: {
+    color: 'white',
+    textTransform: 'none',
+    background: '#3ca1de',
+    padding: '6px 16px',
+    '&:hover': {
+      background: '#3ca1de',
+    },
+    borderRadius: '5px',
   },
 }));

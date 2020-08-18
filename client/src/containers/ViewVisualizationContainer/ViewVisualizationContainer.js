@@ -8,7 +8,6 @@ import { Grid, Snackbar } from '@material-ui/core';
 import Alert from '@material-ui/lab/Alert';
 
 import * as actions from './actions';
-import { deleteVisualization } from '../AnalyticsTabsContainer/actions';
 import { visualizationsAPIService } from '../../services/api/visualizationsAPI.service';
 
 import {
@@ -44,7 +43,6 @@ const ViewVisualizationContainer = (props) => {
     setVisualization,
     updateVisualizationConfig,
     updateVisualizationName,
-    deleteVisualization,
   } = props;
 
   const [currentView, setCurrentView] = useState('table');
@@ -130,17 +128,11 @@ const ViewVisualizationContainer = (props) => {
     closeModal();
   };
 
-  const onVisualizationDelete = () => {
-    deleteVisualization(id);
-    props.history.push('/');
-  };
-
   return (
     <>
       <ViewVisualizationHeader
         onVisualizationSave={onVisualizationSave}
         onVisualizationNameEdit={onVisualizationNameEdit}
-        onVisualizationDelete={onVisualizationDelete}
         isVisualizationExist={isVisualizationExist}
         name={currentVisualization.name}
         description={currentVisualization.description}
@@ -188,7 +180,6 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = {
   ...actions,
-  deleteVisualization,
 };
 
 ViewVisualizationContainer.propTypes = {
@@ -199,7 +190,6 @@ ViewVisualizationContainer.propTypes = {
   setVisualization: PropTypes.func,
   updateVisualizationConfig: PropTypes.func,
   updateVisualizationName: PropTypes.func,
-  deleteVisualization: PropTypes.func,
   history: PropTypes.object,
 };
 

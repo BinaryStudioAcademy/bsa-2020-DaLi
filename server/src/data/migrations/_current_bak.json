@@ -1,0 +1,205 @@
+{
+    "tables": {
+        "Users": {
+            "tableName": "Users",
+            "schema": {
+                "id": {
+                    "allowNull": false,
+                    "autoIncrement": false,
+                    "primaryKey": true,
+                    "defaultValue": {
+                        "internal": true,
+                        "value": "Sequelize.UUIDV4"
+                    },
+                    "field": "id",
+                    "seqType": "Sequelize.UUID"
+                },
+                "firstName": {
+                    "allowNull": false,
+                    "field": "firstName",
+                    "seqType": "Sequelize.STRING"
+                },
+                "lastName": {
+                    "allowNull": false,
+                    "field": "lastName",
+                    "seqType": "Sequelize.STRING"
+                },
+                "email": {
+                    "allowNull": false,
+                    "unique": true,
+                    "field": "email",
+                    "seqType": "Sequelize.STRING"
+                },
+                "password": {
+                    "allowNull": true,
+                    "defaultValue": {
+                        "value": "P@$$w0rd"
+                    },
+                    "field": "password",
+                    "seqType": "Sequelize.STRING"
+                },
+                "lastLogin": {
+                    "allowNull": true,
+                    "field": "lastLogin",
+                    "seqType": "Sequelize.DATE"
+                },
+                "createdAt": {
+                    "field": "createdAt",
+                    "seqType": "Sequelize.DATE"
+                },
+                "updatedAt": {
+                    "field": "updatedAt",
+                    "seqType": "Sequelize.DATE"
+                }
+            },
+            "indexes": []
+        },
+        "Visualizations": {
+            "tableName": "Visualizations",
+            "schema": {
+                "id": {
+                    "autoIncrement": false,
+                    "primaryKey": true,
+                    "defaultValue": {
+                        "internal": true,
+                        "value": "Sequelize.UUIDV4"
+                    },
+                    "field": "id",
+                    "seqType": "Sequelize.UUID"
+                },
+                "type": {
+                    "allowNull": false,
+                    "field": "type",
+                    "seqType": "Sequelize.ENUM('LINE_CHART', 'BAR_CHART', 'TABLE')"
+                },
+                "name": {
+                    "allowNull": false,
+                    "field": "name",
+                    "seqType": "Sequelize.STRING"
+                },
+                "description": {
+                    "allowNull": true,
+                    "field": "description",
+                    "seqType": "Sequelize.STRING"
+                },
+                "config": {
+                    "allowNull": false,
+                    "field": "config",
+                    "seqType": "Sequelize.JSON"
+                },
+                "createdAt": {
+                    "field": "createdAt",
+                    "seqType": "Sequelize.DATE"
+                },
+                "updatedAt": {
+                    "field": "updatedAt",
+                    "seqType": "Sequelize.DATE"
+                },
+                "UserId": {
+                    "allowNull": true,
+                    "references": {
+                        "model": "Users",
+                        "key": "id"
+                    },
+                    "onDelete": "SET NULL",
+                    "onUpdate": "CASCADE",
+                    "field": "UserId",
+                    "seqType": "Sequelize.UUID"
+                }
+            },
+            "indexes": []
+        },
+        "Dashboards": {
+            "tableName": "Dashboards",
+            "schema": {
+                "id": {
+                    "allowNull": false,
+                    "autoIncrement": false,
+                    "primaryKey": true,
+                    "defaultValue": {
+                        "internal": true,
+                        "value": "Sequelize.UUIDV4"
+                    },
+                    "field": "id",
+                    "seqType": "Sequelize.UUID"
+                },
+                "name": {
+                    "allowNull": false,
+                    "field": "name",
+                    "seqType": "Sequelize.STRING"
+                },
+                "description": {
+                    "allowNull": true,
+                    "field": "description",
+                    "seqType": "Sequelize.STRING"
+                },
+                "config": {
+                    "allowNull": true,
+                    "field": "config",
+                    "seqType": "Sequelize.JSON"
+                },
+                "createdAt": {
+                    "field": "createdAt",
+                    "seqType": "Sequelize.DATE"
+                },
+                "updatedAt": {
+                    "field": "updatedAt",
+                    "seqType": "Sequelize.DATE"
+                }
+            },
+            "indexes": []
+        },
+        "DashboardVisualizations": {
+            "tableName": "DashboardVisualizations",
+            "schema": {
+                "id": {
+                    "allowNull": false,
+                    "autoIncrement": false,
+                    "primaryKey": true,
+                    "defaultValue": {
+                        "internal": true,
+                        "value": "Sequelize.UUIDV4"
+                    },
+                    "field": "id",
+                    "seqType": "Sequelize.UUID"
+                },
+                "createdAt": {
+                    "allowNull": false,
+                    "field": "createdAt",
+                    "seqType": "Sequelize.DATE"
+                },
+                "updatedAt": {
+                    "allowNull": false,
+                    "field": "updatedAt",
+                    "seqType": "Sequelize.DATE"
+                },
+                "dashboards_id": {
+                    "unique": "DashboardVisualizations_dashboards_id_visualizations_id_unique",
+                    "references": {
+                        "model": "Dashboards",
+                        "key": "id"
+                    },
+                    "onDelete": "CASCADE",
+                    "onUpdate": "CASCADE",
+                    "field": "dashboards_id",
+                    "allowNull": true,
+                    "seqType": "Sequelize.UUID"
+                },
+                "visualizations_id": {
+                    "unique": "DashboardVisualizations_dashboards_id_visualizations_id_unique",
+                    "references": {
+                        "model": "Visualizations",
+                        "key": "id"
+                    },
+                    "onDelete": "CASCADE",
+                    "onUpdate": "CASCADE",
+                    "field": "visualizations_id",
+                    "allowNull": true,
+                    "seqType": "Sequelize.UUID"
+                }
+            },
+            "indexes": []
+        }
+    },
+    "revision": 1
+}

@@ -23,7 +23,15 @@ function createInitBarChartConfig(dataSample) {
         label: 'our goal',
       },
       color: '#4aa1de',
-      showTrendLine: false,
+      trendline: {
+        display: false,
+        trendlineType: 'linear',
+        availableTrendlineTypes: ['linear', 'polynomial', 'exponential', 'logarithmical'],
+        polynomial: {
+          availableOrders: [2, 3, 4, 5],
+          order: 2,
+        },
+      },
       showDataPointsValues: false,
       lineType: '',
     },

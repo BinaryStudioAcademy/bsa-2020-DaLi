@@ -173,12 +173,7 @@ const BarChartSettings = ({ updateConfig, config: oldConfig }) => {
   const classes = useStyles();
 
   const { XAxis, YAxis } = oldConfig.axisData;
-  const {
-    goal,
-    color: barColor,
-    showDataPointsValues: incomingShowDataPointsValues,
-    showTrendLine: incomingShowTrendLine,
-  } = oldConfig.display;
+  const { goal, color: barColor, showDataPointsValues: incomingShowDataPointsValues, trendline } = oldConfig.display;
 
   const [value, setValue] = useState(0);
   const [xAxis, setXAxis] = useState(XAxis.key || XAxis.availableKeys[0]);
@@ -191,7 +186,7 @@ const BarChartSettings = ({ updateConfig, config: oldConfig }) => {
   const [labelXAxis, setLabelXAxis] = useState(XAxis.label);
   const [labelYAxis, setLabelYAxis] = useState(YAxis.label);
   const [showDataPointsValues, setShowDataPointsValues] = useState(incomingShowDataPointsValues);
-  const [showTrendLine, setShowTrendLine] = useState(incomingShowTrendLine);
+  const [showTrendline, setShowTrendline] = useState(trendline.display);
   const [config, setConfig] = useState(oldConfig);
 
   useEffect(() => {
@@ -225,7 +220,15 @@ const BarChartSettings = ({ updateConfig, config: oldConfig }) => {
           label: 'Goal',
         },
         color,
-        showTrendLine,
+        trendline: {
+          display: showTrendline,
+          trendlineType: 'linear',
+          availableTrendlineTypes: ['linear', 'polynomial', 'exponential', 'logarithmical'],
+          polynomial: {
+            availableOrders: [2, 3, 4, 5],
+            order: 2,
+          },
+        },
         showDataPointsValues,
       },
     });
@@ -326,9 +329,9 @@ const BarChartSettings = ({ updateConfig, config: oldConfig }) => {
         <FormControlLabel
           control={(() => (
             <PrettySwitch
-              checked={showTrendLine}
+              checked={showTrendline}
               onChange={(event) => {
-                setShowTrendLine(event.target.checked);
+                setShowTrendline(event.target.checked);
               }}
             />
           ))()}

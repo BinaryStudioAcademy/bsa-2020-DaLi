@@ -1,4 +1,4 @@
-import { put, call, takeEvery, all } from 'redux-saga/effects';
+import { put, call, takeEvery, all, delay } from 'redux-saga/effects';
 import {
   GET_USERS,
   GET_USERS_SUCCESS,
@@ -23,6 +23,7 @@ export function* getUsersSaga() {
   try {
     yield put(SetIsLoading(true));
     const res = yield call(usersAPIService.getUsers);
+    // debugger;
     yield put({ type: GET_USERS_SUCCESS, payload: res });
     yield put(SetIsLoading(false));
   } catch (error) {
@@ -67,11 +68,13 @@ export function* watchDeleteUserSaga() {
   yield takeEvery(DELETE_USER, deleteUserSaga);
 }
 
-export function* toggleUserStatus(payload) {
+export function* toggleUserStatus({ payload }) {
   try {
     yield put(SetIsLoading(true));
-    const res = yield call(usersAPIService.toggleUserStatus, payload.id, payload.data);
-    yield put({ type: UPDATE_USER_SUCCESS, payload: res });
+    yield call(usersAPIService.toggleUserStatus, payload.id, payload.data);
+    // yield delay(1000);
+    // debugger;
+    yield put({ type: UPDATE_USER_SUCCESS });
     yield put({ type: GET_USERS });
   } catch (error) {
     yield put({ type: UPDATE_USER_ERROR, payload: error, error });

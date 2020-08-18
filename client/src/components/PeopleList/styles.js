@@ -29,4 +29,19 @@ export const useStyles = makeStyles((theme) => ({
     zIndex: theme.zIndex.drawer + 1,
     color: '#fff',
   },
+  panel: {
+    flexGrow: 1,
+    backgroundColor: theme.palette.background.paper,
+  },
+  appbar: {
+    display: 'flex',
+    justifyContent: 'space-between',
+  },
+  tabs: {
+    justifyContent: 'flex-start',
+  },
+  tab: {
+    textTransform: 'none',
+    color: '#000',
+  },
 }));

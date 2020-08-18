@@ -5,13 +5,24 @@ import PropTypes from 'prop-types';
 import { Grid } from '@material-ui/core';
 import { PeopleList, GroupList } from '../../components';
 import PeoplePageMenu from './PeoplePageMenu';
-import { getUsers, addUser, updateUser, resetError } from './actions';
+import { getUsers, addUser, updateUser, toggleUserStatus, resetError } from './actions';
 import { useStyles } from './styles';
 
-const PeoplePageContainer = ({ people, isLoading, message, status, getUsers, addUser, updateUser, resetError }) => {
+const PeoplePageContainer = ({
+  people,
+  isLoading,
+  message,
+  status,
+  getUsers,
+  addUser,
+  updateUser,
+  toggleUserStatus,
+  resetError,
+}) => {
   const classes = useStyles();
 
   useEffect(() => {
+    // debugger;
     getUsers();
     return () => {
       resetError();
@@ -29,6 +40,7 @@ const PeoplePageContainer = ({ people, isLoading, message, status, getUsers, add
             <PeopleList
               people={people}
               addUser={addUser}
+              toggleUserStatus={toggleUserStatus}
               updateUser={updateUser}
               isLoading={isLoading}
               message={message}
@@ -59,7 +71,10 @@ PeoplePageContainer.propTypes = {
   getUsers: PropTypes.func,
   addUser: PropTypes.func,
   updateUser: PropTypes.func,
+  toggleUserStatus: PropTypes.func,
   resetError: PropTypes.func,
 };
 
-export default withRouter(connect(mapStateToProps, { getUsers, addUser, updateUser, resetError })(PeoplePageContainer));
+export default withRouter(
+  connect(mapStateToProps, { getUsers, addUser, updateUser, toggleUserStatus, resetError })(PeoplePageContainer)
+);

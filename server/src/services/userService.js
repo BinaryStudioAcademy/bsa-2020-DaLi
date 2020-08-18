@@ -2,6 +2,8 @@ import UserRepository from '../repositories/userRepository';
 
 export const getUsers = async () => {
   const result = await UserRepository.getAll();
+  console.log('get users');
+  console.log(result);
   return result;
 };
 
@@ -29,19 +31,20 @@ export const updateUser = async (id, dataToUpdate) => {
       throw { code: 409, message: 'This email is assigned to another user' };
     }
   }
-  if (dataToUpdate.oldPassword){
-    if (dataToUpdate.oldPassword !== item.password){
-      throw { code: 409, message: `Wrong current password` };
-    } else{
-      if (dataToUpdate.password === item.password){
-        throw { code: 409, message: `New password cannot match the current one` };
-      } else{
-        delete dataToUpdate.oldPassword
-      }
+  if (dataToUpdate.oldPassword) {
+    if (dataToUpdate.oldPassword !== item.password) {
+      throw { code: 409, message: 'Wrong current password' };
+    } else if (dataToUpdate.password === item.password) {
+      throw { code: 409, message: 'New password cannot match the current one' };
+    } else {
+      delete dataToUpdate.oldPassword;
     }
   }
-  
+  console.log('update');
+  console.log(dataToUpdate);
   const result = await UserRepository.updateById(id, dataToUpdate);
+  console.log('result');
+  console.log(result);
   return result;
 };
 

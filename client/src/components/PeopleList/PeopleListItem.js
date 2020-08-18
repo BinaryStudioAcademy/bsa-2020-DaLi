@@ -4,9 +4,10 @@ import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import TableCell from '@material-ui/core/TableCell';
 import TableRow from '@material-ui/core/TableRow';
-import FormControl from '@material-ui/core/FormControl';
+import Tooltip from '@material-ui/core/Tooltip';
 import Avatar from '@material-ui/core/Avatar';
 import MoreHorizIcon from '@material-ui/icons/MoreHoriz';
+import ReplayIcon from '@material-ui/icons/Replay';
 import { colorStyles, useStyles } from './styles';
 import { formatDate } from './helpers/formatdate';
 // import Select from '@material-ui/core/Select';
@@ -40,7 +41,7 @@ const getInitials = (person) => {
     .join('');
 };
 
-const PeopleListItem = ({ person, showAddUserModal }) => {
+const PeopleListItem = ({ person, showAddUserModal, showDeactivateUserModal, active, toggleUserStatus }) => {
   const classes = useStyles();
   const colors = colorStyles();
 
@@ -59,6 +60,16 @@ const PeopleListItem = ({ person, showAddUserModal }) => {
     handleClose();
   };
 
+  const onDeactivateUser = () => {
+    showDeactivateUserModal(person);
+    handleClose();
+  };
+
+  const onReactivateUser = () => {
+    toggleUserStatus({ id: person.id, data: { isActive: person.isActive } });
+    handleClose();
+  };
+
   return (
     <>
       <TableRow key={person.firstName + person.lastName}>
@@ -68,8 +79,8 @@ const PeopleListItem = ({ person, showAddUserModal }) => {
         </TableCell>
         <TableCell align="left">{person.email}</TableCell>
         <TableCell align="left">
-          <FormControl className={classes.formControl}>
-            {/* <Select
+          {/* <FormControl className={classes.formControl}> */}
+          {/* <Select
                       multiple
                       value={person.groups.filter((item, index, array) => {
                         return (array.length === 1) || (array.length > 1) && (item !== 'Default'))}
@@ -85,26 +96,32 @@ const PeopleListItem = ({ person, showAddUserModal }) => {
                         </MenuItem>
           ))}
                     </Select> */}
-          </FormControl>
+          {/* </FormControl> */}
         </TableCell>
         <TableCell align="left">{formatDate(person.lastLogin)}</TableCell>
         <TableCell align="left">
-          <MoreHorizIcon className={classes.dots} onClick={handleMenuClick} />
-          <Menu
-            id="add-menu"
-            anchorEl={menuAnchorEl}
-            keepMounted
-            open={Boolean(menuAnchorEl)}
-            onClose={() => setMenuAnchorEl(null)}
-          >
-            <MenuItem onClick={onEditUser}>Edit user</MenuItem>
-            <MenuItem onClick={() => {}} disabled>
-              Reset password
-            </MenuItem>
-            <MenuItem onClick={() => {}} disabled>
-              Deactivate user
-            </MenuItem>
-          </Menu>
+          {active ? (
+            <>
+              <MoreHorizIcon className={classes.dots} onClick={handleMenuClick} />
+              <Menu
+                id="add-menu"
+                anchorEl={menuAnchorEl}
+                keepMounted
+                open={Boolean(menuAnchorEl)}
+                onClose={() => setMenuAnchorEl(null)}
+              >
+                <MenuItem onClick={onEditUser}>Edit user</MenuItem>
+                <MenuItem onClick={() => {}} disabled>
+                  Reset password
+                </MenuItem>
+                <MenuItem onClick={onDeactivateUser}>Deactivate user</MenuItem>
+              </Menu>
+            </>
+          ) : (
+            <Tooltip title="Reactivate this account" arrow>
+              <ReplayIcon onClick={onReactivateUser} style={{ cursor: 'pointer' }} />
+            </Tooltip>
+          )}
         </TableCell>
       </TableRow>
     </>
@@ -113,6 +130,7 @@ const PeopleListItem = ({ person, showAddUserModal }) => {
 
 PeopleListItem.propTypes = {
   showAddUserModal: PropTypes.func,
+  showDeactivateUserModal: PropTypes.func,
   person: PropTypes.shape({
     firstName: PropTypes.string,
     lastName: PropTypes.string,

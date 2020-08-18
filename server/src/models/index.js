@@ -4,6 +4,7 @@ import User from './user';
 import Visualization from './visualization';
 import Dashboard from './dashboard';
 import DashboardVisualizations from './dashboardVisualizations';
+import Database from './database';
 
 const { database, username, password, host, dialect } = config.development;
 
@@ -16,6 +17,7 @@ User(sequelize, Sequelize.DataTypes);
 Visualization(sequelize, Sequelize.DataTypes, Sequelize.Deferrable);
 Dashboard(sequelize, Sequelize.DataTypes);
 DashboardVisualizations(sequelize, Sequelize.DataTypes);
+Database(sequelize, Sequelize.DataTypes);
 
 const models = sequelize.models;
 

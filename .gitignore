@@ -5,6 +5,7 @@
 .vs/
 bin/
 obj/
+.vscode/launch.json
 
 # dependencies
 node_modules/

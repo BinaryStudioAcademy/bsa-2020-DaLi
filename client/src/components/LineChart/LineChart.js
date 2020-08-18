@@ -168,16 +168,19 @@ function LineChart({ settings, data, chart: chartSize }) {
     }
   };
 
+  const onResize = () => {
+    setHeight(svgRef.current.parentElement.offsetHeight);
+    setWidth(svgRef.current.parentElement.offsetWidth)
+  };
+
   useEffect(() => {
     setHeight(svgRef.current.parentElement.offsetHeight);
     setWidth(svgRef.current.parentElement.offsetWidth);
     draw();
-  }, [JSON.stringify(settings), data, chartSize, width, height]);
 
-  window.addEventListener('resize', () => {
-    setHeight(svgRef.current.parentElement.offsetHeight);
-    setWidth(svgRef.current.parentElement.offsetWidth);
-  });
+    window.addEventListener('resize', onResize);
+    return ()=>window.removeEventListener('resize', onResize);
+  }, [JSON.stringify(settings), data, chartSize, width, height]);
 
   return <svg ref={svgRef} />;
 }

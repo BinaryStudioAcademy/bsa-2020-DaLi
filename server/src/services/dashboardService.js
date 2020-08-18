@@ -34,7 +34,7 @@ export const getDashboard = async (id) => {
   if (!item) {
     return null;
   }
-  return item;
+  return item[0];
 };
 
 export const addVisualization = async (data) => {

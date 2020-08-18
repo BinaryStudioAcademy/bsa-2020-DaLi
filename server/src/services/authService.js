@@ -12,6 +12,7 @@ export const login = async (user) => {
     // not hashed password
     if (candidate.password === user.password) {
       const { id, email, firstName, lastName } = candidate;
+      await UserRepository.updateById({ id }, { lastLogin: new Date(Date.now()) });
       const token = jwt.sign(
         {
           id,
@@ -19,7 +20,6 @@ export const login = async (user) => {
         jwtConfig.secretKey,
         { expiresIn: jwtConfig.expiresIn }
       );
-
       return {
         status: 200,
         response: {
@@ -50,10 +50,7 @@ export const register = async (user) => {
   const candidate = await UserRepository.getByEmail(user.email);
   if (!candidate) {
     const salt = bcrypt.genSaltSync(10);
-    const password = user.password;
-    candidate.password = bcrypt.hashSync(password, salt);
-
-    const newUser = await UserRepository.create(candidate);
+    const newUser = await UserRepository.create(Object.assign({}, user, { password:  bcrypt.hashSync(user.password, salt)}));
     return {
       status: 201,
       response: {
@@ -85,7 +82,6 @@ export const getUserByToken = async (token) => {
   }
 
   const { firstName, lastName, email } = candidate;
-  console.log(candidate);
   return {
     status: 200,
     response: {

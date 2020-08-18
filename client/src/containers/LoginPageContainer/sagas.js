@@ -12,6 +12,7 @@ import {
   UPDATE_USER,
   UPDATE_USER_SUCCESS,
   UPDATE_USER_ERROR,
+  UPDATE_CURRENT_USER,
 } from './actionTypes';
 
 export function* loginSaga(payload) {
@@ -51,6 +52,7 @@ export function* updateUser({ payload }) {
   try {
     const res = yield call(userAPIService.updateUserData, payload.id, payload.data);
     yield put({ type: UPDATE_USER_SUCCESS, payload: res });
+    yield put({ type: UPDATE_CURRENT_USER, payload: res });
   } catch (error) {
     yield put({ type: UPDATE_USER_ERROR, payload: error });
   }

@@ -29,31 +29,35 @@
   margin: 0 0 5px 0;
 }
 
-.invalid input, .invalid textarea {
+.invalid input,
+.invalid textarea {
   border-color: red !important;
 }
 
-.addUserModalForm input, textarea {
+.addUserModalForm input,
+textarea {
   border: 1px solid #dadada;
   padding: 10px;
   border-radius: 5px;
   margin-bottom: 15px;
   font-size: 15px;
-  font-family: 'Roboto';
+  font-family: "Roboto";
 }
 
 .addUserModalForm textarea {
   min-height: 80px;
 }
 
-.addUserModalForm input::placeholder, textarea::placeholder {
+.addUserModalForm input::placeholder,
+textarea::placeholder {
   color: #c6cfd4;
   font-size: 15px;
-  font-family: 'Roboto';
+  font-family: "Roboto";
   font-weight: bold;
 }
 
-.addUserModalForm input:focus, textarea:focus {
+.addUserModalForm input:focus,
+textarea:focus {
   outline: none;
   border: 1px solid #33a1de;
 }
@@ -61,4 +65,8 @@
 .addUserModalFooter {
   padding-right: 24px !important;
   margin-bottom: 23px;
+}
+
+.switcherTitle {
+  font-size: 13px;
 }

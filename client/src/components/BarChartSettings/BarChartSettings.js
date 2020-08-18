@@ -191,7 +191,7 @@ const BarChartSettings = ({ updateConfig, config: oldConfig }) => {
 
   useEffect(() => {
     updateConfig(config);
-  }, [config]);
+  }, [updateConfig, config]);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);

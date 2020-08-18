@@ -1,0 +1,40 @@
+.data-source-view {
+  height: calc(100vh - 55px);
+  box-sizing: border-box;
+  background-color: #f4f4f4;
+  padding: 20px 40px;
+}
+
+.data-source-view a,
+.data-source-view p {
+  font-weight: 600;
+}
+
+.data-source-view .MuiBreadcrumbs-li {
+  line-height: 0px;
+}
+
+.data-source-table-item {
+  height: 70px;
+  background-color: white;
+  display: flex;
+  align-items: center;
+  box-sizing: border-box;
+  border-radius: 7px;
+  padding: 0 15px;
+  box-shadow: 0px 7px 20px rgba(0, 0, 0, 0.08);
+}
+
+.data-source-table-item:hover {
+  cursor: pointer;
+  background-color: #f5f5f5;
+}
+
+.data-source-table-item-icon {
+  background-color: #f4f4f4;
+  padding: 3px;
+  box-sizing: border-box;
+  height: 36px;
+  border-radius: 7px;
+  margin-right: 10px;
+}

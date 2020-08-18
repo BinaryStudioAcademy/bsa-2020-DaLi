@@ -8,6 +8,8 @@ class DatabasesAPIService extends baseAPIService {
     super(API_URL);
   }
 
+  getDatabases = () => this.getData('');
+
   deleteDatabase = (id) => this.deleteData(`${id}`);
 }
 export const databasesAPIService = new DatabasesAPIService();

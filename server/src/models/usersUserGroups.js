@@ -4,11 +4,11 @@ export default (sequelize, DataTypes) => {
   class UsersUserGroups extends Model {
     static associate(models) {
       UsersUserGroups.belongsTo(models.UserGroups, {
-        foreignKey: 'dashboards_id',
+        foreignKey: 'userGroups_id',
         sourceKey: models.UserGroups.id,
       });
       UsersUserGroups.belongsTo(models.User, {
-        foreignKey: 'visualizations_id',
+        foreignKey: 'users_id',
         sourceKey: models.User.id,
       });
     }

@@ -42,7 +42,7 @@ export const addUser = async (data) => {
   if (!result1) {
     return null;
   }
-  const result = await getUserGroup({ id: data.dashboards_id });
+  const result = await getUserGroup({ id: data.userGroups_id });
   return result;
 };
 

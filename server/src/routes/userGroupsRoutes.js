@@ -74,8 +74,8 @@ router.delete('/:id', async (req, res, next) => {
 
 router.post('/:id', async (req, res, next) => {
   const data = {
-    visualizations_id: req.body.usersId,
-    dashboards_id: req.params.id,
+    users_id: req.body.users_id,
+    userGroups_id: req.params.id,
   };
   const result = await UserGroupsService.addUser(data);
   if (result) {

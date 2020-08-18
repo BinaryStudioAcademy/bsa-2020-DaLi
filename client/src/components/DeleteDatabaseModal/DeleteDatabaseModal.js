@@ -30,25 +30,21 @@ const useStyles = makeStyles({
   },
 });
 
-const DeleteDatabaseModal = ({ isVisible, closeModal, deleteDatabase }) => {
+const DeleteDatabaseModal = ({ isVisible, closeModal, deleteDatabase, databaseId }) => {
   const cancel = (resetForm) => () => {
     resetForm();
     closeModal();
   };
 
-  const deleteDb = (id) => {
+  const deleteDb = () => {
     closeModal();
-    deleteDatabase(id);
-  }
+    deleteDatabase(databaseId);
+  };
 
   return (
     <Dialog open={isVisible || false} maxWidth="sm" fullWidth>
       <DialogTitle>Delete this database?</DialogTitle>
-      <Formik
-        initialValues={{ hintWord: '' }}
-        ValidationSchema={ValidationSchema}
-        onSubmit={(id) => deleteDb(id)}
-      >
+      <Formik initialValues={{ hintWord: '' }} ValidationSchema={ValidationSchema} onSubmit={deleteDb}>
         {/* eslint-disable-next-line */}
         {(props) => <MyForm cancel={cancel} {...props} />}
       </Formik>
@@ -62,7 +58,7 @@ const MyForm = ({ handleSubmit, resetForm, isValid, dirty, cancel, errors, touch
   const validateHintWord = (value) => {
     let error;
     if (value !== HINT_WORD) {
-      error = 'It is not the hint word';
+      error = 'This is not the right word';
     }
     return error;
   };
@@ -103,6 +99,8 @@ const MyForm = ({ handleSubmit, resetForm, isValid, dirty, cancel, errors, touch
 DeleteDatabaseModal.propTypes = {
   isVisible: PropTypes.bool,
   closeModal: PropTypes.func,
+  deleteDatabase: PropTypes.func,
+  databaseId: PropTypes.string,
 };
 
 MyForm.propTypes = {

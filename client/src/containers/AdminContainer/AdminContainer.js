@@ -1,30 +1,18 @@
-import React, { useState, useEffect } from 'react';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
+import React from 'react';
+import { Switch, Route } from 'react-router-dom';
 import PeoplePageContainer from '../PeoplePageContainer/PeoplePageContainer';
-import { useStyles } from './styles';
+import DatabasesPageContainer from '../DatabasesPageContainer/DatabasesPageContainer';
 
-function AdminContainer(props) {
-  const { currentViewValue, currentViewName } = props;
-  const classes = useStyles();
-  const [viewName, setViewName] = useState(currentViewValue);
-
-  useEffect(() => {
-    setViewName(currentViewName);
-  }, [currentViewName]);
-
-  return <main className={classes.root}>{viewName === 'people' ? <PeoplePageContainer /> : { viewName }}</main>;
+function AdminContainer() {
+  return (
+    <main>
+      <Switch>
+        <Route path="/admin/people" component={PeoplePageContainer} />
+        <Route exact path="/admin/databases" component={DatabasesPageContainer} />
+        <Route exact path="/admin/permissions" component={() => <div>permissions</div>} />
+      </Switch>
+    </main>
+  );
 }
 
-const mapStateToProps = (state) => {
-  return {
-    currentViewName: state.adminPage.viewName,
-  };
-};
-
-AdminContainer.propTypes = {
-  currentViewName: PropTypes.string,
-  currentViewValue: PropTypes.func,
-};
-
-export default connect(mapStateToProps, null)(AdminContainer);
+export default AdminContainer;

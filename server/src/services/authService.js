@@ -12,6 +12,15 @@ export const login = async (user) => {
     // hashed password
     // if (bcrypt.compareSync(user.password, candidate.password)) {
     // not hashed password
+    if (!candidate.isActive) {
+      return {
+        status: 403,
+        response: {
+          success: false,
+          message: 'User account deactivated',
+        },
+      };
+    }
     if (candidate.password === user.password) {
       const { id, email, firstName, lastName } = candidate;
       await UserRepository.updateById({ id }, { lastLogin: new Date(Date.now()) });

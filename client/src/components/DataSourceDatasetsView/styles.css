@@ -1,0 +1,16 @@
+.data-source-view {
+  height: calc(100vh - 55px);
+  box-sizing: border-box;
+  background-color: #f4f4f4;
+  padding: 20px 40px;
+}
+
+.data-source-view a,
+.data-source-view p {
+  font-weight: 600;
+  margin: 0;
+}
+
+.data-source-view .MuiBreadcrumbs-li {
+  line-height: 0px;
+}

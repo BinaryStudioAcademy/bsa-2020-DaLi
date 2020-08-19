@@ -5,7 +5,7 @@ import Typography from '@material-ui/core/Typography';
 import Link from '@material-ui/core/Link';
 import NavigateNextIcon from '@material-ui/icons/NavigateNext';
 import { Grid } from '@material-ui/core';
-import DataSourceViewItem from './DataSourceViewItem';
+import DataSourceViewItem from '../DataSourceViewItem/DataSourceViewItem';
 import { mockTables } from './mockTables';
 
 import './styles.css';
@@ -32,13 +32,8 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-const DataSourceView = () => {
+const DataSourceTablesView = () => {
   const classes = useStyles();
-
-  const handleClick = (event) => {
-    event.preventDefault();
-    alert('You clicked a breadcrumb.');
-  };
 
   return (
     <main className="data-source-view">
@@ -47,7 +42,7 @@ const DataSourceView = () => {
         separator={<NavigateNextIcon className={classes.separator} />}
         aria-label="breadcrumb"
       >
-        <Link className={classes.breadcrumbsItem} color="inherit" href="/" onClick={handleClick}>
+        <Link className={classes.breadcrumbsItem} color="inherit" href="/data-source">
           Our data
         </Link>
         <Typography className={classes.breadcrumbsItem} color="textPrimary">
@@ -63,4 +58,4 @@ const DataSourceView = () => {
   );
 };
 
-export default DataSourceView;
+export default DataSourceTablesView;

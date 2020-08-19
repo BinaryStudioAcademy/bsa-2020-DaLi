@@ -1,5 +1,5 @@
 import React from 'react';
-import { Switch } from 'react-router-dom';
+import { Switch, Route } from 'react-router-dom';
 import { ProtectedRoute, PublicRoute } from '../containers';
 import {
   LoginPage,
@@ -9,6 +9,7 @@ import {
   DashboardPage,
   AdminPage,
   AnalyticsPage,
+  DataSourcePage,
 } from '../pages';
 
 const routes = (
@@ -21,6 +22,8 @@ const routes = (
     <ProtectedRoute exact path="/account-settings" component={AccountSettingsPage} />
     <ProtectedRoute path="/admin" component={AdminPage} />
     <ProtectedRoute exact path="/dashboards/:id" component={DashboardPage} />
+
+    <Route path="/data-source" component={DataSourcePage} />
   </Switch>
 );
 

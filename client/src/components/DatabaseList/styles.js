@@ -38,4 +38,11 @@ export const useStyles = makeStyles(() => ({
       backgroundColor: '#ed6e6e',
     },
   },
+  item: {
+    color: 'inherit',
+    textDecoration: 'none',
+    '&:hover': {
+      borderBottom: '1px solid #509ee3',
+    },
+  },
 }));

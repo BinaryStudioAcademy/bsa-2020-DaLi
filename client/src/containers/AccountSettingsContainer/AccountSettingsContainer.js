@@ -22,27 +22,27 @@ const PasswordSchema = Yup.object().shape({
   currentPassword: Yup.string()
     .max(30)
     .required('Required')
-    .min(8, 'Password is too short - should be 8 chars minimum.')
     .matches(
-      /^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/,
+      /^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]/,
       'Password must contain one uppercase, one number and one special character.'
-    ),
+    )
+    .min(8, 'Password is too short - should be 8 chars minimum.'),
   newPassword: Yup.string()
     .max(30)
     .required('Required')
-    .min(8, 'Password is too short - should be 8 chars minimum.')
     .matches(
-      /^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/,
+      /^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]/,
       'Password must contain one uppercase, one number and one special character.'
-    ),
+    )
+    .min(8, 'Password is too short - should be 8 chars minimum.'),
   confirmedPassword: Yup.string()
     .max(30)
     .required('Required')
-    .min(8, 'Password is too short - should be 8 chars minimum.')
     .matches(
-      /^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/,
+      /^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]/,
       'Password must contain one uppercase, one number and one special character.'
-    ),
+    )
+    .min(8, 'Password is too short - should be 8 chars minimum.'),
 });
 
 const getStyles = (errors, touched, fieldName) => {
@@ -127,7 +127,7 @@ const AccountSettingsContainer = ({
               validationSchema={ProfileSchema}
               onSubmit={(values) => onUpdateClick(values)}
             >
-              {({ errors, touched }) => (
+              {({ errors, touched, isValid, dirty }) => (
                 <Form>
                   <div className={classes.relative}>
                     <label htmlFor="firstName" className={classes.label}>
@@ -168,7 +168,7 @@ const AccountSettingsContainer = ({
                     />
                     <ErrorMessage name="email" component="div" className={classes.error} />
                   </div>
-                  <button type="submit" className={`btn btn-submit ${classes.update}`}>
+                  <button type="submit" className={`btn btn-submit ${classes.update}`} disabled={!(isValid && dirty)}>
                     Update
                   </button>
                 </Form>
@@ -183,7 +183,7 @@ const AccountSettingsContainer = ({
               validationSchema={PasswordSchema}
               onSubmit={(values) => onSaveClick(values)}
             >
-              {({ errors, touched }) => (
+              {({ errors, touched, isValid, dirty }) => (
                 <Form>
                   <div className={classes.relative}>
                     <label htmlFor="currentPassword" className={classes.label}>
@@ -227,7 +227,7 @@ const AccountSettingsContainer = ({
                     />
                     <ErrorMessage name="confirmedPassword" component="div" className={classes.error} />
                   </div>
-                  <button type="submit" className="btn btn-submit">
+                  <button type="submit" className={`btn btn-submit ${classes.save}`} disabled={!(isValid && dirty)}>
                     Save
                   </button>
                 </Form>

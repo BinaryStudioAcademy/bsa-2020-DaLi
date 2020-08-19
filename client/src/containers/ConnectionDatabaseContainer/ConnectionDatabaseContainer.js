@@ -1,6 +1,6 @@
 import React from 'react';
-import { Grid, Typography } from '@material-ui/core';
-// import Alert from '@material-ui/lab/Alert';
+import { Grid, Typography, Snackbar } from '@material-ui/core';
+import Alert from '@material-ui/lab/Alert';
 import * as Yup from 'yup';
 import { Formik, Form, Field, ErrorMessage, getIn } from 'formik';
 import NativeSelect from '@material-ui/core/NativeSelect';
@@ -9,6 +9,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import useStyles from './styles';
 import { addDatabase } from '../DatabasesPageContainer/actions';
+import { hideNotification } from './actions';
 
 const AddDatabaseSchema = Yup.object().shape({
   type: Yup.string().required('Required'),
@@ -24,7 +25,7 @@ const getStyles = (errors, touched, fieldName) => {
   return getIn(errors, fieldName) && getIn(touched, fieldName) ? { border: '1px solid red' } : {};
 };
 
-const ConnectionDatabaseContainer = ({ addDatabase }) => {
+const ConnectionDatabaseContainer = ({ addDatabase, isNotification, message, status, hideNotification }) => {
   const availableDatabases = ['PostgreSQL'];
   const classes = useStyles();
   const initialDatabaseValues = {
@@ -73,7 +74,7 @@ const ConnectionDatabaseContainer = ({ addDatabase }) => {
           validationSchema={AddDatabaseSchema}
           onSubmit={(values) => onSaveClick(values)}
         >
-          {({ errors, touched, setFieldValue, values }) => (
+          {({ errors, touched, setFieldValue, values, isValid, dirty }) => (
             <Form>
               <div className={classes.relative}>
                 <label htmlFor="type" className={classes.label}>
@@ -173,30 +174,40 @@ const ConnectionDatabaseContainer = ({ addDatabase }) => {
                 />
                 <ErrorMessage name="password" component="div" className={classes.error} />
               </div>
-              <button type="submit" className={`btn btn-submit ${classes.save}`}>
+              <button type="submit" className={`btn btn-submit ${classes.save}`} disabled={!(isValid && dirty)}>
                 Save
               </button>
             </Form>
           )}
         </Formik>
       </div>
-      {/* <Snackbar
+      <Snackbar
         anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
         open={isNotification}
         autoHideDuration={6000}
-        onClose={hideDatabaseNotification}
+        onClose={hideNotification}
       >
-        <Alert elevation={6} variant="filled" severity={status} onClose={hideDatabaseNotification}>
+        <Alert elevation={6} variant="filled" severity={status} onClose={hideNotification}>
           {message}
         </Alert>
-      </Snackbar> */}
+      </Snackbar>
     </Grid>
   );
 };
 
+const mapStateToProps = ({ admin: { connectionDatabase } }) => ({
+  isNotification: connectionDatabase.isNotification,
+  message: connectionDatabase.message,
+  status: connectionDatabase.status,
+});
+
 ConnectionDatabaseContainer.propTypes = {
   addDatabase: PropTypes.func,
+  isNotification: PropTypes.bool,
+  message: PropTypes.string,
+  status: PropTypes.string,
+  hideNotification: PropTypes.func,
 };
-const mapDispatchToProps = { addDatabase };
+const mapDispatchToProps = { addDatabase, hideNotification };
 
-export default connect(null, mapDispatchToProps)(ConnectionDatabaseContainer);
+export default connect(mapStateToProps, mapDispatchToProps)(ConnectionDatabaseContainer);

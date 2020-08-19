@@ -29,6 +29,9 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: '#5BA4CF',
     color: '#fff',
     border: 'none',
+    '&:hover:enabled': {
+      cursor: 'pointer',
+    },
   },
   error: {
     position: 'absolute',

@@ -45,7 +45,7 @@ export function* addDatabaseSaga(action) {
     yield call(databasesAPIService.addDatabase, data);
     history.push('/admin/databases');
   } catch (error) {
-    yield put({ type: ADD_DATABASE_ERROR, error });
+    yield put({ type: ADD_DATABASE_ERROR, payload: error });
   }
 }
 

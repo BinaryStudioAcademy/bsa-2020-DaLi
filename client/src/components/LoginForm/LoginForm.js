@@ -7,13 +7,7 @@ import './styles.css';
 
 const SignInSchema = Yup.object().shape({
   email: Yup.string().email('Invalid email').required('Required'),
-  password: Yup.string()
-    .required('No password provided.')
-    .min(8, 'Password is too short - should be 8 chars minimum.')
-    .matches(
-      /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/,
-      'Password must contain one uppercase, one lowercase, one number and one special character.'
-    ),
+  password: Yup.string().required('Required'),
 });
 
 const getStyles = (errors, touched, fieldName) => {
@@ -27,7 +21,7 @@ const LoginForm = ({ setIsModalVisible, login }) => {
       validationSchema={SignInSchema}
       onSubmit={(values) => login(values)}
     >
-      {({ errors, touched }) => (
+      {({ errors, touched, isValid, dirty }) => (
         <Form>
           <div className="email-wrapper">
             <label htmlFor="email">Email address</label>
@@ -57,7 +51,7 @@ const LoginForm = ({ setIsModalVisible, login }) => {
             <Field type="checkbox" name="remember" className="checkbox" />
           </div>
           <div className="btn-wrapper">
-            <button type="submit" className="btn btn-submit">
+            <button type="submit" className="btn btn-submit" disabled={!(isValid && dirty)}>
               Sign in
             </button>
             <button type="button" className="forgot-pswd" onClick={() => setIsModalVisible(true)}>

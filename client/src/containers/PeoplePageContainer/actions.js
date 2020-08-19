@@ -6,6 +6,7 @@ import {
   IS_LOADING,
   RESET_ERROR,
   SET_TEMPORARY_PASSWORD,
+  TOGGLE_USER_STATUS,
 } from './actionTypes';
 
 export const getUsers = () => {
@@ -18,6 +19,13 @@ export const deleteUser = (id) => {
   return {
     type: DELETE_USER,
     id,
+  };
+};
+
+export const toggleUserStatus = (payload) => {
+  return {
+    type: TOGGLE_USER_STATUS,
+    payload,
   };
 };
 

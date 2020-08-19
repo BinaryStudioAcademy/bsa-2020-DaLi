@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Grid, Button, Typography } from '@material-ui/core';
 import SaveIcon from '@material-ui/icons/Save';
-import DeleteIcon from '@material-ui/icons/Delete';
 import Tooltip from '@material-ui/core/Tooltip';
 import InfoIcon from '@material-ui/icons/Info';
 import EditIcon from '@material-ui/icons/Edit';
@@ -13,7 +12,6 @@ const ViewVisualizationHeader = (props) => {
   const {
     onVisualizationSave,
     onVisualizationNameEdit,
-    onVisualizationDelete,
     isVisualizationExist,
     name,
     description,
@@ -48,17 +46,6 @@ const ViewVisualizationHeader = (props) => {
         )}
       </Grid>
       <Grid className={classes.viewVisualizationButtons} item container>
-        {isVisualizationExist && (
-          <Button
-            className={classes.viewVisualizationDeleteButton}
-            variant="contained"
-            startIcon={<DeleteIcon />}
-            onClick={onVisualizationDelete}
-          >
-            Delete
-          </Button>
-        )}
-
         <Button
           className={classes.viewVisualizationSaveButton}
           variant="contained"
@@ -75,7 +62,6 @@ const ViewVisualizationHeader = (props) => {
 ViewVisualizationHeader.propTypes = {
   onVisualizationSave: PropTypes.func,
   onVisualizationNameEdit: PropTypes.func,
-  onVisualizationDelete: PropTypes.func,
   isVisualizationExist: PropTypes.bool,
   name: PropTypes.string,
   description: PropTypes.string,

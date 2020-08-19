@@ -68,7 +68,6 @@ class baseAPIService {
       headers: { Authorization: `Bearer ${this.accessToken}` },
       data,
     });
-
     return response;
   };
 

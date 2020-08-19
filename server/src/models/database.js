@@ -1,56 +1,50 @@
 import { Model } from 'sequelize';
-import { generatePassword } from '../helpers/generatePassword';
 
 export default (sequelize, DataTypes) => {
-  class User extends Model {
-    static associate(models) {
-      User.hasMany(models.Visualization);
-    }
-  }
-  User.init(
+  class Database extends Model {}
+  Database.init(
     {
       id: {
         type: DataTypes.UUID,
-        allowNull: false,
         autoIncrement: false,
         primaryKey: true,
         defaultValue: DataTypes.UUIDV4,
       },
-      firstName: {
+      dbNickname: {
         type: DataTypes.STRING,
         allowNull: false,
       },
-      lastName: {
+      type: {
         type: DataTypes.STRING,
         allowNull: false,
       },
-      email: {
+      host: {
         type: DataTypes.STRING,
         allowNull: false,
-        unique: true,
       },
-      password: {
-        allowNull: true,
-        defaultValue: generatePassword(),
-        type: DataTypes.STRING,
-      },
-      isActive: {
+      port: {
+        type: DataTypes.INTEGER,
         allowNull: false,
-        type: DataTypes.BOOLEAN,
-        defaultValue: true,
       },
-      lastLogin: {
-        allowNull: true,
-        type: DataTypes.DATE,
+      dbName: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+      username: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+      dbPassword: {
+        type: DataTypes.STRING,
+        allowNull: false,
       },
       createdAt: DataTypes.DATE,
       updatedAt: DataTypes.DATE,
     },
     {
       sequelize,
-      modelName: 'User',
+      modelName: 'Database',
     }
   );
-
-  return User;
+  return Database;
 };

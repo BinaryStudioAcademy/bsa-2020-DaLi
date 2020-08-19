@@ -23,6 +23,7 @@ import AnalyticsTabs from './AnalyticsTabs/AnalyticsTabs';
 import DashboardHeader from './DashboardHeader/DashboardHeader';
 import DashboardLayout from './DashboardLayout/DashboardLayout';
 import DeleteVisualizationWarning from './DeleteVisualizationWarning/DeleteVisualizationWarning';
+import PermissionsHeader from './PermissionsHeader/PermissionsHeader';
 
 export {
   BarChart,
@@ -50,4 +51,5 @@ export {
   DashboardHeader,
   DashboardLayout,
   DeleteVisualizationWarning,
+  PermissionsHeader,
 };

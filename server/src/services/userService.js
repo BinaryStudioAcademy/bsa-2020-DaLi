@@ -1,4 +1,6 @@
 import UserRepository from '../repositories/userRepository';
+import UserGroupsRepository from "../repositories/userGroupsRepository";
+import UsersUserGroupsRepository from "../repositories/usersUserGroupsRepository";
 
 export const getUsers = async () => {
   const result = await UserRepository.getAll();
@@ -6,7 +8,10 @@ export const getUsers = async () => {
 };
 
 export const createUser = async (data) => {
+  const allGroups = await UserGroupsRepository.getAll();
+  const allUsersGroupID = allGroups.filter(group => group.name==='All Users')[0].id;
   const result = await UserRepository.create(data);
+  await UsersUserGroupsRepository.create({users_id: result.id, userGroups_id: allUsersGroupID});
   return result;
 };
 
@@ -40,7 +45,7 @@ export const updateUser = async (id, dataToUpdate) => {
       }
     }
   }
-  
+
   const result = await UserRepository.updateById(id, dataToUpdate);
   return result;
 };

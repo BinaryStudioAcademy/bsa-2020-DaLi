@@ -14,8 +14,14 @@ import ViewVisualizationMain from './ViewVisualizationMain';
 import ViewVisualizationHeader from './ViewVisualizationHeader/ViewVisualizationHeader';
 import TableSettingsSidebar from './TableSettingsSidebar/TableSettingsSidebar';
 import BarChartSettings from './BarChartSettings';
+import PeopleList from './PeopleList';
+import PeopleListHeader from './PeopleListHeader';
+import GroupList from './GroupList';
+import AddUserModal from './AddUserModal';
 import AddVisualizationToDashboardModal from './AddVisualizationToDashboardModal/AddVisualizationToDashboardModal';
 import AnalyticsTabs from './AnalyticsTabs/AnalyticsTabs';
+import DashboardHeader from './DashboardHeader/DashboardHeader';
+import DashboardLayout from './DashboardLayout/DashboardLayout';
 
 export {
   BarChart,
@@ -34,6 +40,12 @@ export {
   ViewVisualizationHeader,
   TableSettingsSidebar,
   BarChartSettings,
+  PeopleList,
+  PeopleListHeader,
+  GroupList,
+  AddUserModal,
   AddVisualizationToDashboardModal,
   AnalyticsTabs,
+  DashboardHeader,
+  DashboardLayout,
 };

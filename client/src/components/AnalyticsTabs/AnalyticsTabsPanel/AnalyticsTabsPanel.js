@@ -9,12 +9,11 @@ import DashboardIcon from '@material-ui/icons/Dashboard';
 import Tooltip from '@material-ui/core/Tooltip';
 import InfoIcon from '@material-ui/icons/Info';
 import DeleteIcon from '@material-ui/icons/Delete';
-import CircularProgress from '@material-ui/core/CircularProgress';
 import { Link } from 'react-router-dom';
 
 import { useStyles } from './styles';
 
-const AnalyticsTabsPanel = ({ value, index, data, deleteItem }) => {
+const AnalyticsTabsPanel = ({ value, index, data, deleteVisualization, deleteDashboard }) => {
   const classes = useStyles();
 
   const chooseIcon = (type) => {
@@ -37,36 +36,32 @@ const AnalyticsTabsPanel = ({ value, index, data, deleteItem }) => {
   return (
     <Typography component="div" hidden={value !== index}>
       <Box className={classes.root}>
-        {data.length ? (
-          data.map((item) => {
-            return (
-              <div className={classes.itemContainer} key={item.name}>
-                {!item.type ? (
-                  <>
-                    <Link to={`/dashboards/${item.id}`} className={classes.item}>
-                      {chooseIcon(item.type)}
-                      <span>{item.name}</span>
-                    </Link>
-                    <Tooltip title={item.description} placement="left" className={classes.description}>
-                      <InfoIcon />
-                    </Tooltip>
-                    <DeleteIcon className={classes.menuIcon} id={item.id} />
-                  </>
-                ) : (
-                  <>
-                    <Link to={`/visualizations/${item.id}`} className={classes.item}>
-                      {chooseIcon(item.type)}
-                      <span>{item.name}</span>
-                    </Link>
-                    <DeleteIcon className={classes.menuIcon} id={item.id} onClick={deleteItem(item.id)} />
-                  </>
-                )}
-              </div>
-            );
-          })
-        ) : (
-          <CircularProgress />
-        )}
+        {data.map((item) => {
+          return (
+            <div className={classes.itemContainer} key={item.name}>
+              {!item.type ? (
+                <>
+                  <Link to={`/dashboards/${item.id}`} className={classes.item}>
+                    {chooseIcon(item.type)}
+                    <span>{item.name}</span>
+                  </Link>
+                  <Tooltip title={item.description} placement="left" className={classes.description}>
+                    <InfoIcon />
+                  </Tooltip>
+                  <DeleteIcon className={classes.menuIcon} id={item.id} onClick={deleteDashboard(item.id)} />
+                </>
+              ) : (
+                <>
+                  <Link to={`/visualizations/${item.id}`} className={classes.item}>
+                    {chooseIcon(item.type)}
+                    <span>{item.name}</span>
+                  </Link>
+                  <DeleteIcon className={classes.menuIcon} id={item.id} onClick={deleteVisualization(item.id)} />
+                </>
+              )}
+            </div>
+          );
+        })}
       </Box>
     </Typography>
   );
@@ -74,7 +69,8 @@ const AnalyticsTabsPanel = ({ value, index, data, deleteItem }) => {
 
 AnalyticsTabsPanel.propTypes = {
   data: PropTypes.array,
-  deleteItem: PropTypes.func,
+  deleteVisualization: PropTypes.func,
+  deleteDashboard: PropTypes.func,
   index: PropTypes.any.isRequired,
   value: PropTypes.any.isRequired,
 };

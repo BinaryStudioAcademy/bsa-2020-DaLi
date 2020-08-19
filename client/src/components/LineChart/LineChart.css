@@ -1,6 +1,6 @@
-div#container {
-  width: 1000px;
-  height: 600px;
+#chart {
+  width: 100%;
+  height: 100%;
 }
 
 .label {
@@ -9,7 +9,8 @@ div#container {
 }
 
 line#goal,
-line#trendline {
+.trendline {
+  fill: none;
   stroke: #333;
   stroke-width: 3;
   stroke-dasharray: 10;

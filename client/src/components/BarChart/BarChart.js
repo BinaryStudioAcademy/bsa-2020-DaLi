@@ -1,61 +1,56 @@
 /* eslint-disable */
-import React, { useEffect } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import * as d3 from 'd3';
 import d3Tip from 'd3-tip';
 import PropTypes from 'prop-types';
 
-import { findLineByLeastSquares } from '../../utils/trendline';
+// import { findLineByLeastSquares } from '../../utils/trendline';
 import { calcMaxYDataValue, calcMinYDataValue } from '../../utils/calcCriticalYAxisValue';
+import TrendlineCreator from '../../utils/Trendline'
 import './BarChart.css';
 
-import { useRef } from 'react';
-
 function BarChart(props) {
-  const svgRef = useRef()
-  useEffect(() => {
-    const margin = {
-      top: 40,
-      right: 40,
-      bottom: 60,
-      left: 60,
-    };
-    const height = 600;
-    const width = 1000;
-    const { goal, showTrendLine, showDataPointsValues, color } = props.settings.display;
+  const svgRef = useRef();
+  const [width, setWidth] = useState(props.chart.width);
+  const [height, setHeight] = useState(props.chart.height);
+  const draw = () => {
+    const { margin } = props.chart;
+    const { goal, trendline, showDataPointsValues, color } = props.settings.display;
     const XAxis = props.settings.axisData.XAxis;
     const YAxis = props.settings.axisData.YAxis;
-  
+
     const chart = d3.select(svgRef.current);
-    chart.selectAll("*").remove();
+    chart.selectAll('*').remove();
     const { data } = props;
     const yDataRange = {
       min: calcMinYDataValue(
         d3.min(data, (d) => d[YAxis.key]),
         goal
-        ),
-        max: calcMaxYDataValue(
+      ),
+      max: calcMaxYDataValue(
         d3.max(data, (d) => d[YAxis.key]),
         goal
-        ),
-      };
-    
+      ),
+    };
+
+    d3.select('.d3-tip').remove();
     const tip = d3Tip()
       .attr('class', 'd3-tip')
       .offset([-10, 0])
       .html(
         (d) => `
-      <div><span>${XAxis.label}:</span> <span style='color:white'>${d[XAxis.key]}</span></div>
-      <div><span>${YAxis.label}:</span> <span style='color:white'>${d[YAxis.key]}</span></div>
-    `
+    <div><span>${XAxis.label}:</span> <span style='color:white'>${d[XAxis.key]}</span></div>
+    <div><span>${YAxis.label}:</span> <span style='color:white'>${d[YAxis.key]}</span></div>
+  `
       );
-    chart.call(tip).attr('viewBox', [0, 0, width, height]);
+    chart.call(tip).attr('height', '100%').attr('width', '100%');
 
     const xScale = d3
       .scaleBand()
       .domain(data.map((d) => d[XAxis.key]))
       .range([margin.left, width - margin.right])
       .padding(0.1);
-
+ 
     const yScale = d3
       .scaleLinear()
       .domain([yDataRange.min, yDataRange.max])
@@ -94,19 +89,27 @@ function BarChart(props) {
       .on('mouseover', tip.show)
       .on('mouseout', tip.hide);
 
-    if (showTrendLine && data.length) {
-      const xValues = data.map((d) => d[XAxis.key]);
-      const yValues = data.map((d) => d[YAxis.key]);
-      const lineCoords = findLineByLeastSquares(xValues, yValues);
+    if (trendline.display && data.length) {
+      const xDataRange = {
+        min: data[0][XAxis.key],
+        max: data[data.length - 1][XAxis.key]
+      }
+      const xScaleForTrendline = d3
+      .scaleLinear()
+      .domain([xDataRange.min, xDataRange.max])
+      .range([margin.left, width - margin.right])
+      const {polynomial,trendlineType} = trendline
+    
+      const trendlineData = data.map(item => [item[XAxis.key], item[YAxis.key]])
+      const barUnitWidth = (xDataRange.max - xDataRange.min) / data.length
+      const domain = [xDataRange.min, xDataRange.max - barUnitWidth]
+      const config = {
+        xOffset: xScale.bandwidth() / 2,
+        order: polynomial.order
+      }
 
-      chart
-        .select('.bars')
-        .append('line')
-        .attr('id', 'trendline')
-        .attr('x1', 0)
-        .attr('y1', yScale(lineCoords.start.y))
-        .attr('x2', width)
-        .attr('y2', yScale(lineCoords.end.y));
+      const trendlineCreator = new TrendlineCreator(trendlineType, chart, xScaleForTrendline, yScale)
+      trendlineCreator.render(domain, trendlineData, config)
     }
 
     if (showDataPointsValues) {
@@ -119,8 +122,11 @@ function BarChart(props) {
         .text((a) => `${a[YAxis.key]}`);
     }
 
-    chart.append('g').attr('class', 'x-axis').call(xAxis);
-    chart.append('g').attr('class', 'y-axis').call(yAxis);
+    chart.append('g').attr('class', 'x-axis axis').call(xAxis);
+    chart.append('g').attr('class', 'y-axis axis').call(yAxis);
+
+    // delete axis values
+    chart.selectAll('.axis').selectAll('text').remove();
 
     if (YAxis.displayLabel) {
       chart
@@ -154,13 +160,23 @@ function BarChart(props) {
         .attr('class', 'goal__label')
         .text(goal.label);
     }
-  }, [props]);
+  };
+  
+  const resize = () => {
+      setHeight(svgRef.current.parentElement.offsetHeight);
+      setWidth(svgRef.current.parentElement.offsetWidth);
+  }
+  
+  useEffect(() => {
+    setHeight(svgRef.current.parentElement.offsetHeight);
+    setWidth(svgRef.current.parentElement.offsetWidth);
+    draw();
+    window.addEventListener('resize', resize);
 
-  return (
-    <div id="container">
-      <svg ref={svgRef} />
-    </div>
-  );
+    return () => window.removeEventListener('resize', resize)
+  }, [props, width, height]);
+
+  return <svg ref={svgRef} />;
 }
 
 BarChart.propTypes = {
@@ -195,7 +211,15 @@ BarChart.propTypes = {
         label: PropTypes.string,
       }),
       lineType: PropTypes.string,
-      showTrendLine: PropTypes.bool,
+      trendline: PropTypes.shape({
+        display: PropTypes.bool,
+        trendlineType: PropTypes.string,
+        availableTrendlineTypes: PropTypes.array,
+        polynomial: PropTypes.shape({
+          availableOrders: PropTypes.array,
+          order: PropTypes.number
+        })
+      }),
       showDataPointsValues: PropTypes.bool,
     }),
   }),

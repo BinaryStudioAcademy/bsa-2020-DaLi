@@ -170,24 +170,28 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const BarChartSettings = ({ updateConfig, config: oldConfig }) => {
-  const xAxisValues = oldConfig.axisData.XAxis.availableKeys;
-  const yAxisValues = oldConfig.axisData.XAxis.availableKeys;
   const classes = useStyles();
+
+  const { XAxis, YAxis } = oldConfig.axisData;
+  const { goal, color: barColor, showDataPointsValues: incomingShowDataPointsValues, trendline } = oldConfig.display;
+
   const [value, setValue] = useState(0);
-  const [xAxis, setXAxis] = useState(xAxisValues[0]);
-  const [yAxis, setYAxis] = useState(yAxisValues[0]);
-  const [isGoalLine, setIsGoalLine] = useState(false);
-  const [goalLine, setGoalLine] = useState(0);
-  const [color, setColor] = useState('#000');
-  const [isLabelXAxis, setIsLabelXAxis] = useState(false);
-  const [isLabelYAxis, setIsLabelYAxis] = useState(false);
-  const [labelXAxis, setLabelXAxis] = useState('');
-  const [labelYAxis, setLabelYAxis] = useState('');
+  const [xAxis, setXAxis] = useState(XAxis.key || XAxis.availableKeys[0]);
+  const [yAxis, setYAxis] = useState(YAxis.key || YAxis.availableKeys[0]);
+  const [isGoalLine, setIsGoalLine] = useState(goal.display);
+  const [goalLine, setGoalLine] = useState(goal.value);
+  const [color, setColor] = useState(barColor);
+  const [isLabelXAxis, setIsLabelXAxis] = useState(XAxis.displayLabel);
+  const [isLabelYAxis, setIsLabelYAxis] = useState(YAxis.displayLabel);
+  const [labelXAxis, setLabelXAxis] = useState(XAxis.label);
+  const [labelYAxis, setLabelYAxis] = useState(YAxis.label);
+  const [showDataPointsValues, setShowDataPointsValues] = useState(incomingShowDataPointsValues);
+  const [showTrendline, setShowTrendline] = useState(trendline.display);
   const [config, setConfig] = useState(oldConfig);
 
   useEffect(() => {
     updateConfig(config);
-  }, [config]);
+  }, [updateConfig, config]);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -197,13 +201,13 @@ const BarChartSettings = ({ updateConfig, config: oldConfig }) => {
     setConfig({
       axisData: {
         XAxis: {
-          availableKeys: xAxisValues,
+          availableKeys: XAxis.availableKeys,
           key: xAxis,
           label: labelXAxis,
           displayLabel: isLabelXAxis,
         },
         YAxis: {
-          availableKeys: yAxisValues,
+          availableKeys: YAxis.availableKeys,
           key: yAxis,
           label: labelYAxis,
           displayLabel: isLabelYAxis,
@@ -216,18 +220,26 @@ const BarChartSettings = ({ updateConfig, config: oldConfig }) => {
           label: 'Goal',
         },
         color,
-        showTrendLine: false,
-        showDataPointsValues: true,
+        trendline: {
+          display: showTrendline,
+          trendlineType: 'linear',
+          availableTrendlineTypes: ['linear', 'polynomial', 'exponential', 'logarithmical'],
+          polynomial: {
+            availableOrders: [2, 3, 4, 5],
+            order: 2,
+          },
+        },
+        showDataPointsValues,
       },
     });
   };
 
-  const valuesX = xAxisValues.map((value) => (
+  const valuesX = XAxis.availableKeys.map((value) => (
     <option value={value} key={value}>
       {value}
     </option>
   ));
-  const valuesY = yAxisValues.map((value) => (
+  const valuesY = YAxis.availableKeys.map((value) => (
     <option value={value} key={value}>
       {value}
     </option>
@@ -303,6 +315,28 @@ const BarChartSettings = ({ updateConfig, config: oldConfig }) => {
             }}
           />
         ) : null}
+        <FormControlLabel
+          control={(() => (
+            <PrettySwitch
+              checked={showDataPointsValues}
+              onChange={(event) => {
+                setShowDataPointsValues(event.target.checked);
+              }}
+            />
+          ))()}
+          label="Show values on data points"
+        />
+        <FormControlLabel
+          control={(() => (
+            <PrettySwitch
+              checked={showTrendline}
+              onChange={(event) => {
+                setShowTrendline(event.target.checked);
+              }}
+            />
+          ))()}
+          label="Show trendline"
+        />
         <ColorPicker
           className={classes.colorPicker}
           name="color"

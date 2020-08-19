@@ -172,46 +172,19 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const testConfig = {
-  axisData: {
-    XAxis: {
-      availableKeys: ['key1', 'key2', 'key3'],
-      key: 'createdAt',
-      label: 'Total',
-      displayLabel: true,
-    },
-    YAxis: {
-      availableKeys: ['key4', 'key5', 'key6'],
-      key: 'total',
-      label: 'Date',
-      displayLabel: true,
-    },
-  },
-  display: {
-    goal: {
-      display: true,
-      value: 100,
-      label: 'Goal',
-    },
-    color: '#4aa1de',
-    lineType: 'curveNatural',
-    showTrendLine: true,
-    showDataPointsValues: true,
-  },
-};
-
 function LineChartSettings({ updateConfig, config: oldConfig } /* , oldConfig = testConfig */) {
   const classes = useStyles();
   const [value, setValue] = useState(0);
-  const [config, setConfig] = useState(testConfig);
+  const [config, setConfig] = useState(oldConfig);
 
   useEffect(() => {
-    setConfig(oldConfig);
-  }, [config]);
+    updateConfig(config);
+  }, [updateConfig, config]);
 
   const { axisData, display } = config;
   const { XAxis, YAxis } = axisData;
-  const { goal, color, showDataPointsValues, showTrendLine, lineType } = display;
+  const { goal, color, showDataPointsValues, trendline, lineType } = display;
+  const { display: showTrendline } = trendline;
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
@@ -287,7 +260,7 @@ function LineChartSettings({ updateConfig, config: oldConfig } /* , oldConfig = 
       </TabPanel>
       <TabPanel value={value} index={1}>
         <FormControlLabel
-          control={
+          control={(() => (
             <PrettySwitch
               checked={goal.display}
               onChange={(event) => {
@@ -295,7 +268,7 @@ function LineChartSettings({ updateConfig, config: oldConfig } /* , oldConfig = 
                 setConfig({ ...config, display });
               }}
             />
-          }
+          ))()}
           label="Goal line"
         />
         {goal.display ? (
@@ -315,7 +288,7 @@ function LineChartSettings({ updateConfig, config: oldConfig } /* , oldConfig = 
           />
         ) : null}
         <FormControlLabel
-          control={
+          control={(() => (
             <PrettySwitch
               checked={showDataPointsValues}
               onChange={(event) => {
@@ -323,25 +296,21 @@ function LineChartSettings({ updateConfig, config: oldConfig } /* , oldConfig = 
                 setConfig({ ...config, display });
               }}
             />
-          }
+          ))()}
           label="Show values on data points"
         />
-        {/* {showDataPointsValues ? (
-          <TextField
-            id="standard-basic"
-            label="for future purposes"
-            className={classes.input}
-            type="number"
-            InputLabelProps={{
-              shrink: true,
-            }}
-            // value={goal.value}
-            // onChange={(event) => {
-            //   display.goal.label = event.target.value;
-            //   setConfig({ ...config, display });
-            // }}
-          />
-        ) : null} */}
+        <FormControlLabel
+          control={(() => (
+            <PrettySwitch
+              checked={showTrendline}
+              onChange={(event) => {
+                display.trendline.display = event.target.checked;
+                setConfig({ ...config, display });
+              }}
+            />
+          ))()}
+          label="Show trendline"
+        />
         <ColorPicker
           className={classes.colorPicker}
           name="color"
@@ -371,7 +340,7 @@ function LineChartSettings({ updateConfig, config: oldConfig } /* , oldConfig = 
       </TabPanel>
       <TabPanel value={value} index={2}>
         <FormControlLabel
-          control={
+          control={(() => (
             <PrettySwitch
               checked={XAxis.displayLabel}
               onChange={(event) => {
@@ -379,7 +348,7 @@ function LineChartSettings({ updateConfig, config: oldConfig } /* , oldConfig = 
                 setConfig({ ...config, axisData });
               }}
             />
-          }
+          ))()}
           label="Show label on x-axis"
         />
         {XAxis.displayLabel ? (
@@ -398,7 +367,7 @@ function LineChartSettings({ updateConfig, config: oldConfig } /* , oldConfig = 
           />
         ) : null}
         <FormControlLabel
-          control={
+          control={(() => (
             <PrettySwitch
               checked={YAxis.displayLabel}
               onChange={(event) => {
@@ -406,7 +375,7 @@ function LineChartSettings({ updateConfig, config: oldConfig } /* , oldConfig = 
                 setConfig({ ...config, axisData });
               }}
             />
-          }
+          ))()}
           label="Show label on y-axis"
         />
         {YAxis.displayLabel ? (

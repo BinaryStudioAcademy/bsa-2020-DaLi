@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Avatar, Grid, Typography, Tab, Tabs, Box, Snackbar } from '@material-ui/core';
 import Alert from '@material-ui/lab/Alert';
 import * as Yup from 'yup';
@@ -6,7 +6,7 @@ import { Formik, Form, Field, ErrorMessage, getIn } from 'formik';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
-import { updateUser, logout } from '../LoginPageContainer/actions';
+import { updateUser, hideUserUpdateMessage, updateUserError } from './actions';
 
 import { mockProfile, getUserInitials } from './helper';
 
@@ -22,27 +22,27 @@ const PasswordSchema = Yup.object().shape({
   currentPassword: Yup.string()
     .max(30)
     .required('Required')
-    .min(8, 'Password is too short - should be 8 chars minimum.')
     .matches(
-      /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/,
-      'Password must contain one uppercase, one lowercase, one number and one special character.'
-    ),
+      /^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]/,
+      'Password must contain one uppercase, one number and one special character.'
+    )
+    .min(8, 'Password is too short - should be 8 chars minimum.'),
   newPassword: Yup.string()
     .max(30)
     .required('Required')
-    .min(8, 'Password is too short - should be 8 chars minimum.')
     .matches(
-      /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/,
-      'Password must contain one uppercase, one lowercase, one number and one special character.'
-    ),
+      /^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]/,
+      'Password must contain one uppercase, one number and one special character.'
+    )
+    .min(8, 'Password is too short - should be 8 chars minimum.'),
   confirmedPassword: Yup.string()
     .max(30)
     .required('Required')
-    .min(8, 'Password is too short - should be 8 chars minimum.')
     .matches(
-      /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/,
-      'Password must contain one uppercase, one lowercase, one number and one special character.'
-    ),
+      /^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]/,
+      'Password must contain one uppercase, one number and one special character.'
+    )
+    .min(8, 'Password is too short - should be 8 chars minimum.'),
 });
 
 const getStyles = (errors, touched, fieldName) => {
@@ -55,35 +55,20 @@ const AccountSettingsContainer = ({
   lastName,
   id,
   updateUser,
-  notificationMessage: notificationMessageProps,
-  notificationMessageStatus: notificationMessageStatusProps,
+  hideUserUpdateMessage,
+  isNotification,
+  notificationMessage,
+  notificationMessageStatus,
+  updateUserError,
 }) => {
   const [activeTab, setActiveTab] = useState(0);
   const classes = useStyles();
   const userInitials = getUserInitials(mockProfile);
-  const [isNotificationVisible, setIsNotificationVisible] = useState(false);
-  const [notificationMessageStatus, setNotificationMessageStatus] = useState('');
-  const [notificationMessage, setNotificationMessage] = useState('');
   const initialPasswordValues = {
     currentPassword: '',
     newPassword: '',
     confirmedPassword: '',
   };
-
-  const displayNotification = () => setIsNotificationVisible(true);
-  const hideNotification = () => setIsNotificationVisible(false);
-
-  const updateNotification = (message, messageStatus) => {
-    setNotificationMessage(message);
-    setNotificationMessageStatus(messageStatus);
-    if (message) {
-      displayNotification();
-    }
-  };
-
-  useEffect(() => {
-    updateNotification(notificationMessageProps, notificationMessageStatusProps);
-  }, [notificationMessageStatusProps, notificationMessageProps]);
 
   const handleTabChange = (_event, tabIndex) => {
     setActiveTab(tabIndex);
@@ -91,12 +76,11 @@ const AccountSettingsContainer = ({
 
   const updateData = async (data) => {
     await updateUser({ id, data });
-    displayNotification();
   };
 
   const onSaveClick = ({ currentPassword, newPassword, confirmedPassword }) => {
     if (newPassword !== confirmedPassword) {
-      updateNotification("New password and confirm new password doesn't match", 'error');
+      updateUserError({ message: "New password and confirm new password doesn't match" });
     } else {
       updateData({ oldPassword: currentPassword, password: newPassword });
     }
@@ -143,7 +127,7 @@ const AccountSettingsContainer = ({
               validationSchema={ProfileSchema}
               onSubmit={(values) => onUpdateClick(values)}
             >
-              {({ errors, touched }) => (
+              {({ errors, touched, isValid, dirty }) => (
                 <Form>
                   <div className={classes.relative}>
                     <label htmlFor="firstName" className={classes.label}>
@@ -184,7 +168,7 @@ const AccountSettingsContainer = ({
                     />
                     <ErrorMessage name="email" component="div" className={classes.error} />
                   </div>
-                  <button type="submit" className={`btn btn-submit ${classes.update}`}>
+                  <button type="submit" className={`btn btn-submit ${classes.update}`} disabled={!(isValid && dirty)}>
                     Update
                   </button>
                 </Form>
@@ -199,7 +183,7 @@ const AccountSettingsContainer = ({
               validationSchema={PasswordSchema}
               onSubmit={(values) => onSaveClick(values)}
             >
-              {({ errors, touched }) => (
+              {({ errors, touched, isValid, dirty }) => (
                 <Form>
                   <div className={classes.relative}>
                     <label htmlFor="currentPassword" className={classes.label}>
@@ -243,7 +227,7 @@ const AccountSettingsContainer = ({
                     />
                     <ErrorMessage name="confirmedPassword" component="div" className={classes.error} />
                   </div>
-                  <button type="submit" className="btn btn-submit">
+                  <button type="submit" className={`btn btn-submit ${classes.save}`} disabled={!(isValid && dirty)}>
                     Save
                   </button>
                 </Form>
@@ -253,11 +237,11 @@ const AccountSettingsContainer = ({
         </Box>
         <Snackbar
           anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
-          open={isNotificationVisible}
+          open={isNotification}
           autoHideDuration={6000}
-          onClose={hideNotification}
+          onClose={hideUserUpdateMessage}
         >
-          <Alert elevation={6} variant="filled" severity={notificationMessageStatus} onClose={hideNotification}>
+          <Alert elevation={6} variant="filled" severity={notificationMessageStatus} onClose={hideUserUpdateMessage}>
             {notificationMessage}
           </Alert>
         </Snackbar>
@@ -271,23 +255,28 @@ AccountSettingsContainer.propTypes = {
   firstName: PropTypes.string,
   lastName: PropTypes.string,
   id: PropTypes.string,
-  updateUser: PropTypes.func,
   notificationMessage: PropTypes.string,
   notificationMessageStatus: PropTypes.string,
+  updateUser: PropTypes.func,
+  hideUserUpdateMessage: PropTypes.func,
+  updateUserError: PropTypes.func,
+  isNotification: PropTypes.bool,
 };
 
-const mapStateToProps = ({ currentUser }) => ({
+const mapStateToProps = ({ currentUser, accountSettingsReducer }) => ({
   email: currentUser.user.email,
   firstName: currentUser.user.firstName,
   lastName: currentUser.user.lastName,
   id: currentUser.user.id,
-  notificationMessage: currentUser.updateUserMessage,
-  notificationMessageStatus: currentUser.updateUserStatus,
+  notificationMessage: accountSettingsReducer.updateUserMessage,
+  notificationMessageStatus: accountSettingsReducer.updateUserStatus,
+  isNotification: accountSettingsReducer.isUpdateUserNotification,
 });
 
 const mapDispatchToProps = {
   updateUser,
-  logout,
+  hideUserUpdateMessage,
+  updateUserError,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(AccountSettingsContainer);

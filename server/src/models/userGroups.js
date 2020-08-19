@@ -8,6 +8,7 @@ export default (sequelize, DataTypes) => {
         foreignKey: 'userGroups_id',
         otherKey: 'users_id',
       });
+      UserGroups.hasMany(models.Permission);
     }
   }
   UserGroups.init(

@@ -5,7 +5,7 @@ import Typography from '@material-ui/core/Typography';
 import Link from '@material-ui/core/Link';
 import NavigateNextIcon from '@material-ui/icons/NavigateNext';
 import { Grid } from '@material-ui/core';
-import DataSourceViewItem from '../DataSourceViewItem/DataSourceViewItem';
+import DataSourcesViewItem from '../DataSourcesViewItem/DataSourcesViewItem';
 import { mockTables } from './mockTables';
 
 import './styles.css';
@@ -32,7 +32,7 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-const DataSourceTablesView = () => {
+const DataSourcesTablesView = () => {
   const classes = useStyles();
 
   return (
@@ -42,7 +42,7 @@ const DataSourceTablesView = () => {
         separator={<NavigateNextIcon className={classes.separator} />}
         aria-label="breadcrumb"
       >
-        <Link className={classes.breadcrumbsItem} color="inherit" href="/data-source">
+        <Link className={classes.breadcrumbsItem} color="inherit" href="/data-sources">
           Our data
         </Link>
         <Typography className={classes.breadcrumbsItem} color="textPrimary">
@@ -51,11 +51,11 @@ const DataSourceTablesView = () => {
       </Breadcrumbs>
       <Grid container className={classes.itemList}>
         {mockTables.map((table) => {
-          return <DataSourceViewItem table={table} />;
+          return <DataSourcesViewItem table={table} />;
         })}
       </Grid>
     </main>
   );
 };
 
-export default DataSourceTablesView;
+export default DataSourcesTablesView;

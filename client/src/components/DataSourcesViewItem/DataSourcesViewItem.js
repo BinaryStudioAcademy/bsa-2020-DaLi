@@ -19,12 +19,12 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-const DataSourceViewItem = ({ dataset, table }) => {
+const DataSourcesViewItem = ({ dataset, table }) => {
   const classes = useStyles();
   const history = useHistory();
 
   const handleDatasetClick = (dataset) => {
-    history.push(`/data-source/${dataset.id}`);
+    history.push(`/data-sources/${dataset.id}`);
   };
 
   const createDatasetItem = () => {
@@ -53,9 +53,9 @@ const DataSourceViewItem = ({ dataset, table }) => {
   return dataset ? createDatasetItem() : createTableItem();
 };
 
-DataSourceViewItem.propTypes = {
+DataSourcesViewItem.propTypes = {
   dataset: PropTypes.object,
   table: PropTypes.object,
 };
 
-export default DataSourceViewItem;
+export default DataSourcesViewItem;

@@ -9,7 +9,7 @@ import {
   DashboardPage,
   AdminPage,
   AnalyticsPage,
-  DataSourcePage,
+  DataSourcesPage,
 } from '../pages';
 
 const routes = (
@@ -23,7 +23,7 @@ const routes = (
     <ProtectedRoute path="/admin" component={AdminPage} />
     <ProtectedRoute exact path="/dashboards/:id" component={DashboardPage} />
 
-    <Route path="/data-source" component={DataSourcePage} />
+    <Route path="/data-sources" component={DataSourcesPage} />
   </Switch>
 );
 

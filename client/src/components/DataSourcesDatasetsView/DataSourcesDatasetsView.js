@@ -4,7 +4,7 @@ import Breadcrumbs from '@material-ui/core/Breadcrumbs';
 import Typography from '@material-ui/core/Typography';
 import { Grid } from '@material-ui/core';
 import { mockDatasets } from './mockDatasets';
-import DataSourceViewItem from '../DataSourceViewItem/DataSourceViewItem';
+import DataSourcesViewItem from '../DataSourcesViewItem/DataSourcesViewItem';
 
 import './styles.css';
 
@@ -26,7 +26,7 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-const DataSourceDatasetsView = () => {
+const DataSourcesDatasetsView = () => {
   const classes = useStyles();
 
   return (
@@ -38,11 +38,11 @@ const DataSourceDatasetsView = () => {
       </Breadcrumbs>
       <Grid container className={classes.itemList}>
         {mockDatasets.map((dataset) => {
-          return <DataSourceViewItem dataset={dataset} />;
+          return <DataSourcesViewItem dataset={dataset} />;
         })}
       </Grid>
     </main>
   );
 };
 
-export default DataSourceDatasetsView;
+export default DataSourcesDatasetsView;

@@ -22,8 +22,8 @@ import AddVisualizationToDashboardModal from './AddVisualizationToDashboardModal
 import AnalyticsTabs from './AnalyticsTabs/AnalyticsTabs';
 import DashboardHeader from './DashboardHeader/DashboardHeader';
 import DashboardLayout from './DashboardLayout/DashboardLayout';
-import DataSourceDatasetsView from './DataSourceDatasetsView/DataSourceDatasetsView';
-import DataSourceTablesView from './DataSourceTablesView/DataSourceTablesView';
+import DataSourcesDatasetsView from './DataSourcesDatasetsView/DataSourcesDatasetsView';
+import DataSourcesTablesView from './DataSourcesTablesView/DataSourcesTablesView';
 
 export {
   BarChart,
@@ -50,6 +50,6 @@ export {
   AnalyticsTabs,
   DashboardHeader,
   DashboardLayout,
-  DataSourceDatasetsView,
-  DataSourceTablesView,
+  DataSourcesDatasetsView,
+  DataSourcesTablesView,
 };

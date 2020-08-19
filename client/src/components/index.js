@@ -24,6 +24,7 @@ import DashboardHeader from './DashboardHeader/DashboardHeader';
 import DashboardLayout from './DashboardLayout/DashboardLayout';
 import DeleteDatabaseModal from './DeleteDatabaseModal/DeleteDatabaseModal';
 import DatabaseList from './DatabaseList/DatabaseList';
+import DeleteVisualizationWarning from './DeleteVisualizationWarning/DeleteVisualizationWarning';
 
 export {
   BarChart,
@@ -52,4 +53,5 @@ export {
   DashboardLayout,
   DeleteDatabaseModal,
   DatabaseList,
+  DeleteVisualizationWarning,
 };

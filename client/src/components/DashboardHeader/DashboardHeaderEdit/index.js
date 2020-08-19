@@ -5,7 +5,7 @@ import AddIcon from '@material-ui/icons/Add';
 
 import useStyles from './styles';
 
-const DashboardHeader = (props) => {
+const DashboardHeaderEdit = (props) => {
   const {
     name,
     description,
@@ -72,7 +72,7 @@ const DashboardHeader = (props) => {
   );
 };
 
-DashboardHeader.propTypes = {
+DashboardHeaderEdit.propTypes = {
   name: PropTypes.string,
   description: PropTypes.string,
   onCancelChanges: PropTypes.func,
@@ -82,4 +82,4 @@ DashboardHeader.propTypes = {
   onDescriptionChange: PropTypes.func,
 };
 
-export default DashboardHeader;
+export default DashboardHeaderEdit;

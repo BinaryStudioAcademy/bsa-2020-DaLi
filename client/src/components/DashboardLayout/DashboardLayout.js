@@ -7,25 +7,37 @@ import './DashboardLayoutStyles.css';
 const ResponsiveReactGridLayout = WidthProvider(Responsive);
 const DashboardLayout = (props) => {
   const {
+    viewDashboardMode,
     layout,
     layouts,
-    isEdit,
-    onLayoutChange,
-    onBreakpointChange,
     dashboardVisualizations,
     data,
+    onLayoutChange,
+    onBreakpointChange,
     getDashboardItems,
     onVisualizationDelete,
   } = props;
 
-  const dashboardLayoutClasses = isEdit ? 'dashboard-container dashboard-container--edit' : 'dashboard-container';
+  const isEditMode = viewDashboardMode === 'edit';
+  const getDashboardLayoutClasses = () => {
+    switch (viewDashboardMode) {
+      case 'edit':
+        return 'dashboard-container dashboard-container--edit';
+      case 'full-screen':
+        return 'dashboard-container dashboard-container--full-screen';
+      default:
+        return 'dashboard-container';
+    }
+  };
+
+  const dashboardLayoutClasses = getDashboardLayoutClasses();
   const dashboardItems = getDashboardItems(dashboardVisualizations, layout, data, onVisualizationDelete);
 
   return (
     <div className={dashboardLayoutClasses}>
       <ResponsiveReactGridLayout
-        isDraggable={isEdit}
-        isResizable={isEdit}
+        isDraggable={isEditMode}
+        isResizable={isEditMode}
         cols={{ lg: 12, md: 10, sm: 6, xs: 4, xxs: 2 }}
         rowHeight={100}
         layout={layout}
@@ -40,14 +52,14 @@ const DashboardLayout = (props) => {
 };
 
 DashboardLayout.propTypes = {
+  viewDashboardMode: PropTypes.bool,
   layout: PropTypes.array,
-  isEdit: PropTypes.bool,
   layouts: PropTypes.object,
+  data: PropTypes.array,
+  dashboardVisualizations: PropTypes.array,
   onLayoutChange: PropTypes.func,
   onBreakpointChange: PropTypes.func,
   getDashboardItems: PropTypes.func,
-  dashboardVisualizations: PropTypes.array,
-  data: PropTypes.array,
   onVisualizationDelete: PropTypes.func,
 };
 

@@ -62,6 +62,10 @@
   background-color: transparent;
 }
 
+.btn:hover:enabled {
+  cursor: pointer;
+}
+
 .checkbox-wrapper {
   display: flex;
   justify-content: space-between;

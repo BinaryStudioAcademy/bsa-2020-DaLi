@@ -8,12 +8,15 @@ export default class DBPostgresManager {
   }
 
   init() {
-    this.sequelize.sync();
     return this.sequelize.authenticate();
   }
 
+  destroy() {
+    return this.sequelize.close();
+  }
+
   getTablenames() {
-    this.sequelize
+    return this.sequelize
       .query(
         `
       SELECT 
@@ -27,7 +30,7 @@ export default class DBPostgresManager {
       .then((rowsVariations) => {
         const rowObjects = rowsVariations[0];
         const rows = rowObjects.map((o) => o.tablename);
-        console.log(rows);
+        return rows;
       });
   }
 

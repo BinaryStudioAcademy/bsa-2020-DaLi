@@ -2,12 +2,19 @@ import { getDatabase } from '../databaseService';
 import PostgresManager from './Managers/PostgresManager';
 
 export default class DBManagerService {
-  constructor(databaseId) {
-    this.databaseId = databaseId;
+  constructor(database) {
+    if (typeof database === 'string') {
+      this.databaseId = database;
+    } else if (typeof database === 'object') {
+      this.database = database;
+    }
   }
 
   async create() {
-    const { type, host, port, dbName, username, dbPassword } = await getDatabase({ id: this.databaseId });
+    if (this.databaseId) {
+      this.database = await getDatabase({ id: this.databaseId });
+    }
+    const { type, host, port, dbName, username, dbPassword } = this.database;
     let manager = null;
     if (type === 'postgres') {
       // eslint-disable-next-line no-case-declarations

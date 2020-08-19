@@ -6,6 +6,7 @@ import Visualization from './visualization';
 import Dashboard from './dashboard';
 import DashboardVisualizations from './dashboardVisualizations';
 import Database from './database';
+import DBTable from './dbTable';
 
 export const sequelize = new Sequelize(DATABASE_URL, {
   dialect: 'postgres',
@@ -16,6 +17,7 @@ Visualization(sequelize, Sequelize.DataTypes, Sequelize.Deferrable);
 Dashboard(sequelize, Sequelize.DataTypes);
 DashboardVisualizations(sequelize, Sequelize.DataTypes);
 Database(sequelize, Sequelize.DataTypes);
+DBTable(sequelize, Sequelize.DataTypes);
 
 const models = sequelize.models;
 

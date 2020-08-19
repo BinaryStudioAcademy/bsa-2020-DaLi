@@ -23,6 +23,8 @@ export const getTableData = async (id) => {
       console.log('///////////////////// ON GET TABLE DATA FAILED');
       data = null;
     }
+
+    manager.destroy();
   }
   return data;
 };

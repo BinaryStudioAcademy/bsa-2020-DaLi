@@ -8,7 +8,7 @@ import { Grid, Snackbar } from '@material-ui/core';
 import Alert from '@material-ui/lab/Alert';
 
 import * as actions from './actions';
-import { addVisualization, deleteVisualization } from '../AnalyticsTabsContainer/actions';
+import { addVisualization } from '../AnalyticsTabsContainer/actions';
 import { visualizationsAPIService } from '../../services/api/visualizationsAPI.service';
 
 import {
@@ -46,7 +46,6 @@ const ViewVisualizationContainer = (props) => {
     updateVisualizationConfig,
     updateVisualizationName,
     addVisualization,
-    deleteVisualization,
   } = props;
 
   const [currentView, setCurrentView] = useState('table');
@@ -128,17 +127,11 @@ const ViewVisualizationContainer = (props) => {
     closeModal();
   };
 
-  const onVisualizationDelete = () => {
-    deleteVisualization(id);
-    props.history.push('/');
-  };
-
   return (
     <>
       <ViewVisualizationHeader
         onVisualizationSave={onVisualizationSave}
         onVisualizationNameEdit={onVisualizationNameEdit}
-        onVisualizationDelete={onVisualizationDelete}
         isVisualizationExist={isVisualizationExist}
         name={currentVisualization.name}
         description={currentVisualization.description}
@@ -187,7 +180,6 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = {
   ...actions,
   addVisualization,
-  deleteVisualization,
 };
 
 ViewVisualizationContainer.propTypes = {
@@ -199,7 +191,6 @@ ViewVisualizationContainer.propTypes = {
   updateVisualizationConfig: PropTypes.func,
   updateVisualizationName: PropTypes.func,
   addVisualization: PropTypes.func,
-  deleteVisualization: PropTypes.func,
   history: PropTypes.object,
 };
 

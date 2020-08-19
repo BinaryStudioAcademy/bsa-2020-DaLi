@@ -5,6 +5,7 @@ import Tab from '@material-ui/core/Tab';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import AnalyticsTabsHeader from './AnalyticsTabsHeader/AnalyticsTabsHeader';
 import AnalyticsTabsPanel from './AnalyticsTabsPanel/AnalyticsTabsPanel';
+import DeleteVisualizationWarning from '../DeleteVisualizationWarning/DeleteVisualizationWarning';
 
 const useStyles = makeStyles(() => ({
   tabsButtons: {
@@ -23,9 +24,19 @@ const useStyles = makeStyles(() => ({
 const AnalyticsTabs = ({ visualizations, dashboards, deleteVisualization, deleteDashboard, isLoading }) => {
   const classes = useStyles();
   const [value, setValue] = React.useState(0);
+  const [isWarningVisible, setIsWarningVisible] = React.useState(false);
+  const [visualizationIdToDelete, setVisualizationIdToDelete] = React.useState(null);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
+  };
+
+  const onWarningOpen = () => {
+    setIsWarningVisible(true);
+  };
+
+  const onWarningClose = () => {
+    setIsWarningVisible(false);
   };
 
   const deleteItem = (id) => () => {
@@ -33,7 +44,15 @@ const AnalyticsTabs = ({ visualizations, dashboards, deleteVisualization, delete
   };
 
   const removeVisualization = (id) => () => {
-    deleteVisualization(id);
+    const isVisualizationBelongsToDashboard = dashboards.filter((dashboard) => {
+      return dashboard.Visualizations.filter((visualization) => visualization.id === id).length !== 0;
+    });
+    if (isVisualizationBelongsToDashboard.length) {
+      setVisualizationIdToDelete(id);
+      onWarningOpen();
+    } else {
+      deleteVisualization(id);
+    }
   };
 
   const removeDashboard = (id) => () => {
@@ -48,6 +67,12 @@ const AnalyticsTabs = ({ visualizations, dashboards, deleteVisualization, delete
 
   return (
     <>
+      <DeleteVisualizationWarning
+        isVisible={isWarningVisible}
+        onClose={onWarningClose}
+        deleteVisualization={deleteVisualization}
+        visualizationId={visualizationIdToDelete}
+      />
       <AnalyticsTabsHeader value={value} onChange={handleChange}>
         <Tab classes={{ root: classes.tabsButtons, selected: classes.selected }} label="Everything" />
         <Tab classes={{ root: classes.tabsButtons, selected: classes.selected }} label="Dashboards" />

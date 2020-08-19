@@ -17,12 +17,19 @@ import {
   getDashboardVisualizationsId,
   getNewVisualizationsId,
   getNotAddedVisualizations,
+  setFullScreen,
+  cancelFullScreen,
 } from './helper';
+
 import mockData from './mockData';
 
 const DashboardContainer = (props) => {
   const { id, currentDashboard, isLoading, getDashboard, visualizations, updateDashboard } = props;
 
+  const [oldName, setOldName] = useState('');
+  const [name, setName] = useState(null);
+  const [oldDescription, setOldDescription] = useState('');
+  const [description, setDescription] = useState(null);
   const [oldLayout, setOldLayout] = useState([]);
   const [currentLayout, setCurrentLayout] = useState([]);
   const [oldLayouts, setOldLayouts] = useState([]);
@@ -35,28 +42,37 @@ const DashboardContainer = (props) => {
 
   const [breakpoint, setBreakpoint] = useState('lg');
   const [cols, setCols] = useState(null);
-  const [isEdit, setIsEdit] = useState(false);
-  const [oldName, setOldName] = useState('');
-  const [name, setName] = useState(null);
-  const [oldDescription, setOldDescription] = useState('');
-  const [description, setDescription] = useState(null);
-
+  const [viewDashboardMode, setViewDashboardMode] = useState('default');
   const [isModalVisible, setIsModalVisible] = useState(false);
+
+  const fullScreenListener = () => {
+    if (document.fullscreenElement) {
+      setViewDashboardMode('full-screen');
+    } else {
+      setViewDashboardMode('default');
+    }
+  };
 
   useEffect(() => {
     getDashboard(id);
   }, [id, getDashboard]);
 
   useEffect(() => {
+    const dashboardConfig = getDashboardConfig(currentDashboard);
+
     setName(currentDashboard.name);
     setDescription(currentDashboard.description);
     setDashboardVisualizations(currentDashboard.Visualizations || []);
-    const dashboardConfig = getDashboardConfig(currentDashboard);
     setCurrentLayout(dashboardConfig?.layout || []);
     setCurrentLayouts(dashboardConfig?.layouts || []);
 
-    setAddedVisualizationsId([]);
-    setDeletedVisualizationsId([]);
+    setOldName(currentDashboard.name);
+    setOldDescription(currentDashboard.description);
+    setOldDashboardVisualizations(currentDashboard.Visualizations || []);
+    setOldLayout(dashboardConfig?.layout || []);
+    setOldLayouts(dashboardConfig?.layouts || []);
+
+    document.addEventListener('fullscreenchange', fullScreenListener);
   }, [currentDashboard]);
 
   const onLayoutChange = (layout, layouts) => {
@@ -69,24 +85,23 @@ const DashboardContainer = (props) => {
     setCols(cols);
   };
 
-  const onSetEdit = () => {
-    setOldLayout(currentLayout);
-    setOldLayouts(currentLayouts);
-    setOldDashboardVisualizations(dashboardVisualizations);
-    setOldName(name);
-    setOldDescription(description);
-    setIsEdit(true);
-  };
-
-  const onCancelChanges = () => {
+  const discardChanges = () => {
     setCurrentLayout(oldLayout);
     setCurrentLayouts(oldLayouts);
     setDashboardVisualizations(oldDashboardVisualizations);
     setName(oldName);
     setDescription(oldDescription);
-    setIsEdit(false);
     setAddedVisualizationsId([]);
     setDeletedVisualizationsId([]);
+  };
+
+  const onSetEdit = () => {
+    setViewDashboardMode('edit');
+  };
+
+  const onCancelChanges = () => {
+    discardChanges();
+    setViewDashboardMode('default');
   };
 
   const onSaveChanges = () => {
@@ -106,7 +121,9 @@ const DashboardContainer = (props) => {
       deletedDashboardVisualizationsId,
       updatedDashboard,
     });
-    setIsEdit(false);
+
+    setViewDashboardMode('default');
+    discardChanges();
   };
 
   const onVisualizationAdd = (visualizationId) => {
@@ -147,6 +164,17 @@ const DashboardContainer = (props) => {
     setDescription(event.target.value);
   };
 
+  const onSetFullScreenViewMode = () => {
+    discardChanges();
+    setFullScreen();
+    setViewDashboardMode('full-screen');
+  };
+
+  const onSetDefaultViewMode = () => {
+    cancelFullScreen();
+    setViewDashboardMode('default');
+  };
+
   return isLoading ? (
     <CircularProgress size={40} left={-20} top={-20} style={{ marginLeft: '50%', marginTop: '50%' }} />
   ) : (
@@ -160,19 +188,21 @@ const DashboardContainer = (props) => {
       <DashboardHeader
         name={name}
         description={description}
-        isEdit={isEdit}
+        viewDashboardMode={viewDashboardMode}
         onSetEdit={onSetEdit}
         onCancelChanges={onCancelChanges}
         onSaveChanges={onSaveChanges}
         onVisualizationAdd={onOpenModal}
         onNameChange={onNameChange}
         onDescriptionChange={onDescriptionChange}
+        onSetFullScreenViewMode={onSetFullScreenViewMode}
+        onSetDefaultViewMode={onSetDefaultViewMode}
       />
       <DashboardLayout
         layout={currentLayout}
         layouts={currentLayouts}
         cols={cols}
-        isEdit={isEdit}
+        viewDashboardMode={viewDashboardMode}
         onLayoutChange={onLayoutChange}
         onBreakpointChange={onBreakpointChange}
         dashboardVisualizations={dashboardVisualizations}

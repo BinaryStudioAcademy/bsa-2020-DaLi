@@ -1,4 +1,4 @@
-import { DELETE_DATABASE, IS_DATABASE_LOADING, GET_DATABASES } from './actionTypes';
+import { DELETE_DATABASE, IS_DATABASE_LOADING, GET_DATABASES, ADD_DATABASE } from './actionTypes';
 
 export const deleteDatabase = (id) => {
   return {
@@ -15,6 +15,13 @@ export const getDatabases = () => {
 export const SetIsLoading = (payload) => {
   return {
     type: IS_DATABASE_LOADING,
+    payload,
+  };
+};
+
+export const addDatabase = (payload) => {
+  return {
+    type: ADD_DATABASE,
     payload,
   };
 };

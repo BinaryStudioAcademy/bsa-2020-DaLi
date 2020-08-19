@@ -4,6 +4,7 @@ import {
   IS_DATABASE_LOADING,
   GET_DATABASES_ERROR,
   GET_DATABASES_SUCCESS,
+  ADD_DATABASE_ERROR,
 } from './actionTypes';
 
 const initialState = {
@@ -18,6 +19,7 @@ const databasesListReducer = (state = initialState, { type, payload }) => {
   switch (type) {
     case DELETE_DATABASE_ERROR:
     case GET_DATABASES_ERROR:
+    case ADD_DATABASE_ERROR:
       return {
         ...state,
         error: payload,

@@ -6,6 +6,8 @@ import {
   GET_DATABASES,
   GET_DATABASES_SUCCESS,
   GET_DATABASES_ERROR,
+  ADD_DATABASE,
+  ADD_DATABASE_ERROR,
 } from './actionTypes';
 import { databasesAPIService } from '../../services/api/databasesAPI.service';
 import { SetIsLoading } from './actions';
@@ -37,10 +39,24 @@ export function* getDatabasesSaga() {
   }
 }
 
+export function* addDatabaseSaga(action) {
+  try {
+    const { history, data } = action.payload;
+    yield call(databasesAPIService.addDatabase, data);
+    history.push('/admin/databases');
+  } catch (error) {
+    yield put({ type: ADD_DATABASE_ERROR, error });
+  }
+}
+
+export function* watchAddDatabaseSaga() {
+  yield takeEvery(ADD_DATABASE, addDatabaseSaga);
+}
+
 export function* watchGetDatabasesSaga() {
   yield takeEvery(GET_DATABASES, getDatabasesSaga);
 }
 
 export default function* databasesSaga() {
-  yield all([watchDeleteDatabaseSaga(), watchGetDatabasesSaga()]);
+  yield all([watchDeleteDatabaseSaga(), watchGetDatabasesSaga(), watchAddDatabaseSaga()]);
 }

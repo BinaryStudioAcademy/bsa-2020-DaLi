@@ -1,18 +1,20 @@
 import React from 'react';
 import { Grid, Typography } from '@material-ui/core';
-/* import Alert from '@material-ui/lab/Alert'; */
+// import Alert from '@material-ui/lab/Alert';
 import * as Yup from 'yup';
 import { Formik, Form, Field, ErrorMessage, getIn } from 'formik';
 import NativeSelect from '@material-ui/core/NativeSelect';
 import { useHistory } from 'react-router-dom';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 import useStyles from './styles';
-import { databasesAPIService } from '../../services/api/databasesAPI.service';
+import { addDatabase } from '../DatabasesPageContainer/actions';
 
 const AddDatabaseSchema = Yup.object().shape({
   type: Yup.string().required('Required'),
   name: Yup.string().min(4).required('Required'),
   host: Yup.string().required('Required'),
-  port: Yup.string().required('Required'),
+  port: Yup.string().matches(/^\d+$/, 'The field should have digits only').required('Required'),
   databaseName: Yup.string().required('Required'),
   username: Yup.string().required('Required'),
   password: Yup.string().max(30).required('Required'),
@@ -22,7 +24,7 @@ const getStyles = (errors, touched, fieldName) => {
   return getIn(errors, fieldName) && getIn(touched, fieldName) ? { border: '1px solid red' } : {};
 };
 
-const ConnectionDatabaseContainer = () => {
+const ConnectionDatabaseContainer = ({ addDatabase }) => {
   const availableDatabases = ['PostgreSQL'];
   const classes = useStyles();
   const initialDatabaseValues = {
@@ -43,16 +45,18 @@ const ConnectionDatabaseContainer = () => {
   ));
 
   const onSaveClick = (values) => {
-    databasesAPIService.addDatabase({
-      dbNickname: values.name,
-      type: values.type,
-      host: values.host,
-      port: Number.parseInt(values.port),
-      dbName: values.databaseName,
-      username: values.username,
-      dbPassword: values.password,
+    addDatabase({
+      data: {
+        dbNickname: values.name,
+        type: values.type,
+        host: values.host,
+        port: Number.parseInt(values.port),
+        dbName: values.databaseName,
+        username: values.username,
+        dbPassword: values.password,
+      },
+      history,
     });
-    history.push('/admin/databases');
   };
 
   return (
@@ -176,8 +180,23 @@ const ConnectionDatabaseContainer = () => {
           )}
         </Formik>
       </div>
+      {/* <Snackbar
+        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+        open={isNotification}
+        autoHideDuration={6000}
+        onClose={hideDatabaseNotification}
+      >
+        <Alert elevation={6} variant="filled" severity={status} onClose={hideDatabaseNotification}>
+          {message}
+        </Alert>
+      </Snackbar> */}
     </Grid>
   );
 };
 
-export default ConnectionDatabaseContainer;
+ConnectionDatabaseContainer.propTypes = {
+  addDatabase: PropTypes.func,
+};
+const mapDispatchToProps = { addDatabase };
+
+export default connect(null, mapDispatchToProps)(ConnectionDatabaseContainer);

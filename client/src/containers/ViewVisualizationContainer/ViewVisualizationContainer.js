@@ -39,6 +39,7 @@ const ViewVisualizationContainer = (props) => {
   const {
     id,
     visualizations,
+    history,
     userId,
     currentVisualization,
     setVisualization,
@@ -100,8 +101,7 @@ const ViewVisualizationContainer = (props) => {
 
   const createVisualization = async ({ name, description }) => {
     const newVisualization = createNewVisualization(currentVisualization, name, description);
-    addVisualization(newVisualization);
-    props.history.push('/');
+    addVisualization(newVisualization, history);
   };
 
   const updateVisualization = () => {

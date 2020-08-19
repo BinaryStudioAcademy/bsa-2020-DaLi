@@ -12,10 +12,10 @@ export const getAnalytics = () => {
   };
 };
 
-export const addVisualization = (newVisualization) => {
+export const addVisualization = (newVisualization, history) => {
   return {
     type: ADD_VISUALIZATION,
-    newVisualization,
+    payload: { newVisualization, history },
   };
 };
 

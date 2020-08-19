@@ -26,8 +26,9 @@ export function* watchGetAnalyticsSaga() {
 }
 
 export function* addVisualizationSaga(payload) {
-  yield call(visualizationsAPIService.createVisualization, payload.newVisualization);
-  yield put({ type: GET_ANALYTICS });
+  const { newVisualization, history } = payload;
+  yield call(visualizationsAPIService.createVisualization, newVisualization);
+  history.push('./');
 }
 
 export function* watchAddVisualizationSaga() {

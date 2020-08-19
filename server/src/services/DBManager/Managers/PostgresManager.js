@@ -34,8 +34,21 @@ export default class DBPostgresManager {
       });
   }
 
-  getTableSchemaByTablename(tablename) {
-    this.sequelize
+  getTableDataByName(name) {
+    return this.sequelize
+      .query(
+        `
+        SELECT *
+        FROM "${name}"
+        `
+      )
+      .then((data) => {
+        return data[0];
+      });
+  }
+
+  getTableSchemaByName(name) {
+    return this.sequelize
       .query(
         `
       SELECT 
@@ -44,10 +57,10 @@ export default class DBPostgresManager {
       FROM 
         information_schema.columns
       WHERE 
-        table_name = '${tablename}';`
+        table_name = '${name}';`
       )
       .then((data) => {
-        console.log(data[0]);
+        return data[0];
       });
   }
 }

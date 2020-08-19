@@ -2,6 +2,7 @@
 import DatabaseRepository from '../repositories/databaseRepository';
 import DBManager from './DBManager/DBManagerService';
 import { createDBTable } from './dbTableService';
+import { setInitialDBPermissions } from './permissionService';
 
 export const getDatabases = async () => {
   const result = await DatabaseRepository.getAll();
@@ -16,8 +17,9 @@ export const createDatabase = async (database) => {
     await manager.init();
     const tablenames = await manager.getTablenames();
     database = await DatabaseRepository.create(database);
-    tablenames.forEach((name) => {
-      createDBTable({ DatabaseId: database.id, name });
+    tablenames.forEach(async (name) => {
+      const result = await createDBTable({ DatabaseId: database.id, name });
+      await setInitialDBPermissions(result.id);
     });
   } catch (error) {
     console.log('///////////////////// ON CREATE DB TABLE GENERATOR FAILED');

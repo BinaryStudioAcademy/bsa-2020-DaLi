@@ -373,6 +373,146 @@ module.exports = {
         },
       },
     },
+    '/databases': {
+      get: {
+        security: [
+          {
+            JWT: [],
+          },
+        ],
+        tags: ['Databases'],
+        summary: 'Get all databases',
+        responses: {
+          200: {
+            description: 'Successful operation',
+          },
+        },
+      },
+      post: {
+        security: [
+          {
+            JWT: [],
+          },
+        ],
+        tags: ['Databases'],
+        summary: 'Create database',
+        parameters: [],
+        requestBody: {
+          content: {
+            'application/json': {
+              schema: {
+                $ref: '#/definitions/Databases',
+              },
+            },
+          },
+          required: true,
+        },
+        responses: {
+          200: {
+            description: 'New database was created',
+          },
+          400: {
+            description: 'Invalid parameters',
+          },
+        },
+      },
+    },
+    '/databases/{id}': {
+      get: {
+        security: [
+          {
+            JWT: [],
+          },
+        ],
+        tags: ['Databases'],
+        summary: 'Get database by id',
+        parameters: [
+          {
+            name: 'id',
+            in: 'path',
+            description: 'ID of database',
+            required: true,
+            schema: {
+              $ref: '#/definitions/Id',
+            },
+          },
+        ],
+        responses: {
+          200: {
+            description: 'Successful operation',
+          },
+          404: {
+            description: 'Database not found',
+          },
+        },
+      },
+      patch: {
+        security: [
+          {
+            JWT: [],
+          },
+        ],
+        tags: ['Databases'],
+        summary: 'Update database',
+        parameters: [
+          {
+            name: 'id',
+            in: 'path',
+            description: 'ID of database',
+            required: true,
+            schema: {
+              $ref: '#/definitions/Id',
+            },
+          },
+        ],
+        requestBody: {
+          content: {
+            'application/json': {
+              schema: {
+                $ref: '#/definitions/Databases',
+              },
+            },
+          },
+          required: true,
+        },
+        responses: {
+          200: {
+            description: 'Successful operation',
+          },
+          404: {
+            description: 'Database not found',
+          },
+        },
+      },
+      delete: {
+        security: [
+          {
+            JWT: [],
+          },
+        ],
+        tags: ['Databases'],
+        summary: 'Delete database',
+        parameters: [
+          {
+            name: 'id',
+            in: 'path',
+            description: 'ID of database',
+            required: true,
+            schema: {
+              $ref: '#/definitions/Id',
+            },
+          },
+        ],
+        responses: {
+          200: {
+            description: 'Successful operation',
+          },
+          404: {
+            description: 'Database not found',
+          },
+        },
+      },
+    },
   },
   definitions: {
     Id: {
@@ -428,6 +568,32 @@ module.exports = {
         },
         config: {
           type: 'object',
+        },
+      },
+    },
+    Databases: {
+      type: 'object',
+      properties: {
+        dbNickname: {
+          type: 'string',
+        },
+        type: {
+          type: 'string',
+        },
+        host: {
+          type: 'string',
+        },
+        port: {
+          type: 'number',
+        },
+        dbName: {
+          type: 'string',
+        },
+        username: {
+          type: 'string',
+        },
+        dbPassword: {
+          type: 'string',
         },
       },
     },

@@ -15,8 +15,9 @@ export const createDatabase = async (database) => {
   try {
     await manager.init();
     const tablenames = await manager.getTablenames();
+    database = await DatabaseRepository.create(database);
     tablenames.forEach((name) => {
-      createDBTable({ databaseId: database.id, name });
+      createDBTable({ DatabaseId: database.id, name });
     });
   } catch (error) {
     console.log('///////////////////// ON CREATE DB TABLE GENERATOR FAILED');
@@ -24,9 +25,6 @@ export const createDatabase = async (database) => {
     console.log('Incoming DB INVALID');
     console.log('///////////////////// ON CREATE DB TABLE GENERATOR FAILED');
     database = null;
-  }
-  if (database) {
-    await DatabaseRepository.create(database);
   }
 
   return database;

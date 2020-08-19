@@ -1,9 +1,9 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 import Breadcrumbs from '@material-ui/core/Breadcrumbs';
 import Typography from '@material-ui/core/Typography';
 import { Grid } from '@material-ui/core';
-import { mockDatasets } from './mockDatasets';
 import DataSourcesViewItem from '../DataSourcesViewItem/DataSourcesViewItem';
 
 import './styles.css';
@@ -26,7 +26,7 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-const DataSourcesDatasetsView = () => {
+const DataSourcesDatasetsView = ({ datasets, getDatasetId }) => {
   const classes = useStyles();
 
   return (
@@ -37,12 +37,17 @@ const DataSourcesDatasetsView = () => {
         </Typography>
       </Breadcrumbs>
       <Grid container className={classes.itemList}>
-        {mockDatasets.map((dataset) => {
-          return <DataSourcesViewItem dataset={dataset} />;
+        {datasets.map((dataset) => {
+          return <DataSourcesViewItem key={dataset.id} dataset={dataset} getDatasetId={getDatasetId} />;
         })}
       </Grid>
     </main>
   );
+};
+
+DataSourcesDatasetsView.propTypes = {
+  datasets: PropTypes.array,
+  getDatasetId: PropTypes.func,
 };
 
 export default DataSourcesDatasetsView;

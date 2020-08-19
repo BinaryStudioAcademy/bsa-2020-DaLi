@@ -19,19 +19,20 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-const DataSourcesViewItem = ({ dataset, table }) => {
+const DataSourcesViewItem = ({ dataset, table, getDatasetId }) => {
   const classes = useStyles();
   const history = useHistory();
 
   const handleDatasetClick = (dataset) => {
     history.push(`/data-sources/${dataset.id}`);
+    getDatasetId(dataset.id);
   };
 
   const createDatasetItem = () => {
     return (
       <Grid item className="data-source-item dataset-item" onClick={() => handleDatasetClick(dataset)}>
         <FaDatabase style={{ color: '#7073a9', fontSize: 30 }} />
-        <p>{dataset.name}</p>
+        <p>{dataset.dbName}</p>
       </Grid>
     );
   };
@@ -43,7 +44,7 @@ const DataSourcesViewItem = ({ dataset, table }) => {
           <AppsIcon style={{ color: '#7073a9', fontSize: 30 }} />
         </div>
         <p>{table.name}</p>
-        <Tooltip title={table.description} placement="left" className={classes.description}>
+        <Tooltip title={`This is the ${table.name} table`} placement="left" className={classes.description}>
           <InfoIcon className={classes.infoIcon} color="action" fontSize="small" />
         </Tooltip>
       </Grid>
@@ -56,6 +57,7 @@ const DataSourcesViewItem = ({ dataset, table }) => {
 DataSourcesViewItem.propTypes = {
   dataset: PropTypes.object,
   table: PropTypes.object,
+  getDatasetId: PropTypes.func,
 };
 
 export default DataSourcesViewItem;

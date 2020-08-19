@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 import Breadcrumbs from '@material-ui/core/Breadcrumbs';
 import Typography from '@material-ui/core/Typography';
@@ -6,7 +7,6 @@ import Link from '@material-ui/core/Link';
 import NavigateNextIcon from '@material-ui/icons/NavigateNext';
 import { Grid } from '@material-ui/core';
 import DataSourcesViewItem from '../DataSourcesViewItem/DataSourcesViewItem';
-import { mockTables } from './mockTables';
 
 import './styles.css';
 
@@ -32,8 +32,13 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-const DataSourcesTablesView = () => {
+const DataSourcesTablesView = ({ tables, getTables, currentDatasetId }) => {
   const classes = useStyles();
+
+  useEffect(() => {
+    getTables(currentDatasetId);
+    // eslint-disable-next-line
+  }, [getTables]);
 
   return (
     <main className="data-source-view">
@@ -50,12 +55,18 @@ const DataSourcesTablesView = () => {
         </Typography>
       </Breadcrumbs>
       <Grid container className={classes.itemList}>
-        {mockTables.map((table) => {
-          return <DataSourcesViewItem table={table} />;
+        {tables.map((table) => {
+          return <DataSourcesViewItem key={table.id} table={table} />;
         })}
       </Grid>
     </main>
   );
+};
+
+DataSourcesTablesView.propTypes = {
+  tables: PropTypes.array,
+  getTables: PropTypes.func,
+  currentDatasetId: PropTypes.string,
 };
 
 export default DataSourcesTablesView;

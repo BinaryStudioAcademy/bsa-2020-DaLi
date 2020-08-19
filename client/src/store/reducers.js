@@ -5,6 +5,7 @@ import usersListReducer from '../containers/PeoplePageContainer/reducer';
 import accountSettingsReducer from '../containers/AccountSettingsContainer/reducer';
 import analyticsReducer from '../containers/AnalyticsTabsContainer/reducer';
 import currentDashboardReducer from '../containers/DashboardContainer/reducer';
+import datasetsListReducer from '../containers/DataSourcesContainer/reducer';
 
 export default combineReducers({
   currentUser: loginReducer,
@@ -13,4 +14,5 @@ export default combineReducers({
   admin: combineReducers({ people: usersListReducer }),
   accountSettingsReducer,
   currentDashboard: currentDashboardReducer,
+  datasets: datasetsListReducer,
 });

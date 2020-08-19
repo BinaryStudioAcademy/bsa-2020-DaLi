@@ -3,14 +3,14 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { GroupList } from '../../components';
-import { resetError, addUserGroup, deleteUserGroup } from './actions';
+import { resetError, addUserGroup, deleteUserGroup, updateUserGroup } from './actions';
 
-const UserGroupsPageContainer = ({ groups, addUserGroup, deleteUserGroup }) => {
+const UserGroupsPageContainer = ({ groups, addUserGroup, deleteUserGroup, updateUserGroup }) => {
   const deleteGroup = (id) => () => {
     deleteUserGroup(id);
   };
 
-  return <GroupList groups={groups} addUserGroup={addUserGroup} deleteGroup={deleteGroup} />;
+  return <GroupList groups={groups} addUserGroup={addUserGroup} deleteGroup={deleteGroup} updateUserGroup={updateUserGroup} />;
 };
 
 const mapStateToProps = (state) => {
@@ -33,5 +33,5 @@ UserGroupsPageContainer.propTypes = {
 };
 
 export default withRouter(
-  connect(mapStateToProps, { resetError, addUserGroup, deleteUserGroup })(UserGroupsPageContainer)
+  connect(mapStateToProps, { resetError, addUserGroup, deleteUserGroup, updateUserGroup })(UserGroupsPageContainer)
 );

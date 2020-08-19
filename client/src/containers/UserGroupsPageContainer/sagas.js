@@ -58,7 +58,7 @@ export function* watchAddUserGroupSaga() {
   yield takeEvery(ADD_USER_GROUP, addUserGroupSaga);
 }
 
-export function* updateUserGroupSaga({ payload }) {
+export function* updateUserGroupSaga({payload}) {
   try {
     yield put(SetIsLoading(true));
     yield call(userGroupsAPIService.updateUserGroup, payload.id, payload.data);

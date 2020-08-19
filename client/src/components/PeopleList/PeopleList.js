@@ -36,15 +36,17 @@ const PeopleList = ({
   const displayNotification = () => setIsNotificationVisible(true);
   const hideNotification = () => setIsNotificationVisible(false);
 
-  const updateNotification = (message, messageStatus) => {
-    setNotificationMessage(message);
-    setNotificationMessageStatus(messageStatus);
-    if (message) {
-      displayNotification();
-    }
-  };
+
 
   useEffect(() => {
+    const updateNotification = (message, messageStatus) => {
+      setNotificationMessage(message);
+      setNotificationMessageStatus(messageStatus);
+      if (message) {
+        displayNotification();
+      }
+    };
+
     updateNotification(notificationMessageProps, notificationMessageStatusProps);
   }, [notificationMessageStatusProps, notificationMessageProps]);
 

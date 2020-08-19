@@ -5,19 +5,20 @@ import d3Tip from 'd3-tip';
 import PropTypes from 'prop-types';
 
 import { calcMaxYDataValue, calcMinYDataValue } from '../../utils/calcCriticalYAxisValue';
-import { findLineByLeastSquares } from '../../utils/trendline';
+import TrendlineCreator from '../../utils/Trendline'
 
 import './LineChart.css';
 
 function LineChart({ settings, data, chart: chartSize }) {
-  const { goal, showTrendLine, showDataPointsValues, lineType = 'curveNatural', color } = settings.display;
+  const { goal, trendline, showDataPointsValues, lineType = 'curveNatural', color } = settings.display;
   const XAxis = settings.axisData.XAxis;
   const YAxis = settings.axisData.YAxis;
-
+  data = data.sort((a, b) => a[XAxis.key] - b[XAxis.key]);
   const [config, setConfig] = useState({});
   const svgRef = useRef();
   const [width, setWidth] = useState(chartSize.width);
   const [height, setHeight] = useState(chartSize.height);
+  
   const draw = () => {
     setConfig(settings);
     const { margin } = chartSize;
@@ -66,7 +67,12 @@ function LineChart({ settings, data, chart: chartSize }) {
       .x((d) => xScale(d[XAxis.key]) + xScale.bandwidth() / 2)
       .y((d) => yScale(d[YAxis.key]));
 
-    chart.append('path').datum(data).attr('class', 'line').attr('d', line).style('stroke', color);
+    chart
+      .append('path')
+      .datum(data.sort((a, b) => a[XAxis.key] - b[XAxis.key]))
+      .attr('class', 'line')
+      .attr('d', line)
+      .style('stroke', color);
 
     chart
       .selectAll('.dot')
@@ -105,18 +111,27 @@ function LineChart({ settings, data, chart: chartSize }) {
     // delete axis values
     chart.selectAll('.axis').selectAll('text').remove();
 
-    if (showTrendLine && data.length) {
-      const xValues = data.map((d) => d[XAxis.key]);
-      const yValues = data.map((d) => d[YAxis.key]);
-      const lineCoords = findLineByLeastSquares(xValues, yValues);
+    if (trendline.display && data.length) {
+      const xDataRange = {
+        min: data[0][XAxis.key],
+        max: data[data.length - 1][XAxis.key]
+      }
+      const xScaleForTrendline = d3
+      .scaleLinear()
+      .domain([xDataRange.min, xDataRange.max])
+      .range([margin.left, width - margin.right])
+      const {polynomial,trendlineType} = trendline
 
-      chart
-        .append('line')
-        .attr('id', 'trendline')
-        .attr('x1', 0)
-        .attr('y1', yScale(lineCoords.start.y))
-        .attr('x2', width)
-        .attr('y2', yScale(lineCoords.end.y));
+      const trendlineData = data.map(item => [item[XAxis.key], item[YAxis.key]])
+      const barUnitWidth = (xDataRange.max - xDataRange.min) / data.length
+      const domain = [xDataRange.min, xDataRange.max - barUnitWidth]
+      const config = {
+        xOffset: xScale.bandwidth() / 2,
+        order: polynomial.order
+      }
+
+      const trendlineCreator = new TrendlineCreator(trendlineType, chart, xScaleForTrendline, yScale)
+      trendlineCreator.render(domain, trendlineData, config)
     }
 
     if (YAxis.displayLabel) {
@@ -153,16 +168,20 @@ function LineChart({ settings, data, chart: chartSize }) {
     }
   };
 
+  const resize = () => {
+    setHeight(svgRef.current.parentElement.offsetHeight);
+    setWidth(svgRef.current.parentElement.offsetWidth);
+}
+
   useEffect(() => {
     setHeight(svgRef.current.parentElement.offsetHeight);
     setWidth(svgRef.current.parentElement.offsetWidth);
     draw();
-  }, [goal, showTrendLine, showDataPointsValues, lineType, color, data, chartSize, width, height]);
 
-  window.addEventListener('resize', () => {
-    setHeight(svgRef.current.parentElement.offsetHeight);
-    setWidth(svgRef.current.parentElement.offsetWidth);
-  });
+    window.addEventListener('resize', resize);
+
+    return () => {window.removeEventListener('resize', resize);}
+  }, [goal, trendline, showDataPointsValues, lineType, color, data, chartSize, width, height]);
 
   return <svg ref={svgRef} />;
 }
@@ -199,7 +218,15 @@ LineChart.propTypes = {
         label: PropTypes.string,
       }),
       lineType: PropTypes.string,
-      showTrendLine: PropTypes.bool,
+      trendline: PropTypes.shape({
+        display: PropTypes.bool,
+        trendlineType: PropTypes.string,
+        availableTrendlineTypes: PropTypes.array,
+        polynomial: PropTypes.shape({
+          availableOrders: PropTypes.array,
+          order: PropTypes.number
+        })
+      }),
       showDataPointsValues: PropTypes.bool,
     }),
   }),

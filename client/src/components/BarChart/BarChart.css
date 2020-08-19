@@ -5,7 +5,8 @@
 }
 
 line#goal,
-line#trendline {
+.trendline {
+  fill: none;
   stroke: #333;
   stroke-width: 3;
   stroke-dasharray: 10;

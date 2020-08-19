@@ -9,6 +9,12 @@ router.get('/', async (req, res, next) => {
   next();
 });
 
+router.get('/tables/:id', async (req, res, next) => {
+  const result = await DatabaseService.getDatabaseTables(req.params.id);
+  res.json(result);
+  next();
+});
+
 router.get('/:id', async (req, res, next) => {
   const result = await DatabaseService.getDatabase({
     id: req.params.id,
@@ -17,7 +23,7 @@ router.get('/:id', async (req, res, next) => {
     res.json(result);
     next();
   } else {
-    const err = new Error('databases not found');
+    const err = new Error('database not found');
     next(err);
   }
 });

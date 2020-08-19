@@ -1,11 +1,16 @@
 /* eslint-disable import/no-cycle */
 import DatabaseRepository from '../repositories/databaseRepository';
 import DBManager from './DBManager/DBManagerService';
-import { createDBTable } from './dbTableService';
+import { getAllByDatabaseId } from './dbTableService';
 
 export const getDatabases = async () => {
   const result = await DatabaseRepository.getAll();
   return result;
+};
+
+export const getDatabaseTables = async (id) => {
+  const tables = await getAllByDatabaseId(id);
+  return tables;
 };
 
 export const createDatabase = async (database) => {
@@ -17,7 +22,7 @@ export const createDatabase = async (database) => {
     const tablenames = await manager.getTablenames();
     database = await DatabaseRepository.create(database);
     tablenames.forEach((name) => {
-      createDBTable({ DatabaseId: database.id, name });
+      database.createDBTable({ name });
     });
   } catch (error) {
     console.log('///////////////////// ON CREATE DB TABLE GENERATOR FAILED');

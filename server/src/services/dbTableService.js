@@ -1,5 +1,10 @@
 import DBTable from '../repositories/dbTableRepository';
 
+export const getAllByDatabaseId = async (id) => {
+  const result = await DBTable.getAllByDatabaseId(id);
+  return result;
+};
+
 export const getDBTables = async () => {
   const result = await DBTable.getAll();
   return result;

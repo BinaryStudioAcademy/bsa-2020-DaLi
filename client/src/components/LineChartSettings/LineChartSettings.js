@@ -106,43 +106,8 @@ function a11yProps(index) {
   };
 }
 
-const testConfig = {
-  axisData: {
-    XAxis: {
-      availableKeys: ['key1', 'key2', 'key3'],
-      key: 'createdAt',
-      label: 'Total',
-      displayLabel: true,
-    },
-    YAxis: {
-      availableKeys: ['key4', 'key5', 'key6'],
-      key: 'total',
-      label: 'Date',
-      displayLabel: true,
-    },
-  },
-  display: {
-    goal: {
-      display: true,
-      value: 100,
-      label: 'Goal',
-    },
-    color: '#4aa1de',
-    lineType: 'curveNatural',
-    trendline: {
-      display: false,
-      trendlineType: 'linear',
-      availableTrendlineTypes: ['linear', 'polynomial', 'exponential', 'logarithmical'],
-      polynomial: {
-        availableOrders: [2, 3, 4, 5],
-        order: 2,
-      },
-    },
-    showDataPointsValues: true,
-  },
-};
 
-function LineChartSettings({ updateConfig, config: oldConfig } /* , oldConfig = testConfig */) {
+function LineChartSettings({ updateConfig, config: oldConfig }) {
   const classes = useStyles();
   const [value, setValue] = useState(0);
   const [config, setConfig] = useState(oldConfig);
@@ -154,7 +119,6 @@ function LineChartSettings({ updateConfig, config: oldConfig } /* , oldConfig = 
   const { axisData, display } = config;
   const { XAxis, YAxis } = axisData;
   const { goal, color, showDataPointsValues, trendline, lineType } = display;
-  // const { display: showTrendline } = trendline;
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };

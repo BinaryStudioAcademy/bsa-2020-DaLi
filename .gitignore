@@ -3,6 +3,7 @@
 # IDE settings
 .idea/
 .vs/
+.vscode/
 bin/
 obj/
 .vscode/launch.json
@@ -17,6 +18,7 @@ coverage
 
 # production
 build
+dist
 
 # misc
 .DS_Store

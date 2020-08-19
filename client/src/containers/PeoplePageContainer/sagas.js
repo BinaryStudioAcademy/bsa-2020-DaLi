@@ -1,4 +1,4 @@
-import { put, call, takeEvery, all } from 'redux-saga/effects';
+import { put, call, takeEvery, all, delay } from 'redux-saga/effects';
 import {
   GET_USERS,
   GET_USERS_SUCCESS,
@@ -12,6 +12,7 @@ import {
   DELETE_USER,
   DELETE_USER_SUCCESS,
   DELETE_USER_ERROR,
+  TOGGLE_USER_STATUS,
 } from './actionTypes';
 import { usersAPIService } from '../../services/api/usersAPI.service';
 import { SetIsLoading } from './actions';
@@ -64,6 +65,22 @@ export function* watchDeleteUserSaga() {
   yield takeEvery(DELETE_USER, deleteUserSaga);
 }
 
+export function* toggleUserStatus({ payload }) {
+  try {
+    yield put(SetIsLoading(true));
+    yield call(usersAPIService.toggleUserStatus, payload.id, payload.data);
+    yield put({ type: UPDATE_USER_SUCCESS });
+    yield put({ type: GET_USERS });
+  } catch (error) {
+    yield put({ type: UPDATE_USER_ERROR, payload: error, error });
+    yield put(SetIsLoading(false));
+  }
+}
+
+export function* watchToggleUserStatus() {
+  yield takeEvery(TOGGLE_USER_STATUS, toggleUserStatus);
+}
+
 export function* updateUser({ payload }) {
   try {
     const res = yield call(usersAPIService.updateUser, payload.id, payload.data);
@@ -79,5 +96,11 @@ export function* watchUpdateUserData() {
 }
 
 export default function* usersSaga() {
-  yield all([watchGetUsersSaga(), watchDeleteUserSaga(), watchAddUserSaga(), watchUpdateUserData()]);
+  yield all([
+    watchGetUsersSaga(),
+    watchDeleteUserSaga(),
+    watchAddUserSaga(),
+    watchUpdateUserData(),
+    watchToggleUserStatus(),
+  ]);
 }

@@ -1,8 +1,10 @@
 import jwt from 'jsonwebtoken';
 import jwtDecode from 'jwt-decode';
 import bcrypt from 'bcrypt';
-import UserRepository from '../repositories/userRepository';
 import jwtConfig from '../config/jwt.config';
+import UserRepository from '../repositories/userRepository';
+import UserGroupsRepository from '../repositories/userGroupsRepository';
+import UsersUserGroupsRepository from '../repositories/usersUserGroupsRepository';
 
 export const login = async (user) => {
   const candidate = await UserRepository.getByEmail(user.email);
@@ -10,6 +12,15 @@ export const login = async (user) => {
     // hashed password
     // if (bcrypt.compareSync(user.password, candidate.password)) {
     // not hashed password
+    if (!candidate.isActive) {
+      return {
+        status: 403,
+        response: {
+          success: false,
+          message: 'User account deactivated',
+        },
+      };
+    }
     if (candidate.password === user.password) {
       const { id, email, firstName, lastName } = candidate;
       await UserRepository.updateById({ id }, { lastLogin: new Date(Date.now()) });
@@ -50,10 +61,10 @@ export const register = async (user) => {
   const candidate = await UserRepository.getByEmail(user.email);
   if (!candidate) {
     const salt = bcrypt.genSaltSync(10);
-    const password = user.password;
-    candidate.password = bcrypt.hashSync(password, salt);
-
-    const newUser = await UserRepository.create(candidate);
+    const allGroups = await UserGroupsRepository.getAll();
+    const allUsersGroupID = allGroups.filter(group => group.name==='All Users')[0].id;
+    const newUser = await UserRepository.create(Object.assign({}, user, { password:  bcrypt.hashSync(user.password, salt)}));
+    await UsersUserGroupsRepository.create({users_id: newUser.id, userGroups_id: allUsersGroupID});
     return {
       status: 201,
       response: {

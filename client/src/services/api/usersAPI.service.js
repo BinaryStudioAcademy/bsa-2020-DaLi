@@ -17,7 +17,6 @@ class UsersAPIService extends baseAPIService {
   toggleUserStatus = async (id, user) => {
     const updatedStatus = !user.isActive;
     const updatedUser = { ...user, isActive: updatedStatus };
-    // debugger;
     await this.patchData(`/${id}`, updatedUser);
   };
 

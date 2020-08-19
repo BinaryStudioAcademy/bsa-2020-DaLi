@@ -79,24 +79,7 @@ const PeopleListItem = ({ person, showAddUserModal, showDeactivateUserModal, act
         </TableCell>
         <TableCell align="left">{person.email}</TableCell>
         <TableCell align="left">
-          {/* <FormControl className={classes.formControl}> */}
-          {/* <Select
-                      multiple
-                      value={person.groups.filter((item, index, array) => {
-                        return (array.length === 1) || (array.length > 1) && (item !== 'Default'))}
-                      onChange={handleChange}
-                      input={<Input id="select-multiple-checkbox" />}
-                      renderValue={selected => selected.join(', ')}
-                      MenuProps={MenuProps}
-                    >
-                      {groups.map(name => (
-                        <MenuItem key={name} value={name}>
-                          <Checkbox checked={person.groups.indexOf(name) > -1} />
-                          <ListItemText primary={name} />
-                        </MenuItem>
-          ))}
-                    </Select> */}
-          {/* </FormControl> */}
+              // TODO: Add select for groups
         </TableCell>
         <TableCell align="left">{formatDate(person.lastLogin)}</TableCell>
         <TableCell align="left">

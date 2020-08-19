@@ -22,7 +22,6 @@ const PeoplePageContainer = ({
   const classes = useStyles();
 
   useEffect(() => {
-    // debugger;
     getUsers();
     return () => {
       resetError();

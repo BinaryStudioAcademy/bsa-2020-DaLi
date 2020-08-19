@@ -13,8 +13,6 @@ import {
   DELETE_USER_SUCCESS,
   DELETE_USER_ERROR,
   TOGGLE_USER_STATUS,
-  TOGGLE_USER_STATUS_SUCCESS,
-  TOGGLE_USER_STATUS_ERROR,
 } from './actionTypes';
 import { usersAPIService } from '../../services/api/usersAPI.service';
 import { SetIsLoading } from './actions';
@@ -23,7 +21,6 @@ export function* getUsersSaga() {
   try {
     yield put(SetIsLoading(true));
     const res = yield call(usersAPIService.getUsers);
-    // debugger;
     yield put({ type: GET_USERS_SUCCESS, payload: res });
     yield put(SetIsLoading(false));
   } catch (error) {
@@ -72,8 +69,6 @@ export function* toggleUserStatus({ payload }) {
   try {
     yield put(SetIsLoading(true));
     yield call(usersAPIService.toggleUserStatus, payload.id, payload.data);
-    // yield delay(1000);
-    // debugger;
     yield put({ type: UPDATE_USER_SUCCESS });
     yield put({ type: GET_USERS });
   } catch (error) {

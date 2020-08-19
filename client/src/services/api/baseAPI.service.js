@@ -68,9 +68,6 @@ class baseAPIService {
       headers: { Authorization: `Bearer ${this.accessToken}` },
       data,
     });
-    console.log('patchData');
-    console.log(response);
-    // debugger;
     return response;
   };
 

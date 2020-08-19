@@ -7,7 +7,6 @@ import Backdrop from '@material-ui/core/Backdrop';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
-// import AppBar from '@material-ui/core/AppBar';
 import Box from '@material-ui/core/Box';
 
 import AddUserModal from '../AddUserModal';

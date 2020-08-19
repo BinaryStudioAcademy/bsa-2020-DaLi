@@ -2,8 +2,6 @@ import UserRepository from '../repositories/userRepository';
 
 export const getUsers = async () => {
   const result = await UserRepository.getAll();
-  console.log('get users');
-  console.log(result);
   return result;
 };
 
@@ -40,11 +38,7 @@ export const updateUser = async (id, dataToUpdate) => {
       delete dataToUpdate.oldPassword;
     }
   }
-  console.log('update');
-  console.log(dataToUpdate);
   const result = await UserRepository.updateById(id, dataToUpdate);
-  console.log('result');
-  console.log(result);
   return result;
 };
 

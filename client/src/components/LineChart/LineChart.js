@@ -183,8 +183,6 @@ function LineChart({ settings, data, chart: chartSize }) {
     return () => {window.removeEventListener('resize', resize);}
   }, [goal, trendline, showDataPointsValues, lineType, color, data, chartSize, width, height]);
 
-  
-
   return <svg ref={svgRef} />;
 }
 

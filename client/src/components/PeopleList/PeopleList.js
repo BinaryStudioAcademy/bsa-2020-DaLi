@@ -17,6 +17,7 @@ import { useStyles } from './styles';
 
 import { mockPeople } from './mockPeople';
 import PeopleListItem from './PeopleListItem';
+import PasswordModal from '../PasswordModal/PasswordModal';
 
 const PeopleList = ({
   people = mockPeople,
@@ -94,6 +95,7 @@ const PeopleList = ({
         submitHandler={updateUser}
         user={user}
       />
+      <PasswordModal />
       {isLoading && (
         <Backdrop className={classes.backdrop} open>
           <CircularProgress color="inherit" />

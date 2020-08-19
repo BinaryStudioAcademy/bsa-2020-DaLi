@@ -14,7 +14,7 @@ import {
   DELETE_USER_ERROR,
 } from './actionTypes';
 import { usersAPIService } from '../../services/api/usersAPI.service';
-import { SetIsLoading } from './actions';
+import { SetIsLoading, setTemporaryPassword } from './actions';
 
 export function* getUsersSaga() {
   try {
@@ -35,8 +35,9 @@ export function* watchGetUsersSaga() {
 export function* addUserSaga(payload) {
   try {
     yield put(SetIsLoading(true));
-    yield call(usersAPIService.createUser, payload.user);
+    const response = yield call(usersAPIService.createUser, payload.user);
     yield put({ type: ADD_USER_SUCCESS });
+    yield put(setTemporaryPassword({ password: response.password, id: response.id }));
     yield put({ type: GET_USERS });
   } catch (error) {
     yield put({ type: ADD_USER_ERROR, error });

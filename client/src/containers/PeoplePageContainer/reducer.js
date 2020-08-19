@@ -9,11 +9,13 @@ import {
   DELETE_USER_ERROR,
   IS_LOADING,
   RESET_ERROR,
+  SET_TEMPORARY_PASSWORD,
 } from './actionTypes';
 
 const initialState = {
   users: [],
   isLoading: false,
+  temporaryPasswords: {},
   error: null,
   message: '',
   status: '',
@@ -43,6 +45,7 @@ const usersListReducer = (state = initialState, { type, payload }) => {
       return {
         ...state,
         error: payload,
+        temporaryPasswords: {},
         message: payload.message,
         status: 'error',
       };
@@ -55,6 +58,12 @@ const usersListReducer = (state = initialState, { type, payload }) => {
         isLoading: false,
         message: 'Data successfully updated',
         status: 'success',
+      };
+    }
+    case SET_TEMPORARY_PASSWORD: {
+      return {
+        ...state,
+        temporaryPasswords: { [payload.id]: payload.password },
       };
     }
     case RESET_ERROR: {

@@ -1,4 +1,12 @@
-import { GET_USERS, ADD_USER, UPDATE_USER, DELETE_USER, IS_LOADING, RESET_ERROR } from './actionTypes';
+import {
+  GET_USERS,
+  ADD_USER,
+  UPDATE_USER,
+  DELETE_USER,
+  IS_LOADING,
+  RESET_ERROR,
+  SET_TEMPORARY_PASSWORD,
+} from './actionTypes';
 
 export const getUsers = () => {
   return {
@@ -37,5 +45,12 @@ export const SetIsLoading = (payload) => {
 export const resetError = () => {
   return {
     type: RESET_ERROR,
+  };
+};
+
+export const setTemporaryPassword = (payload) => {
+  return {
+    type: SET_TEMPORARY_PASSWORD,
+    payload,
   };
 };

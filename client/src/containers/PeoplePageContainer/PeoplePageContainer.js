@@ -42,12 +42,12 @@ const PeoplePageContainer = ({ people, isLoading, message, status, getUsers, add
   );
 };
 
-const mapStateToProps = (state) => {
+const mapStateToProps = ({ admin: { people } }) => {
   return {
-    people: state.admin.people.users,
-    isLoading: state.admin.people.isLoading,
-    message: state.admin.people.message,
-    status: state.admin.people.status,
+    people: people.users,
+    isLoading: people.isLoading,
+    message: people.message,
+    status: people.status,
   };
 };
 

@@ -5,12 +5,13 @@ import usersListReducer from '../containers/PeoplePageContainer/reducer';
 import accountSettingsReducer from '../containers/AccountSettingsContainer/reducer';
 import analyticsReducer from '../containers/AnalyticsTabsContainer/reducer';
 import currentDashboardReducer from '../containers/DashboardContainer/reducer';
+import userGroupsReducer from '../containers/UserGroupsPageContainer/reducer';
 
 export default combineReducers({
   currentUser: loginReducer,
   analytics: analyticsReducer,
   currentVisualization: viewVisualizationReducer,
-  admin: combineReducers({ people: usersListReducer }),
+  admin: combineReducers({ people: usersListReducer, groups: userGroupsReducer }),
   accountSettingsReducer,
   currentDashboard: currentDashboardReducer,
 });

@@ -3,20 +3,33 @@ import { connect } from 'react-redux';
 import { withRouter, Switch, Route } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { Grid } from '@material-ui/core';
-import { PeopleList, GroupList } from '../../components';
+import { PeopleList } from '../../components';
 import PeoplePageMenu from './PeoplePageMenu';
 import { getUsers, addUser, updateUser, resetError } from './actions';
 import { useStyles } from './styles';
+import UserGroupsPageContainer from '../UserGroupsPageContainer/UserGroupsPageContainer';
+import { getUserGroups } from '../UserGroupsPageContainer/actions';
 
-const PeoplePageContainer = ({ people, isLoading, message, status, getUsers, addUser, updateUser, resetError }) => {
+const PeoplePageContainer = ({
+  people,
+  isLoading,
+  message,
+  status,
+  getUsers,
+  addUser,
+  updateUser,
+  resetError,
+  getUserGroups,
+}) => {
   const classes = useStyles();
 
   useEffect(() => {
     getUsers();
+    getUserGroups();
     return () => {
       resetError();
     };
-  }, [getUsers, resetError]);
+  }, [getUsers, resetError, getUserGroups]);
 
   return (
     <Grid container className={classes.root}>
@@ -36,7 +49,7 @@ const PeoplePageContainer = ({ people, isLoading, message, status, getUsers, add
             />
           )}
         />
-        <Route exact path="/admin/people/groups" component={() => <GroupList />} />
+        <Route exact path="/admin/people/groups" component={() => <UserGroupsPageContainer />} />
       </Switch>
     </Grid>
   );
@@ -60,6 +73,9 @@ PeoplePageContainer.propTypes = {
   addUser: PropTypes.func,
   updateUser: PropTypes.func,
   resetError: PropTypes.func,
+  getUserGroups: PropTypes.func,
 };
 
-export default withRouter(connect(mapStateToProps, { getUsers, addUser, updateUser, resetError })(PeoplePageContainer));
+export default withRouter(
+  connect(mapStateToProps, { getUsers, addUser, updateUser, resetError, getUserGroups })(PeoplePageContainer)
+);

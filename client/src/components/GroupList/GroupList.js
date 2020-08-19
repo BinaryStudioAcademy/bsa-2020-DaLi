@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 // import { NavLink, useHistory } from 'react-router-dom';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -10,19 +10,35 @@ import Avatar from '@material-ui/core/Avatar';
 import MoreHorizIcon from '@material-ui/icons/MoreHoriz';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
-import GroupListHeader from '../GroupListHeader';
+import * as Yup from 'yup';
+import { Formik, Form, Field } from 'formik';
+import PropTypes from 'prop-types';
+import Button from '@material-ui/core/Button';
 import { useStyles } from './styles';
+import GroupListHeader from '../GroupListHeader';
 
-const groups = [
-  { name: 'Administrators', members: 2 },
-  { name: 'All users', members: 4 },
-];
+const ValidationSchema = Yup.object({
+  name: Yup.string().required('Name is required'),
+});
 
-const GroupList = () => {
-  // const history = useHistory();
-  const [menuAnchorEl, setMenuAnchorEl] = React.useState(null);
+const GroupList = ({ groups, addUserGroup, deleteGroup }) => {
+  const [menuAnchorEl, setMenuAnchorEl] = useState(null);
+  const [isVisibleForm, setIsVisibleForm] = useState(false);
   const classes = useStyles();
-  // const [groups, setGroups] = React.useState(['Admin', 'Default']);
+
+  const openForm = () => {
+    setIsVisibleForm(true);
+  };
+
+  const closeForm = (resetForm) => () => {
+    resetForm();
+    setIsVisibleForm(false);
+  };
+
+  const createUserGroup = (values) => {
+    addUserGroup(values);
+    closeForm();
+  };
 
   const handleMenuClick = (event) => {
     setMenuAnchorEl(event.currentTarget);
@@ -34,7 +50,7 @@ const GroupList = () => {
 
   return (
     <div className={classes.root}>
-      <GroupListHeader />
+      <GroupListHeader openForm={openForm} />
       <TableContainer>
         <Table aria-label="simple table">
           <TableHead>
@@ -45,13 +61,27 @@ const GroupList = () => {
             </TableRow>
           </TableHead>
           <TableBody>
+            {isVisibleForm && (
+              <TableRow>
+                <TableCell colSpan={3}>
+                  <Formik
+                    initialValues={{ name: '' }}
+                    validationSchema={ValidationSchema}
+                    onSubmit={(values) => createUserGroup(values)}
+                  >
+                    {/* eslint-disable-next-line */}
+                  {(props) => <CreateUserGroupForm cancel={closeForm} {...props}/>}
+                  </Formik>
+                </TableCell>
+              </TableRow>
+            )}
             {groups.map((group) => (
               <TableRow key={group.name}>
                 <TableCell align="left" className={classes.name}>
                   <Avatar className={classes.avatar}>{group.name[0]}</Avatar>
                   {group.name}
                 </TableCell>
-                <TableCell align="left">{group.members}</TableCell>
+                <TableCell align="left">{/* {group.members} */}???</TableCell>
                 <TableCell align="left">
                   <MoreHorizIcon className={classes.dots} onClick={handleMenuClick} />
                   <Menu
@@ -62,7 +92,7 @@ const GroupList = () => {
                     onClose={() => setMenuAnchorEl(null)}
                   >
                     <MenuItem onClick={() => {}}>Edit name</MenuItem>
-                    <MenuItem onClick={() => {}}>Remove group</MenuItem>
+                    <MenuItem onClick={deleteGroup(group.id)}>Remove group</MenuItem>
                   </Menu>
                 </TableCell>
               </TableRow>
@@ -72,6 +102,41 @@ const GroupList = () => {
       </TableContainer>
     </div>
   );
+};
+
+const CreateUserGroupForm = ({ handleSubmit, resetForm, isValid, dirty, cancel }) => {
+  const classes = useStyles();
+  return (
+    <Form className={classes.form} onSubmit={handleSubmit}>
+      <Field name="name" as="input" placeholder='Something like "Marketing"' />
+      <div>
+        <Button onClick={cancel(resetForm)} style={{ textTransform: 'none', fontSize: 12, color: '#3ca1de' }}>
+          Cancel
+        </Button>
+        <Button
+          type="submit"
+          variant="outlined"
+          disabled={!(isValid && dirty)}
+          style={{ textTransform: 'none', fontSize: 12 }}
+        >
+          Add
+        </Button>
+      </div>
+    </Form>
+  );
+};
+
+GroupList.propTypes = {
+  groups: PropTypes.array,
+  addUserGroup: PropTypes.func,
+  deleteGroup: PropTypes.func,
+};
+CreateUserGroupForm.propTypes = {
+  handleSubmit: PropTypes.func,
+  resetForm: PropTypes.func,
+  isValid: PropTypes.bool,
+  dirty: PropTypes.bool,
+  cancel: PropTypes.func,
 };
 
 export default GroupList;

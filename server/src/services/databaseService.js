@@ -32,6 +32,8 @@ export const createDatabase = async (database) => {
     database = null;
   }
 
+  await manager.destroy();
+
   return database;
 };
 

@@ -15,6 +15,7 @@ export function* deleteDatabaseSaga(payload) {
     yield put(SetIsLoading(true));
     yield call(databasesAPIService.deleteDatabase, payload.id);
     yield put({ type: DELETE_DATABASE_SUCCESS });
+    yield put({ type: GET_DATABASES });
   } catch (error) {
     yield put({ type: DELETE_DATABASE_ERROR, error });
     yield put(SetIsLoading(false));
@@ -25,11 +26,11 @@ export function* watchDeleteDatabaseSaga() {
   yield takeEvery(DELETE_DATABASE, deleteDatabaseSaga);
 }
 
-export function* getDatabasesSaga(payload) {
+export function* getDatabasesSaga() {
   try {
     yield put(SetIsLoading(true));
-    yield call(databasesAPIService.getDatabases, payload.id);
-    yield put({ type: GET_DATABASES_SUCCESS });
+    const response = yield call(databasesAPIService.getDatabases);
+    yield put({ type: GET_DATABASES_SUCCESS, payload: response });
   } catch (error) {
     yield put({ type: GET_DATABASES_ERROR, error });
     yield put(SetIsLoading(false));

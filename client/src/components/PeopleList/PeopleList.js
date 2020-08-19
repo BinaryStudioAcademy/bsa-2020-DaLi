@@ -36,8 +36,6 @@ const PeopleList = ({
   const displayNotification = () => setIsNotificationVisible(true);
   const hideNotification = () => setIsNotificationVisible(false);
 
-
-
   useEffect(() => {
     const updateNotification = (message, messageStatus) => {
       setNotificationMessage(message);

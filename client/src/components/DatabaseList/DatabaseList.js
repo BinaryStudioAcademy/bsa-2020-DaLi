@@ -6,18 +6,18 @@ import TableCell from '@material-ui/core/TableCell';
 import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
+import Backdrop from '@material-ui/core/Backdrop';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 import DatabaseListItem from './DatabaseListItem';
 import DatabaseListHeader from '../DatabaseListHeader/DatabaseListHeader';
 import DeleteDatabaseModal from '../DeleteDatabaseModal/DeleteDatabaseModal';
 import { useStyles } from './styles';
 
-import { mockDatabase } from './mockDatabase';
-
-const DatabaseList = ({ deleteDatabase }) => {
+const DatabaseList = ({ deleteDatabase, databases, isLoading }) => {
   const classes = useStyles();
   const [deleteDbModalVisible, setDeleteDbModalVisible] = useState(false);
-  const [databaseIdForDelete, setDatabaseIdForDelete] = useState(-1);
+  const [databaseIdForDelete, setDatabaseIdForDelete] = useState('');
 
   const hideDeleteDbModal = () => {
     setDeleteDbModalVisible(false);
@@ -28,7 +28,11 @@ const DatabaseList = ({ deleteDatabase }) => {
     setDatabaseIdForDelete(id);
   };
 
-  return (
+  return isLoading ? (
+    <Backdrop style={{ color: '#fff', zIndex: 1 }} open>
+      <CircularProgress color="inherit" />
+    </Backdrop>
+  ) : (
     <div className={classes.root}>
       <DatabaseListHeader />
       <TableContainer>
@@ -41,9 +45,8 @@ const DatabaseList = ({ deleteDatabase }) => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {mockDatabase.map((database) => (
-              // eslint-disable-next-line
-              <DatabaseListItem database={database} key={database.id} onDelete={(id) => showDeleteDbModal(id)} />
+            {databases.map((database) => (
+              <DatabaseListItem database={database} key={database.id} onDelete={showDeleteDbModal} />
             ))}
           </TableBody>
         </Table>
@@ -60,6 +63,8 @@ const DatabaseList = ({ deleteDatabase }) => {
 
 DatabaseList.propTypes = {
   deleteDatabase: PropTypes.func,
+  databases: PropTypes.array,
+  isLoading: PropTypes.bool,
 };
 
 export default DatabaseList;

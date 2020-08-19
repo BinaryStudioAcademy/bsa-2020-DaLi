@@ -3,7 +3,7 @@ import { DELETE_DATABASE, IS_DATABASE_LOADING, GET_DATABASES } from './actionTyp
 export const deleteDatabase = (id) => {
   return {
     type: DELETE_DATABASE,
-    payload: { id },
+    id,
   };
 };
 export const getDatabases = () => {

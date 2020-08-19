@@ -8,7 +8,7 @@ import { Grid, Snackbar } from '@material-ui/core';
 import Alert from '@material-ui/lab/Alert';
 
 import * as actions from './actions';
-import { deleteVisualization } from '../AnalyticsTabsContainer/actions';
+import { addVisualization, deleteVisualization } from '../AnalyticsTabsContainer/actions';
 import { visualizationsAPIService } from '../../services/api/visualizationsAPI.service';
 
 import {
@@ -44,6 +44,7 @@ const ViewVisualizationContainer = (props) => {
     setVisualization,
     updateVisualizationConfig,
     updateVisualizationName,
+    addVisualization,
     deleteVisualization,
   } = props;
 
@@ -98,9 +99,8 @@ const ViewVisualizationContainer = (props) => {
   const hideNotification = () => setIsNotificationVisible(false);
 
   const createVisualization = async ({ name, description }) => {
-    updateVisualizationName({ name, description });
     const newVisualization = createNewVisualization(currentVisualization, name, description);
-    await visualizationsAPIService.createVisualization(newVisualization);
+    addVisualization(newVisualization);
     props.history.push('/');
   };
 
@@ -186,6 +186,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = {
   ...actions,
+  addVisualization,
   deleteVisualization,
 };
 
@@ -197,6 +198,7 @@ ViewVisualizationContainer.propTypes = {
   setVisualization: PropTypes.func,
   updateVisualizationConfig: PropTypes.func,
   updateVisualizationName: PropTypes.func,
+  addVisualization: PropTypes.func,
   deleteVisualization: PropTypes.func,
   history: PropTypes.object,
 };

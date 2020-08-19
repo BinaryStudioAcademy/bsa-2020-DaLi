@@ -3,6 +3,7 @@ import {
   GET_ANALYTICS,
   GET_ANALYTICS_SUCCESS,
   GET_ANALYTICS_ERROR,
+  ADD_VISUALIZATION,
   DELETE_VISUALIZATION,
   ADD_DASHBOARD,
   DELETE_DASHBOARD,
@@ -22,6 +23,15 @@ export function* getAnalytics() {
 
 export function* watchGetAnalyticsSaga() {
   yield takeEvery(GET_ANALYTICS, getAnalytics);
+}
+
+export function* addVisualizationSaga(payload) {
+  yield call(visualizationsAPIService.createVisualization, payload.newVisualization);
+  yield put({ type: GET_ANALYTICS });
+}
+
+export function* watchAddVisualizationSaga() {
+  yield takeEvery(ADD_VISUALIZATION, addVisualizationSaga);
 }
 
 export function* deleteVisualizationSaga(payload) {
@@ -57,5 +67,6 @@ export default function* analyticsSaga() {
     watchDeleteVisualizationSaga(),
     watchAddDashboardSaga(),
     watchDeleteDashboardSaga(),
+    watchAddVisualizationSaga(),
   ]);
 }

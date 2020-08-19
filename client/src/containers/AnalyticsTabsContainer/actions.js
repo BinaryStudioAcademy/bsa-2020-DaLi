@@ -1,8 +1,21 @@
-import { GET_ANALYTICS, DELETE_VISUALIZATION, ADD_DASHBOARD, DELETE_DASHBOARD } from './actionsTypes';
+import {
+  GET_ANALYTICS,
+  ADD_VISUALIZATION,
+  DELETE_VISUALIZATION,
+  ADD_DASHBOARD,
+  DELETE_DASHBOARD,
+} from './actionsTypes';
 
 export const getAnalytics = () => {
   return {
     type: GET_ANALYTICS,
+  };
+};
+
+export const addVisualization = (newVisualization) => {
+  return {
+    type: ADD_VISUALIZATION,
+    newVisualization,
   };
 };
 

@@ -13,6 +13,9 @@ import {
   DELETE_USER_SUCCESS,
   DELETE_USER_ERROR,
   TOGGLE_USER_STATUS,
+  RESET_PASSWORD,
+  RESET_PASSWORD_SUCCESS,
+  RESET_PASSWORD_ERROR,
 } from './actionTypes';
 import { usersAPIService } from '../../services/api/usersAPI.service';
 import { SetIsLoading, setTemporaryPassword } from './actions';
@@ -96,6 +99,20 @@ export function* watchUpdateUserData() {
   yield takeEvery(UPDATE_USER, updateUser);
 }
 
+export function* resetUserPasswordSaga(payload) {
+  try {
+    const response = yield call(usersAPIService.updateUser, payload.id, { password: null });
+
+    yield put({ type: RESET_PASSWORD_SUCCESS, payload: response });
+  } catch (error) {
+    yield put({ type: RESET_PASSWORD_ERROR, payload: error });
+  }
+}
+
+export function* watchResetUserPasswordSaga() {
+  yield takeEvery(RESET_PASSWORD, resetUserPasswordSaga);
+}
+
 export default function* usersSaga() {
   yield all([
     watchGetUsersSaga(),
@@ -103,5 +120,6 @@ export default function* usersSaga() {
     watchAddUserSaga(),
     watchUpdateUserData(),
     watchToggleUserStatus(),
+    watchResetUserPasswordSaga(),
   ]);
 }

@@ -7,6 +7,8 @@ import {
   RESET_ERROR,
   SET_TEMPORARY_PASSWORD,
   TOGGLE_USER_STATUS,
+  CLEAR_TEMPORARY_PASSWORD,
+  RESET_PASSWORD,
 } from './actionTypes';
 
 export const getUsers = () => {
@@ -60,5 +62,18 @@ export const setTemporaryPassword = (payload) => {
   return {
     type: SET_TEMPORARY_PASSWORD,
     payload,
+  };
+};
+
+export const clearTemporaryPassword = () => {
+  return {
+    type: CLEAR_TEMPORARY_PASSWORD,
+  };
+};
+
+export const resetPassword = (id) => {
+  return {
+    type: RESET_PASSWORD,
+    id,
   };
 };

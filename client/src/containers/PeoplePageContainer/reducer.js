@@ -10,12 +10,15 @@ import {
   IS_LOADING,
   RESET_ERROR,
   SET_TEMPORARY_PASSWORD,
+  CLEAR_TEMPORARY_PASSWORD,
+  RESET_PASSWORD_ERROR,
+  RESET_PASSWORD_SUCCESS,
 } from './actionTypes';
 
 const initialState = {
   users: [],
   isLoading: false,
-  temporaryPasswords: {},
+  temporaryPassword: '',
   error: null,
   message: '',
   status: '',
@@ -41,11 +44,12 @@ const usersListReducer = (state = initialState, { type, payload }) => {
     case ADD_USER_ERROR:
     case DELETE_USER_ERROR:
     case UPDATE_USER_ERROR:
-    case GET_USERS_ERROR: {
+    case GET_USERS_ERROR:
+    case RESET_PASSWORD_ERROR: {
       return {
         ...state,
         error: payload,
-        temporaryPasswords: {},
+        temporaryPasswords: '',
         message: payload.message,
         status: 'error',
       };
@@ -60,10 +64,22 @@ const usersListReducer = (state = initialState, { type, payload }) => {
         status: 'success',
       };
     }
+    case RESET_PASSWORD_SUCCESS: {
+      return {
+        ...state,
+        temporaryPassword: payload.password,
+      };
+    }
     case SET_TEMPORARY_PASSWORD: {
       return {
         ...state,
-        temporaryPasswords: { [payload.id]: payload.password },
+        temporaryPassword: payload,
+      };
+    }
+    case CLEAR_TEMPORARY_PASSWORD: {
+      return {
+        ...state,
+        temporaryPassword: '',
       };
     }
     case RESET_ERROR: {

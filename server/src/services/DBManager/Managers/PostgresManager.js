@@ -52,8 +52,8 @@ export default class DBPostgresManager {
       .query(
         `
       SELECT 
-        table_name,
-        data_type 
+        data_type,
+        column_name 
       FROM 
         information_schema.columns
       WHERE 

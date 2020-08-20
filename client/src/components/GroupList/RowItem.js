@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { NavLink } from 'react-router-dom';
 import TableCell from '@material-ui/core/TableCell';
 import TableRow from '@material-ui/core/TableRow';
 import Avatar from '@material-ui/core/Avatar';
@@ -9,7 +10,7 @@ import PropTypes from 'prop-types';
 import { useStyles } from './styles';
 import UserGroupForm from './UserGroupForm';
 
-const RowItem = ({ group, deleteGroup, updateUserGroup }) => {
+const RowItem = ({ item, deleteGroup, updateUserGroup, isTheGroup }) => {
   const classes = useStyles();
   const [menuAnchorEl, setMenuAnchorEl] = useState(null);
   const [isActiveEditMode, setIsActiveEditMode] = useState(false);
@@ -17,7 +18,6 @@ const RowItem = ({ group, deleteGroup, updateUserGroup }) => {
   const handleMenuClick = (event) => {
     setMenuAnchorEl(event.currentTarget);
   };
-
   const changeActiveEditMode = () => {
     setIsActiveEditMode(!isActiveEditMode);
   };
@@ -30,7 +30,7 @@ const RowItem = ({ group, deleteGroup, updateUserGroup }) => {
 
   const saveChange = (values) => {
     const payload = {
-      id: group.id,
+      id: item.id,
       data: { ...values },
     };
     updateUserGroup(payload);
@@ -40,12 +40,21 @@ const RowItem = ({ group, deleteGroup, updateUserGroup }) => {
   return (
     <>
       {!isActiveEditMode && (
-        <TableRow key={group.name}>
-          <TableCell align="left" className={classes.name}>
-            <Avatar className={classes.avatar}>{group.name[0]}</Avatar>
-            {group.name}
+        <TableRow>
+          <TableCell align="left" className={isTheGroup ? '' : classes.name}>
+            {!isTheGroup && (
+              <>
+                <Avatar className={classes.avatar}>{item.name[0]}</Avatar>
+                <NavLink to={`/admin/people/groups/${item.id}`}>{item.name}</NavLink>
+              </>
+            )}
+            {isTheGroup && (
+              <>
+                {item.firstName} {item.lastName}
+              </>
+            )}
           </TableCell>
-          <TableCell align="left">{group.userCount}</TableCell>
+          <TableCell align="left">{isTheGroup ? item.email : item.userCount}</TableCell>
           <TableCell align="left">
             <MoreHorizIcon className={classes.dots} onClick={handleMenuClick} />
             <Menu
@@ -56,22 +65,29 @@ const RowItem = ({ group, deleteGroup, updateUserGroup }) => {
               onClose={() => setMenuAnchorEl(null)}
             >
               <MenuItem onClick={changeActiveEditMode}>Edit name</MenuItem>
-              <MenuItem onClick={deleteGroup(group.id)}>Remove group</MenuItem>
+              <MenuItem onClick={deleteGroup(item.id)}>Remove group</MenuItem>
             </Menu>
           </TableCell>
         </TableRow>
       )}
       {isActiveEditMode && (
-        <UserGroupForm submitTitle="Edit" initialName={group.name} submit={saveChange} closeForm={closeForm} />
+        <UserGroupForm
+          submitTitle="Edit"
+          initialName={item.name}
+          isTheGroup={isTheGroup}
+          submit={saveChange}
+          closeForm={closeForm}
+        />
       )}
     </>
   );
 };
 
 RowItem.propTypes = {
-  group: PropTypes.array,
+  item: PropTypes.object,
   deleteGroup: PropTypes.func,
   updateUserGroup: PropTypes.func,
+  isTheGroup: PropTypes.bool,
 };
 
 export default RowItem;

@@ -9,11 +9,20 @@ import TableRow from '@material-ui/core/TableRow';
 import PropTypes from 'prop-types';
 import { useStyles } from './styles';
 import GroupListHeader from '../GroupListHeader';
-import RowItem from "./RowItem";
-import UserGroupForm from "./UserGroupForm";
+import RowItem from './RowItem';
+import UserGroupForm from './UserGroupForm';
+import UserForm from './UserForm';
 
-const GroupList = ({ groups, addUserGroup, deleteGroup, updateUserGroup }) => {
-
+const GroupList = ({
+  groups,
+  addUserGroup,
+  deleteGroup,
+  updateUserGroup,
+  currentGroup,
+  isTheGroup,
+  users = [],
+  addUser,
+}) => {
   const [isVisibleForm, setIsVisibleForm] = useState(false);
   const classes = useStyles();
 
@@ -21,6 +30,13 @@ const GroupList = ({ groups, addUserGroup, deleteGroup, updateUserGroup }) => {
     setIsVisibleForm(true);
   };
 
+  const usersLikeOptions = users.map((user) => {
+    const fullName = `${user.firstName} ${user.lastName}`;
+    return {
+      value: user.id,
+      label: fullName,
+    };
+  });
   const closeForm = (resetForm) => () => {
     resetForm();
     setIsVisibleForm(false);
@@ -31,21 +47,54 @@ const GroupList = ({ groups, addUserGroup, deleteGroup, updateUserGroup }) => {
     closeForm();
   };
 
+  const addUserToGroup = (values) => {
+    addUser(values.user.value);
+    closeForm();
+  };
+
   return (
     <div className={classes.root}>
-      <GroupListHeader openForm={openForm} />
+      <GroupListHeader
+        openForm={openForm}
+        title={isTheGroup ? currentGroup.name : 'Groups'}
+        buttonTitle={isTheGroup ? 'Add members' : 'Create group'}
+      />
       <TableContainer>
         <Table aria-label="simple table">
           <TableHead>
             <TableRow>
-              <TableCell align="left">Group Name</TableCell>
-              <TableCell align="left">Members</TableCell>
+              <TableCell align="left">{isTheGroup ? 'Members' : 'Group Name'}</TableCell>
+              <TableCell align="left">{isTheGroup ? 'Email' : 'Members'}</TableCell>
               <TableCell align="left">&nbsp;</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            {isVisibleForm && <UserGroupForm submitTitle='Add' initialName='' submit={createUserGroup} closeForm={closeForm}/> }
-            {groups.map((group) => <RowItem key={group.id} group={group} deleteGroup={deleteGroup} updateUserGroup={updateUserGroup} />)}
+            {isVisibleForm && !isTheGroup && (
+              <UserGroupForm initialName="" submitTitle="Add" submit={createUserGroup} closeForm={closeForm} />
+            )}
+            {isVisibleForm && isTheGroup && (
+              <UserForm
+                usersLikeOptions={usersLikeOptions}
+                submitTitle="Add"
+                submit={addUserToGroup}
+                closeForm={closeForm}
+              />
+            )}
+            {!isTheGroup &&
+              groups.map((group) => (
+                <RowItem key={group.id} item={group} deleteGroup={deleteGroup} updateUserGroup={updateUserGroup} />
+              ))}
+            {isTheGroup &&
+              currentGroup.Users.map((user) => (
+                <RowItem
+                  users={users}
+                  key={user.id}
+                  isTheGroup={isTheGroup}
+                  item={user}
+                  deleteGroup={deleteGroup}
+                  updateUserGroup={updateUserGroup}
+                />
+              ))}
           </TableBody>
         </Table>
       </TableContainer>
@@ -58,6 +107,10 @@ GroupList.propTypes = {
   addUserGroup: PropTypes.func,
   deleteGroup: PropTypes.func,
   updateUserGroup: PropTypes.func,
+  isTheGroup: PropTypes.bool,
+  currentGroup: PropTypes.object,
+  users: PropTypes.array,
+  addUser: PropTypes.func,
 };
 
 export default GroupList;

@@ -5,6 +5,13 @@ export const useStyles = makeStyles({
     flex: 1,
     padding: '0 4rem',
     boxSizing: 'border-box',
+    '& a': {
+      textDecoration: 'none',
+      color: '#3ca1de',
+      '&:hover': {
+        color: '#3c81de',
+      },
+    },
   },
   name: {
     display: 'flex',
@@ -46,5 +53,8 @@ export const useStyles = makeStyles({
     '& button': {
       marginLeft: '10px',
     },
+  },
+  select: {
+    flexGrow: 4,
   },
 });

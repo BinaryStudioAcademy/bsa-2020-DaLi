@@ -37,9 +37,10 @@ export const getUserGroups = () => {
   };
 };
 
-export const getUserGroup = () => {
+export const getUserGroup = (id) => {
   return {
     type: GET_USER_GROUP,
+    id,
   };
 };
 
@@ -64,10 +65,10 @@ export const deleteUserGroup = (id) => {
   };
 };
 
-export const addUserToGroup = (userId, userGroupsId) => {
+export const addUserToGroup = (usersId, userGroupsId) => {
   return {
     type: ADD_USER_TO_GROUP,
-    userId,
+    usersId,
     userGroupsId,
   };
 };

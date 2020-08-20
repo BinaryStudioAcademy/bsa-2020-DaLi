@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { withRouter, Switch, Route } from 'react-router-dom';
 import PropTypes from 'prop-types';
@@ -8,7 +8,7 @@ import PeoplePageMenu from './PeoplePageMenu';
 import { getUsers, addUser, updateUser, resetError } from './actions';
 import { useStyles } from './styles';
 import UserGroupsPageContainer from '../UserGroupsPageContainer/UserGroupsPageContainer';
-import { getUserGroups } from '../UserGroupsPageContainer/actions';
+import { getUserGroups, getUserGroup } from '../UserGroupsPageContainer/actions';
 
 const PeoplePageContainer = ({
   people,
@@ -20,16 +20,27 @@ const PeoplePageContainer = ({
   updateUser,
   resetError,
   getUserGroups,
+  match,
+  location,
+  getUserGroup,
 }) => {
   const classes = useStyles();
 
+  const [isTheGroup, setIsTheGroup] = useState(false);
+
   useEffect(() => {
-    getUsers();
-    getUserGroups();
+    if (!match.isExact && location.pathname.split('groups/')[1]) {
+      setIsTheGroup(true);
+      const id = location.pathname.split('groups/')[1];
+      getUserGroup(id);
+    } else {
+      getUsers();
+      getUserGroups();
+    }
     return () => {
       resetError();
     };
-  }, [getUsers, resetError, getUserGroups]);
+  }, [getUsers, resetError, getUserGroups, getUserGroup, location.pathname, match.isExact]);
 
   return (
     <Grid container className={classes.root}>
@@ -49,7 +60,12 @@ const PeoplePageContainer = ({
             />
           )}
         />
-        <Route exact path="/admin/people/groups" component={() => <UserGroupsPageContainer />} />
+        <Route
+          path="/admin/people/groups/"
+          component={() => (
+            <UserGroupsPageContainer userGroupsId={location.pathname.split('groups/')[1]} isTheGroup={isTheGroup} />
+          )}
+        />
       </Switch>
     </Grid>
   );
@@ -74,8 +90,13 @@ PeoplePageContainer.propTypes = {
   updateUser: PropTypes.func,
   resetError: PropTypes.func,
   getUserGroups: PropTypes.func,
+  match: PropTypes.object,
+  location: PropTypes.object,
+  getUserGroup: PropTypes.func,
 };
 
 export default withRouter(
-  connect(mapStateToProps, { getUsers, addUser, updateUser, resetError, getUserGroups })(PeoplePageContainer)
+  connect(mapStateToProps, { getUsers, addUser, updateUser, resetError, getUserGroups, getUserGroup })(
+    PeoplePageContainer
+  )
 );

@@ -13,6 +13,9 @@ export const useStyles = makeStyles({
       },
     },
   },
+  tableContainer: {
+    minHeight: '350px',
+  },
   name: {
     display: 'flex',
     alignItems: 'center',

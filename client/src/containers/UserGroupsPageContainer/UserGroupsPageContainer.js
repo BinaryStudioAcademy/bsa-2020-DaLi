@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { GroupList } from '../../components';
-import { resetError, addUserGroup, deleteUserGroup, updateUserGroup, getUserGroup, addUserToGroup } from './actions';
+import { resetError, addUserGroup, deleteUserGroup, updateUserGroup, getUserGroup, addUserToGroup, deleteUserFromGroup } from './actions';
 
 const UserGroupsPageContainer = ({
   userGroupsId,
@@ -15,7 +15,7 @@ const UserGroupsPageContainer = ({
   currentGroup,
   isLoading,
   users,
-  addUserToGroup,
+  addUserToGroup, deleteUserFromGroup,
 }) => {
   const deleteGroup = (id) => () => {
     deleteUserGroup(id);
@@ -24,6 +24,10 @@ const UserGroupsPageContainer = ({
   const addUser = (userId) => {
     addUserToGroup(userId, userGroupsId);
   };
+
+  const deleteUser = (usersUserGroupsId) => {
+    deleteUserFromGroup(userGroupsId, usersUserGroupsId);
+  }
 
   return (
     <>
@@ -37,6 +41,7 @@ const UserGroupsPageContainer = ({
           updateUserGroup={updateUserGroup}
           users={users}
           addUser={addUser}
+          deleteUser={deleteUser}
         />
       )}
     </>
@@ -68,6 +73,7 @@ UserGroupsPageContainer.propTypes = {
   userGroupsId: PropTypes.string,
   updateUserGroup: PropTypes.func,
   addUserToGroup: PropTypes.func,
+  deleteUserFromGroup: PropTypes.func,
 };
 
 export default withRouter(
@@ -78,5 +84,6 @@ export default withRouter(
     updateUserGroup,
     getUserGroup,
     addUserToGroup,
+    deleteUserFromGroup,
   })(UserGroupsPageContainer)
 );

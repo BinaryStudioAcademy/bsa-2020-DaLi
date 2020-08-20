@@ -7,7 +7,7 @@ import {
   ADD_USER_GROUP,
   UPDATE_USER_GROUP,
   DELETE_USER_GROUP,
-  ADD_USER_TO_GROUP,
+  ADD_USER_TO_GROUP, DELETE_USER_FROM_GROUP,
 } from './actionTypes';
 import { userGroupsAPIService } from '../../services/api/userGroupsAPI.service';
 import { SetIsLoading, setError } from './actions';
@@ -104,6 +104,21 @@ export function* watchAddUserToGroupSaga() {
   yield takeEvery(ADD_USER_TO_GROUP, addUserToGroupSaga);
 }
 
+export function* deleteUserFromGroupSaga(payload) {
+  try {
+    yield put(SetIsLoading(true));
+    yield call(userGroupsAPIService.deleteUserFromGroup, payload.userGroupsId, payload.usersUserGroupsId);
+    yield put({ type: GET_USER_GROUP, id: payload.userGroupsId });
+  } catch (error) {
+    yield put(setError(error));
+    yield put(SetIsLoading(false));
+  }
+}
+
+export function* watchDeleteUserFromGroupSaga() {
+  yield takeEvery(DELETE_USER_FROM_GROUP, deleteUserFromGroupSaga);
+}
+
 export default function* userGroupsSaga() {
   yield all([
     watchGetUserGroupsSaga(),
@@ -112,5 +127,6 @@ export default function* userGroupsSaga() {
     watchDeleteUserGroupSaga(),
     watchGetUserGroupSaga(),
     watchAddUserToGroupSaga(),
+    watchDeleteUserFromGroupSaga(),
   ]);
 }

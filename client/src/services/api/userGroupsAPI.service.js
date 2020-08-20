@@ -19,5 +19,7 @@ class UserGroupsAPIService extends baseAPIService {
   deleteUserGroup = (id) => this.deleteData(`${id}`);
 
   addUserToGroup = (userGroupsId, usersId) => this.postData(`/${userGroupsId}`, { users_id: usersId });
+
+  deleteUserFromGroup = (userGroupsId, usersUserGroupsId) => this.deleteData(`/${userGroupsId}`, { usersUserGroupsId });
 }
 export const userGroupsAPIService = new UserGroupsAPIService();

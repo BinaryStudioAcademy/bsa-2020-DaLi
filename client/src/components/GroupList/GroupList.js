@@ -20,8 +20,9 @@ const GroupList = ({
                      updateUserGroup,
                      currentGroup,
                      isTheGroup,
-                     users = [],
                      addUser,
+                     deleteUser,
+                     users = []
                    }) => {
   const [isVisibleForm, setIsVisibleForm] = useState(false);
   const classes = useStyles();
@@ -29,7 +30,9 @@ const GroupList = ({
   const openForm = () => {
     setIsVisibleForm(true);
   };
+
   const currentGroupUsers = currentGroup.Users || [];
+
   const usersLikeOptions = users.filter(user => {
     return !currentGroupUsers.find(({id}) => user.id === id)
   }).map((user) => {
@@ -62,7 +65,7 @@ const GroupList = ({
             title={isTheGroup ? currentGroup.name : 'Groups'}
             buttonTitle={isTheGroup ? 'Add members' : 'Create group'}
         />
-        <TableContainer>
+        <TableContainer className={classes.tableContainer}>
           <Table aria-label="simple table">
             <TableHead>
               <TableRow>
@@ -96,6 +99,7 @@ const GroupList = ({
                       item={user}
                       deleteGroup={deleteGroup}
                       updateUserGroup={updateUserGroup}
+                      deleteUser={deleteUser}
                   />
               ))}
             </TableBody>
@@ -114,6 +118,7 @@ GroupList.propTypes = {
   currentGroup: PropTypes.object,
   users: PropTypes.array,
   addUser: PropTypes.func,
+  deleteUser: PropTypes.func,
 };
 
 export default GroupList;

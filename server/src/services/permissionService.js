@@ -107,28 +107,40 @@ export const updateDBPermissions = async (permissions) => {
   return result;
 };
 
-// export const updatePermissions = async (permissions) => {
-//   const result = await Promise.all(
-//   permissions.map(async (permission) => {
-//       const { databaseId, groups} = permission;
-//       groups.map(async(group) => {
-//         const { groupId, access, tables } = group;
-//         let accessLevel;
-//         if (access === 'granted') {
-//           accessLevel = true;
-//         }
-//         if (access === 'denied') {
-//           accessLevel = false;
-//         }
-
-
-//       })
-
-//       const result = await PermissionRepository.updateById({ id: permission.id }, permission);
-//       return result;
-//     })
-//   );
-//   // const result = await PermissionRepository.getPermissionsByGroupId('23923be5-f4df-4cc6-83f5-456b0ccde933');
-
-//   return result;
-// };
+export const updatePermissions = async ({ permissions }) => {
+  await Promise.all(
+    permissions.map(async (permission) => {
+      const { databaseId, groups } = permission;
+      groups.map(async (group) => {
+        const { groupId, access, tables } = group;
+        let accessLevel;
+        if (access === 'granted') {
+          accessLevel = true;
+        }
+        if (access === 'denied') {
+          accessLevel = false;
+        }
+        if (access !== 'limited') {
+          const TableIds = await DBTable.getTablesIdsByDatabaseId(databaseId);
+          await Promise.all(
+            TableIds.map(async (data) => {
+              PermissionRepository.updatePermissionByGroupIdAndTableId(groupId, data.id, {
+                permissionGranted: accessLevel,
+              });
+            })
+          );
+        } else {
+          await Promise.all(
+            tables.map(async (data) => {
+              console.log(data.id);
+              PermissionRepository.updatePermissionByGroupIdAndTableId(groupId, data.tableId, {
+                permissionGranted: data.access,
+              });
+            })
+          );
+        }
+      });
+    })
+  );
+  return 'success';
+};

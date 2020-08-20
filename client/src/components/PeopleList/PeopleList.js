@@ -110,6 +110,10 @@ const PeopleList = ({
     setAddUserModalVisible(true);
   };
 
+  const addUserHandler = () => {
+    showAddUserModal(null);
+  }
+
   const showDeactivateUserModal = (person) => {
     setUser(person);
     setDeactivateUserModalVisible(true);
@@ -134,7 +138,7 @@ const PeopleList = ({
               <Tab label="Active" className={classes.tab} />
               <Tab label="Deactivated" className={classes.tab} />
             </Tabs>
-            <Button className={classes.addPersonButton} variant="contained" onClick={showAddUserModal}>
+            <Button className={classes.addPersonButton} variant="contained" onClick={addUserHandler}>
               Add someone
             </Button>
           </div>
@@ -171,7 +175,7 @@ const PeopleList = ({
       <AddUserModal
         isVisible={addUserModalVisible}
         closeModal={hideAddUserModal}
-        submitHandler={updateUser}
+        submitHandler={user ? updateUser : addUser}
         user={user}
       />
       <DeactivateUserModal

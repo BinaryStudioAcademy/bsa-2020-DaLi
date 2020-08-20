@@ -1,5 +1,6 @@
 import { Router } from 'express';
 import * as UserService from '../services/userService';
+import { generatePassword } from '../helpers/generatePassword';
 
 const router = Router();
 
@@ -35,6 +36,10 @@ router.post('/', async (req, res, next) => {
 
 router.patch('/:id', async (req, res, next) => {
   try {
+    if (req.body.password === null) {
+      req.body.password = generatePassword();
+    }
+
     const result = await UserService.updateUser(
       {
         id: req.params.id,

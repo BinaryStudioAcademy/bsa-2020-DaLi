@@ -12,6 +12,16 @@ class DashboardRepository extends BaseRepository {
       ],
     });
   }
+
+  getAllWithVisualizations() {
+    return this.model.findAll({
+      include: [
+        {
+          model: models.Visualization,
+        },
+      ],
+    });
+  }
 }
 
 export default new DashboardRepository(models.Dashboard);

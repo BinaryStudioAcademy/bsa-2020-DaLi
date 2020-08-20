@@ -33,6 +33,11 @@ export default (sequelize, DataTypes) => {
         defaultValue: 'P@$$w0rd',
         type: DataTypes.STRING,
       },
+      isActive: {
+        allowNull: false,
+        type: DataTypes.BOOLEAN,
+        defaultValue: true,
+      },
       lastLogin: {
         allowNull: true,
         type: DataTypes.DATE,

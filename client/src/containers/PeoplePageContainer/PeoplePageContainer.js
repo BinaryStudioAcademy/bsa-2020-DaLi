@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import { Grid } from '@material-ui/core';
 import { PeopleList } from '../../components';
 import PeoplePageMenu from './PeoplePageMenu';
-import { getUsers, addUser, updateUser, resetError } from './actions';
+import { getUsers, addUser, updateUser, toggleUserStatus, resetError } from './actions';
 import { useStyles } from './styles';
 import UserGroupsPageContainer from '../UserGroupsPageContainer/UserGroupsPageContainer';
 import { getUserGroups, getUserGroup } from '../UserGroupsPageContainer/actions';
@@ -53,6 +53,7 @@ const PeoplePageContainer = ({
             <PeopleList
               people={people}
               addUser={addUser}
+              toggleUserStatus={toggleUserStatus}
               updateUser={updateUser}
               isLoading={isLoading}
               message={message}
@@ -88,6 +89,7 @@ PeoplePageContainer.propTypes = {
   getUsers: PropTypes.func,
   addUser: PropTypes.func,
   updateUser: PropTypes.func,
+  toggleUserStatus: PropTypes.func,
   resetError: PropTypes.func,
   getUserGroups: PropTypes.func,
   match: PropTypes.object,

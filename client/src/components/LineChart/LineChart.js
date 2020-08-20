@@ -5,7 +5,7 @@ import d3Tip from 'd3-tip';
 import PropTypes from 'prop-types';
 
 import { calcMaxYDataValue, calcMinYDataValue } from '../../utils/calcCriticalYAxisValue';
-import TrendlineCreator from '../../utils/Trendline'
+import TrendlineCreator from '../../utils/trendline';
 
 import './LineChart.css';
 
@@ -18,7 +18,7 @@ function LineChart({ settings, data, chart: chartSize }) {
   const svgRef = useRef();
   const [width, setWidth] = useState(chartSize.width);
   const [height, setHeight] = useState(chartSize.height);
-  
+
   const draw = () => {
     setConfig(settings);
     const { margin } = chartSize;
@@ -114,24 +114,24 @@ function LineChart({ settings, data, chart: chartSize }) {
     if (trendline.display && data.length) {
       const xDataRange = {
         min: data[0][XAxis.key],
-        max: data[data.length - 1][XAxis.key]
-      }
+        max: data[data.length - 1][XAxis.key],
+      };
       const xScaleForTrendline = d3
-      .scaleLinear()
-      .domain([xDataRange.min, xDataRange.max])
-      .range([margin.left, width - margin.right])
-      const {polynomial,trendlineType} = trendline
+        .scaleLinear()
+        .domain([xDataRange.min, xDataRange.max])
+        .range([margin.left, width - margin.right]);
+      const { polynomial, trendlineType } = trendline;
 
-      const trendlineData = data.map(item => [item[XAxis.key], item[YAxis.key]])
-      const barUnitWidth = (xDataRange.max - xDataRange.min) / data.length
-      const domain = [xDataRange.min, xDataRange.max - barUnitWidth]
+      const trendlineData = data.map((item) => [item[XAxis.key], item[YAxis.key]]);
+      const barUnitWidth = (xDataRange.max - xDataRange.min) / data.length;
+      const domain = [xDataRange.min, xDataRange.max - barUnitWidth];
       const config = {
         xOffset: xScale.bandwidth() / 2,
-        order: polynomial.order
-      }
+        order: polynomial.order,
+      };
 
-      const trendlineCreator = new TrendlineCreator(trendlineType, chart, xScaleForTrendline, yScale)
-      trendlineCreator.render(domain, trendlineData, config)
+      const trendlineCreator = new TrendlineCreator(trendlineType, chart, xScaleForTrendline, yScale);
+      trendlineCreator.render(domain, trendlineData, config);
     }
 
     if (YAxis.displayLabel) {
@@ -171,7 +171,7 @@ function LineChart({ settings, data, chart: chartSize }) {
   const resize = () => {
     setHeight(svgRef.current.parentElement.offsetHeight);
     setWidth(svgRef.current.parentElement.offsetWidth);
-}
+  };
 
   useEffect(() => {
     setHeight(svgRef.current.parentElement.offsetHeight);
@@ -179,7 +179,9 @@ function LineChart({ settings, data, chart: chartSize }) {
     draw();
     window.addEventListener('resize', resize);
 
-    return () => {window.removeEventListener('resize', resize);}
+    return () => {
+      window.removeEventListener('resize', resize);
+    };
   }, [goal, trendline, showDataPointsValues, lineType, color, data, chartSize, width, height]);
 
   return <svg ref={svgRef} />;
@@ -223,8 +225,8 @@ LineChart.propTypes = {
         availableTrendlineTypes: PropTypes.array,
         polynomial: PropTypes.shape({
           availableOrders: PropTypes.array,
-          order: PropTypes.number
-        })
+          order: PropTypes.number,
+        }),
       }),
       showDataPointsValues: PropTypes.bool,
     }),

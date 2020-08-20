@@ -24,6 +24,7 @@ import DashboardHeader from './DashboardHeader/DashboardHeader';
 import DashboardLayout from './DashboardLayout/DashboardLayout';
 import DataSourcesDatasetsView from './DataSourcesDatasetsView/DataSourcesDatasetsView';
 import DataSourcesTablesView from './DataSourcesTablesView/DataSourcesTablesView';
+import DeleteVisualizationWarning from './DeleteVisualizationWarning/DeleteVisualizationWarning';
 
 export {
   BarChart,
@@ -52,4 +53,5 @@ export {
   DashboardLayout,
   DataSourcesDatasetsView,
   DataSourcesTablesView,
+  DeleteVisualizationWarning,
 };

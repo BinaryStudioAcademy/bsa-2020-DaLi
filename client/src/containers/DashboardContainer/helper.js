@@ -117,3 +117,18 @@ export const getNotAddedVisualizations = (dashboardVisualizations, visualization
   const dashboardVisualizationsId = dashboardVisualizations.map((dashboardVisualization) => dashboardVisualization.id);
   return visualizations.filter((visualization) => !dashboardVisualizationsId.includes(visualization.id));
 };
+
+export const setFullScreen = () => {
+  const doc = window.document;
+  const docEl = doc.documentElement;
+  const requestFullScreen =
+    docEl.requestFullscreen || docEl.mozRequestFullScreen || docEl.webkitRequestFullScreen || docEl.msRequestFullscreen;
+  requestFullScreen.call(docEl);
+};
+
+export const cancelFullScreen = () => {
+  const doc = window.document;
+  const cancelFullScreen =
+    doc.exitFullscreen || doc.mozCancelFullScreen || doc.webkitExitFullscreen || doc.msExitFullscreen;
+  cancelFullScreen.call(doc);
+};

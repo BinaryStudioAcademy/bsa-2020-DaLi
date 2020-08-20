@@ -19,18 +19,12 @@ const groups = [
 ];
 
 const GroupList = () => {
-  // const history = useHistory();
   const [menuAnchorEl, setMenuAnchorEl] = React.useState(null);
   const classes = useStyles();
-  // const [groups, setGroups] = React.useState(['Admin', 'Default']);
 
   const handleMenuClick = (event) => {
     setMenuAnchorEl(event.currentTarget);
   };
-
-  // const handleChange = (event) => {
-  //   // setGroups(event.target.value);
-  // };
 
   return (
     <div className={classes.root}>

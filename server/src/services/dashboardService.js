@@ -2,7 +2,7 @@ import DashboardRepository from '../repositories/dashboardRepository';
 import DashboardVisualizationsRepository from '../repositories/dashboardVisualizationsRepository';
 
 export const getDashboards = async () => {
-  const result = await DashboardRepository.getAll();
+  const result = await DashboardRepository.getAllWithVisualizations();
   return result;
 };
 

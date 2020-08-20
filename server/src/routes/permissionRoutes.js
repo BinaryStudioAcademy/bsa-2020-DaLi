@@ -22,4 +22,20 @@ router.get('/:id', async (req, res, next) => {
   }
 });
 
+router.patch('/:id', async (req, res, next) => {
+  const result = await PermissionService.updateDBPermissions(
+    // {
+    //   id: req.params.id,
+    // },
+    req.body
+  );
+  if (result) {
+    res.json(result);
+    next();
+  } else {
+    const err = new Error('Database not found');
+    next(err);
+  }
+});
+
 export default router;

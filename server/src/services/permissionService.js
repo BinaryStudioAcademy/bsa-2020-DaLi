@@ -67,7 +67,6 @@ export const setInitialDBPermissions = async (tableid) => {
 export const getDBPermissions = async (databaseId) => {
   const permissions = await PermissionRepository.getAll();
   const groups = await UserGroupsRepository.getAll();
-  // const databases = await DatabaseRepository.getAll();
   const tables = await DBTable.getTablesByDatabaseId(databaseId);
 
   const result = await Promise.all(
@@ -93,6 +92,17 @@ export const getDBPermissions = async (databaseId) => {
 
   return {
     tables,
+    groups,
     permissions: result,
   };
+};
+
+export const updateDBPermissions = async (permissions) => {
+  const result = await Promise.all(
+    permissions.map(async (permission) => {
+      const result = await PermissionRepository.updateById({ id: permission.id }, permission);
+      return result;
+    })
+  );
+  return result;
 };

@@ -10,6 +10,10 @@
   font-weight: 600;
 }
 
+.data-source-view .MuiBreadcrumbs-ol {
+  height: 30px;
+}
+
 .data-source-view .MuiBreadcrumbs-li {
   line-height: 0px;
 }

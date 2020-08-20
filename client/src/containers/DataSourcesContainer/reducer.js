@@ -1,15 +1,15 @@
 import {
   IS_DATASETS_LOADING,
-  GET_DATASET_ID,
   GET_DATASETS_ERROR,
   GET_DATASETS_SUCCESS,
   GET_TABLES_ERROR,
   GET_TABLES_SUCCESS,
+  SET_CUREENT_DB_NAME,
 } from './actionTypes';
 
 const initialState = {
   datasets: [],
-  currentDatasetId: '',
+  currentDbName: '',
   tables: [],
   isLoading: false,
   error: null,
@@ -35,10 +35,10 @@ const datasetsListReducer = (state = initialState, { type, payload }) => {
         status: 'success',
       };
     }
-    case GET_DATASET_ID: {
+    case SET_CUREENT_DB_NAME: {
       return {
         ...state,
-        currentDatasetId: payload,
+        currentDbName: payload,
       };
     }
     case GET_TABLES_SUCCESS: {

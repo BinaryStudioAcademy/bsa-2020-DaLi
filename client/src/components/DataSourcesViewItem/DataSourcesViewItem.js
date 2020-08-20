@@ -19,13 +19,14 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-const DataSourcesViewItem = ({ dataset, table, getDatasetId }) => {
+const DataSourcesViewItem = ({ dataset, table, getTables, setCurrentDbName }) => {
   const classes = useStyles();
   const history = useHistory();
 
   const handleDatasetClick = (dataset) => {
     history.push(`/data-sources/${dataset.id}`);
-    getDatasetId(dataset.id);
+    setCurrentDbName(dataset.dbName);
+    getTables(dataset.id);
   };
 
   const createDatasetItem = () => {
@@ -57,7 +58,8 @@ const DataSourcesViewItem = ({ dataset, table, getDatasetId }) => {
 DataSourcesViewItem.propTypes = {
   dataset: PropTypes.object,
   table: PropTypes.object,
-  getDatasetId: PropTypes.func,
+  getTables: PropTypes.func,
+  setCurrentDbName: PropTypes.func,
 };
 
 export default DataSourcesViewItem;

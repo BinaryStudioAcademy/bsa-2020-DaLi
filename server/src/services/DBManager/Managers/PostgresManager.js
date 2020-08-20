@@ -2,14 +2,17 @@ import Sequelize from 'sequelize';
 
 export default class DBPostgresManager {
   constructor(databaseURL) {
+    const dialectOptions = {};
+    if (!databaseURL.includes('localhost')) {
+      dialectOptions.ssl = {
+        require: true,
+        rejectUnauthorized: false,
+      };
+    }
+
     this.sequelize = new Sequelize(databaseURL, {
       dialect: 'postgres',
-      dialectOptions: {
-        ssl: {
-          require: true,
-          rejectUnauthorized: false,
-        },
-      },
+      dialectOptions,
     });
   }
 

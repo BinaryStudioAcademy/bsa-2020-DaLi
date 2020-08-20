@@ -1,4 +1,4 @@
-import { put, call, takeEvery, all, delay } from 'redux-saga/effects';
+import { put, call, takeEvery, all } from 'redux-saga/effects';
 import {
   GET_USERS,
   GET_USERS_SUCCESS,

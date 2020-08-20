@@ -1,12 +1,7 @@
-export const generatePassword = (
-  passwordLength = 8,
-  useUpperCase = true,
-  useNumbers = true,
-  useSpecialChars = true
-) => {
+export function generatePassword(passwordLength = 8, useUpperCase = true, useNumbers = true, useSpecialChars = true) {
   const chars = 'abcdefghijklmnopqrstuvwxyz';
   const numberChars = '0123456789';
-  const specialChars = '!"£$%^&*()';
+  const specialChars = '!£$%^&*()';
 
   const usableChars =
     chars +
@@ -21,4 +16,4 @@ export const generatePassword = (
   }
 
   return generatedPassword;
-};
+}

@@ -29,6 +29,28 @@ export const getTableData = async (id) => {
   return data;
 };
 
+export const getTableSchema = async (id) => {
+  let schema = null;
+  const table = await DBTable.getById(id);
+  if (table) {
+    let manager = new DBManager(table.DatabaseId);
+    manager = await manager.create();
+
+    try {
+      await manager.init();
+      schema = await manager.getTableSchemaByName(table.name);
+    } catch (error) {
+      console.log('///////////////////// ON GET TABLE SCHEMA FAILED');
+      console.log(error);
+      console.log('///////////////////// ON GET TABLE SCHEMA FAILED');
+      schema = null;
+    }
+
+    manager.destroy();
+  }
+  return schema;
+};
+
 export const getDBTables = async () => {
   const result = await DBTable.getAll();
   return result;

@@ -513,7 +513,7 @@ module.exports = {
         },
       },
     },
-    '/databases/tables/{id}': {
+    '/databases/{id}/tables': {
       get: {
         security: [
           {
@@ -543,7 +543,7 @@ module.exports = {
         },
       },
     },
-    '/tables/data/{id}': {
+    '/tables/{id}/data': {
       get: {
         security: [
           {
@@ -569,6 +569,36 @@ module.exports = {
           },
           400: {
             description: 'Fetching table data failed',
+          },
+        },
+      },
+    },
+    '/tables/{id}/schema': {
+      get: {
+        security: [
+          {
+            JWT: [],
+          },
+        ],
+        tags: ['Tables'],
+        summary: 'Get table schema by id',
+        parameters: [
+          {
+            name: 'id',
+            in: 'path',
+            description: 'ID of dbTable',
+            required: true,
+            schema: {
+              $ref: '#/definitions/Id',
+            },
+          },
+        ],
+        responses: {
+          200: {
+            description: 'Successful operation',
+          },
+          400: {
+            description: 'Fetching table schema failed',
           },
         },
       },

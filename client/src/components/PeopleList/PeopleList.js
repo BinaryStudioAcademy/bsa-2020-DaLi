@@ -59,12 +59,14 @@ const PeopleList = ({
   message: notificationMessageProps,
   status: notificationMessageStatusProps,
   temporaryPassword,
+  clearTemporaryPassword,
+  resetPassword,
 }) => {
   console.log('list', temporaryPassword);
   const classes = useStyles();
   const [addUserModalVisible, setAddUserModalVisible] = useState(false);
   const [deactivateUserModalVisible, setDeactivateUserModalVisible] = useState(false);
-  const [user, setUser] = React.useState(null);
+  const [user, setUser] = useState(null);
   const [isNotificationVisible, setIsNotificationVisible] = useState(false);
   const [notificationMessageStatus, setNotificationMessageStatus] = useState('');
   const [notificationMessage, setNotificationMessage] = useState('');
@@ -72,7 +74,9 @@ const PeopleList = ({
   const [inactiveUsers, setInactiveUsers] = useState([]);
   const [activeUsers, setActiveUsers] = useState([]);
 
-  const [value, setValue] = React.useState(0);
+  const [isResetPasswordVisible, setIsResetPasswordVisible] = useState(false);
+
+  const [value, setValue] = useState(0);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -119,6 +123,15 @@ const PeopleList = ({
     setDeactivateUserModalVisible(true);
   };
 
+  const showResetPasswordModal = (person) => {
+    setUser(person);
+    setIsResetPasswordVisible(true);
+  };
+  const hideResetPasswordModal = () => {
+    setIsResetPasswordVisible(false);
+  };
+
+  console.log('list', user);
   return (
     <div className={classes.root}>
       {!isInactiveUsers ? (
@@ -129,6 +142,7 @@ const PeopleList = ({
             people={people}
             showAddUserModal={showAddUserModal}
             showDeactivateUserModal={showDeactivateUserModal}
+            showResetPasswordModal={showResetPasswordModal}
           />
         </>
       ) : (
@@ -178,7 +192,14 @@ const PeopleList = ({
         submitHandler={updateUser}
         user={user}
       />
-      <PasswordModal password={temporaryPassword} />
+      <PasswordModal
+        password={temporaryPassword}
+        clearPassword={clearTemporaryPassword}
+        resetPassword={resetPassword}
+        isReset={isResetPasswordVisible}
+        hideModal={hideResetPasswordModal}
+        user={user}
+      />
       <DeactivateUserModal
         isVisible={deactivateUserModalVisible}
         closeModal={hideDeactivateUserModal}

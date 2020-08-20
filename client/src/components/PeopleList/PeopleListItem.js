@@ -43,7 +43,14 @@ const getInitials = (person) => {
     .join('');
 };
 
-const PeopleListItem = ({ person, showAddUserModal, showDeactivateUserModal, active, toggleUserStatus }) => {
+const PeopleListItem = ({
+  person,
+  showAddUserModal,
+  showDeactivateUserModal,
+  active,
+  toggleUserStatus,
+  showResetPasswordModal,
+}) => {
   const classes = useStyles();
   const colors = colorStyles();
 
@@ -72,6 +79,10 @@ const PeopleListItem = ({ person, showAddUserModal, showDeactivateUserModal, act
     handleClose();
   };
 
+  const handleResetPassword = () => {
+    showResetPasswordModal({ id: person.id, firstName: person.firstName, lastName: person.lastName });
+  };
+
   return (
     <>
       <TableRow key={person.firstName + person.lastName}>
@@ -94,9 +105,7 @@ const PeopleListItem = ({ person, showAddUserModal, showDeactivateUserModal, act
                 onClose={() => setMenuAnchorEl(null)}
               >
                 <MenuItem onClick={onEditUser}>Edit user</MenuItem>
-                <MenuItem onClick={() => {}} disabled>
-                  Reset password
-                </MenuItem>
+                <MenuItem onClick={handleResetPassword}>Reset password</MenuItem>
                 <MenuItem onClick={onDeactivateUser}>Deactivate user</MenuItem>
               </Menu>
             </>

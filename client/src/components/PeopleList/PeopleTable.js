@@ -9,7 +9,14 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import PeopleListItem from './PeopleListItem';
 
-const PeopleTable = ({ people, showAddUserModal, showDeactivateUserModal, active, toggleUserStatus }) => (
+const PeopleTable = ({
+  people,
+  showAddUserModal,
+  showDeactivateUserModal,
+  active,
+  toggleUserStatus,
+  showResetPasswordModal,
+}) => (
   <TableContainer>
     <Table aria-label="simple table">
       <TableHead>
@@ -30,6 +37,7 @@ const PeopleTable = ({ people, showAddUserModal, showDeactivateUserModal, active
             showAddUserModal={showAddUserModal}
             showDeactivateUserModal={showDeactivateUserModal}
             toggleUserStatus={toggleUserStatus}
+            showResetPasswordModal={showResetPasswordModal}
           />
         ))}
       </TableBody>

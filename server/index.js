@@ -11,14 +11,13 @@ import { passportMiddleware } from './src/middlewares/passport';
 import * as swaggerDocument from './src/docs';
 
 const app = express();
-
-app.use(passport.initialize());
-passportMiddleware(passport);
-
 app.use(cors({
     origin: '*',
     allowedHeaders: ['Origin', 'X-Requested-With', 'Content-Type', 'Accept', 'Authorization'],
 }));
+app.use(passport.initialize());
+passportMiddleware(passport);
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));

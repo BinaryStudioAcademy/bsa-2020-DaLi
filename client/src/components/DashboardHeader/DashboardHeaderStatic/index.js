@@ -7,8 +7,8 @@ import FullscreenIcon from '@material-ui/icons/Fullscreen';
 
 import useStyles from './styles';
 
-const DashboardHeader = (props) => {
-  const { name, description, onSetEdit } = props;
+const DashboardHeaderStatic = (props) => {
+  const { name, description, onSetEdit, onSetFullScreenViewMode } = props;
   const classes = useStyles();
   return (
     <Grid className={classes.dashboardStaticHeader}>
@@ -28,16 +28,17 @@ const DashboardHeader = (props) => {
           className={`${classes.dashboardStaticControlsItem} ${classes.dashboardStaticControlsItemEdit}`}
           onClick={onSetEdit}
         />
-        <FullscreenIcon className={classes.dashboardStaticControlsItem} />
+        <FullscreenIcon className={classes.dashboardStaticControlsItem} onClick={onSetFullScreenViewMode} />
       </Grid>
     </Grid>
   );
 };
 
-DashboardHeader.propTypes = {
+DashboardHeaderStatic.propTypes = {
   name: PropTypes.string,
   description: PropTypes.string,
   onSetEdit: PropTypes.func,
+  onSetFullScreenViewMode: PropTypes.func,
 };
 
-export default DashboardHeader;
+export default DashboardHeaderStatic;

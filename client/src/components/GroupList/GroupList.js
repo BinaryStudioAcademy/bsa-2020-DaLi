@@ -25,6 +25,7 @@ const GroupList = ({
                      users = []
                    }) => {
   const [isVisibleForm, setIsVisibleForm] = useState(false);
+
   const classes = useStyles();
 
   const openForm = () => {
@@ -47,6 +48,7 @@ const GroupList = ({
     resetForm();
     setIsVisibleForm(false);
   };
+
 
   const createUserGroup = (values) => {
     addUserGroup(values);

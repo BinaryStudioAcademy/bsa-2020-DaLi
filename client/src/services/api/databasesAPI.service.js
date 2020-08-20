@@ -14,6 +14,6 @@ class DatabasesAPIService extends baseAPIService {
 
   addDatabase = (data) => this.postData('', data);
 
-  getTables = (id) => this.getDataById(`/tables/${id}`);
+  getTables = (id) => this.getDataById(`/${id}/tables`);
 }
 export const databasesAPIService = new DatabasesAPIService();

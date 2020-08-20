@@ -92,7 +92,7 @@ export function* watchDeleteUserGroupSaga() {
 export function* addUserToGroupSaga(payload) {
   try {
     yield put(SetIsLoading(true));
-    yield call(userGroupsAPIService.addUserToGroup, payload.userGroupsId, payload.users_id);
+    yield call(userGroupsAPIService.addUserToGroup, payload.userGroupsId, payload.usersId);
     yield put({ type: GET_USER_GROUP, id: payload.userGroupsId });
   } catch (error) {
     yield put(setError(error));

@@ -18,7 +18,7 @@ const useStyles = makeStyles(() => ({
     fontSize: '13px',
     lineHeight: '13px',
     color: 'rgba(0, 0, 0, 0.54)',
-    '&:hover': {
+    'li a&:hover': {
       textDecoration: 'underline',
     },
   },

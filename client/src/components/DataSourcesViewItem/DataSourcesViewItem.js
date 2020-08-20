@@ -25,7 +25,7 @@ const DataSourcesViewItem = ({ dataset, table, getTables, setCurrentDbName }) =>
 
   const handleDatasetClick = (dataset) => {
     history.push(`/data-sources/${dataset.id}`);
-    setCurrentDbName(dataset.dbName);
+    setCurrentDbName(dataset.dbNickname);
     getTables(dataset.id);
   };
 
@@ -33,7 +33,7 @@ const DataSourcesViewItem = ({ dataset, table, getTables, setCurrentDbName }) =>
     return (
       <Grid item className="data-source-item dataset-item" onClick={() => handleDatasetClick(dataset)}>
         <FaDatabase style={{ color: '#7073a9', fontSize: 30 }} />
-        <p>{dataset.dbName}</p>
+        <p>{dataset.dbNickname}</p>
       </Grid>
     );
   };

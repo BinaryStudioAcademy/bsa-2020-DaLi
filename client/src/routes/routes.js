@@ -1,6 +1,6 @@
 import React from 'react';
 import { Switch } from 'react-router-dom';
-import { ProtectedRoute, PublicRoute } from '../containers';
+import { ProtectedRoute, PublicRoute, DataSourcesDatasetsContainer, DataSourcesTablesContainer } from '../containers';
 import {
   LoginPage,
   SelectVisualizationPage,
@@ -23,6 +23,8 @@ const routes = (
     <ProtectedRoute path="/admin" component={AdminPage} />
     <ProtectedRoute path="/connection-database" component={ConnectionDatabasePage} />
     <ProtectedRoute exact path="/dashboards/:id" component={DashboardPage} />
+    <ProtectedRoute exact path="/data-sources" component={DataSourcesDatasetsContainer} />
+    <ProtectedRoute exact path="/data-sources/:id" component={DataSourcesTablesContainer} />
   </Switch>
 );
 

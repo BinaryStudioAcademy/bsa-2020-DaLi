@@ -39,13 +39,6 @@ TabPanel.propTypes = {
   value: PropTypes.any.isRequired,
 };
 
-function a11yProps(index) {
-  return {
-    id: `simple-tab-${index}`,
-    'aria-controls': `simple-tabpanel-${index}`,
-  };
-}
-
 const PeopleList = ({
   people = mockPeople,
   addUser,
@@ -110,7 +103,7 @@ const PeopleList = ({
 
   const addUserHandler = () => {
     showAddUserModal(null);
-  }
+  };
 
   const showDeactivateUserModal = (person) => {
     setUser(person);

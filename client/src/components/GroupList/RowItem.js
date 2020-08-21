@@ -12,7 +12,7 @@ import PropTypes from 'prop-types';
 import { useStyles } from './styles';
 import UserGroupForm from './UserGroupForm';
 
-const RowItem = ({ item, deleteGroup, updateUserGroup, isTheGroup, deleteUser}) => {
+const RowItem = ({ item, deleteGroup, updateUserGroup, isTheGroup, deleteUser }) => {
   const classes = useStyles();
   const [menuAnchorEl, setMenuAnchorEl] = useState(null);
   const [isActiveEditMode, setIsActiveEditMode] = useState(false);
@@ -62,30 +62,26 @@ const RowItem = ({ item, deleteGroup, updateUserGroup, isTheGroup, deleteUser}) 
           </TableCell>
           <TableCell align="left">{isTheGroup ? item.email : item.userCount}</TableCell>
           <TableCell align="left">
-            {!isTheGroup &&
-                <>
-            <MoreHorizIcon className={classes.dots} onClick={handleMenuClick} />
-            <Menu
-              id="add-menu"
-              anchorEl={menuAnchorEl}
-              keepMounted
-              open={Boolean(menuAnchorEl)}
-              onClose={() => setMenuAnchorEl(null)}
-            >
-              <MenuItem onClick={changeActiveEditMode}>Edit name</MenuItem>
-              <MenuItem onClick={deleteGroup(item.id)}>Remove group</MenuItem>
-            </Menu>
-            </>
-            }
-            {isTheGroup &&
-            <IconButton
-                aria-label="close"
-                size="small"
-                onClick={deleteItem(item.UsersUserGroups.id)}
-            >
-              <CloseIcon style={{fontSize: 18, color: '#c6cfd4'}}/>
-            </IconButton>
-            }
+            {!isTheGroup && (
+              <>
+                <MoreHorizIcon className={classes.dots} onClick={handleMenuClick} />
+                <Menu
+                  id="add-menu"
+                  anchorEl={menuAnchorEl}
+                  keepMounted
+                  open={Boolean(menuAnchorEl)}
+                  onClose={() => setMenuAnchorEl(null)}
+                >
+                  <MenuItem onClick={changeActiveEditMode}>Edit name</MenuItem>
+                  <MenuItem onClick={deleteGroup(item.id)}>Remove group</MenuItem>
+                </Menu>
+              </>
+            )}
+            {isTheGroup && (
+              <IconButton aria-label="close" size="small" onClick={deleteItem(item.UsersUserGroups.id)}>
+                <CloseIcon style={{ fontSize: 18, color: '#c6cfd4' }} />
+              </IconButton>
+            )}
           </TableCell>
         </TableRow>
       )}

@@ -1,35 +1,48 @@
 import * as PermissionService from '../services/permissionService';
 import * as UserGroupsService from '../services/userGroupsService';
+import * as AuthService from '../services/authService';
 
 export const permissionsMiddleware = async (req, res) => {
   console.log('/////////////////////////////////////////////////////////');
+  console.log(req.path);
 
-  // console.log(UsersUserGroupsRepository);
-  const userId = '8c88104c-09a0-4a4b-ab60-68ab3a40e66b';
+  const token = req.headers.authorization;
+  const { response } = await AuthService.getUserByToken(token);
   const permissions = await PermissionService.getPermissions();
-  const groups = await UserGroupsService.getGroupsByUser(userId);
-  const userGroup = await UserGroupsService.getUserGroup({
-    id: '91051fbd-8778-4279-a9b7-74f22f309297',
-    // id: '66f6f47c-71c1-4c15-8018-ff056b180957',
-  });
+  const groups = await UserGroupsService.getGroupsByUser(response.user.id);
+  permissions.permissions[0].groups[0].access = 'denied';
+
+  const groupsArray = groups.map((group) => group.userGroups_id);
   console.log('/////////////////////////////////////////////////////////');
-  console.log(groups);
-  let databases;
+  let databasesId = [];
   permissions.permissions.map((elem) => {
-    if (elem.groupId === userGroup.id) {
-      databases = elem.databases;
+    let accessStatus;
+
+    if (req.path.include('tables')) {
+      accessStatus = elem.groups.filter((el) => el.access && groupsArray.indexOf(el.groupId) !== -1);
+    } else {
+      accessStatus = elem.groups.filter(
+        (el) => (el.access === 'granted' || el.access === 'limited') && groupsArray.indexOf(el.groupId) !== -1
+      );
     }
-    return databases;
-  });
-  let data = [];
-  databases.map((elem) => {
-    let index;
-    if (elem.access === 'granted') {
-      index = res.data.findIndex((el) => elem.databaseId === el.id);
-      data = [...data, res.data[index]];
+
+    if (accessStatus.length) {
+      databasesId = [...databasesId, elem.databaseId];
     }
-    return data;
+    return databasesId;
   });
-  console.log(data);
-  res.send(data);
+  console.log(databasesId);
+
+  // const data = res.data.filter((elem) => databasesId.indexOf(elem.id) !== -1);
+  // console.log(data);
+
+  // databases.map((elem) => {
+  //   let index;
+  //   if (elem.access === 'granted') {
+  //     index = res.data.findIndex((el) => elem.databaseId === el.id);
+  //     data = [...data, res.data[index]];
+  //   }
+  //   return data;
+  // });
+  res.send(res.data);
 };

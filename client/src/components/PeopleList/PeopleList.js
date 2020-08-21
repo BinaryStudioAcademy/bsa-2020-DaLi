@@ -113,7 +113,7 @@ const PeopleList = ({
 
   const addUserHandler = () => {
     showAddUserModal(null);
-  }
+  };
 
   const showDeactivateUserModal = (person) => {
     setUser(person);

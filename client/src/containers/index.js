@@ -12,6 +12,7 @@ import AccountSettingsContainer from './AccountSettingsContainer';
 import DashboardContainer from './DashboardContainer/DashboardContainer';
 import AdminContainer from './AdminContainer/AdminContainer';
 import AnalyticsTabsContainer from './AnalyticsTabsContainer/AnalyticsTabsContainer';
+import ConnectionDatabaseContainer from './ConnectionDatabaseContainer/ConnectionDatabaseContainer';
 
 export {
   LoginPageContainer,
@@ -28,4 +29,5 @@ export {
   DashboardContainer,
   AdminContainer,
   AnalyticsTabsContainer,
+  ConnectionDatabaseContainer,
 };

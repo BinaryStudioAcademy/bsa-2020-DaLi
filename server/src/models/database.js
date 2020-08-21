@@ -1,7 +1,13 @@
 import { Model } from 'sequelize';
 
 export default (sequelize, DataTypes) => {
-  class Database extends Model {}
+  class Database extends Model {
+    static associate(models) {
+      Database.hasMany(models.DBTable, {
+        onDelete: 'cascade',
+      });
+    }
+  }
   Database.init(
     {
       id: {

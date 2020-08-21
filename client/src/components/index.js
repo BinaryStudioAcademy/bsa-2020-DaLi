@@ -23,6 +23,8 @@ import AddVisualizationToDashboardModal from './AddVisualizationToDashboardModal
 import AnalyticsTabs from './AnalyticsTabs/AnalyticsTabs';
 import DashboardHeader from './DashboardHeader/DashboardHeader';
 import DashboardLayout from './DashboardLayout/DashboardLayout';
+import DeleteDatabaseModal from './DeleteDatabaseModal/DeleteDatabaseModal';
+import DatabaseList from './DatabaseList/DatabaseList';
 import DeleteVisualizationWarning from './DeleteVisualizationWarning/DeleteVisualizationWarning';
 
 export {
@@ -51,5 +53,7 @@ export {
   AnalyticsTabs,
   DashboardHeader,
   DashboardLayout,
+  DeleteDatabaseModal,
+  DatabaseList,
   DeleteVisualizationWarning,
 };

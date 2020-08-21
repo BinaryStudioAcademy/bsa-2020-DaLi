@@ -1,12 +1,16 @@
 /* eslint-disable import/no-cycle */
 import DatabaseRepository from '../repositories/databaseRepository';
 import DBManager from './DBManager/DBManagerService';
-import { createDBTable } from './dbTableService';
-import { setInitialDBPermissions } from './permissionService';
+import { getAllByDatabaseId } from './dbTableService';
 
 export const getDatabases = async () => {
   const result = await DatabaseRepository.getAll();
   return result;
+};
+
+export const getDatabaseTables = async (id) => {
+  const tables = await getAllByDatabaseId(id);
+  return tables;
 };
 
 export const createDatabase = async (database) => {
@@ -17,9 +21,8 @@ export const createDatabase = async (database) => {
     await manager.init();
     const tablenames = await manager.getTablenames();
     database = await DatabaseRepository.create(database);
-    tablenames.forEach(async (name) => {
-      const result = await createDBTable({ DatabaseId: database.id, name });
-      await setInitialDBPermissions(result.id);
+    tablenames.forEach((name) => {
+      database.createDBTable({ name });
     });
   } catch (error) {
     console.log('///////////////////// ON CREATE DB TABLE GENERATOR FAILED');
@@ -28,6 +31,8 @@ export const createDatabase = async (database) => {
     console.log('///////////////////// ON CREATE DB TABLE GENERATOR FAILED');
     database = null;
   }
+
+  await manager.destroy();
 
   return database;
 };

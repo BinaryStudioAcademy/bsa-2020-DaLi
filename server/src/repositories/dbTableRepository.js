@@ -19,6 +19,10 @@ class DBTableRepository extends BaseRepository {
       },
     });
   }
+
+  getAllByDatabaseId(DatabaseId) {
+    return this.model.findAll({ where: { DatabaseId } });
+  }
 }
 
 export default new DBTableRepository(models.DBTable);

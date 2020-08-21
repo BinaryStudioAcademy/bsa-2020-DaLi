@@ -1,3 +1,4 @@
+/* eslint-disable import/no-cycle */
 import { getDatabase } from '../databaseService';
 import PostgresManager from './Managers/PostgresManager';
 

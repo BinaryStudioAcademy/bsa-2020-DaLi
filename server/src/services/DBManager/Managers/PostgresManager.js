@@ -2,8 +2,17 @@ import Sequelize from 'sequelize';
 
 export default class DBPostgresManager {
   constructor(databaseURL) {
+    const dialectOptions = {};
+    if (!databaseURL.includes('localhost')) {
+      dialectOptions.ssl = {
+        require: true,
+        rejectUnauthorized: false,
+      };
+    }
+
     this.sequelize = new Sequelize(databaseURL, {
       dialect: 'postgres',
+      dialectOptions,
     });
   }
 
@@ -34,20 +43,33 @@ export default class DBPostgresManager {
       });
   }
 
-  getTableSchemaByTablename(tablename) {
-    this.sequelize
+  getTableDataByName(name) {
+    return this.sequelize
+      .query(
+        `
+        SELECT *
+        FROM "${name}"
+        `
+      )
+      .then((data) => {
+        return data[0];
+      });
+  }
+
+  getTableSchemaByName(name) {
+    return this.sequelize
       .query(
         `
       SELECT 
-        table_name,
-        data_type 
+        data_type,
+        column_name 
       FROM 
         information_schema.columns
       WHERE 
-        table_name = '${tablename}';`
+        table_name = '${name}';`
       )
       .then((data) => {
-        console.log(data[0]);
+        return data[0];
       });
   }
 }

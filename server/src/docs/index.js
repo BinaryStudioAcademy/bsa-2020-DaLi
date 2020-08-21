@@ -513,6 +513,96 @@ module.exports = {
         },
       },
     },
+    '/databases/{id}/tables': {
+      get: {
+        security: [
+          {
+            JWT: [],
+          },
+        ],
+        tags: ['Databases'],
+        summary: 'Get database tables by id',
+        parameters: [
+          {
+            name: 'id',
+            in: 'path',
+            description: 'ID of database',
+            required: true,
+            schema: {
+              $ref: '#/definitions/Id',
+            },
+          },
+        ],
+        responses: {
+          200: {
+            description: 'Successful operation',
+          },
+          404: {
+            description: 'Database not found',
+          },
+        },
+      },
+    },
+    '/tables/{id}/data': {
+      get: {
+        security: [
+          {
+            JWT: [],
+          },
+        ],
+        tags: ['Tables'],
+        summary: 'Get all table data by id',
+        parameters: [
+          {
+            name: 'id',
+            in: 'path',
+            description: 'ID of dbTable',
+            required: true,
+            schema: {
+              $ref: '#/definitions/Id',
+            },
+          },
+        ],
+        responses: {
+          200: {
+            description: 'Successful operation',
+          },
+          400: {
+            description: 'Fetching table data failed',
+          },
+        },
+      },
+    },
+    '/tables/{id}/schema': {
+      get: {
+        security: [
+          {
+            JWT: [],
+          },
+        ],
+        tags: ['Tables'],
+        summary: 'Get table schema by id',
+        parameters: [
+          {
+            name: 'id',
+            in: 'path',
+            description: 'ID of dbTable',
+            required: true,
+            schema: {
+              $ref: '#/definitions/Id',
+            },
+          },
+        ],
+        responses: {
+          200: {
+            description: 'Successful operation',
+          },
+          400: {
+            description: 'Fetching table schema failed',
+          },
+        },
+      },
+    },
   },
   definitions: {
     Id: {

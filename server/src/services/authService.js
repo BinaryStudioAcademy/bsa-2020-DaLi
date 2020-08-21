@@ -12,6 +12,15 @@ export const login = async (user) => {
     // hashed password
     // if (bcrypt.compareSync(user.password, candidate.password)) {
     // not hashed password
+    if (!candidate.isActive) {
+      return {
+        status: 403,
+        response: {
+          success: false,
+          message: 'User account deactivated',
+        },
+      };
+    }
     if (candidate.password === user.password) {
       const { id, email, firstName, lastName } = candidate;
       await UserRepository.updateById({ id }, { lastLogin: new Date(Date.now()) });
@@ -53,9 +62,9 @@ export const register = async (user) => {
   if (!candidate) {
     const salt = bcrypt.genSaltSync(10);
     const allGroups = await UserGroupsRepository.getAll();
-    const allUsersGroupID = allGroups.filter(group => group.name==='All Users')[0].id;
-    const newUser = await UserRepository.create(Object.assign({}, user, { password:  bcrypt.hashSync(user.password, salt)}));
-    await UsersUserGroupsRepository.create({users_id: newUser.id, userGroups_id: allUsersGroupID});
+    const allUsersGroupID = allGroups.filter((group) => group.name === 'All Users')[0].id;
+    const newUser = await UserRepository.create({ ...user, password: bcrypt.hashSync(user.password, salt) });
+    await UsersUserGroupsRepository.create({ users_id: newUser.id, userGroups_id: allUsersGroupID });
     return {
       status: 201,
       response: {

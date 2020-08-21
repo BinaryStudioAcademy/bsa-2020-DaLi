@@ -161,20 +161,20 @@ function BarChart(props) {
         .text(goal.label);
     }
   };
-  
-  const resize = () => {
-      setHeight(svgRef.current.parentElement.offsetHeight);
-      setWidth(svgRef.current.parentElement.offsetWidth);
-  }
-  
+
+  const onResize = () => {
+    setHeight(svgRef.current.parentElement.offsetHeight);
+    setWidth(svgRef.current.parentElement.offsetWidth)
+  };
+
   useEffect(() => {
     setHeight(svgRef.current.parentElement.offsetHeight);
     setWidth(svgRef.current.parentElement.offsetWidth);
     draw();
-    window.addEventListener('resize', resize);
 
-    return () => window.removeEventListener('resize', resize)
-  }, [props, width, height]);
+    window.addEventListener('resize', onResize);
+    return ()=>window.removeEventListener('resize', onResize);
+  }, [JSON.stringify(props), width, height]);
 
   return <svg ref={svgRef} />;
 }

@@ -1,7 +1,7 @@
 import { put, call, takeEvery, all } from 'redux-saga/effects';
 import { authAPIService } from '../../services/api/AuthAPI.service';
 import { userAPIService } from '../../services/api/userAPI.service';
-import { getToken, setToken, removeToken } from '../../helpers/jwtToken';
+import { setToken, removeToken } from '../../helpers/jwtToken';
 import {
   LOGIN_USER_SUCCESS,
   LOGIN_USER_ERROR,
@@ -13,18 +13,15 @@ import {
   UPDATE_USER_SUCCESS,
   UPDATE_USER_ERROR,
   UPDATE_CURRENT_USER,
+  FETCH_USER_SUCCESS,
+  FETCH_USER,
+  FETCH_USER_ERROR,
 } from './actionTypes';
 
 export function* loginSaga(payload) {
   try {
-    const token = getToken();
-    let response;
-    if (token) {
-      response = yield call(authAPIService.getCurrentUser);
-    } else {
-      response = yield call(authAPIService.loginUser, payload.request);
-      setToken(response.token);
-    }
+    const response = yield call(authAPIService.loginUser, payload.request);
+    setToken(response.token);
     yield put({ type: LOGIN_USER_SUCCESS, payload: response });
   } catch (error) {
     yield put({ type: LOGIN_USER_ERROR, payload: error });
@@ -33,6 +30,19 @@ export function* loginSaga(payload) {
 
 export function* watchLoginSaga() {
   yield takeEvery(LOGIN_USER, loginSaga);
+}
+
+export function* fetchUserSaga() {
+  try {
+    const response = yield call(authAPIService.getCurrentUser);
+    yield put({ type: FETCH_USER_SUCCESS, payload: response });
+  } catch (error) {
+    yield put({ type: FETCH_USER_ERROR, payload: error });
+  }
+}
+
+export function* watchFetchUserSaga() {
+  yield takeEvery(FETCH_USER, fetchUserSaga);
 }
 
 export function* logoutSaga() {
@@ -63,5 +73,5 @@ export function* watchUpdateUserData() {
 }
 
 export default function* authSaga() {
-  yield all([watchLoginSaga(), watchLogoutSaga(), watchUpdateUserData()]);
+  yield all([watchLoginSaga(), watchLogoutSaga(), watchUpdateUserData(), watchFetchUserSaga()]);
 }

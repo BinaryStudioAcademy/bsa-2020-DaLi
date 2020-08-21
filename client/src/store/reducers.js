@@ -6,6 +6,7 @@ import databasesListReducer from '../containers/DatabasesPageContainer/reducer';
 import accountSettingsReducer from '../containers/AccountSettingsContainer/reducer';
 import analyticsReducer from '../containers/AnalyticsTabsContainer/reducer';
 import currentDashboardReducer from '../containers/DashboardContainer/reducer';
+import userGroupsReducer from '../containers/UserGroupsPageContainer/reducer';
 import connectionDatabaseReducer from '../containers/ConnectionDatabaseContainer/reducer';
 
 export default combineReducers({
@@ -14,6 +15,7 @@ export default combineReducers({
   currentVisualization: viewVisualizationReducer,
   admin: combineReducers({
     people: usersListReducer,
+    groups: userGroupsReducer,
     databases: databasesListReducer,
     connectionDatabase: connectionDatabaseReducer,
   }),

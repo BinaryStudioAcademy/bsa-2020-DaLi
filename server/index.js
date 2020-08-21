@@ -11,10 +11,12 @@ import { passportMiddleware } from './src/middlewares/passport';
 import * as swaggerDocument from './src/docs';
 
 const app = express();
-app.use(cors({
+app.use(
+  cors({
     origin: '*',
     allowedHeaders: ['Origin', 'X-Requested-With', 'Content-Type', 'Accept', 'Authorization'],
-}));
+  })
+);
 app.use(passport.initialize());
 passportMiddleware(passport);
 

@@ -4,7 +4,7 @@ import analyticsSaga from '../containers/AnalyticsTabsContainer/sagas';
 import currentDashboardSaga from '../containers/DashboardContainer/sagas';
 // import visualizationsSaga from '../containers/VisualizationsListContainer/sagas';
 import usersSaga from '../containers/PeoplePageContainer/sagas';
-import datasetsSaga from '../containers/DataSourcesContainer/sagas';
+import datasetsSaga from '../containers/DataSourcesDatasetsContainer/sagas';
 
 export function* rootSaga() {
   yield all([authSaga(), analyticsSaga(), currentDashboardSaga(), usersSaga(), datasetsSaga()]);

@@ -1,3 +1,23 @@
+.data-source-view {
+  height: calc(100vh - 55px);
+  box-sizing: border-box;
+  background-color: #f4f4f4;
+  padding: 20px 40px;
+}
+
+.data-source-view a,
+.data-source-view p {
+  font-weight: 600;
+}
+
+.data-source-view .MuiBreadcrumbs-ol {
+  height: 30px;
+}
+
+.data-source-view .MuiBreadcrumbs-li {
+  line-height: 0px;
+}
+
 .data-source-item {
   background-color: white;
   display: flex;
@@ -8,14 +28,6 @@
   height: 70px;
   align-items: center;
   padding: 0 15px;
-}
-
-.data-source-item.dataset-item {
-  height: 100px;
-  justify-content: space-around;
-  align-items: flex-start;
-  flex-direction: column;
-  padding: 15px;
 }
 
 .data-source-item:hover {

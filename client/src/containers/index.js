@@ -13,7 +13,8 @@ import AccountSettingsContainer from './AccountSettingsContainer';
 import DashboardContainer from './DashboardContainer/DashboardContainer';
 import AdminContainer from './AdminContainer/AdminContainer';
 import AnalyticsTabsContainer from './AnalyticsTabsContainer/AnalyticsTabsContainer';
-import DataSourcesContainer from './DataSourcesContainer/DataSourcesContainer';
+import DataSourcesDatasetsContainer from './DataSourcesDatasetsContainer/DataSourcesDatasetsContainer';
+import DataSourcesTablesContainer from './DataSourcesTablesContainer/DataSourcesTablesContainer';
 
 export {
   LoginPageContainer,
@@ -31,5 +32,6 @@ export {
   DashboardContainer,
   AdminContainer,
   AnalyticsTabsContainer,
-  DataSourcesContainer,
+  DataSourcesDatasetsContainer,
+  DataSourcesTablesContainer,
 };

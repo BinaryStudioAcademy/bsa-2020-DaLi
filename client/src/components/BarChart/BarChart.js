@@ -20,7 +20,16 @@ function BarChart(props) {
 
     const chart = d3.select(svgRef.current);
     chart.selectAll('*').remove();
-    const { data } = props;
+    // const { data } = props;
+    XAxis.key = 'createdAt';
+    YAxis.key = 'total';
+    const data = [
+      { total: -10, createdAt: -2018 },
+      { total: 100, createdAt: -2019 },
+      { total: -50, createdAt: 2020 },
+      { total: 320, createdAt: 2021 },
+    ];
+
     const yDataRange = {
       min: calcMinYDataValue(
         d3.min(data, (d) => d[YAxis.key]),
@@ -31,15 +40,15 @@ function BarChart(props) {
         goal
       ),
     };
-    const xDataRange = {
-      min: data[0][XAxis.key],
-      max: data[data.length - 1][XAxis.key],
-    };
-    const barUnitWidth = (xDataRange.max - xDataRange.min) / data.length;
-    const xScaleForLines = d3
-      .scaleLinear()
-      .domain([xDataRange.min, xDataRange.max])
-      .range([margin.left, width - margin.right]);
+    // const xDataRange = {
+    //   min: data[0][XAxis.key],
+    //   max: data[data.length - 1][XAxis.key],
+    // };
+    // const barUnitWidth = (xDataRange.max - xDataRange.min) / data.length;
+    // const xScaleForLines = d3
+    //   .scaleLinear()
+    //   .domain([xDataRange.min, xDataRange.max])
+    //   .range([margin.left, width - margin.right]);
 
     d3.select('.d3-tip').remove();
     const tip = d3Tip()
@@ -65,24 +74,6 @@ function BarChart(props) {
       .domain([yDataRange.min, yDataRange.max])
       .range([height - margin.bottom, margin.top]);
 
-    chart
-      .append('line')
-      .style('stroke', 'black')
-      .style('stroke-width', '5px')
-      .attr('x1', xScale(1) + xScale.bandwidth() / 2)
-      .attr('y1', yScale(0))
-      .attr('x2', xScale(data.length) + xScale.bandwidth() / 2)
-      .attr('y2', yScale(0));
-
-    chart
-      .append('line')
-      .style('stroke', 'black')
-      .style('stroke-width', '5px')
-      .attr('x1', xScaleForLines(0)+ barUnitWidth)
-      .attr('y1', yScale(0))
-      .attr('x2', xScaleForLines(0) + barUnitWidth)
-      .attr('y2', yScale(height));
-
     const xAxis = (g) =>
       g.attr('transform', `translate(0,${height - margin.bottom})`).call(d3.axisBottom(xScale).tickSize(0));
     const yAxis = (g) => g.attr('transform', `translate(${margin.left},0)`).call(d3.axisLeft(yScale).tickSize(0));
@@ -101,8 +92,17 @@ function BarChart(props) {
       .attr('class', 'bar')
       .attr('fill', color)
       .attr('x', (d) => xScale(d[XAxis.key]))
-      .attr('y', (d) => yScale(d[YAxis.key]))
-      .attr('height', (d) => yScale(yDataRange.min) - yScale(d[YAxis.key]))
+      .attr('y', (d) => {
+        const zero = yScale(0);
+        const current = yScale(d[YAxis.key]);
+        const yPos = zero > current ? current : zero;
+        return yPos;
+      })
+      .attr('height', (d) => {
+        const zero = yScale(0);
+        const current = yScale(d[YAxis.key]);
+        return Math.abs(zero - current);
+      })
       .attr('width', xScale.bandwidth())
       .on('mouseenter', (_, index) => {
         d3.selectAll('.bar')
@@ -119,6 +119,15 @@ function BarChart(props) {
 
     if (trendline.display && data.length) {
       const { polynomial, trendlineType } = trendline;
+      const xDataRange = {
+        min: data[0][XAxis.key],
+        max: data[data.length - 1][XAxis.key],
+      };
+      const barUnitWidth = (xDataRange.max - xDataRange.min) / data.length;
+      const xScaleForLines = d3
+        .scaleLinear()
+        .domain([xDataRange.min, xDataRange.max])
+        .range([margin.left, width - margin.right]);
 
       const trendlineData = data.map((item) => [item[XAxis.key], item[YAxis.key]]);
       const domain = [xDataRange.min, xDataRange.max - barUnitWidth];
@@ -143,6 +152,24 @@ function BarChart(props) {
 
     chart.append('g').attr('class', 'x-axis axis').call(xAxis);
     chart.append('g').attr('class', 'y-axis axis').call(yAxis);
+
+    chart
+      .append('line')
+      .style('stroke', '#EE8625')
+      .style('stroke-width', 3)
+      .attr('x1', 0)
+      .attr('y1', yScale(0))
+      .attr('x2', width)
+      .attr('y2', yScale(0));
+
+    // chart
+    //   .append('line')
+    //   .style('stroke', '#EE8625')
+    //   .style('stroke-width', 3)
+    //   .attr('x1', xScaleForLines(0) + barUnitWidth)
+    //   .attr('y1', 0)
+    //   .attr('x2', xScaleForLines(0) + barUnitWidth)
+    //   .attr('y2', height);
 
     // delete axis values
     chart.selectAll('.axis').selectAll('text').remove();

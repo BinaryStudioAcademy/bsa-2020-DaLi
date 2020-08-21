@@ -8,8 +8,7 @@ import BarChart from '../../BarChartContainer/BarChartContainer';
 import LineChart from '../../LineChartContainer/LineChartContainer';
 import TableVisualization from '../../TableVisualizationContainer/TableVisualizationContainer';
 
-import { BarChartSettings, TableSettingsSidebar } from '../../../components';
-import LineChartSettings from '../../LineChartSettings';
+import { BarChartSettings, LineChartSettings, TableSettingsSidebar } from '../../../components';
 
 export const getVisualizationComponent = (visualizationType, config, updateConfig, data) => {
   switch (visualizationType) {

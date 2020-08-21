@@ -28,18 +28,18 @@ export const deleteUser = async (id) => {
 export const updateUser = async (id, dataToUpdate) => {
   const item = await UserRepository.getById(id);
   if (!item) {
-    throw { code: 404, message: `User with id of ${req.params.id} not found` };
+    throw new Error({ code: 404, message: `User with id of ${id} not found` });
   }
   if (dataToUpdate.email && item.email !== dataToUpdate.email) {
     if (await UserRepository.getByEmail(dataToUpdate.email)) {
-      throw { code: 409, message: 'This email is assigned to another user' };
+      throw new Error({ code: 409, message: 'This email is assigned to another user' });
     }
   }
   if (dataToUpdate.oldPassword) {
     if (dataToUpdate.oldPassword !== item.password) {
-      throw { code: 409, message: 'Wrong current password' };
+      throw new Error({ code: 409, message: 'Wrong current password' });
     } else if (dataToUpdate.password === item.password) {
-      throw { code: 409, message: 'New password cannot match the current one' };
+      throw new Error({ code: 409, message: 'New password cannot match the current one' });
     } else {
       delete dataToUpdate.oldPassword;
     }

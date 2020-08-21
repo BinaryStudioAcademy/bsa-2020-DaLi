@@ -10,9 +10,7 @@ router.get('/', async (req, res, next) => {
 });
 
 router.get('/:id', async (req, res, next) => {
-  const result = await PermissionService.getDBPermissions({
-    id: req.params.id,
-  });
+  const result = await PermissionService.getDBPermissions(req.params.id);
   if (result) {
     res.status(200).json(result);
     next();
@@ -23,12 +21,7 @@ router.get('/:id', async (req, res, next) => {
 });
 
 router.patch('/:id', async (req, res, next) => {
-  const result = await PermissionService.updateDBPermissions(
-    // {
-    //   id: req.params.id,
-    // },
-    req.body
-  );
+  const result = await PermissionService.updateDBPermissions(req.body);
   if (result) {
     res.json(result);
     next();

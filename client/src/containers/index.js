@@ -2,7 +2,6 @@ import LoginPageContainer from './LoginPageContainer';
 import BarChartContainer from './BarChartContainer/BarChartContainer';
 import SignUpContainer from './SingUp/SignUp';
 import LineChartContainer from './LineChartContainer/LineChartContainer';
-import LineChartSettings from './LineChartSettings';
 import TableVisualizationContainer from './TableVisualizationContainer/TableVisualizationContainer';
 import ViewVisualizationContainer from './ViewVisualizationContainer/ViewVisualizationContainer';
 import InitialTableContainer from './InitialTableContainer/InitialTableContainer';
@@ -15,6 +14,7 @@ import AdminContainer from './AdminContainer/AdminContainer';
 import AnalyticsTabsContainer from './AnalyticsTabsContainer/AnalyticsTabsContainer';
 import DataSourcesDatasetsContainer from './DataSourcesDatasetsContainer/DataSourcesDatasetsContainer';
 import DataSourcesTablesContainer from './DataSourcesTablesContainer/DataSourcesTablesContainer';
+import ConnectionDatabaseContainer from './ConnectionDatabaseContainer/ConnectionDatabaseContainer';
 
 export {
   LoginPageContainer,
@@ -26,7 +26,6 @@ export {
   InitialTableContainer,
   ProtectedRoute,
   PublicRoute,
-  LineChartSettings,
   VisualizationsListContainer,
   AccountSettingsContainer,
   DashboardContainer,
@@ -34,4 +33,5 @@ export {
   AnalyticsTabsContainer,
   DataSourcesDatasetsContainer,
   DataSourcesTablesContainer,
+  ConnectionDatabaseContainer,
 };

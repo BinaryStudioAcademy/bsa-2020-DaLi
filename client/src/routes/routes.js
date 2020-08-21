@@ -9,6 +9,7 @@ import {
   DashboardPage,
   AdminPage,
   AnalyticsPage,
+  ConnectionDatabasePage,
 } from '../pages';
 
 const routes = (
@@ -20,6 +21,7 @@ const routes = (
     <ProtectedRoute exact path="/select-visualization/:id" component={ViewVisualizationPage} />
     <ProtectedRoute exact path="/account-settings" component={AccountSettingsPage} />
     <ProtectedRoute path="/admin" component={AdminPage} />
+    <ProtectedRoute path="/connection-database" component={ConnectionDatabasePage} />
     <ProtectedRoute exact path="/dashboards/:id" component={DashboardPage} />
     <ProtectedRoute exact path="/data-sources" component={DataSourcesDatasetsContainer} />
     <ProtectedRoute exact path="/data-sources/:id" component={DataSourcesTablesContainer} />

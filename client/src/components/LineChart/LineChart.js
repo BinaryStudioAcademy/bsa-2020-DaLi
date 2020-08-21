@@ -18,7 +18,7 @@ function LineChart({ settings, data, chart: chartSize }) {
   const svgRef = useRef();
   const [width, setWidth] = useState(chartSize.width);
   const [height, setHeight] = useState(chartSize.height);
-  
+
   const draw = () => {
     setConfig(settings);
     const { margin } = chartSize;
@@ -168,20 +168,19 @@ function LineChart({ settings, data, chart: chartSize }) {
     }
   };
 
-  const resize = () => {
+  const onResize = () => {
     setHeight(svgRef.current.parentElement.offsetHeight);
-    setWidth(svgRef.current.parentElement.offsetWidth);
-}
+    setWidth(svgRef.current.parentElement.offsetWidth)
+  };
 
   useEffect(() => {
     setHeight(svgRef.current.parentElement.offsetHeight);
     setWidth(svgRef.current.parentElement.offsetWidth);
     draw();
 
-    window.addEventListener('resize', resize);
-
-    return () => {window.removeEventListener('resize', resize);}
-  }, [goal, trendline, showDataPointsValues, lineType, color, data, chartSize, width, height]);
+    window.addEventListener('resize', onResize);
+    return ()=>window.removeEventListener('resize', onResize);
+  }, [JSON.stringify(settings), data, chartSize, width, height]);
 
   return <svg ref={svgRef} />;
 }

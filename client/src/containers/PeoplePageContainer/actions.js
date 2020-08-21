@@ -1,4 +1,12 @@
-import { GET_USERS, ADD_USER, UPDATE_USER, DELETE_USER, IS_LOADING, RESET_ERROR } from './actionTypes';
+import {
+  GET_USERS,
+  ADD_USER,
+  UPDATE_USER,
+  DELETE_USER,
+  TOGGLE_USER_STATUS,
+  IS_LOADING,
+  RESET_ERROR,
+} from './actionTypes';
 
 export const getUsers = () => {
   return {
@@ -10,6 +18,13 @@ export const deleteUser = (id) => {
   return {
     type: DELETE_USER,
     id,
+  };
+};
+
+export const toggleUserStatus = (payload) => {
+  return {
+    type: TOGGLE_USER_STATUS,
+    payload,
   };
 };
 

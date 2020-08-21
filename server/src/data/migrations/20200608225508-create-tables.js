@@ -33,6 +33,11 @@ export default {
             type: Sequelize.STRING,
             defaultValue: 'P@$$w0rd',
           },
+          isActive: {
+            allowNull: false,
+            type: Sequelize.BOOLEAN,
+            defaultValue: true,
+          },
           lastLogin: {
             allowNull: true,
             type: Sequelize.DATE,

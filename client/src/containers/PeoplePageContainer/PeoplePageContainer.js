@@ -1,22 +1,46 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { withRouter, Switch, Route } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { Grid } from '@material-ui/core';
-import { PeopleList, GroupList } from '../../components';
+import { PeopleList } from '../../components';
 import PeoplePageMenu from './PeoplePageMenu';
-import { getUsers, addUser, updateUser, resetError } from './actions';
+import { getUsers, addUser, updateUser, toggleUserStatus, resetError } from './actions';
 import { useStyles } from './styles';
+import UserGroupsPageContainer from '../UserGroupsPageContainer/UserGroupsPageContainer';
+import { getUserGroups, getUserGroup } from '../UserGroupsPageContainer/actions';
 
-const PeoplePageContainer = ({ people, isLoading, message, status, getUsers, addUser, updateUser, resetError }) => {
+const PeoplePageContainer = ({
+  people,
+  isLoading,
+  message,
+  status,
+  getUsers,
+  addUser,
+  updateUser,
+  resetError,
+  getUserGroups,
+  match,
+  location,
+  getUserGroup,
+}) => {
   const classes = useStyles();
 
+  const [isTheGroup, setIsTheGroup] = useState(false);
+
   useEffect(() => {
-    getUsers();
+    if (!match.isExact && location.pathname.split('groups/')[1]) {
+      setIsTheGroup(true);
+      const id = location.pathname.split('groups/')[1];
+      getUserGroup(id);
+    } else {
+      getUsers();
+      getUserGroups();
+    }
     return () => {
       resetError();
     };
-  }, [getUsers, resetError]);
+  }, [getUsers, resetError, getUserGroups, getUserGroup, location.pathname, match.isExact]);
 
   return (
     <Grid container className={classes.root}>
@@ -29,6 +53,7 @@ const PeoplePageContainer = ({ people, isLoading, message, status, getUsers, add
             <PeopleList
               people={people}
               addUser={addUser}
+              toggleUserStatus={toggleUserStatus}
               updateUser={updateUser}
               isLoading={isLoading}
               message={message}
@@ -36,7 +61,12 @@ const PeoplePageContainer = ({ people, isLoading, message, status, getUsers, add
             />
           )}
         />
-        <Route exact path="/admin/people/groups" component={() => <GroupList />} />
+        <Route
+          path="/admin/people/groups/"
+          component={() => (
+            <UserGroupsPageContainer userGroupsId={location.pathname.split('groups/')[1]} isTheGroup={isTheGroup} />
+          )}
+        />
       </Switch>
     </Grid>
   );
@@ -59,7 +89,16 @@ PeoplePageContainer.propTypes = {
   getUsers: PropTypes.func,
   addUser: PropTypes.func,
   updateUser: PropTypes.func,
+  toggleUserStatus: PropTypes.func,
   resetError: PropTypes.func,
+  getUserGroups: PropTypes.func,
+  match: PropTypes.object,
+  location: PropTypes.object,
+  getUserGroup: PropTypes.func,
 };
 
-export default withRouter(connect(mapStateToProps, { getUsers, addUser, updateUser, resetError })(PeoplePageContainer));
+export default withRouter(
+  connect(mapStateToProps, { getUsers, addUser, updateUser, resetError, getUserGroups, getUserGroup })(
+    PeoplePageContainer
+  )
+);

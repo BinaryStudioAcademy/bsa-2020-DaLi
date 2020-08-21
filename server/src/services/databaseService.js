@@ -3,10 +3,16 @@ import DatabaseRepository from '../repositories/databaseRepository';
 import DBManager from './DBManager/DBManagerService';
 import { createDBTable } from './dbTableService';
 import { setInitialDBPermissions } from './permissionService';
+import { getAllByDatabaseId } from './dbTableService';
 
 export const getDatabases = async () => {
   const result = await DatabaseRepository.getAll();
   return result;
+};
+
+export const getDatabaseTables = async (id) => {
+  const tables = await getAllByDatabaseId(id);
+  return tables;
 };
 
 export const createDatabase = async (database) => {
@@ -28,6 +34,8 @@ export const createDatabase = async (database) => {
     console.log('///////////////////// ON CREATE DB TABLE GENERATOR FAILED');
     database = null;
   }
+
+  await manager.destroy();
 
   return database;
 };

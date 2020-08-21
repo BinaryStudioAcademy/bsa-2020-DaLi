@@ -3,6 +3,9 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import BarChart from '../BarChartContainer/BarChartContainer';
 import LineChart from '../LineChartContainer/LineChartContainer';
 import TableVisualization from '../TableVisualizationContainer/TableVisualizationContainer';
+// import { dbTableAPIService } from '../../services/api/dbTableAPI.service';
+
+import mockData from '../ViewVisualizationContainer/mockData';
 
 export const getVisualization = (visualizationId, visualizations) => {
   return visualizations.filter((visualization) => visualization.id === visualizationId)[0];
@@ -43,9 +46,16 @@ export const createUpdatedDashboard = (name, description, layout, layouts) => {
 
 export const getDashboardItems = (dashboardVisualizations, layout, data, onVisualizationDelete) => {
   return dashboardVisualizations.map((dashboardVisualization) => {
+    /* async function f() {
+      const response = await dbTableAPIService.getTable(dashboardVisualization.tableId);
+      return response;
+    } */
+    // f().then((result) => console.log(result));
     const visualization = getParsedVisualization(dashboardVisualization);
     const layoutItem = getLayoutItem(layout, visualization.id);
-    const visualizationComponent = getVisualizationComponent(visualization.type, visualization.config, data);
+    // const result = dbTableAPIService.getTable(dashboardVisualization.tableId);
+    // console.log(result);
+    const visualizationComponent = getVisualizationComponent(visualization.type, visualization.config, mockData);
     return (
       <div className="dashboard-layout-item" key={visualization.id} data-grid={layoutItem}>
         <div className="dashboard-layout-item__header">

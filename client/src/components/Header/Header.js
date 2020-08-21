@@ -98,6 +98,11 @@ const Header = ({ logout, addDashboard }) => {
     setAnchorEl(null);
   };
 
+  const onTest = () => {
+    history.push('/data-sources');
+    setAnchorEl(null);
+  };
+
   return (
     <header className={isAdminPage ? 'admin-header' : ''}>
       {isAdminPage ? (
@@ -147,6 +152,9 @@ const Header = ({ logout, addDashboard }) => {
       ) : (
         <>
           <div role="button" tabIndex="0" className="header-logo" onClick={onHomePage} aria-hidden="true">
+            Home page
+          </div>
+          <div role="button" tabIndex="0" className="header-logo" onClick={onTest} aria-hidden="true">
             Home page
           </div>
           <div className="header-controls">

@@ -16,35 +16,32 @@ export const permissionsMiddleware = async (req, res) => {
 
   let permissionsRules;
   if (req.path.includes('tables')) {
-    permissionsRules = await PermissionService.getDBPermissions({ id: req.params.id });
+    permissionsRules = await PermissionService.getDBPermissions(req.params.id);
   } else {
     permissionsRules = await PermissionService.getPermissions();
   }
 
-  console.log(userGroups);
   const userGroupsId = userGroups.map((group) => group.userGroups_id);
-  // Change access status for test
-  permissionsRules.permissions[0].groups[0].access = false;
 
   let dataId = [];
-  permissionsRules.permissions.forEach((elem) => {
-    let accessStatus;
-
-    if (req.path.includes('tables')) {
-      accessStatus = elem.groups.filter((el) => el.access !== false && userGroupsId.indexOf(el.groupId) !== -1);
-    } else {
-      accessStatus = elem.groups.filter(
-        (el) => (el.access === 'granted' || el.access === 'limited') && userGroupsId.indexOf(el.groupId) !== -1
-      );
-    }
+  permissionsRules.permissions.forEach((permission) => {
+    const accessStatus = permission.groups.filter(
+      (group) =>
+        (group.access === 'granted' || group.access === 'limited') && userGroupsId.indexOf(group.groupId) !== -1
+    );
 
     if (accessStatus.length) {
-      dataId = req.path.includes('tables') ? [...dataId, elem.tableId] : [...dataId, elem.databaseId];
+      dataId = req.path.includes('tables') ? [...dataId, permission.tableId] : [...dataId, permission.databaseId];
     }
+
     return dataId;
   });
 
-  const data = res.data.filter((elem) => dataId.indexOf(elem.id) !== -1);
+  if (!Array.isArray(res.data)) {
+    const data = Array(res.data).filter((item) => dataId.indexOf(item.id) !== -1);
+    return res.send(...data);
+  }
 
+  const data = res.data.filter((item) => dataId.indexOf(item.id) !== -1);
   return res.send(data);
 };

@@ -1,14 +1,23 @@
+import { MongoClient } from 'mongodb';
+
 export default class DBMongoManager {
-  constructor() {
+  constructor(databaseURL, dbName) {
+    this.client = new MongoClient(databaseURL, {
+      useNewUrlParser: true,
+    });
+    this.dbName = dbName;
   }
 
-  init() {}
+  async init() {
+    await this.client.connect();
+  }
 
-  destroy() {}
+  destroy() {
+    return this.client.close();
+  }
 
-  getTablenames() {}
-
-  getTableDataByName(name) {}
-
-  getTableSchemaByName(name) {}
+  getTablenames() {
+    const collectionList = this.client.db(this.dbName).listCollections();
+    return collectionList.map((collection) => collection.name);
+  }
 }

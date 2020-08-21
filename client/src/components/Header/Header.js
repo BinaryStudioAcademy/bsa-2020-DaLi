@@ -191,6 +191,7 @@ const Header = ({ logout, addDashboard }) => {
 
 Header.propTypes = {
   logout: PropTypes.func,
+  addDashboard: PropTypes.func,
 };
 
 const mapDispatchToProps = { logout, addDashboard };

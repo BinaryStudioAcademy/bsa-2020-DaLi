@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 // import { NavLink, useHistory } from 'react-router-dom';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -6,66 +6,120 @@ import TableCell from '@material-ui/core/TableCell';
 import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
-import Avatar from '@material-ui/core/Avatar';
-import MoreHorizIcon from '@material-ui/icons/MoreHoriz';
-import Menu from '@material-ui/core/Menu';
-import MenuItem from '@material-ui/core/MenuItem';
+import PropTypes from 'prop-types';
+import {useStyles} from './styles';
 import GroupListHeader from '../GroupListHeader';
-import { useStyles } from './styles';
+import RowItem from './RowItem';
+import UserGroupForm from './UserGroupForm';
+import UserForm from './UserForm';
 
-const groups = [
-  { name: 'Administrators', members: 2 },
-  { name: 'All users', members: 4 },
-];
+const GroupList = ({
+                     groups,
+                     addUserGroup,
+                     deleteGroup,
+                     updateUserGroup,
+                     currentGroup,
+                     isTheGroup,
+                     addUser,
+                     deleteUser,
+                     users = []
+                   }) => {
+  const [isVisibleForm, setIsVisibleForm] = useState(false);
 
-const GroupList = () => {
-  const [menuAnchorEl, setMenuAnchorEl] = React.useState(null);
   const classes = useStyles();
 
-  const handleMenuClick = (event) => {
-    setMenuAnchorEl(event.currentTarget);
+  const openForm = () => {
+    setIsVisibleForm(true);
+  };
+
+  const currentGroupUsers = currentGroup.Users || [];
+
+  const usersLikeOptions = users.filter(user => {
+    return !currentGroupUsers.find(({id}) => user.id === id)
+  }).map((user) => {
+    const fullName = `${user.firstName} ${user.lastName}`;
+    return {
+      value: user.id,
+      label: fullName,
+    };
+  });
+
+  const closeForm = (resetForm) => () => {
+    resetForm();
+    setIsVisibleForm(false);
+  };
+
+  const createUserGroup = (values) => {
+    addUserGroup(values);
+    closeForm();
+  };
+
+  const addUserToGroup = (values) => {
+    addUser(values.user.value);
+    closeForm();
   };
 
   return (
-    <div className={classes.root}>
-      <GroupListHeader />
-      <TableContainer>
-        <Table aria-label="simple table">
-          <TableHead>
-            <TableRow>
-              <TableCell align="left">Group Name</TableCell>
-              <TableCell align="left">Members</TableCell>
-              <TableCell align="left">&nbsp;</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {groups.map((group) => (
-              <TableRow key={group.name}>
-                <TableCell align="left" className={classes.name}>
-                  <Avatar className={classes.avatar}>{group.name[0]}</Avatar>
-                  {group.name}
-                </TableCell>
-                <TableCell align="left">{group.members}</TableCell>
-                <TableCell align="left">
-                  <MoreHorizIcon className={classes.dots} onClick={handleMenuClick} />
-                  <Menu
-                    id="add-menu"
-                    anchorEl={menuAnchorEl}
-                    keepMounted
-                    open={Boolean(menuAnchorEl)}
-                    onClose={() => setMenuAnchorEl(null)}
-                  >
-                    <MenuItem onClick={() => {}}>Edit name</MenuItem>
-                    <MenuItem onClick={() => {}}>Remove group</MenuItem>
-                  </Menu>
-                </TableCell>
+      <div className={classes.root}>
+        <GroupListHeader
+            openForm={openForm}
+            title={isTheGroup ? currentGroup.name : 'Groups'}
+            buttonTitle={isTheGroup ? 'Add members' : 'Create group'}
+        />
+        <TableContainer className={classes.tableContainer}>
+          <Table aria-label="simple table">
+            <TableHead>
+              <TableRow>
+                <TableCell align="left">{isTheGroup ? 'Members' : 'Group Name'}</TableCell>
+                <TableCell align="left">{isTheGroup ? 'Email' : 'Members'}</TableCell>
+                <TableCell align="left">&nbsp;</TableCell>
               </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
-    </div>
+            </TableHead>
+            <TableBody>
+              {isVisibleForm && !isTheGroup && (
+                  <UserGroupForm initialName="" submitTitle="Add" submit={createUserGroup} closeForm={closeForm}/>
+              )}
+              {isVisibleForm && isTheGroup && (
+                  <UserForm
+                      usersLikeOptions={usersLikeOptions}
+                      submitTitle="Add"
+                      submit={addUserToGroup}
+                      closeForm={closeForm}
+                  />
+              )}
+              {!isTheGroup &&
+              groups.map((group) => (
+                  <RowItem key={group.id} item={group} deleteGroup={deleteGroup} updateUserGroup={updateUserGroup}/>
+              ))}
+              {isTheGroup &&
+              currentGroup.Users.map((user) => (
+                  <RowItem
+                      users={users}
+                      key={user.id}
+                      isTheGroup={isTheGroup}
+                      item={user}
+                      deleteGroup={deleteGroup}
+                      updateUserGroup={updateUserGroup}
+                      deleteUser={deleteUser}
+                  />
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
+      </div>
   );
+};
+
+GroupList.propTypes = {
+  groups: PropTypes.array,
+  addUserGroup: PropTypes.func,
+  deleteGroup: PropTypes.func,
+  updateUserGroup: PropTypes.func,
+  isTheGroup: PropTypes.bool,
+  currentGroup: PropTypes.object,
+  users: PropTypes.array,
+  addUser: PropTypes.func,
+  deleteUser: PropTypes.func,
 };
 
 export default GroupList;

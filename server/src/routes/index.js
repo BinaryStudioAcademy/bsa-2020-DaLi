@@ -5,6 +5,7 @@ import visualizationRoutes from './visualizationRoutes';
 import dashboardRoutes from './dashboardRoutes';
 import userGroupsRoutes from './userGroupsRoutes';
 import databaseRoutes from './databaseRoutes';
+import dbTableRoutes from './dbTableRoutes';
 
 export default (app) => {
   app.use('/', home);
@@ -14,4 +15,5 @@ export default (app) => {
   app.use('/api/dashboards', dashboardRoutes);
   app.use('/api/user-groups', userGroupsRoutes);
   app.use('/api/databases', databaseRoutes);
+  app.use('/api/tables', dbTableRoutes);
 };

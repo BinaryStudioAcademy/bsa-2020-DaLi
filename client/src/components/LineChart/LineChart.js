@@ -101,9 +101,9 @@ function LineChart({ settings, data, chart: chartSize }) {
     }
 
     const xAxis = (g) => {
-      return g.attr('transform', `translate(0,${height - margin.bottom})`).call(d3.axisBottom(xScale).tickSizeOuter(0));
+      return g.attr('transform', `translate(0,${height - margin.bottom})`).call(d3.axisBottom(xScale).tickSize(0));
     };
-    const yAxis = (g) => g.attr('transform', `translate(${margin.left},0)`).call(d3.axisLeft(yScale));
+    const yAxis = (g) => g.attr('transform', `translate(${margin.left},0)`).call(d3.axisLeft(yScale).tickSize(0));
 
     chart.append('g').attr('class', 'x-axis axis').call(xAxis);
     chart.append('g').attr('class', 'y-axis axis').call(yAxis);

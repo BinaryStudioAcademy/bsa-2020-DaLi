@@ -9,7 +9,6 @@ export default class DBPostgresManager {
         rejectUnauthorized: false,
       };
     }
-
     this.sequelize = new Sequelize(databaseURL, {
       dialect: 'postgres',
       dialectOptions,

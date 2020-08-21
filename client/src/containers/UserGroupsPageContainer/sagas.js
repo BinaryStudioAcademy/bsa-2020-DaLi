@@ -7,7 +7,8 @@ import {
   ADD_USER_GROUP,
   UPDATE_USER_GROUP,
   DELETE_USER_GROUP,
-  ADD_USER_TO_GROUP, DELETE_USER_FROM_GROUP,
+  ADD_USER_TO_GROUP,
+  DELETE_USER_FROM_GROUP,
 } from './actionTypes';
 import { userGroupsAPIService } from '../../services/api/userGroupsAPI.service';
 import { SetIsLoading, setError } from './actions';

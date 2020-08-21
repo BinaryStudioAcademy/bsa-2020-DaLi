@@ -28,9 +28,7 @@ export const getPermissions = async () => {
     databases.map(async (db) => {
       const groupAccess = await Promise.all(
         groups.map(async (group) => {
-          const dbTables = await DBTable.getTablesByDatabaseId({
-            id: db.id,
-          });
+          const dbTables = await DBTable.getAllByDatabaseId(db.id);
           const accessLevel = getAccessLevel(group.id, dbTables, permissions);
           return {
             groupId: group.id,
@@ -67,7 +65,7 @@ export const setInitialDBPermissions = async (tableid) => {
 export const getDBPermissions = async (databaseId) => {
   const permissions = await PermissionRepository.getAll();
   const groups = await UserGroupsRepository.getAll();
-  const tables = await DBTable.getTablesByDatabaseId(databaseId);
+  const tables = await DBTable.getAllByDatabaseId(databaseId);
 
   const result = await Promise.all(
     tables.map(async (table) => {
@@ -132,7 +130,6 @@ export const updatePermissions = async ({ permissions }) => {
         } else {
           await Promise.all(
             tables.map(async (data) => {
-              console.log(data.id);
               PermissionRepository.updatePermissionByGroupIdAndTableId(groupId, data.tableId, {
                 permissionGranted: data.access,
               });

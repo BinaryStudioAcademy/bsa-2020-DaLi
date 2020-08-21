@@ -10,10 +10,10 @@ class DBTableRepository extends BaseRepository {
         DatabaseId: id,
       },
     });
+  }
 
   getAllByDatabaseId(DatabaseId) {
     return this.model.findAll({ where: { DatabaseId } });
-
   }
 }
 

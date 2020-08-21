@@ -46,13 +46,13 @@ const DeleteDatabaseModal = ({ isVisible, closeModal, deleteDatabase, databaseId
       <DialogTitle>Delete this database?</DialogTitle>
       <Formik initialValues={{ hintWord: '' }} ValidationSchema={ValidationSchema} onSubmit={deleteDb}>
         {/* eslint-disable-next-line */}
-        {(props) => <MyForm cancel={cancel} {...props} />}
+        {(props) => <DeleteDatabaseForm cancel={cancel} {...props} />}
       </Formik>
     </Dialog>
   );
 };
 
-const MyForm = ({ handleSubmit, resetForm, isValid, dirty, cancel, errors, touched }) => {
+const DeleteDatabaseForm = ({ handleSubmit, resetForm, isValid, dirty, cancel, errors, touched }) => {
   const classes = useStyles();
 
   const validateHintWord = (value) => {
@@ -67,7 +67,7 @@ const MyForm = ({ handleSubmit, resetForm, isValid, dirty, cancel, errors, touch
     <Form className="visualizationModalForm" onSubmit={handleSubmit}>
       <DialogContent>
         <DialogContentText>
-          If you're sure, please type <strong>{HINT_WORD}</strong> in this box:
+          If you&#39;re sure, please type <strong>{HINT_WORD}</strong> in this box:
         </DialogContentText>
         <Field
           name="hintWord"
@@ -103,7 +103,7 @@ DeleteDatabaseModal.propTypes = {
   databaseId: PropTypes.string,
 };
 
-MyForm.propTypes = {
+DeleteDatabaseForm.propTypes = {
   handleSubmit: PropTypes.func,
   resetForm: PropTypes.func,
   isValid: PropTypes.bool,

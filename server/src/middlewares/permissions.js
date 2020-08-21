@@ -3,46 +3,48 @@ import * as UserGroupsService from '../services/userGroupsService';
 import * as AuthService from '../services/authService';
 
 export const permissionsMiddleware = async (req, res) => {
-  console.log('/////////////////////////////////////////////////////////');
-  console.log(req.path);
-
+  // Need update token logic, after fix passport
   const token = req.headers.authorization;
   const { response } = await AuthService.getUserByToken(token);
-  const permissions = await PermissionService.getPermissions();
-  const groups = await UserGroupsService.getGroupsByUser(response.user.id);
-  permissions.permissions[0].groups[0].access = 'denied';
 
-  const groupsArray = groups.map((group) => group.userGroups_id);
-  console.log('/////////////////////////////////////////////////////////');
-  let databasesId = [];
-  permissions.permissions.map((elem) => {
+  const userGroups = await UserGroupsService.getGroupsByUser(response.user.id);
+  const userGroupsName = userGroups.map((group) => group.UserGroup.name);
+
+  if (userGroupsName.indexOf('Administrators') !== -1) {
+    return res.send(res.data);
+  }
+
+  let permissionsRules;
+  if (req.path.includes('tables')) {
+    permissionsRules = await PermissionService.getDBPermissions({ id: req.params.id });
+  } else {
+    permissionsRules = await PermissionService.getPermissions();
+  }
+
+  console.log(userGroups);
+  const userGroupsId = userGroups.map((group) => group.userGroups_id);
+  // Change access status for test
+  permissionsRules.permissions[0].groups[0].access = false;
+
+  let dataId = [];
+  permissionsRules.permissions.forEach((elem) => {
     let accessStatus;
 
-    if (req.path.include('tables')) {
-      accessStatus = elem.groups.filter((el) => el.access && groupsArray.indexOf(el.groupId) !== -1);
+    if (req.path.includes('tables')) {
+      accessStatus = elem.groups.filter((el) => el.access !== false && userGroupsId.indexOf(el.groupId) !== -1);
     } else {
       accessStatus = elem.groups.filter(
-        (el) => (el.access === 'granted' || el.access === 'limited') && groupsArray.indexOf(el.groupId) !== -1
+        (el) => (el.access === 'granted' || el.access === 'limited') && userGroupsId.indexOf(el.groupId) !== -1
       );
     }
 
     if (accessStatus.length) {
-      databasesId = [...databasesId, elem.databaseId];
+      dataId = req.path.includes('tables') ? [...dataId, elem.tableId] : [...dataId, elem.databaseId];
     }
-    return databasesId;
+    return dataId;
   });
-  console.log(databasesId);
 
-  // const data = res.data.filter((elem) => databasesId.indexOf(elem.id) !== -1);
-  // console.log(data);
+  const data = res.data.filter((elem) => dataId.indexOf(elem.id) !== -1);
 
-  // databases.map((elem) => {
-  //   let index;
-  //   if (elem.access === 'granted') {
-  //     index = res.data.findIndex((el) => elem.databaseId === el.id);
-  //     data = [...data, res.data[index]];
-  //   }
-  //   return data;
-  // });
-  res.send(res.data);
+  return res.send(data);
 };

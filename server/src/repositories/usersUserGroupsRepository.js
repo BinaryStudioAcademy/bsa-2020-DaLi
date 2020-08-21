@@ -7,6 +7,12 @@ class UsersUserGroupsRepository extends BaseRepository {
     return this.model.findAll({
       where: { users_id: userId },
       attributes: ['userGroups_id'],
+      include: [
+        {
+          model: models.UserGroups,
+          attributes: ['name'],
+        },
+      ],
     });
   }
 }

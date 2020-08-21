@@ -68,6 +68,7 @@ export const getDBPermissions = async (databaseId) => {
   const permissions = await PermissionRepository.getAll();
   const groups = await UserGroupsRepository.getAll();
   const tables = await DBTable.getTablesByDatabaseId(databaseId);
+  console.log(tables, 'taaaadsasdasd');
 
   const result = await Promise.all(
     tables.map(async (table) => {

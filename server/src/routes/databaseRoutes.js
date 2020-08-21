@@ -14,11 +14,15 @@ router.get(
   permissionsMiddleware
 );
 
-router.get('/:id/tables', async (req, res, next) => {
-  const result = await DatabaseService.getDatabaseTables(req.params.id);
-  res.json(result);
-  next();
-});
+router.get(
+  '/:id/tables',
+  async (req, res, next) => {
+    const result = await DatabaseService.getDatabaseTables(req.params.id);
+    res.data = result;
+    next();
+  },
+  permissionsMiddleware
+);
 
 router.get('/:id', async (req, res, next) => {
   const result = await DatabaseService.getDatabase({

@@ -34,7 +34,7 @@ router.post('/', async (req, res, next) => {
   }
 });
 
-router.patch('/:id', async (req, res, next) => {
+router.patch('/:id', async (req, res) => {
   try {
     if (req.body.password === null) {
       req.body.password = generatePassword();

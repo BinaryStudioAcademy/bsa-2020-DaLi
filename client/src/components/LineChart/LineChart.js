@@ -177,6 +177,7 @@ function LineChart({ settings, data, chart: chartSize }) {
     setHeight(svgRef.current.parentElement.offsetHeight);
     setWidth(svgRef.current.parentElement.offsetWidth);
     draw();
+
     window.addEventListener('resize', resize);
 
     return () => {

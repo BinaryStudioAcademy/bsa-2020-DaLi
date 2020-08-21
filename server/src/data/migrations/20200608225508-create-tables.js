@@ -35,7 +35,7 @@ export default {
           },
           isActive: {
             allowNull: false,
-            type: DataTypes.BOOLEAN,
+            type: Sequelize.BOOLEAN,
             defaultValue: true,
           },
           lastLogin: {

@@ -1,13 +1,18 @@
 import { Router } from 'express';
 import * as DatabaseService from '../services/databaseService';
+import { permissionsMiddleware } from '../middlewares/permissions';
 
 const router = Router();
 
-router.get('/', async (req, res, next) => {
-  const result = await DatabaseService.getDatabases();
-  res.json(result);
-  next();
-});
+router.get(
+  '/',
+  async (req, res, next) => {
+    const result = await DatabaseService.getDatabases();
+    res.data = result;
+    next();
+  },
+  permissionsMiddleware
+);
 
 router.get('/:id', async (req, res, next) => {
   const result = await DatabaseService.getDatabase({

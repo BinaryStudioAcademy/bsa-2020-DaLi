@@ -75,8 +75,6 @@ const PeopleList = ({
   const displayNotification = () => setIsNotificationVisible(true);
   const hideNotification = () => setIsNotificationVisible(false);
 
-
-
   useEffect(() => {
     const isDeactivatedUsers = people.filter((person) => !person.isActive).length > 0;
     setIsInactiveUsers(isDeactivatedUsers);

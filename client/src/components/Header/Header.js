@@ -42,7 +42,7 @@ const Header = ({ logout, addDashboard }) => {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = useState(null);
   const [addMenuAnchorEl, setAddMenuAnchorEl] = useState(null);
-  const [addDashboradModalVisible, setAddDashboradModalVisible] = useState(false);
+  const [addDashboardModalVisible, setAddDashboardModalVisible] = useState(false);
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -84,13 +84,13 @@ const Header = ({ logout, addDashboard }) => {
   const isAdminPage = history.location.pathname.includes('/admin');
 
   const hideAddDashboardModal = () => {
-    setAddDashboradModalVisible(false);
+    setAddDashboardModalVisible(false);
   };
 
   const showAddDashboardModal = () => {
     // history.push('/select-visualization');
     setAddMenuAnchorEl(null);
-    setAddDashboradModalVisible(true);
+    setAddDashboardModalVisible(true);
   };
 
   const onHomePage = () => {
@@ -181,7 +181,7 @@ const Header = ({ logout, addDashboard }) => {
         <MenuItem onClick={onSignOut}>Sign out</MenuItem>
       </Menu>
       <AddDashboardModal
-        isVisible={addDashboradModalVisible}
+        isVisible={addDashboardModalVisible}
         closeModal={hideAddDashboardModal}
         addDashboard={addDashboard}
       />

@@ -13,6 +13,14 @@ function LineChart({ settings, data, chart: chartSize }) {
   const { goal, trendline, showDataPointsValues, lineType = 'curveNatural', color } = settings.display;
   const XAxis = settings.axisData.XAxis;
   const YAxis = settings.axisData.YAxis;
+  XAxis.key = 'createdAt';
+  YAxis.key = 'total';
+  data = [
+    { total: -10, createdAt: -2018 },
+    { total: 100, createdAt: -2019 },
+    { total: -50, createdAt: 2020 },
+    { total: 320, createdAt: 2021 },
+  ];
   data = data.sort((a, b) => a[XAxis.key] - b[XAxis.key]);
   const [config, setConfig] = useState({});
   const svgRef = useRef();
@@ -107,6 +115,28 @@ function LineChart({ settings, data, chart: chartSize }) {
 
     chart.append('g').attr('class', 'x-axis axis').call(xAxis);
     chart.append('g').attr('class', 'y-axis axis').call(yAxis);
+
+    {
+      chart
+        .append('line')
+        .style('stroke', '#EE8625')
+        .style('stroke-width', 3)
+        .attr('x1', 0)
+        .attr('y1', yScale(0))
+        .attr('x2', width)
+        .attr('y2', yScale(0));
+
+      const y = yScale(0);
+
+      chart
+        .append('text')
+        .attr('y', y - 10)
+        .attr('x',  70)
+        .attr('text-anchor', 'middle')
+        .attr('class', 'goal__label')
+        .style('color', '#EE8625')
+        .text('0');
+    }
 
     // delete axis values
     chart.selectAll('.axis').selectAll('text').remove();

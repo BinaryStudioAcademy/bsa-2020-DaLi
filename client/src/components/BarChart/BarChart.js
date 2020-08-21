@@ -153,14 +153,27 @@ function BarChart(props) {
     chart.append('g').attr('class', 'x-axis axis').call(xAxis);
     chart.append('g').attr('class', 'y-axis axis').call(yAxis);
 
-    chart
-      .append('line')
-      .style('stroke', '#EE8625')
-      .style('stroke-width', 3)
-      .attr('x1', 0)
-      .attr('y1', yScale(0))
-      .attr('x2', width)
-      .attr('y2', yScale(0));
+    {
+      chart
+        .append('line')
+        .style('stroke', '#EE8625')
+        .style('stroke-width', 3)
+        .attr('x1', 0)
+        .attr('y1', yScale(0))
+        .attr('x2', width)
+        .attr('y2', yScale(0));
+
+      const y = yScale(0);
+
+      chart
+        .append('text')
+        .attr('y', y - 10)
+        .attr('x',  70)
+        .attr('text-anchor', 'middle')
+        .attr('class', 'goal__label')
+        .style('color', '#EE8625')
+        .text('0');
+    }
 
     // chart
     //   .append('line')
@@ -179,7 +192,7 @@ function BarChart(props) {
         .append('text')
         .attr('class', 'label')
         .attr('x', -(height / 2) - margin.left)
-        .attr('y', margin.left / 4)
+        .attr('y', margin.left-10)
         .attr('transform', 'rotate(-90)')
         .text(YAxis.label);
     }
@@ -189,7 +202,7 @@ function BarChart(props) {
         .append('text')
         .attr('class', 'label')
         .attr('x', width / 2 + margin.bottom)
-        .attr('y', height - margin.bottom * 0.2)
+        .attr('y', height - margin.bottom +30)
         .attr('text-anchor', 'middle')
         .text(XAxis.label);
     }

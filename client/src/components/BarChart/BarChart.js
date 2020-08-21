@@ -20,16 +20,7 @@ function BarChart(props) {
 
     const chart = d3.select(svgRef.current);
     chart.selectAll('*').remove();
-    // const { data } = props;
-    XAxis.key = 'createdAt';
-    YAxis.key = 'total';
-    const data = [
-      { total: -10, createdAt: -2018 },
-      { total: 100, createdAt: -2019 },
-      { total: -50, createdAt: 2020 },
-      { total: 320, createdAt: 2021 },
-    ];
-
+    const { data } = props;
     const yDataRange = {
       min: calcMinYDataValue(
         d3.min(data, (d) => d[YAxis.key]),
@@ -40,15 +31,6 @@ function BarChart(props) {
         goal
       ),
     };
-    // const xDataRange = {
-    //   min: data[0][XAxis.key],
-    //   max: data[data.length - 1][XAxis.key],
-    // };
-    // const barUnitWidth = (xDataRange.max - xDataRange.min) / data.length;
-    // const xScaleForLines = d3
-    //   .scaleLinear()
-    //   .domain([xDataRange.min, xDataRange.max])
-    //   .range([margin.left, width - margin.right]);
 
     d3.select('.d3-tip').remove();
     const tip = d3Tip()
@@ -101,7 +83,11 @@ function BarChart(props) {
       .attr('height', (d) => {
         const zero = yScale(0);
         const current = yScale(d[YAxis.key]);
-        return Math.abs(zero - current);
+        let barHeight = Math.abs(zero - current);
+        if (yDataRange.min >= 0) {
+          barHeight -= 17;
+        }
+        return barHeight;
       })
       .attr('width', xScale.bandwidth())
       .on('mouseenter', (_, index) => {
@@ -153,7 +139,7 @@ function BarChart(props) {
     chart.append('g').attr('class', 'x-axis axis').call(xAxis);
     chart.append('g').attr('class', 'y-axis axis').call(yAxis);
 
-    {
+    if (yDataRange.min < 0) {
       chart
         .append('line')
         .style('stroke', '#EE8625')
@@ -168,21 +154,11 @@ function BarChart(props) {
       chart
         .append('text')
         .attr('y', y - 10)
-        .attr('x',  70)
+        .attr('x', 70)
         .attr('text-anchor', 'middle')
-        .attr('class', 'goal__label')
-        .style('color', '#EE8625')
+        .attr('class', 'line__label')
         .text('0');
     }
-
-    // chart
-    //   .append('line')
-    //   .style('stroke', '#EE8625')
-    //   .style('stroke-width', 3)
-    //   .attr('x1', xScaleForLines(0) + barUnitWidth)
-    //   .attr('y1', 0)
-    //   .attr('x2', xScaleForLines(0) + barUnitWidth)
-    //   .attr('y2', height);
 
     // delete axis values
     chart.selectAll('.axis').selectAll('text').remove();
@@ -192,7 +168,7 @@ function BarChart(props) {
         .append('text')
         .attr('class', 'label')
         .attr('x', -(height / 2) - margin.left)
-        .attr('y', margin.left-10)
+        .attr('y', margin.left - 10)
         .attr('transform', 'rotate(-90)')
         .text(YAxis.label);
     }
@@ -202,7 +178,7 @@ function BarChart(props) {
         .append('text')
         .attr('class', 'label')
         .attr('x', width / 2 + margin.bottom)
-        .attr('y', height - margin.bottom +30)
+        .attr('y', height - margin.bottom + 30)
         .attr('text-anchor', 'middle')
         .text(XAxis.label);
     }
@@ -216,7 +192,7 @@ function BarChart(props) {
         .attr('y', y - 10)
         .attr('x', width - 50)
         .attr('text-anchor', 'middle')
-        .attr('class', 'goal__label')
+        .attr('class', 'line__label')
         .text(goal.label);
     }
   };

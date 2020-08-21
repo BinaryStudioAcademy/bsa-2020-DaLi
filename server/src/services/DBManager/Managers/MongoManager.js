@@ -20,4 +20,17 @@ export default class DBMongoManager {
     const collectionList = this.client.db(this.dbName).listCollections();
     return collectionList.map((collection) => collection.name);
   }
+
+  async getTableDataByName(name) {
+    let collectionFields = [];
+    await this.client
+      .db(this.dbName)
+      .collection(name)
+      .find({})
+      .toArray()
+      .then((fields) => {
+        collectionFields = fields;
+      });
+    return collectionFields;
+  }
 }

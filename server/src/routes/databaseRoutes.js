@@ -24,18 +24,22 @@ router.get(
   permissionsMiddleware
 );
 
-router.get('/:id', async (req, res, next) => {
-  const result = await DatabaseService.getDatabase({
-    id: req.params.id,
-  });
-  if (result) {
-    res.json(result);
-    next();
-  } else {
-    const err = new Error('database not found');
-    next(err);
-  }
-});
+router.get(
+  '/:id',
+  async (req, res, next) => {
+    const result = await DatabaseService.getDatabase({
+      id: req.params.id,
+    });
+    if (result) {
+      res.data = result;
+      next();
+    } else {
+      const err = new Error('database not found');
+      next(err);
+    }
+  },
+  permissionsMiddleware
+);
 
 router.post('/', async (req, res, next) => {
   const result = await DatabaseService.createDatabase(req.body);

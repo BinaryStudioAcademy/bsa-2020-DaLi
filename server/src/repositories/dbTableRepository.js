@@ -9,6 +9,16 @@ class DBTableRepository extends BaseRepository {
       },
     });
   }
+
+  getTablesIdsByDatabaseId(id) {
+    return this.model.findAll({
+      raw: true,
+      attributes: ['id'],
+      where: {
+        DatabaseId: id,
+      },
+    });
+  }
 }
 
 export default new DBTableRepository(models.DBTable);

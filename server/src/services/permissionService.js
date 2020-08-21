@@ -25,29 +25,29 @@ export const getPermissions = async () => {
   const databases = await DatabaseRepository.getAll();
 
   const result = await Promise.all(
-    groups.map(async (group) => {
-      const dbAccess = await Promise.all(
-        databases.map(async (db) => {
+    databases.map(async (db) => {
+      const groupAccess = await Promise.all(
+        groups.map(async (group) => {
           const dbTables = await DBTable.getTablesByDatabaseId({
             id: db.id,
           });
           const accessLevel = getAccessLevel(group.id, dbTables, permissions);
           return {
-            databaseId: db.id,
+            groupId: group.id,
+            groupName: group.name,
             access: accessLevel,
           };
         })
       );
       return {
-        groupId: group.id,
-        databases: dbAccess,
+        databaseId: db.id,
+        dbNickname: db.dbNickname,
+        groups: groupAccess,
       };
     })
   );
 
   return {
-    databases,
-    groups,
     permissions: result,
   };
 };
@@ -70,29 +70,29 @@ export const getDBPermissions = async (databaseId) => {
   const tables = await DBTable.getTablesByDatabaseId(databaseId);
 
   const result = await Promise.all(
-    groups.map(async (group) => {
-      const tablesAccess = await Promise.all(
-        tables.map(async (table) => {
+    tables.map(async (table) => {
+      const groupsAccess = await Promise.all(
+        groups.map(async (group) => {
           const permission = permissions.find(
             (permission) => permission.dbtable_id === table.id && permission.userGroups_id === group.id
           );
           return {
-            tableId: table.id,
+            groupId: group.id,
+            groupName: group.name,
             access: permission.permissionGranted,
           };
         })
       );
 
       return {
-        groupId: group.id,
-        tables: tablesAccess,
+        tableId: table.id,
+        tableName: table.name,
+        groups: groupsAccess,
       };
     })
   );
 
   return {
-    tables,
-    groups,
     permissions: result,
   };
 };
@@ -105,4 +105,42 @@ export const updateDBPermissions = async (permissions) => {
     })
   );
   return result;
+};
+
+export const updatePermissions = async ({ permissions }) => {
+  await Promise.all(
+    permissions.map(async (permission) => {
+      const { databaseId, groups } = permission;
+      groups.map(async (group) => {
+        const { groupId, access, tables } = group;
+        let accessLevel;
+        if (access === 'granted') {
+          accessLevel = true;
+        }
+        if (access === 'denied') {
+          accessLevel = false;
+        }
+        if (access !== 'limited') {
+          const TableIds = await DBTable.getTablesIdsByDatabaseId(databaseId);
+          await Promise.all(
+            TableIds.map(async (data) => {
+              PermissionRepository.updatePermissionByGroupIdAndTableId(groupId, data.id, {
+                permissionGranted: accessLevel,
+              });
+            })
+          );
+        } else {
+          await Promise.all(
+            tables.map(async (data) => {
+              console.log(data.id);
+              PermissionRepository.updatePermissionByGroupIdAndTableId(groupId, data.tableId, {
+                permissionGranted: data.access,
+              });
+            })
+          );
+        }
+      });
+    })
+  );
+  return 'success';
 };

@@ -4,7 +4,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import Breadcrumbs from '@material-ui/core/Breadcrumbs';
 import Typography from '@material-ui/core/Typography';
 import { Grid } from '@material-ui/core';
-import DataSourcesViewItem from '../DataSourcesViewItem/DataSourcesViewItem';
+import DatasetItem from './DatasetItem';
 
 import './styles.css';
 
@@ -39,12 +39,7 @@ const DataSourcesDatasetsView = ({ datasets, getTables, setCurrentDbName }) => {
       <Grid container className={classes.itemList}>
         {datasets.map((dataset) => {
           return (
-            <DataSourcesViewItem
-              key={dataset.id}
-              dataset={dataset}
-              getTables={getTables}
-              setCurrentDbName={setCurrentDbName}
-            />
+            <DatasetItem key={dataset.id} dataset={dataset} getTables={getTables} setCurrentDbName={setCurrentDbName} />
           );
         })}
       </Grid>

@@ -6,7 +6,9 @@ import Typography from '@material-ui/core/Typography';
 import { NavLink } from 'react-router-dom';
 import NavigateNextIcon from '@material-ui/icons/NavigateNext';
 import { Grid } from '@material-ui/core';
-import DataSourcesViewItem from '../DataSourcesViewItem/DataSourcesViewItem';
+import TableItem from './TableItem';
+
+import './styles.css';
 
 const useStyles = makeStyles(() => ({
   breadcrumbs: {
@@ -59,7 +61,7 @@ const DataSourcesTablesView = ({ tables, currentDbName }) => {
       </Breadcrumbs>
       <Grid container className={classes.itemList}>
         {tables.map((table) => {
-          return <DataSourcesViewItem key={table.id} table={table} />;
+          return <TableItem key={table.id} table={table} />;
         })}
       </Grid>
     </main>

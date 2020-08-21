@@ -6,6 +6,7 @@ import BarChart from './BarChart/BarChart';
 import LoginForm from './LoginForm';
 import Modal from './Modal';
 import LineChart from './LineChart/LineChart';
+import LineChartSettings from './LineChartSettings';
 import EnhancedTable from './EnhancedTable/EnhancedTable';
 import InitialTable from './InitialTable/InitialTable';
 import SelectVisualization from './SelectVisualization/SelectVisualization';
@@ -24,6 +25,8 @@ import DashboardHeader from './DashboardHeader/DashboardHeader';
 import DashboardLayout from './DashboardLayout/DashboardLayout';
 import DataSourcesDatasetsView from './DataSourcesDatasetsView/DataSourcesDatasetsView';
 import DataSourcesTablesView from './DataSourcesTablesView/DataSourcesTablesView';
+import DeleteDatabaseModal from './DeleteDatabaseModal/DeleteDatabaseModal';
+import DatabaseList from './DatabaseList/DatabaseList';
 import DeleteVisualizationWarning from './DeleteVisualizationWarning/DeleteVisualizationWarning';
 
 export {
@@ -42,6 +45,7 @@ export {
   ViewVisualizationMain,
   ViewVisualizationHeader,
   TableSettingsSidebar,
+  LineChartSettings,
   BarChartSettings,
   PeopleList,
   PeopleListHeader,
@@ -53,5 +57,7 @@ export {
   DashboardLayout,
   DataSourcesDatasetsView,
   DataSourcesTablesView,
+  DeleteDatabaseModal,
+  DatabaseList,
   DeleteVisualizationWarning,
 };

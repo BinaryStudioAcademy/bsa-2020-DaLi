@@ -6,7 +6,7 @@ import AccountSettingsPage from './AccountSettingsPage/AccountSettingsPage';
 import DashboardPage from './DashboardPage/DashboardPage';
 import AdminPage from './AdminPage/AdminPage';
 import AnalyticsPage from './AnalyticsPage/AnalyticsPage';
-import DataSourcesPage from './DataSourcesPage/DataSourcesPage';
+import ConnectionDatabasePage from './ConnectionDatabasePage/ConnectionDatabasePage';
 
 export {
   LoginPage,
@@ -17,5 +17,5 @@ export {
   DashboardPage,
   AdminPage,
   AnalyticsPage,
-  DataSourcesPage,
+  ConnectionDatabasePage,
 };

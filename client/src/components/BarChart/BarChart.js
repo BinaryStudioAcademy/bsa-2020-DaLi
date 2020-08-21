@@ -85,7 +85,7 @@ function BarChart(props) {
         const current = yScale(d[YAxis.key]);
         let barHeight = Math.abs(zero - current);
         if (yDataRange.min >= 0) {
-          barHeight -= 17;
+          barHeight -= height * 0.02;
         }
         return barHeight;
       })

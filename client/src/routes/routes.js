@@ -12,6 +12,7 @@ import {
   DashboardPage,
   AdminPage,
   AnalyticsPage,
+  ConnectionDatabasePage,
 } from '../pages';
 import { getToken } from '../helpers/jwtToken';
 import { fetchUser } from '../containers/LoginPageContainer/actions';

@@ -62,9 +62,9 @@ export const register = async (user) => {
   if (!candidate) {
     const salt = bcrypt.genSaltSync(10);
     const allGroups = await UserGroupsRepository.getAll();
-    const allUsersGroupID = allGroups.filter(group => group.name==='All Users')[0].id;
-    const newUser = await UserRepository.create(Object.assign({}, user, { password:  bcrypt.hashSync(user.password, salt)}));
-    await UsersUserGroupsRepository.create({users_id: newUser.id, userGroups_id: allUsersGroupID});
+    const allUsersGroupID = allGroups.filter((group) => group.name === 'All Users')[0].id;
+    const newUser = await UserRepository.create({ ...user, password: bcrypt.hashSync(user.password, salt) });
+    await UsersUserGroupsRepository.create({ users_id: newUser.id, userGroups_id: allUsersGroupID });
     return {
       status: 201,
       response: {

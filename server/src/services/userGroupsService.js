@@ -2,7 +2,7 @@ import UserGroupsRepository from '../repositories/userGroupsRepository';
 import UsersUserGroupsRepository from '../repositories/usersUserGroupsRepository';
 
 export const getUserGroups = async () => {
-  const result = await UserGroupsRepository.getAll();
+  const result = await UserGroupsRepository.getAllWithUsers();
   return result;
 };
 

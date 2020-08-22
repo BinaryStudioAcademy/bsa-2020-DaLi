@@ -8,6 +8,7 @@ import DashboardVisualizations from './dashboardVisualizations';
 import UserGroups from './userGroups';
 import UsersUserGroups from './usersUserGroups';
 import Database from './database';
+import DBTable from './dbTable';
 
 export const sequelize = new Sequelize(DATABASE_URL, {
   dialect: 'postgres',
@@ -20,6 +21,7 @@ Visualization(sequelize, Sequelize.DataTypes, Sequelize.Deferrable);
 Dashboard(sequelize, Sequelize.DataTypes);
 DashboardVisualizations(sequelize, Sequelize.DataTypes);
 Database(sequelize, Sequelize.DataTypes);
+DBTable(sequelize, Sequelize.DataTypes);
 
 const models = sequelize.models;
 

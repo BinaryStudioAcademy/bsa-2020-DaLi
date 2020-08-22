@@ -24,6 +24,7 @@ export function* loginSaga(payload) {
     setToken(response.token);
     yield put({ type: LOGIN_USER_SUCCESS, payload: response });
   } catch (error) {
+    removeToken();
     yield put({ type: LOGIN_USER_ERROR, payload: error });
   }
 }

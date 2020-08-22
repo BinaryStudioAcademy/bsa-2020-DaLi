@@ -13,7 +13,7 @@ const Layout = ({ isAuthorized, children }) => (
 
 Layout.propTypes = {
   isAuthorized: PropTypes.bool,
-  children: PropTypes.array,
+  children: PropTypes.object,
 };
 
 const mapStateToProps = ({ currentUser }) => ({

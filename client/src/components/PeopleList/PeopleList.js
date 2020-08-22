@@ -59,14 +59,27 @@ const PeopleList = ({
   const [inactiveUsers, setInactiveUsers] = useState([]);
   const [activeUsers, setActiveUsers] = useState([]);
 
-  const [value, setValue] = React.useState(0);
+  const [oldMessage, setOldMessage] = useState('');
+
+  const [value, setValue] = useState(0);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
-
   const displayNotification = () => setIsNotificationVisible(true);
   const hideNotification = () => setIsNotificationVisible(false);
+  const updateNotification = (message, messageStatus) => {
+    setNotificationMessage(message);
+    setNotificationMessageStatus(messageStatus);
+    if (message) {
+      displayNotification();
+    }
+  };
+
+  if (notificationMessageProps !== oldMessage && notificationMessageProps) {
+    updateNotification(notificationMessageProps, notificationMessageStatusProps);
+    setOldMessage(notificationMessageProps)
+  }
 
   useEffect(() => {
     const isDeactivatedUsers = people.filter((person) => !person.isActive).length > 0;
@@ -77,16 +90,13 @@ const PeopleList = ({
       setInactiveUsers(people.filter((person) => !person.isActive));
     }
 
-    const updateNotification = (message, messageStatus) => {
-      setNotificationMessage(message);
-      setNotificationMessageStatus(messageStatus);
-      if (message) {
-        displayNotification();
-      }
-    };
+    console.log('notificationMessage');
+    console.log(notificationMessage);
+    console.log('oldMessage');
+    console.log(oldMessage);
 
-    updateNotification(notificationMessageProps, notificationMessageStatusProps);
-  }, [notificationMessageStatusProps, notificationMessageProps]);
+
+  }, [people]);
 
   const hideAddUserModal = () => {
     setAddUserModalVisible(false);

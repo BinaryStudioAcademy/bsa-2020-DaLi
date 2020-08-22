@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Switch, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import { ProtectedRoute, PublicRoute } from '../containers';
 import {
   LoginPage,
@@ -15,16 +16,18 @@ import {
 import { getToken } from '../helpers/jwtToken';
 import { fetchUser } from '../containers/LoginPageContainer/actions';
 
-const Routes = ({ fetchUser, isAuthorized }) => {
+const Routes = ({ fetchUser, isAuthorized, isLoading }) => {
   const hasToken = !!getToken();
 
   useEffect(() => {
-    if (hasToken && !isAuthorized) {
+    if (hasToken && !isAuthorized && !isLoading) {
       fetchUser();
     }
-  });
+  }, [fetchUser, hasToken, isAuthorized, isLoading]);
 
-  return (
+  return isLoading || (hasToken && !isAuthorized) ? (
+    <CircularProgress size={40} left={-20} top={-40} style={{ marginLeft: '50%', marginTop: '50%' }} />
+  ) : (
     <Switch>
       <PublicRoute exact path="/login" component={LoginPage} />
       <ProtectedRoute exact path="/" component={AnalyticsPage} />
@@ -48,12 +51,14 @@ function mapDispatchToProps(dispatch) {
 function mapStateToProps({ currentUser }) {
   return {
     isAuthorized: currentUser.isAuthorized,
+    isLoading: currentUser.isLoading,
   };
 }
 
 Routes.propTypes = {
   isAuthorized: PropTypes.bool,
   fetchUser: PropTypes.func,
+  isLoading: PropTypes.bool,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Routes);

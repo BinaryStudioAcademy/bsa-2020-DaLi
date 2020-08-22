@@ -1,6 +1,5 @@
 import Sequelize from 'sequelize';
-import DATABASE_URL from '../config/dbConfig';
-
+import config from '../config/dbConfig';
 import User from './user';
 import Visualization from './visualization';
 import Dashboard from './dashboard';
@@ -11,8 +10,11 @@ import Database from './database';
 import DBTable from './dbTable';
 import Permission from './permission';
 
-export const sequelize = new Sequelize(DATABASE_URL, {
-  dialect: 'postgres',
+const { database, username, password, host, dialect } = config.development;
+
+export const sequelize = new Sequelize(database, username, password, {
+  host,
+  dialect,
 });
 
 User(sequelize, Sequelize.DataTypes);

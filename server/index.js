@@ -28,7 +28,7 @@ routes(app);
 
 app.use(errorHandlerMiddleware);
 
-sequelize.sync();
+// sequelize.sync();
 
 sequelize
   .authenticate()

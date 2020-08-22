@@ -8,9 +8,38 @@ const db = {
   password: process.env.DB_PASSWORD,
   host: process.env.DB_HOST,
   port: process.env.DB_PORT,
+  dialect: process.env.DB_DIALECT,
 };
 
-const { database, username, password, host, port } = db;
-const databaseURL = `postgres:${username}:${password}@${host}:${port}/${database}`;
+const { database, username, password, host, port, dialect } = db;
 
-export default databaseURL;
+const config = {
+  development: {
+    username,
+    password,
+    database,
+    host,
+    port,
+    dialect,
+    operatorsAliases: '0',
+  },
+  test: {
+    username,
+    password,
+    database,
+    host,
+    port,
+    dialect,
+    operatorsAliases: '0',
+  },
+  production: {
+    username,
+    password,
+    database,
+    host,
+    port,
+    dialect,
+    operatorsAliases: '0',
+  },
+};
+module.exports = config;

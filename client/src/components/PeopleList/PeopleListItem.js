@@ -10,28 +10,6 @@ import MoreHorizIcon from '@material-ui/icons/MoreHoriz';
 import ReplayIcon from '@material-ui/icons/Replay';
 import { colorStyles, useStyles } from './styles';
 import { formatDate } from './helpers/formatdate';
-// import Select from '@material-ui/core/Select';
-// import Checkbox from '@material-ui/core/Checkbox';
-// import Input from '@material-ui/core/Input';
-// import InputLabel from '@material-ui/core/InputLabel';
-// import ListItemText from '@material-ui/core/ListItemText';
-
-// const [groups, setGroups] = React.useState(['Admin', 'Default']);
-
-// const ITEM_HEIGHT = 48;
-// const ITEM_PADDING_TOP = 8;
-// const MenuProps = {
-//   PaperProps: {
-//     style: {
-//       maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
-//       width: 250,
-//     },
-//   },
-// };
-
-// const handleChange = (event) => {
-//   // setGroups(event.target.value);
-// };
 
 const getInitials = (person) => {
   const name = `${person.firstName} ${person.lastName}`;
@@ -79,7 +57,7 @@ const PeopleListItem = ({ person, showAddUserModal, showDeactivateUserModal, act
         </TableCell>
         <TableCell align="left">{person.email}</TableCell>
         <TableCell align="left">
-              // TODO: Add select for groups
+              { 'TODO: Add select for groups' }
         </TableCell>
         <TableCell align="left">{formatDate(person.lastLogin)}</TableCell>
         <TableCell align="left">

@@ -23,7 +23,7 @@ export function* loginSaga(payload) {
       response = yield call(authAPIService.getCurrentUser);
     } else {
       response = yield call(authAPIService.loginUser, payload.request);
-      setToken(response.token);
+      setToken(response.token, payload.request.rememberMe);
     }
     yield put({ type: LOGIN_USER_SUCCESS, payload: response });
   } catch (error) {

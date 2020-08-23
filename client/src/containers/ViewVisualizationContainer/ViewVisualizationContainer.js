@@ -64,8 +64,6 @@ const ViewVisualizationContainer = (props) => {
     setVisualization(visualization);
   }, [id, visualizations, userId, setVisualization, data, schema]);
 
-  console.log(data, schema, tableId);
-
   const visualizationComponent = getVisualizationComponent(
     currentVisualization.type,
     currentVisualization.config,

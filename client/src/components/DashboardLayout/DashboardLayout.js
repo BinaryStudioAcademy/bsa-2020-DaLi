@@ -11,7 +11,6 @@ const DashboardLayout = (props) => {
     layout,
     layouts,
     dashboardVisualizations,
-    data,
     onLayoutChange,
     onBreakpointChange,
     getDashboardItems,
@@ -31,7 +30,7 @@ const DashboardLayout = (props) => {
   };
 
   const dashboardLayoutClasses = getDashboardLayoutClasses();
-  const dashboardItems = getDashboardItems(dashboardVisualizations, layout, data, onVisualizationDelete);
+  const dashboardItems = getDashboardItems(dashboardVisualizations, layout, onVisualizationDelete);
 
   return (
     <div className={dashboardLayoutClasses}>
@@ -50,7 +49,6 @@ const DashboardLayout = (props) => {
     </div>
   );
 };
-
 DashboardLayout.propTypes = {
   viewDashboardMode: PropTypes.bool,
   layout: PropTypes.array,

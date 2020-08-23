@@ -5,7 +5,7 @@ export default (sequelize, DataTypes) => {
   class Permission extends Model {
     static associate(models) {
       Permission.belongsTo(models.UserGroups, {
-        foreignKey: 'usergroups_id',
+        foreignKey: 'userGroups_id',
         sourceKey: models.UserGroups.id,
       });
       Permission.belongsTo(models.DBTable, {

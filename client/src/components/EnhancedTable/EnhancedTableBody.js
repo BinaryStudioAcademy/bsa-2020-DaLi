@@ -9,11 +9,11 @@ const EnhancedTableBody = (props) => {
   const { rows } = props;
   return (
     <TableBody>
-      {rows.map((row) => {
+      {rows.map((row, index) => {
         return (
-          <TableRow>
-            {Object.keys(row).map((key) => {
-              return <TableCell>{row[key]}</TableCell>;
+          <TableRow key={index}>
+            {Object.keys(row).map((key, innerIndex) => {
+              return <TableCell key={innerIndex}>{row[key]}</TableCell>;
             })}
           </TableRow>
         );

@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 /* eslint-disable no-unused-vars */
 /* eslint-disable class-methods-use-this */
 import Sequelize from 'sequelize';
@@ -26,52 +27,35 @@ export default class DBMySQLManager {
     return this.sequelize.close();
   }
 
-  getTablenames() {
-    // return this.sequelize
-    //   .query(
-    //     `
-    //   SELECT
-    //     tablename
-    //   FROM
-    //     pg_catalog.pg_tables
-    //   WHERE
-    //     schemaname='public'
-    //   `
-    //   )
-    //   .then((rowsVariations) => {
-    //     const rowObjects = rowsVariations[0];
-    //     const rows = rowObjects.map((o) => o.tablename);
-    //     return rows;
-    //   });
+  getTablenames(dbName) {
+    return this.sequelize.query('show tables').then((res) => {
+      const tables = res[0];
+      return tables.map((i) => i[`Tables_in_${dbName}`]);
+    });
   }
 
   getTableDataByName(name) {
-    // return this.sequelize
-    //   .query(
-    //     `
-    //     SELECT *
-    //     FROM "${name}"
-    //     `
-    //   )
-    //   .then((data) => {
-    //     return data[0];
-    //   });
+    return this.sequelize.query(`SELECT * FROM ${name}`).then((data) => {
+      return data[0];
+    });
   }
 
   getTableSchemaByName(name) {
-    // return this.sequelize
-    //   .query(
-    //     `
-    //   SELECT
-    //     data_type,
-    //     column_name
-    //   FROM
-    //     information_schema.columns
-    //   WHERE
-    //     table_name = '${name}';`
-    //   )
-    //   .then((data) => {
-    //     return data[0];
-    //   });
+    return this.sequelize
+      .query(
+        `
+        SELECT COLUMN_NAME, DATA_TYPE
+        FROM INFORMATION_SCHEMA.COLUMNS
+        WHERE TABLE_NAME = '${name}';
+        `
+      )
+      .then((data) => {
+        const schemaCols = data[0];
+        return schemaCols.map((col) => {
+          const column_name = col.COLUMN_NAME;
+          const data_type = col.DATA_TYPE;
+          return { column_name, data_type };
+        });
+      });
   }
 }

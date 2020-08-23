@@ -41,6 +41,7 @@ const ViewVisualizationContainer = (props) => {
     updateVisualizationConfig,
     updateVisualizationName,
     location: { data, schema, tableId },
+    fetchVisualization,
   } = props;
 
   const [currentView, setCurrentView] = useState('table');
@@ -57,12 +58,20 @@ const ViewVisualizationContainer = (props) => {
       setIsVisualizationExist(false);
       const dataSample = createDataSample(data);
       visualization = createInitVisualization(id, dataSample, userId, schema);
-    } else {
+      setVisualization(visualization);
+    } else if (visualizations.length) {
       visualization = getVisualization(visualizations, id);
+      setIsVisualizationExist(true);
+      setVisualization(visualization);
+    } else {
+      fetchVisualization(id);
       setIsVisualizationExist(true);
     }
     setVisualization(visualization);
-  }, [id, visualizations, userId, setVisualization, data, schema]);
+  }, [id, visualizations, userId, setVisualization, data, schema, fetchVisualization]);
+
+
+
 
   const visualizationComponent = getVisualizationComponent(
     currentVisualization.type,
@@ -186,6 +195,7 @@ ViewVisualizationContainer.propTypes = {
   userId: PropTypes.string,
   currentVisualization: PropTypes.object,
   setVisualization: PropTypes.func,
+  fetchVisualization: PropTypes.func,
   updateVisualizationConfig: PropTypes.func,
   updateVisualizationName: PropTypes.func,
   history: PropTypes.object,

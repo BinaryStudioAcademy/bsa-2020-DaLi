@@ -50,7 +50,7 @@ const DashboardLayout = (props) => {
   );
 };
 DashboardLayout.propTypes = {
-  viewDashboardMode: PropTypes.bool,
+  viewDashboardMode: PropTypes.string,
   layout: PropTypes.array,
   layouts: PropTypes.object,
   data: PropTypes.array,

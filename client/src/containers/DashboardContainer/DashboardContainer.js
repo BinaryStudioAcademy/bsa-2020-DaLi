@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import { getDashboard, updateDashboard } from './actions';
+import { getDashboard, updateDashboard, fetchVisualizations } from './actions';
 
 import { DashboardHeader, DashboardLayout, AddVisualizationToDashboardModal } from '../../components';
 import {
@@ -22,7 +22,7 @@ import {
 } from './helper';
 
 const DashboardContainer = (props) => {
-  const { id, currentDashboard, isLoading, getDashboard, visualizations, updateDashboard } = props;
+  const { id, currentDashboard, isLoading, getDashboard, visualizations, updateDashboard, fetchVisualizations } = props;
 
   const [oldName, setOldName] = useState('');
   const [name, setName] = useState(null);
@@ -50,6 +50,12 @@ const DashboardContainer = (props) => {
       setViewDashboardMode('default');
     }
   };
+
+  useEffect(() => {
+    if (!visualizations.length) {
+      fetchVisualizations();
+    }
+  }, [visualizations]);
 
   useEffect(() => {
     getDashboard(id);
@@ -213,6 +219,7 @@ const DashboardContainer = (props) => {
     </>
   );
 };
+
 DashboardContainer.propTypes = {
   id: PropTypes.string,
   currentDashboard: PropTypes.object,
@@ -220,7 +227,7 @@ DashboardContainer.propTypes = {
   isLoading: PropTypes.bool,
   getDashboard: PropTypes.func,
   updateDashboard: PropTypes.func,
-  // currentDashboardData: PropTypes.array,
+  fetchVisualizations: PropTypes.func,
 };
 
 const mapStateToProps = ({ currentDashboard, analytics }) => ({
@@ -229,6 +236,6 @@ const mapStateToProps = ({ currentDashboard, analytics }) => ({
   visualizations: analytics.visualizations,
 });
 
-const mapDispatchToProps = { getDashboard, updateDashboard };
+const mapDispatchToProps = { getDashboard, updateDashboard, fetchVisualizations };
 
 export default connect(mapStateToProps, mapDispatchToProps)(DashboardContainer);

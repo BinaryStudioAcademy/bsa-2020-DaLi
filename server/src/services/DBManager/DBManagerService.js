@@ -1,6 +1,7 @@
 /* eslint-disable import/no-cycle */
 import { getDatabase } from '../databaseService';
 import PostgresManager from './Managers/PostgresManager';
+import MySQLManager from './Managers/MySQLManager';
 
 export default class DBManagerService {
   constructor(database) {
@@ -17,10 +18,21 @@ export default class DBManagerService {
     }
     const { type, host, port, dbName, username, dbPassword } = this.database;
     let manager = null;
-    if (type === 'postgres') {
-      // eslint-disable-next-line no-case-declarations
-      const databaseURL = `postgres:${username}:${dbPassword}@${host}:${port}/${dbName}`;
-      manager = new PostgresManager(databaseURL);
+    switch (type) {
+      case 'PostgreSQL': {
+        // eslint-disable-next-line no-case-declarations
+        const databaseURL = `postgres:${username}:${dbPassword}@${host}:${port}/${dbName}`;
+        manager = new PostgresManager(databaseURL);
+        break;
+      }
+      case 'MySQL': {
+        // eslint-disable-next-line no-case-declarations
+        const databaseURL = `mysql:${username}:${dbPassword}@${host}:${port}/${dbName}`;
+        manager = new MySQLManager(databaseURL);
+        break;
+      }
+      default:
+        throw Error('unknown type');
     }
     return manager;
   }

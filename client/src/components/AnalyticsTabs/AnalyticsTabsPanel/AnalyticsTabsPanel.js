@@ -47,9 +47,9 @@ const AnalyticsTabsPanel = ({ value, index, data, deleteVisualization, deleteDas
   return (
     <Typography component="div" hidden={value !== index}>
       <Box className={classes.root}>
-        {data.map((item) => {
+        {data.map((item, dataIndex) => {
           return (
-            <div className={classes.itemContainer} key={item.name}>
+            <div className={classes.itemContainer} key={dataIndex}>
               {!item.type ? (
                 <>
                   <Link to={`/dashboards/${item.id}`} className={classes.item}>

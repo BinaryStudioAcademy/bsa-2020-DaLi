@@ -13,7 +13,7 @@ line#goal,
   opacity: 0.6;
 }
 
-text.goal__label {
+text.line__label {
   word-wrap: break-word !important;
   width: 50px;
   font-weight: bold;

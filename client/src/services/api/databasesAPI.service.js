@@ -13,5 +13,7 @@ class DatabasesAPIService extends baseAPIService {
   deleteDatabase = (id) => this.deleteData(`${id}`);
 
   addDatabase = (data) => this.postData('', data);
+
+  getTables = (id) => this.getDataById(`/${id}/tables`);
 }
 export const databasesAPIService = new DatabasesAPIService();

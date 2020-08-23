@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 // import { NavLink, useHistory } from 'react-router-dom';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -7,23 +7,23 @@ import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import PropTypes from 'prop-types';
-import {useStyles} from './styles';
+import { useStyles } from './styles';
 import GroupListHeader from '../GroupListHeader';
 import RowItem from './RowItem';
 import UserGroupForm from './UserGroupForm';
 import UserForm from './UserForm';
 
 const GroupList = ({
-                     groups,
-                     addUserGroup,
-                     deleteGroup,
-                     updateUserGroup,
-                     currentGroup,
-                     isTheGroup,
-                     addUser,
-                     deleteUser,
-                     users = []
-                   }) => {
+  groups,
+  addUserGroup,
+  deleteGroup,
+  updateUserGroup,
+  currentGroup,
+  isTheGroup,
+  addUser,
+  deleteUser,
+  users = [],
+}) => {
   const [isVisibleForm, setIsVisibleForm] = useState(false);
 
   const classes = useStyles();
@@ -34,15 +34,17 @@ const GroupList = ({
 
   const currentGroupUsers = currentGroup.Users || [];
 
-  const usersLikeOptions = users.filter(user => {
-    return !currentGroupUsers.find(({id}) => user.id === id)
-  }).map((user) => {
-    const fullName = `${user.firstName} ${user.lastName}`;
-    return {
-      value: user.id,
-      label: fullName,
-    };
-  });
+  const usersLikeOptions = users
+    .filter((user) => {
+      return !currentGroupUsers.find(({ id }) => user.id === id);
+    })
+    .map((user) => {
+      const fullName = `${user.firstName} ${user.lastName}`;
+      return {
+        value: user.id,
+        label: fullName,
+      };
+    });
 
   const closeForm = (resetForm) => () => {
     resetForm();
@@ -60,53 +62,53 @@ const GroupList = ({
   };
 
   return (
-      <div className={classes.root}>
-        <GroupListHeader
-            openForm={openForm}
-            title={isTheGroup ? currentGroup.name : 'Groups'}
-            buttonTitle={isTheGroup ? 'Add members' : 'Create group'}
-        />
-        <TableContainer className={classes.tableContainer}>
-          <Table aria-label="simple table">
-            <TableHead>
-              <TableRow>
-                <TableCell align="left">{isTheGroup ? 'Members' : 'Group Name'}</TableCell>
-                <TableCell align="left">{isTheGroup ? 'Email' : 'Members'}</TableCell>
-                <TableCell align="left">&nbsp;</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {isVisibleForm && !isTheGroup && (
-                  <UserGroupForm initialName="" submitTitle="Add" submit={createUserGroup} closeForm={closeForm}/>
-              )}
-              {isVisibleForm && isTheGroup && (
-                  <UserForm
-                      usersLikeOptions={usersLikeOptions}
-                      submitTitle="Add"
-                      submit={addUserToGroup}
-                      closeForm={closeForm}
-                  />
-              )}
-              {!isTheGroup &&
+    <div className={classes.root}>
+      <GroupListHeader
+        openForm={openForm}
+        title={isTheGroup ? currentGroup.name : 'Groups'}
+        buttonTitle={isTheGroup ? 'Add members' : 'Create group'}
+      />
+      <TableContainer className={classes.tableContainer}>
+        <Table aria-label="simple table">
+          <TableHead>
+            <TableRow>
+              <TableCell align="left">{isTheGroup ? 'Members' : 'Group Name'}</TableCell>
+              <TableCell align="left">{isTheGroup ? 'Email' : 'Members'}</TableCell>
+              <TableCell align="left">&nbsp;</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {isVisibleForm && !isTheGroup && (
+              <UserGroupForm initialName="" submitTitle="Add" submit={createUserGroup} closeForm={closeForm} />
+            )}
+            {isVisibleForm && isTheGroup && (
+              <UserForm
+                usersLikeOptions={usersLikeOptions}
+                submitTitle="Add"
+                submit={addUserToGroup}
+                closeForm={closeForm}
+              />
+            )}
+            {!isTheGroup &&
               groups.map((group) => (
-                  <RowItem key={group.id} item={group} deleteGroup={deleteGroup} updateUserGroup={updateUserGroup}/>
+                <RowItem key={group.id} item={group} deleteGroup={deleteGroup} updateUserGroup={updateUserGroup} />
               ))}
-              {isTheGroup &&
+            {isTheGroup &&
               currentGroup.Users.map((user) => (
-                  <RowItem
-                      users={users}
-                      key={user.id}
-                      isTheGroup={isTheGroup}
-                      item={user}
-                      deleteGroup={deleteGroup}
-                      updateUserGroup={updateUserGroup}
-                      deleteUser={deleteUser}
-                  />
+                <RowItem
+                  users={users}
+                  key={user.id}
+                  isTheGroup={isTheGroup}
+                  item={user}
+                  deleteGroup={deleteGroup}
+                  updateUserGroup={updateUserGroup}
+                  deleteUser={deleteUser}
+                />
               ))}
-            </TableBody>
-          </Table>
-        </TableContainer>
-      </div>
+          </TableBody>
+        </Table>
+      </TableContainer>
+    </div>
   );
 };
 

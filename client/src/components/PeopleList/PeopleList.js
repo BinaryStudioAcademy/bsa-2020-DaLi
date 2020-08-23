@@ -1,3 +1,4 @@
+/* eslint-disable */ 
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import Snackbar from '@material-ui/core/Snackbar';
@@ -67,15 +68,29 @@ const PeopleList = ({
   const [inactiveUsers, setInactiveUsers] = useState([]);
   const [activeUsers, setActiveUsers] = useState([]);
   const [isResetPasswordVisible, setIsResetPasswordVisible] = useState(false);
+
+  const [oldMessage, setOldMessage] = useState('');
+
   const [value, setValue] = useState(0);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
-
   const displayNotification = () => setIsNotificationVisible(true);
   const hideNotification = () => setIsNotificationVisible(false);
+  const updateNotification = (message, messageStatus) => {
+    setNotificationMessage(message);
+    setNotificationMessageStatus(messageStatus);
+    if (message) {
+      displayNotification();
+    }
+  };
 
+  if (notificationMessageProps !== oldMessage && notificationMessageProps) {
+    updateNotification(notificationMessageProps, notificationMessageStatusProps);
+    setOldMessage(notificationMessageProps);
+  }
+  
   useEffect(() => {
     const isDeactivatedUsers = people.filter((person) => !person.isActive).length > 0;
     setIsInactiveUsers(isDeactivatedUsers);
@@ -85,16 +100,11 @@ const PeopleList = ({
       setInactiveUsers(people.filter((person) => !person.isActive));
     }
 
-    const updateNotification = (message, messageStatus) => {
-      setNotificationMessage(message);
-      setNotificationMessageStatus(messageStatus);
-      if (message) {
-        displayNotification();
-      }
-    };
-
-    updateNotification(notificationMessageProps, notificationMessageStatusProps);
-  }, [notificationMessageStatusProps, notificationMessageProps, people]);
+    console.log('notificationMessage');
+    console.log(notificationMessage);
+    console.log('oldMessage');
+    console.log(oldMessage);
+  }, [people]);
 
   const hideAddUserModal = () => {
     setAddUserModalVisible(false);
@@ -107,6 +117,10 @@ const PeopleList = ({
   const showAddUserModal = (person) => {
     setUser(person);
     setAddUserModalVisible(true);
+  };
+
+  const addUserHandler = () => {
+    showAddUserModal(null);
   };
 
   const showDeactivateUserModal = (person) => {
@@ -147,7 +161,7 @@ const PeopleList = ({
               <Tab label="Active" className={classes.tab} />
               <Tab label="Deactivated" className={classes.tab} />
             </Tabs>
-            <Button className={classes.addPersonButton} variant="contained" onClick={showAddUserModal}>
+            <Button className={classes.addPersonButton} variant="contained" onClick={addUserHandler}>
               Add someone
             </Button>
           </div>
@@ -184,7 +198,7 @@ const PeopleList = ({
       <AddUserModal
         isVisible={addUserModalVisible}
         closeModal={hideAddUserModal}
-        submitHandler={updateUser}
+        submitHandler={user ? updateUser : addUser}
         user={user}
       />
       <PasswordModal

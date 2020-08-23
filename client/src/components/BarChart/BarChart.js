@@ -4,7 +4,6 @@ import * as d3 from 'd3';
 import d3Tip from 'd3-tip';
 import PropTypes from 'prop-types';
 
-// import { findLineByLeastSquares } from '../../utils/trendline';
 import { calcMaxYDataValue, calcMinYDataValue } from '../../utils/calcCriticalYAxisValue';
 import TrendlineCreator from '../../utils/Trendline';
 import './BarChart.css';
@@ -38,10 +37,11 @@ function BarChart(props) {
       .attr('class', 'd3-tip')
       .offset([-10, 0])
       .html(
-        (d) => `
-    <div><span>${XAxis.label}:</span> <span style='color:white'>${d[XAxis.key]}</span></div>
-    <div><span>${YAxis.label}:</span> <span style='color:white'>${d[YAxis.key]}</span></div>
-  `
+        (d) =>
+          `
+        <div><span>${XAxis.label}:</span> <span style='color:white'>${d[XAxis.key]}</span></div>
+        <div><span>${YAxis.label}:</span> <span style='color:white'>${d[YAxis.key]}</span></div>
+      `
       );
     chart.call(tip).attr('height', '100%').attr('width', '100%');
 
@@ -56,13 +56,14 @@ function BarChart(props) {
       .domain([yDataRange.min, yDataRange.max])
       .range([height - margin.bottom, margin.top]);
 
-    const xAxis = (g) => {
-      return g.attr('transform', `translate(0,${height - margin.bottom})`).call(d3.axisBottom(xScale).tickSizeOuter(0));
-    };
+    const xAxis = (g) =>
+      g.attr('transform', `translate(0,${height - margin.bottom})`).call(d3.axisBottom(xScale).tickSize(0));
+    const yAxis = (g) => g.attr('transform', `translate(${margin.left},0)`).call(d3.axisLeft(yScale).tickSize(0));
 
-    const yAxis = (g) => g.attr('transform', `translate(${margin.left},0)`).call(d3.axisLeft(yScale));
-
-    const barsInfo = chart.selectAll().data(data).join('g');
+    let barsInfo = null;
+    if (showDataPointsValues) {
+      barsInfo = chart.selectAll().data(data).join('g');
+    }
 
     chart
       .append('g')
@@ -73,8 +74,21 @@ function BarChart(props) {
       .attr('class', 'bar')
       .attr('fill', color)
       .attr('x', (d) => xScale(d[XAxis.key]))
-      .attr('y', (d) => yScale(d[YAxis.key]))
-      .attr('height', (d) => yScale(yDataRange.min) - yScale(d[YAxis.key]))
+      .attr('y', (d) => {
+        const zero = yScale(0);
+        const current = yScale(d[YAxis.key]);
+        const yPos = zero > current ? current : zero;
+        return yPos;
+      })
+      .attr('height', (d) => {
+        const zero = yScale(0);
+        const current = yScale(d[YAxis.key]);
+        let barHeight = Math.abs(zero - current);
+        if (yDataRange.min >= 0) {
+          barHeight -= height * 0.02;
+        }
+        return barHeight;
+      })
       .attr('width', xScale.bandwidth())
       .on('mouseenter', (_, index) => {
         d3.selectAll('.bar')
@@ -90,25 +104,25 @@ function BarChart(props) {
       .on('mouseout', tip.hide);
 
     if (trendline.display && data.length) {
+      const { polynomial, trendlineType } = trendline;
       const xDataRange = {
         min: data[0][XAxis.key],
         max: data[data.length - 1][XAxis.key],
       };
-      const xScaleForTrendline = d3
+      const barUnitWidth = (xDataRange.max - xDataRange.min) / data.length;
+      const xScaleForLines = d3
         .scaleLinear()
         .domain([xDataRange.min, xDataRange.max])
         .range([margin.left, width - margin.right]);
-      const { polynomial, trendlineType } = trendline;
 
       const trendlineData = data.map((item) => [item[XAxis.key], item[YAxis.key]]);
-      const barUnitWidth = (xDataRange.max - xDataRange.min) / data.length;
       const domain = [xDataRange.min, xDataRange.max - barUnitWidth];
       const config = {
         xOffset: xScale.bandwidth() / 2,
         order: polynomial.order,
       };
 
-      const trendlineCreator = new TrendlineCreator(trendlineType, chart, xScaleForTrendline, yScale);
+      const trendlineCreator = new TrendlineCreator(trendlineType, chart, xScaleForLines, yScale);
       trendlineCreator.render(domain, trendlineData, config);
     }
 
@@ -125,6 +139,27 @@ function BarChart(props) {
     chart.append('g').attr('class', 'x-axis axis').call(xAxis);
     chart.append('g').attr('class', 'y-axis axis').call(yAxis);
 
+    if (yDataRange.min < 0) {
+      chart
+        .append('line')
+        .style('stroke', '#EE8625')
+        .style('stroke-width', 3)
+        .attr('x1', 0)
+        .attr('y1', yScale(0))
+        .attr('x2', width)
+        .attr('y2', yScale(0));
+
+      const y = yScale(0);
+
+      chart
+        .append('text')
+        .attr('y', y - 10)
+        .attr('x', 70)
+        .attr('text-anchor', 'middle')
+        .attr('class', 'line__label')
+        .text('0');
+    }
+
     // delete axis values
     chart.selectAll('.axis').selectAll('text').remove();
 
@@ -133,7 +168,7 @@ function BarChart(props) {
         .append('text')
         .attr('class', 'label')
         .attr('x', -(height / 2) - margin.left)
-        .attr('y', margin.left / 4)
+        .attr('y', margin.left - 10)
         .attr('transform', 'rotate(-90)')
         .text(YAxis.label);
     }
@@ -143,7 +178,7 @@ function BarChart(props) {
         .append('text')
         .attr('class', 'label')
         .attr('x', width / 2 + margin.bottom)
-        .attr('y', height - margin.bottom * 0.2)
+        .attr('y', height - margin.bottom + 30)
         .attr('text-anchor', 'middle')
         .text(XAxis.label);
     }
@@ -157,25 +192,25 @@ function BarChart(props) {
         .attr('y', y - 10)
         .attr('x', width - 50)
         .attr('text-anchor', 'middle')
-        .attr('class', 'goal__label')
+        .attr('class', 'line__label')
         .text(goal.label);
     }
   };
 
-  const resize = () => {
+  const onResize = () => {
     setHeight(svgRef.current.parentElement.offsetHeight);
-    setWidth(svgRef.current.parentElement.offsetWidth);
+    setWidth(svgRef.current.parentElement.offsetWidth)
   };
 
   useEffect(() => {
     setHeight(svgRef.current.parentElement.offsetHeight);
     setWidth(svgRef.current.parentElement.offsetWidth);
     draw();
-    window.addEventListener('resize', resize);
 
-    return () => window.removeEventListener('resize', resize);
-  }, [props, width, height]);
-
+    window.addEventListener('resize', onResize);
+    return ()=>window.removeEventListener('resize', onResize);
+  }, [JSON.stringify(props), width, height]);
+  
   return <svg ref={svgRef} />;
 }
 

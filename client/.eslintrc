@@ -36,6 +36,7 @@
     "react/no-find-dom-node": "off",
     "react/no-did-mount-set-state": "off",
     "react/no-unused-prop-types": "off",
+    "react/no-array-index-key": "off",
     "react/jsx-one-expression-per-line": "off",
     "react-hooks/rules-of-hooks": "error",
     "react-hooks/exhaustive-deps": "warn",

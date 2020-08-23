@@ -101,12 +101,33 @@ function LineChart({ settings, data, chart: chartSize }) {
     }
 
     const xAxis = (g) => {
-      return g.attr('transform', `translate(0,${height - margin.bottom})`).call(d3.axisBottom(xScale).tickSizeOuter(0));
+      return g.attr('transform', `translate(0,${height - margin.bottom})`).call(d3.axisBottom(xScale).tickSize(0));
     };
-    const yAxis = (g) => g.attr('transform', `translate(${margin.left},0)`).call(d3.axisLeft(yScale));
+    const yAxis = (g) => g.attr('transform', `translate(${margin.left},0)`).call(d3.axisLeft(yScale).tickSize(0));
 
     chart.append('g').attr('class', 'x-axis axis').call(xAxis);
     chart.append('g').attr('class', 'y-axis axis').call(yAxis);
+
+    if (yDataRange.min < 0) {
+      chart
+        .append('line')
+        .style('stroke', '#EE8625')
+        .style('stroke-width', 3)
+        .attr('x1', 0)
+        .attr('y1', yScale(0))
+        .attr('x2', width)
+        .attr('y2', yScale(0));
+
+      const y = yScale(0);
+
+      chart
+        .append('text')
+        .attr('y', y - 10)
+        .attr('x', 70)
+        .attr('text-anchor', 'middle')
+        .attr('class', 'line__label')
+        .text('0');
+    }
 
     // delete axis values
     chart.selectAll('.axis').selectAll('text').remove();
@@ -163,14 +184,14 @@ function LineChart({ settings, data, chart: chartSize }) {
         .attr('y', y - 10)
         .attr('x', width - 50)
         .attr('text-anchor', 'middle')
-        .attr('class', 'goal__label')
+        .attr('class', 'line__label')
         .text(goal.label);
     }
   };
 
-  const resize = () => {
+  const onResize = () => {
     setHeight(svgRef.current.parentElement.offsetHeight);
-    setWidth(svgRef.current.parentElement.offsetWidth);
+    setWidth(svgRef.current.parentElement.offsetWidth)
   };
 
   useEffect(() => {
@@ -178,12 +199,9 @@ function LineChart({ settings, data, chart: chartSize }) {
     setWidth(svgRef.current.parentElement.offsetWidth);
     draw();
 
-    window.addEventListener('resize', resize);
-
-    return () => {
-      window.removeEventListener('resize', resize);
-    };
-  }, [goal, trendline, showDataPointsValues, lineType, color, data, chartSize, width, height]);
+    window.addEventListener('resize', onResize);
+    return ()=>window.removeEventListener('resize', onResize);
+  }, [JSON.stringify(settings), data, chartSize, width, height]);
 
   return <svg ref={svgRef} />;
 }

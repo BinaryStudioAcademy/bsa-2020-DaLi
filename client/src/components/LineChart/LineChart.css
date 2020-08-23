@@ -29,7 +29,7 @@ path.line {
   stroke-width: 3;
 }
 
-text.goal__label {
+text.line__label {
   word-wrap: break-word !important;
   width: 50px;
   font-weight: bold;

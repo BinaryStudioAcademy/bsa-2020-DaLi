@@ -50,6 +50,7 @@ const PeoplePageContainer = ({
       const id = location.pathname.split('groups/')[1];
       getUserGroup(id);
     } else {
+      setIsTheGroup(false);
       getUsers();
       getMembership();
       getUserGroups();

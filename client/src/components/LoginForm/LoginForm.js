@@ -17,7 +17,7 @@ const getStyles = (errors, touched, fieldName) => {
 const LoginForm = ({ setIsModalVisible, login }) => {
   return (
     <Formik
-      initialValues={{ email: '', password: '' }}
+      initialValues={{ email: '', password: '', rememberMe: false }}
       validationSchema={SignInSchema}
       onSubmit={(values) => login(values)}
     >
@@ -47,8 +47,8 @@ const LoginForm = ({ setIsModalVisible, login }) => {
             <ErrorMessage name="password" component="div" className="error" />
           </div>
           <div className="checkbox-wrapper">
-            <label htmlFor="remember">Remember me</label>
-            <Field type="checkbox" name="remember" className="checkbox" />
+            <label htmlFor="rememberMe">Remember me</label>
+            <Field type="checkbox" name="rememberMe" className="checkbox" />
           </div>
           <div className="btn-wrapper">
             <button type="submit" className="btn btn-submit" disabled={!(isValid && dirty)}>

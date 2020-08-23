@@ -13,10 +13,13 @@ import {
   CLEAR_TEMPORARY_PASSWORD,
   RESET_PASSWORD_ERROR,
   RESET_PASSWORD_SUCCESS,
+  GET_MEMBERSHIPS_ERROR,
+  GET_MEMBERSHIPS_SUCCESS,
 } from './actionTypes';
 
 const initialState = {
   users: [],
+  membership: [],
   isLoading: false,
   temporaryPassword: '',
   error: null,
@@ -41,15 +44,38 @@ const usersListReducer = (state = initialState, { type, payload }) => {
         users,
       };
     }
+    case GET_MEMBERSHIPS_SUCCESS: {
+      const data = payload.map(({ Users, id, name }) => {
+        return {
+          id,
+          name,
+          users: Users.map((user) => {
+            return {
+              userId: user.id,
+              usersUserGroupsId: user.UsersUserGroups.id,
+            };
+          }),
+        };
+      });
+
+      data.sort((firstGroup, secondGroup) => firstGroup.name.localeCompare(secondGroup.name));
+
+      return {
+        ...state,
+        membership: data,
+      };
+    }
     case ADD_USER_ERROR:
     case DELETE_USER_ERROR:
     case UPDATE_USER_ERROR:
     case GET_USERS_ERROR:
-    case RESET_PASSWORD_ERROR: {
+    case RESET_PASSWORD_ERROR:
+    case GET_MEMBERSHIPS_ERROR: {
       return {
         ...state,
         error: payload,
         temporaryPasswords: '',
+        membership: [],
         message: payload.message,
         status: 'error',
       };
@@ -79,6 +105,7 @@ const usersListReducer = (state = initialState, { type, payload }) => {
     case CLEAR_TEMPORARY_PASSWORD: {
       return {
         ...state,
+        message: null,
         temporaryPassword: '',
       };
     }

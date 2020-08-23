@@ -16,9 +16,13 @@ import {
   RESET_PASSWORD,
   RESET_PASSWORD_SUCCESS,
   RESET_PASSWORD_ERROR,
+  GET_MEMBERSHIPS,
+  GET_MEMBERSHIPS_SUCCESS,
+  GET_MEMBERSHIPS_ERROR,
 } from './actionTypes';
 import { usersAPIService } from '../../services/api/usersAPI.service';
 import { SetIsLoading, setTemporaryPassword } from './actions';
+import { userGroupsAPIService } from '../../services/api/userGroupsAPI.service';
 
 export function* getUsersSaga() {
   try {
@@ -34,6 +38,22 @@ export function* getUsersSaga() {
 
 export function* watchGetUsersSaga() {
   yield takeEvery(GET_USERS, getUsersSaga);
+}
+
+export function* getUsersMembershipSaga() {
+  try {
+    yield put(SetIsLoading(true));
+    const response = yield call(userGroupsAPIService.getAllGroupsWithUsers);
+    yield put({ type: GET_MEMBERSHIPS_SUCCESS, payload: response });
+    yield put(SetIsLoading(false));
+  } catch (error) {
+    yield put({ type: GET_MEMBERSHIPS_ERROR, error });
+    yield put(SetIsLoading(false));
+  }
+}
+
+export function* watchGetUsersMembershipSaga() {
+  yield takeEvery(GET_MEMBERSHIPS, getUsersMembershipSaga);
 }
 
 export function* addUserSaga(payload) {
@@ -121,5 +141,6 @@ export default function* usersSaga() {
     watchUpdateUserData(),
     watchToggleUserStatus(),
     watchResetUserPasswordSaga(),
+    watchGetUsersMembershipSaga(),
   ]);
 }

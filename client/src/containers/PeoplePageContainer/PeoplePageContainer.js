@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
-import { withRouter, Switch, Route } from 'react-router-dom';
+import { Switch, Route } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { Grid } from '@material-ui/core';
 import { PeopleList } from '../../components';
@@ -13,10 +13,11 @@ import {
   resetError,
   clearTemporaryPassword,
   resetPassword,
+  getMembership,
 } from './actions';
-import { useStyles } from './styles';
+import { addUserToGroup, getUserGroups, getUserGroup, deleteUserFromGroup } from '../UserGroupsPageContainer/actions';
 import UserGroupsPageContainer from '../UserGroupsPageContainer/UserGroupsPageContainer';
-import { getUserGroups, getUserGroup } from '../UserGroupsPageContainer/actions';
+import { useStyles } from './styles';
 
 const PeoplePageContainer = ({
   people,
@@ -34,6 +35,10 @@ const PeoplePageContainer = ({
   match,
   location,
   getUserGroup,
+  getMembership,
+  membership,
+  addUserToGroup,
+  deleteUserFromGroup,
 }) => {
   const classes = useStyles();
 
@@ -46,12 +51,13 @@ const PeoplePageContainer = ({
       getUserGroup(id);
     } else {
       getUsers();
+      getMembership();
       getUserGroups();
     }
     return () => {
       resetError();
     };
-  }, [getUsers, resetError, getUserGroups, getUserGroup, location.pathname, match.isExact]);
+  }, [getUsers, getMembership, resetError, getUserGroups, getUserGroup, location.pathname, match.isExact]);
 
   return (
     <Grid container className={classes.root}>
@@ -72,6 +78,9 @@ const PeoplePageContainer = ({
               temporaryPassword={temporaryPassword}
               clearTemporaryPassword={clearTemporaryPassword}
               resetPassword={resetPassword}
+              membership={membership}
+              addUserToGroup={addUserToGroup}
+              deleteUserFromGroup={deleteUserFromGroup}
             />
           )}
         />
@@ -96,19 +105,28 @@ PeoplePageContainer.propTypes = {
   updateUser: PropTypes.func,
   toggleUserStatus: PropTypes.func,
   resetError: PropTypes.func,
-<<<<<<< HEAD
   temporaryPassword: PropTypes.string,
   clearTemporaryPassword: PropTypes.func,
   resetPassword: PropTypes.func,
+  getUserGroups: PropTypes.func,
+  match: PropTypes.object,
+  location: PropTypes.object,
+  getUserGroup: PropTypes.func,
+  getMembership: PropTypes.func,
+  membership: PropTypes.array,
+  addUserToGroup: PropTypes.func,
+  deleteUserFromGroup: PropTypes.func,
 };
 
-const mapStateToProps = ({ admin: { people } }) => {
+const mapStateToProps = ({ admin: { people, groups } }) => {
   return {
     people: people.users,
+    membership: people.membership,
     isLoading: people.isLoading,
     message: people.message,
     status: people.status,
     temporaryPassword: people.temporaryPassword,
+    groups: groups.groups,
   };
 };
 
@@ -120,19 +138,11 @@ const mapDispatchToProps = {
   resetError,
   clearTemporaryPassword,
   resetPassword,
+  getUserGroups,
+  getUserGroup,
+  getMembership,
+  addUserToGroup,
+  deleteUserFromGroup,
 };
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(PeoplePageContainer));
-=======
-  getUserGroups: PropTypes.func,
-  match: PropTypes.object,
-  location: PropTypes.object,
-  getUserGroup: PropTypes.func,
-};
-
-export default withRouter(
-  connect(mapStateToProps, { getUsers, addUser, updateUser, resetError, getUserGroups, getUserGroup })(
-    PeoplePageContainer
-  )
-);
->>>>>>> origin/feature/connect-users-group-page-to-BE
+export default connect(mapStateToProps, mapDispatchToProps)(PeoplePageContainer);

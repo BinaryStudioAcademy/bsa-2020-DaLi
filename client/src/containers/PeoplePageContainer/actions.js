@@ -9,6 +9,7 @@ import {
   TOGGLE_USER_STATUS,
   CLEAR_TEMPORARY_PASSWORD,
   RESET_PASSWORD,
+  GET_MEMBERSHIPS,
 } from './actionTypes';
 
 export const getUsers = () => {
@@ -75,5 +76,11 @@ export const resetPassword = (id) => {
   return {
     type: RESET_PASSWORD,
     id,
+  };
+};
+
+export const getMembership = () => {
+  return {
+    type: GET_MEMBERSHIPS,
   };
 };

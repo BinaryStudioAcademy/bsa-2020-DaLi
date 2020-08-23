@@ -19,20 +19,16 @@ export default class DBManagerService {
     const { type, host, port, dbName, username, dbPassword } = this.database;
     let manager = null;
     switch (type) {
-      case 'postgres': {
+      case 'PostgreSQL': {
         // eslint-disable-next-line no-case-declarations
         const databaseURL = `postgres:${username}:${dbPassword}@${host}:${port}/${dbName}`;
         manager = new PostgresManager(databaseURL);
         break;
       }
-      case 'mysql': {
+      case 'MySQL': {
         // eslint-disable-next-line no-case-declarations
         const databaseURL = `mysql:${username}:${dbPassword}@${host}:${port}/${dbName}`;
         manager = new MySQLManager(databaseURL);
-        break;
-      }
-      case 'mongodb': {
-        // manager = new MongoManager();
         break;
       }
       default:

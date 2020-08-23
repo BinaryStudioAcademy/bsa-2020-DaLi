@@ -2,6 +2,7 @@
 import { getDatabase } from '../databaseService';
 import PostgresManager from './Managers/PostgresManager';
 import MongoManager from './Managers/MongoManager';
+import MySQLManager from './Managers/MySQLManager';
 
 export default class DBManagerService {
   constructor(database) {
@@ -33,9 +34,15 @@ export default class DBManagerService {
         manager = new MongoManager(databaseURL, dbName);
         break;
       }
-      default: {
-        manager = null;
+      case 'MySQL': {
+        const { host, port, dbName, username, dbPassword } = this.database;
+        // eslint-disable-next-line no-case-declarations
+        const databaseURL = `mysql:${username}:${dbPassword}@${host}:${port}/${dbName}`;
+        manager = new MySQLManager(databaseURL);
+        break;
       }
+      default:
+        throw Error('unknown type');
     }
     return manager;
   }

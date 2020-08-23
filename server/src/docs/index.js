@@ -603,6 +603,79 @@ module.exports = {
         },
       },
     },
+    '/permissions': {
+      get: {
+        security: [
+          {
+            JWT: [],
+          },
+        ],
+        tags: ['Permissions'],
+        summary: 'Get permissions for databases',
+        responses: {
+          200: {
+            description: 'Successful operation',
+          },
+        },
+      },
+      patch: {
+        security: [
+          {
+            JWT: [],
+          },
+        ],
+        tags: ['Permissions'],
+        summary: 'Update permissions',
+        requestBody: {
+          content: {
+            'application/json': {
+              schema: {
+                $ref: '#/definitions/Permissions',
+              },
+            },
+          },
+          required: true,
+        },
+        responses: {
+          204: {
+            description: 'Successful operation',
+          },
+          409: {
+            description: 'Conflicting state',
+          },
+        },
+      },
+    },
+    '/permissions/{id}': {
+      get: {
+        security: [
+          {
+            JWT: [],
+          },
+        ],
+        tags: ['Permissions'],
+        summary: 'Get permissions for tables by database id',
+        parameters: [
+          {
+            name: 'id',
+            in: 'path',
+            description: 'ID of database',
+            required: true,
+            schema: {
+              $ref: '#/definitions/Id',
+            },
+          },
+        ],
+        responses: {
+          200: {
+            description: 'Successful operation',
+          },
+          404: {
+            description: 'Database not found',
+          },
+        },
+      },
+    },
   },
   definitions: {
     Id: {
@@ -684,6 +757,52 @@ module.exports = {
         },
         dbPassword: {
           type: 'string',
+        },
+      },
+    },
+    Permissions: {
+      type: 'object',
+      properties: {
+        permissions: {
+          type: 'array',
+          items: {
+            type: 'object',
+            properties: {
+              databaseId: {
+                type: 'string',
+              },
+              groups: {
+                type: 'array',
+                items: {
+                  type: 'object',
+                  properties: {
+                    groupId: {
+                      type: 'string',
+                    },
+                    access: {
+                      type: 'string',
+                      enum: ['granted', 'limited', 'denied'],
+                    },
+                    tables: {
+                      type: 'array',
+                      items: {
+                        type: 'object',
+                        properties: {
+                          tableId: {
+                            type: 'string',
+                          },
+                          access: {
+                            type: 'string',
+                            enum: ['granted', 'denied'],
+                          },
+                        },
+                      },
+                    },
+                  },
+                },
+              },
+            },
+          },
         },
       },
     },

@@ -4,7 +4,6 @@ import { connect } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { PermissionsHeader, PermissionsTable, PermissionsModal } from '../../components';
 import * as actions from './actions';
-import { dbPermissions, tablePermissions } from './mock';
 import { checkIsTablePermissionExist, getCurrentDatabaseTablesPermissions, getCurrentDatabaseTitle } from './helpers';
 import { DATABASE_ACCESS_TYPES, TABLE_ACCESS_TYPES } from './config';
 
@@ -29,19 +28,24 @@ const PermissionsContainer = (props) => {
     if (!match.params.id) {
       const isDatabasesPermissionsExist = permissions.currentDatabasesPermissions.length;
       if (!isDatabasesPermissionsExist) {
-        getDatabasesPermissions(dbPermissions);
+        getDatabasesPermissions();
       }
       setDataType('databases');
     } else {
       const isTablesExist = checkIsTablePermissionExist(permissions.initTablesPermissions, match.params.id);
       if (!isTablesExist) {
-        getTablesPermissions(match.params.id, tablePermissions);
+        getTablesPermissions(match.params.id);
       }
       setCurrentDatabaseId(match.params.id);
       setDataType('tables');
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [match.params.id]);
+  }, [
+    match.params.id,
+    getDatabasesPermissions,
+    getTablesPermissions,
+    permissions.currentDatabasesPermissions.length,
+    permissions.initTablesPermissions,
+  ]);
 
   const onDatabasesAccessChange = (databaseId, groupId, accessType) => {
     if (accessType === 'limited') {
@@ -64,7 +68,7 @@ const PermissionsContainer = (props) => {
   };
 
   const onSaveChanges = () => {
-    saveChanges();
+    saveChanges(permissions.changes);
     onModalClose();
   };
 
@@ -84,9 +88,9 @@ const PermissionsContainer = (props) => {
   const isEdit = !!permissions.changes.length;
 
   return (
-    tableData.length && (
+    !permissions.isLoading && (
       <>
-        <PermissionsModal isVisible={isModalVisible} onClose={onModalClose} oonSaveChanges={onSaveChanges} />
+        <PermissionsModal isVisible={isModalVisible} onClose={onModalClose} onSaveChanges={onSaveChanges} />
         {isEdit && <PermissionsHeader onModalOpen={onModalOpen} onCancelChanges={cancelChanges} />}
         <PermissionsTable
           dataType={dataType}
@@ -119,6 +123,7 @@ PermissionsContainer.propTypes = {
   saveChanges: PropTypes.func,
   cancelChanges: PropTypes.func,
   match: PropTypes.object,
+  cleanPermissionsState: PropTypes.func,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(PermissionsContainer);

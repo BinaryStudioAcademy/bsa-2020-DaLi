@@ -92,7 +92,11 @@ const PermissionsTableAccessCell = (props) => {
   );
 
   return (
-    <TableCell onClick={() => setIsControlsVisible(true)} className={cellClassName}>
+    <TableCell
+      onClick={() => setIsControlsVisible(true)}
+      onMouseLeave={() => setIsControlsVisible(false)}
+      className={cellClassName}
+    >
       {cellIcon}
       {isAdminGroup ? null : tableCellControls}
     </TableCell>

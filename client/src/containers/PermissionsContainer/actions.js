@@ -7,17 +7,16 @@ import {
   CANCEL_CHANGES,
 } from './actionsTypes';
 
-export const getDatabasesPermissions = (databasesPermissions) => {
+export const getDatabasesPermissions = () => {
   return {
     type: GET_DATABASES_PERMISSIONS,
-    payload: { databasesPermissions },
   };
 };
 
-export const getTablesPermissions = (databaseId, tables) => {
+export const getTablesPermissions = (databaseId) => {
   return {
     type: GET_TABLES_PERMISSIONS,
-    payload: { databaseId, tables },
+    databaseId,
   };
 };
 
@@ -35,9 +34,10 @@ export const updateTablesPermissions = (databaseId, tableId, groupId, accessType
   };
 };
 
-export const saveChanges = () => {
+export const saveChanges = (updatedPermissions) => {
   return {
     type: SAVE_CHANGES,
+    updatedPermissions,
   };
 };
 

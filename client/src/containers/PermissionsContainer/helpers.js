@@ -6,11 +6,11 @@ export const checkIsTablePermissionExist = (tables, databaseId) => {
 };
 
 export const getCurrentDatabaseTablesPermissions = (databaseId, tablesPermissions) => {
-  return tablesPermissions.filter((item) => item.databaseId === databaseId)[0].tables;
+  return tablesPermissions.filter((item) => item.databaseId === databaseId)[0]?.tables;
 };
 
 export const getCurrentDatabaseTitle = (databaseId, databasesPermissions) => {
-  return databasesPermissions.filter((item) => item.databaseId === databaseId)[0].dbNickname;
+  return databasesPermissions.filter((item) => item.databaseId === databaseId)[0]?.dbNickname;
 };
 
 const updateTablesPermissionsAccess = (currentTablesPermissions, databaseId, groupId, accessType) => {

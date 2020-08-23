@@ -1,9 +1,16 @@
 import {
   GET_DATABASES_PERMISSIONS,
+  GET_DATABASES_PERMISSIONS_SUCCESS,
+  GET_DATABASES_PERMISSIONS_ERROR,
   GET_TABLES_PERMISSIONS,
+  GET_TABLES_PERMISSIONS_SUCCESS,
+  GET_TABLES_PERMISSIONS_ERROR,
   UPDATE_DATABASES_PERMISSIONS,
   UPDATE_TABLES_PERMISSIONS,
   CANCEL_CHANGES,
+  SAVE_CHANGES,
+  SAVE_CHANGES_SUCCESS,
+  SAVE_CHANGES_ERROR,
 } from './actionsTypes';
 
 import {
@@ -19,25 +26,60 @@ const initialState = {
   initTablesPermissions: [],
   currentTablesPermissions: [],
   changes: [],
+  error: null,
+  isLoading: true,
 };
 
 const permissionsReducer = (state = initialState, { type, payload }) => {
   switch (type) {
     case GET_DATABASES_PERMISSIONS: {
+      return {
+        ...state,
+        isLoading: true,
+      };
+    }
+    case GET_DATABASES_PERMISSIONS_SUCCESS: {
       const { databasesPermissions } = payload;
       return {
         ...state,
+        isLoading: false,
         initDatabasesPermissions: databasesPermissions,
         currentDatabasesPermissions: databasesPermissions,
       };
     }
 
+    case GET_DATABASES_PERMISSIONS_ERROR: {
+      const { error } = payload;
+      return {
+        ...state,
+        isLoading: false,
+        error,
+      };
+    }
+
     case GET_TABLES_PERMISSIONS: {
+      return {
+        ...state,
+        isLoading: true,
+      };
+    }
+
+    case GET_TABLES_PERMISSIONS_SUCCESS: {
       const { databaseId, tables } = payload;
       return {
         ...state,
+        isLoading: false,
         initTablesPermissions: state.initTablesPermissions.concat({ databaseId, tables }),
         currentTablesPermissions: state.currentTablesPermissions.concat({ databaseId, tables }),
+      };
+    }
+
+    case GET_TABLES_PERMISSIONS_ERROR: {
+      const { error } = payload;
+      return {
+        ...state,
+        isLoading: false,
+        error,
       };
     }
 
@@ -98,6 +140,29 @@ const permissionsReducer = (state = initialState, { type, payload }) => {
         currentDatabasesPermissions: state.initDatabasesPermissions,
         currentTablesPermissions: state.initTablesPermissions,
         changes: [],
+      };
+    }
+
+    case SAVE_CHANGES: {
+      return {
+        ...state,
+        isLoading: true,
+      };
+    }
+    case SAVE_CHANGES_SUCCESS: {
+      return {
+        ...state,
+        isLoading: false,
+        changes: [],
+      };
+    }
+
+    case SAVE_CHANGES_ERROR: {
+      const { error } = payload;
+      return {
+        ...state,
+        isLoading: false,
+        error,
       };
     }
 

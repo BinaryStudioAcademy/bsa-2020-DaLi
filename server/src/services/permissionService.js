@@ -20,36 +20,36 @@ const getAccessLevel = (groupId, dbTables, permissions) => {
   return ACCESS_LIMITED;
 };
 
-export const getPermissions = async () => {
-  const permissions = await PermissionRepository.getAll();
-  const groups = await UserGroupsRepository.getAll();
-  const databases = await DatabaseRepository.getAll();
+// export const getPermissions = async () => {
+//   const permissions = await PermissionRepository.getAll();
+//   const groups = await UserGroupsRepository.getAll();
+//   const databases = await DatabaseRepository.getAll();
 
-  const result = await Promise.all(
-    databases.map(async (db) => {
-      const groupAccess = await Promise.all(
-        groups.map(async (group) => {
-          const dbTables = await DBTable.getAllByDatabaseId(db.id);
-          const accessLevel = getAccessLevel(group.id, dbTables, permissions);
-          return {
-            groupId: group.id,
-            groupName: group.name,
-            access: accessLevel,
-          };
-        })
-      );
-      return {
-        databaseId: db.id,
-        dbNickname: db.dbNickname,
-        groups: groupAccess,
-      };
-    })
-  );
+//   const result = await Promise.all(
+//     databases.map(async (db) => {
+//       const groupAccess = await Promise.all(
+//         groups.map(async (group) => {
+//           const dbTables = await DBTable.getAllByDatabaseId(db.id);
+//           const accessLevel = getAccessLevel(group.id, dbTables, permissions);
+//           return {
+//             groupId: group.id,
+//             groupName: group.name,
+//             access: accessLevel,
+//           };
+//         })
+//       );
+//       return {
+//         databaseId: db.id,
+//         dbNickname: db.dbNickname,
+//         groups: groupAccess,
+//       };
+//     })
+//   );
 
-  return {
-    permissions: result,
-  };
-};
+//   return {
+//     permissions: result,
+//   };
+// };
 
 export const setInitialDBPermissions = async (tableid) => {
   const groups = await UserGroupsRepository.getAll();
@@ -63,38 +63,69 @@ export const setInitialDBPermissions = async (tableid) => {
   });
 };
 
-export const getDBPermissions = async (databaseId) => {
-  const permissions = await PermissionRepository.getAll();
-  const groups = await UserGroupsRepository.getAll();
-  const tables = await DBTable.getAllByDatabaseId(databaseId);
+// export const getDBPermissions = async (databaseId) => {
+//   const permissions = await PermissionRepository.getAll();
+//   const groups = await UserGroupsRepository.getAll();
+//   const tables = await DBTable.getAllByDatabaseId(databaseId);
 
-  const result = await Promise.all(
-    tables.map(async (table) => {
-      const groupsAccess = await Promise.all(
-        groups.map(async (group) => {
-          const permission = permissions.find(
-            (permission) => permission.dbtable_id === table.id && permission.userGroups_id === group.id
-          );
-          return {
-            groupId: group.id,
-            groupName: group.name,
-            access: permission.permissionGranted,
-          };
-        })
-      );
+//   const result = await Promise.all(
+//     tables.map(async (table) => {
+//       const groupsAccess = await Promise.all(
+//         groups.map(async (group) => {
+//           const permission = permissions.find(
+//             (permission) => permission.dbtable_id === table.id && permission.userGroups_id === group.id
+//           );
+//           return {
+//             groupId: group.id,
+//             groupName: group.name,
+//             access: permission.permissionGranted,
+//           };
+//         })
+//       );
 
-      return {
-        tableId: table.id,
-        tableName: table.name,
-        groups: groupsAccess,
-      };
-    })
-  );
+//       return {
+//         tableId: table.id,
+//         tableName: table.name,
+//         groups: groupsAccess,
+//       };
+//     })
+//   );
 
-  return {
-    permissions: result,
-  };
+//   return {
+//     permissions: result,
+//   };
+// };
+
+const mapGroups = (data) => {
+  return data.map((item) => {
+    const { groupId, access, UserGroup } = item;
+    return {
+      groupId,
+      access,
+      groupName: UserGroup.groupName,
+    };
+  });
 };
+
+export const getDBPermissions = async (databaseId) => {
+  const data = await DBTable.getPermissionsByDatabaseId(databaseId);
+  // const result = data.map((item) => {
+  //   const { tableId, tableName, Permissions } = item;
+  //   console.log(tableId, tableName);
+  //   const groups = mapGroups(Permissions);
+  //   return {
+  //     tableId,
+  //     tableName,
+  //     groups,
+  //   };
+  // });
+  // return {
+  //   permissions: result,
+  // };
+  return data;
+};
+
+export const getPermissions = async () => DatabaseRepository.getPermissions();
 
 export const updateDBPermissions = async (permissions) => {
   const result = await Promise.all(

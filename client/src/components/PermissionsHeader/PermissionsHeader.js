@@ -1,23 +1,36 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import PermissionsHeaderEdit from './PermissionsHeaderEdit';
-import PermissionsHeaderStatic from './PermissionsHeaderStatic';
+import { Grid, Typography, Button } from '@material-ui/core';
+
+import useStyles from './styles';
 
 const PermissionsHeader = (props) => {
-  const { isEdit, onSetEdit, onCancelChanges, onSaveChanges } = props;
-  const currentHeader = isEdit ? (
-    <PermissionsHeaderEdit onCancelChanges={onCancelChanges} onSaveChanges={onSaveChanges} />
-  ) : (
-    <PermissionsHeaderStatic onSetEdit={onSetEdit} />
+  const { onCancelChanges, onModalOpen } = props;
+  const classes = useStyles();
+  return (
+    <Grid className={classes.permissionsEditingHeader} container>
+      <Typography className={classes.permissionsEditingHeaderTitle}>You&apos;ve made changes to permissions</Typography>
+      <Grid className={classes.permissionsEditingHeaderButtons}>
+        <Button
+          className={`${classes.permissionsEditingHeaderButton} ${classes.permissionsEditingHeaderButtonCancel}`}
+          onClick={onCancelChanges}
+        >
+          Cancel
+        </Button>
+        <Button
+          className={`${classes.permissionsEditingHeaderButton} ${classes.permissionsEditingHeaderButtonSave}`}
+          onClick={onModalOpen}
+        >
+          Save Changes
+        </Button>
+      </Grid>
+    </Grid>
   );
-  return currentHeader;
 };
 
 PermissionsHeader.propTypes = {
-  isEdit: PropTypes.bool,
-  onSetEdit: PropTypes.func,
   onCancelChanges: PropTypes.func,
-  onSaveChanges: PropTypes.func,
+  onModalOpen: PropTypes.func,
 };
 
 export default PermissionsHeader;

@@ -24,6 +24,8 @@ import DashboardHeader from './DashboardHeader/DashboardHeader';
 import DashboardLayout from './DashboardLayout/DashboardLayout';
 import DeleteVisualizationWarning from './DeleteVisualizationWarning/DeleteVisualizationWarning';
 import PermissionsHeader from './PermissionsHeader/PermissionsHeader';
+import PermissionsTable from './PermissionsTable/PermissionsTable';
+import PermissionsModal from './PermissionsModal/PermissionsModal';
 
 export {
   BarChart,
@@ -52,4 +54,6 @@ export {
   DashboardLayout,
   DeleteVisualizationWarning,
   PermissionsHeader,
+  PermissionsTable,
+  PermissionsModal,
 };

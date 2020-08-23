@@ -1,4 +1,5 @@
 import {
+  LOGIN_USER,
   LOGIN_USER_SUCCESS,
   LOGIN_USER_ERROR,
   LOGOUT_USER_SUCCESS,
@@ -33,6 +34,12 @@ const loginReducer = (state = initialState, { type, payload }) => {
         isAuthorized: false,
         isLoading: false,
         token: '',
+      };
+    }
+    case LOGIN_USER: {
+      return {
+        ...state,
+        error: '',
       };
     }
     case LOGIN_USER_ERROR:

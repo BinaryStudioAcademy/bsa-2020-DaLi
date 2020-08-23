@@ -5,7 +5,7 @@ import d3Tip from 'd3-tip';
 import PropTypes from 'prop-types';
 
 import { calcMaxYDataValue, calcMinYDataValue } from '../../utils/calcCriticalYAxisValue';
-import TrendlineCreator from '../../utils/trendline';
+import TrendlineCreator from '../../utils/Trendline';
 
 import './LineChart.css';
 

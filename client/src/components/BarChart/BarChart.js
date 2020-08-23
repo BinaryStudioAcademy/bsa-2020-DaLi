@@ -6,7 +6,7 @@ import PropTypes from 'prop-types';
 
 // import { findLineByLeastSquares } from '../../utils/trendline';
 import { calcMaxYDataValue, calcMinYDataValue } from '../../utils/calcCriticalYAxisValue';
-import TrendlineCreator from '../../utils/trendline';
+import TrendlineCreator from '../../utils/Trendline';
 import './BarChart.css';
 
 function BarChart(props) {

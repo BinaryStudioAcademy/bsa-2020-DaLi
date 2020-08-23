@@ -56,4 +56,17 @@ export const useStyles = makeStyles((theme) => ({
     },
     borderRadius: '5px',
   },
+  select: {
+    width: '100%',
+    fontSize: 14,
+    '&:before': {
+      borderBottom: 'none',
+    },
+    '&:after': {
+      borderBottom: '3px solid #7073a9',
+    },
+    '&:hover:not(.Mui-disabled):not(.Mui-focused):not(.Mui-error):before': {
+      borderBottom: '3px solid grey',
+    },
+  },
 }));

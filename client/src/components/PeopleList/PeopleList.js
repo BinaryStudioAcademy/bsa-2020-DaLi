@@ -1,5 +1,3 @@
-/* eslint-disable */
-
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import Snackbar from '@material-ui/core/Snackbar';
@@ -17,7 +15,6 @@ import PeopleListHeader from '../PeopleListHeader';
 import { useStyles } from './styles';
 
 import { mockPeople } from './mockPeople';
-import PeopleListItem from './PeopleListItem';
 import PasswordModal from '../PasswordModal/PasswordModal';
 import PeopleTable from './PeopleTable';
 
@@ -43,13 +40,6 @@ TabPanel.propTypes = {
   value: PropTypes.any.isRequired,
 };
 
-function a11yProps(index) {
-  return {
-    id: `simple-tab-${index}`,
-    'aria-controls': `simple-tabpanel-${index}`,
-  };
-}
-
 const PeopleList = ({
   people = mockPeople,
   addUser,
@@ -61,8 +51,11 @@ const PeopleList = ({
   temporaryPassword,
   clearTemporaryPassword,
   resetPassword,
+  groups,
+  membership,
+  addUserToGroup,
+  deleteUserFromGroup,
 }) => {
-  console.log('list', temporaryPassword);
   const classes = useStyles();
   const [addUserModalVisible, setAddUserModalVisible] = useState(false);
   const [deactivateUserModalVisible, setDeactivateUserModalVisible] = useState(false);
@@ -73,9 +66,7 @@ const PeopleList = ({
   const [isInactiveUsers, setIsInactiveUsers] = useState(false);
   const [inactiveUsers, setInactiveUsers] = useState([]);
   const [activeUsers, setActiveUsers] = useState([]);
-
   const [isResetPasswordVisible, setIsResetPasswordVisible] = useState(false);
-
   const [value, setValue] = useState(0);
 
   const handleChange = (event, newValue) => {
@@ -103,7 +94,7 @@ const PeopleList = ({
     };
 
     updateNotification(notificationMessageProps, notificationMessageStatusProps);
-  }, [notificationMessageStatusProps, notificationMessageProps]);
+  }, [notificationMessageStatusProps, notificationMessageProps, people]);
 
   const hideAddUserModal = () => {
     setAddUserModalVisible(false);
@@ -127,11 +118,11 @@ const PeopleList = ({
     setUser(person);
     setIsResetPasswordVisible(true);
   };
+
   const hideResetPasswordModal = () => {
     setIsResetPasswordVisible(false);
   };
 
-  console.log('list', user);
   return (
     <div className={classes.root}>
       {!isInactiveUsers ? (
@@ -143,6 +134,10 @@ const PeopleList = ({
             showAddUserModal={showAddUserModal}
             showDeactivateUserModal={showDeactivateUserModal}
             showResetPasswordModal={showResetPasswordModal}
+            groups={groups}
+            membership={membership}
+            addUserToGroup={addUserToGroup}
+            deleteUserFromGroup={deleteUserFromGroup}
           />
         </>
       ) : (
@@ -222,6 +217,13 @@ PeopleList.propTypes = {
   isLoading: PropTypes.bool,
   message: PropTypes.string,
   status: PropTypes.string,
+  temporaryPassword: PropTypes.string,
+  clearTemporaryPassword: PropTypes.func,
+  resetPassword: PropTypes.func,
+  membership: PropTypes.array,
+  addUserToGroup: PropTypes.func,
+  deleteUserFromGroup: PropTypes.func,
+  groups: PropTypes.array,
 };
 
 export default PeopleList;

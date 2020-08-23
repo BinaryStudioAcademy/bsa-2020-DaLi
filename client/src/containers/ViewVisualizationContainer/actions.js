@@ -1,9 +1,21 @@
-import { SET_VISUALIZATION, UPDATE_VISUALIZATION_CONFIG, UPDATE_VISUALIZATION_NAME } from './actionTypes';
+import {
+  SET_VISUALIZATION,
+  UPDATE_VISUALIZATION_CONFIG,
+  UPDATE_VISUALIZATION_NAME,
+  FETCH_VISUALIZATION,
+} from './actionTypes';
 
 export const setVisualization = (visualization) => {
   return {
     type: SET_VISUALIZATION,
     payload: { visualization },
+  };
+};
+
+export const fetchVisualization = (id) => {
+  return {
+    type: FETCH_VISUALIZATION,
+    id,
   };
 };
 

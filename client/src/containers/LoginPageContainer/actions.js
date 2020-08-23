@@ -1,4 +1,4 @@
-import { LOGIN_USER, LOGOUT_USER } from './actionTypes';
+import { LOGIN_USER, LOGOUT_USER, FETCH_USER } from './actionTypes';
 
 export const login = (request) => {
   return {
@@ -10,6 +10,12 @@ export const login = (request) => {
 export const logout = () => {
   return {
     type: LOGOUT_USER,
+  };
+};
+
+export const fetchUser = () => {
+  return {
+    type: FETCH_USER,
   };
 };
 

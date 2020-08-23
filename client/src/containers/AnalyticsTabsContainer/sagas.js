@@ -6,6 +6,9 @@ import {
   DELETE_VISUALIZATION,
   ADD_DASHBOARD,
   DELETE_DASHBOARD,
+  FETCH_VISUALIZATIONS,
+  FETCH_VISUALIZATIONS_SUCCESS,
+  FETCH_VISUALIZATIONS_ERROR,
 } from './actionsTypes';
 import { visualizationsAPIService } from '../../services/api/visualizationsAPI.service';
 import { dashboardsAPIService } from '../../services/api/dashboardsAPI.service';
@@ -22,6 +25,19 @@ export function* getAnalytics() {
 
 export function* watchGetAnalyticsSaga() {
   yield takeEvery(GET_ANALYTICS, getAnalytics);
+}
+
+export function* fetchVisualizationsSaga() {
+  try {
+    const visualizations = yield call(visualizationsAPIService.getVisualizations);
+    yield put({ type: FETCH_VISUALIZATIONS_SUCCESS, payload: { visualizations } });
+  } catch (error) {
+    yield put({ type: FETCH_VISUALIZATIONS_ERROR, payload: error });
+  }
+}
+
+export function* watchFetchVisualizationsSaga() {
+  yield takeEvery(FETCH_VISUALIZATIONS, fetchVisualizationsSaga);
 }
 
 export function* deleteVisualizationSaga(payload) {
@@ -57,5 +73,6 @@ export default function* analyticsSaga() {
     watchDeleteVisualizationSaga(),
     watchAddDashboardSaga(),
     watchDeleteDashboardSaga(),
+    watchFetchVisualizationsSaga(),
   ]);
 }

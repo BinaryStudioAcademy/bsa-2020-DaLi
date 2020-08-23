@@ -39,13 +39,6 @@ TabPanel.propTypes = {
   value: PropTypes.any.isRequired,
 };
 
-function a11yProps(index) {
-  return {
-    id: `simple-tab-${index}`,
-    'aria-controls': `simple-tabpanel-${index}`,
-  };
-}
-
 const PeopleList = ({
   people = mockPeople,
   addUser,
@@ -66,16 +59,27 @@ const PeopleList = ({
   const [inactiveUsers, setInactiveUsers] = useState([]);
   const [activeUsers, setActiveUsers] = useState([]);
 
-  const [value, setValue] = React.useState(0);
+  const [oldMessage, setOldMessage] = useState('');
+
+  const [value, setValue] = useState(0);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
-
   const displayNotification = () => setIsNotificationVisible(true);
   const hideNotification = () => setIsNotificationVisible(false);
+  const updateNotification = (message, messageStatus) => {
+    setNotificationMessage(message);
+    setNotificationMessageStatus(messageStatus);
+    if (message) {
+      displayNotification();
+    }
+  };
 
-
+  if (notificationMessageProps !== oldMessage && notificationMessageProps) {
+    updateNotification(notificationMessageProps, notificationMessageStatusProps);
+    setOldMessage(notificationMessageProps)
+  }
 
   useEffect(() => {
     const isDeactivatedUsers = people.filter((person) => !person.isActive).length > 0;
@@ -86,16 +90,13 @@ const PeopleList = ({
       setInactiveUsers(people.filter((person) => !person.isActive));
     }
 
-    const updateNotification = (message, messageStatus) => {
-      setNotificationMessage(message);
-      setNotificationMessageStatus(messageStatus);
-      if (message) {
-        displayNotification();
-      }
-    };
+    console.log('notificationMessage');
+    console.log(notificationMessage);
+    console.log('oldMessage');
+    console.log(oldMessage);
 
-    updateNotification(notificationMessageProps, notificationMessageStatusProps);
-  }, [notificationMessageStatusProps, notificationMessageProps]);
+
+  }, [people]);
 
   const hideAddUserModal = () => {
     setAddUserModalVisible(false);
@@ -108,6 +109,10 @@ const PeopleList = ({
   const showAddUserModal = (person) => {
     setUser(person);
     setAddUserModalVisible(true);
+  };
+
+  const addUserHandler = () => {
+    showAddUserModal(null);
   };
 
   const showDeactivateUserModal = (person) => {
@@ -134,7 +139,7 @@ const PeopleList = ({
               <Tab label="Active" className={classes.tab} />
               <Tab label="Deactivated" className={classes.tab} />
             </Tabs>
-            <Button className={classes.addPersonButton} variant="contained" onClick={showAddUserModal}>
+            <Button className={classes.addPersonButton} variant="contained" onClick={addUserHandler}>
               Add someone
             </Button>
           </div>
@@ -171,7 +176,7 @@ const PeopleList = ({
       <AddUserModal
         isVisible={addUserModalVisible}
         closeModal={hideAddUserModal}
-        submitHandler={updateUser}
+        submitHandler={user ? updateUser : addUser}
         user={user}
       />
       <DeactivateUserModal

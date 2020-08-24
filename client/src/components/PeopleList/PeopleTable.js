@@ -15,7 +15,6 @@ const PeopleTable = ({
   active,
   toggleUserStatus,
   showResetPasswordModal,
-  groups,
   membership,
   addUserToGroup,
   deleteUserFromGroup,
@@ -52,7 +51,6 @@ const PeopleTable = ({
               showDeactivateUserModal={showDeactivateUserModal}
               toggleUserStatus={toggleUserStatus}
               showResetPasswordModal={showResetPasswordModal}
-              groups={groups}
               membership={membership}
               addUserToGroup={addUserToGroup}
               deleteUserFromGroup={deleteUserFromGroup}
@@ -71,7 +69,6 @@ PeopleTable.propTypes = {
   active: PropTypes.bool,
   toggleUserStatus: PropTypes.func,
   showResetPasswordModal: PropTypes.func,
-  groups: PropTypes.array,
   membership: PropTypes.array,
   addUserToGroup: PropTypes.func,
   deleteUserFromGroup: PropTypes.func,

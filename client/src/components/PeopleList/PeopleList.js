@@ -47,7 +47,6 @@ const PeopleList = ({
   temporaryPassword,
   clearTemporaryPassword,
   resetPassword,
-  groups,
   membership,
   addUserToGroup,
   deleteUserFromGroup,
@@ -123,11 +122,10 @@ const PeopleList = ({
           <PeopleTable
             active
             people={people}
+            membership={membership}
             showAddUserModal={showAddUserModal}
             showDeactivateUserModal={showDeactivateUserModal}
             showResetPasswordModal={showResetPasswordModal}
-            groups={groups}
-            membership={membership}
             addUserToGroup={addUserToGroup}
             deleteUserFromGroup={deleteUserFromGroup}
           />
@@ -150,6 +148,7 @@ const PeopleList = ({
               membership={membership}
               showAddUserModal={showAddUserModal}
               showDeactivateUserModal={showDeactivateUserModal}
+              showResetPasswordModal={showResetPasswordModal}
               addUserToGroup={addUserToGroup}
               deleteUserFromGroup={deleteUserFromGroup}
             />
@@ -161,6 +160,7 @@ const PeopleList = ({
               membership={membership}
               showAddUserModal={showAddUserModal}
               showDeactivateUserModal={showDeactivateUserModal}
+              showResetPasswordModal={showResetPasswordModal}
               addUserToGroup={addUserToGroup}
               deleteUserFromGroup={deleteUserFromGroup}
               toggleUserStatus={toggleUserStatus}
@@ -223,7 +223,6 @@ PeopleList.propTypes = {
   membership: PropTypes.array,
   addUserToGroup: PropTypes.func,
   deleteUserFromGroup: PropTypes.func,
-  groups: PropTypes.array,
 };
 
 export default PeopleList;

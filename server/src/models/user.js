@@ -30,8 +30,7 @@ export default (sequelize, DataTypes) => {
         unique: true,
       },
       password: {
-        allowNull: true,
-        defaultValue: generatePassword(),
+        allowNull: false,
         type: DataTypes.STRING,
       },
       isActive: {

@@ -24,6 +24,9 @@ router.get('/:id', async (req, res, next) => {
 });
 
 router.post('/', async (req, res, next) => {
+  if (!req.body.password) {
+    req.body.password = generatePassword();
+  }
   const result = await UserService.createUser(req.body);
   if (result) {
     res.json(result);

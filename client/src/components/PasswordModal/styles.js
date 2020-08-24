@@ -37,19 +37,22 @@ export const useStyles = makeStyles(() => ({
     margin: '0 auto',
   },
   passwordContainer: {
-    border: '1px solid #f0f0f0',
+    border: '2px solid #f0f0f0',
+    borderRadius: '8px',
     position: 'relative',
     marginTop: 20,
-    padding: '24px 0',
+    padding: '16px 0',
     display: 'flex',
     justifyContent: 'space-between',
     alignItems: 'center',
 
-    '& > span': {
+    '& > input': {
       paddingLeft: 24,
-      fontSize: 24,
+      fontSize: 30,
       letterSpacing: 4,
       outline: 'none',
+      border: 'none',
+      width: '100%',
     },
   },
   passwordContainerTitle: {

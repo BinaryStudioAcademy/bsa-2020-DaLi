@@ -1,7 +1,6 @@
 /* eslint-disable */
 
-import React, { useState } from 'react';
-import { makeStyles } from '@material-ui/core/styles';
+import React, { useState} from 'react';
 import Modal from '@material-ui/core/Modal';
 import CloseIcon from '@material-ui/icons/Close';
 import EventNoteIcon from '@material-ui/icons/EventNote';
@@ -11,8 +10,6 @@ import { useStyles } from './styles';
 const PasswordModal = ({ password, clearPassword, isReset, hideModal, resetPassword, user }) => {
   const classes = useStyles();
   const [open, setOpen] = useState(Boolean(password));
-  const [currentUser, setCurrentUser] = useState(user);
-  const [isShowPassword, setIsShowPassword] = useState(false);
 
   const handleClose = () => {
     setOpen(false);
@@ -27,7 +24,7 @@ const PasswordModal = ({ password, clearPassword, isReset, hideModal, resetPassw
   };
 
   const handleShowPassword = () => {
-    setIsShowPassword(!isShowPassword);
+    inputRef.current.type = inputRef.current.type === 'password' ? 'text' : 'password'
   };
 
   const copyPassword = () => {
@@ -36,7 +33,7 @@ const PasswordModal = ({ password, clearPassword, isReset, hideModal, resetPassw
       e.preventDefault();
     };
 
-    document.addEventListener('copy', listener);
+    document.addEventListener('copy', listener); 
     document.execCommand('copy');
     document.removeEventListener('copy', listener);
   };
@@ -67,7 +64,7 @@ const PasswordModal = ({ password, clearPassword, isReset, hideModal, resetPassw
         <div className={classes.passwordContainerTitle}>
           <span>TEMPORARY PASSWORD</span>
         </div>
-        <span>{isShowPassword ? password : '●●●●●●●●●●●●'}</span>
+        <input type="password" value={password} readOnly/>
         <div className={classes.passwordIcons}>
           <span onClick={handleShowPassword}>Show</span>
           <EventNoteIcon className={classes.passwordIcon} onClick={copyPassword} />

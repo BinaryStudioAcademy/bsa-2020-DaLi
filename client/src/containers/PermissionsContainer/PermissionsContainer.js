@@ -88,7 +88,7 @@ const PermissionsContainer = (props) => {
   const isEdit = !!permissions.changes.length;
 
   return (
-    !permissions.isLoading && (
+    !!tableData?.length && (
       <>
         <PermissionsModal isVisible={isModalVisible} onClose={onModalClose} onSaveChanges={onSaveChanges} />
         {isEdit && <PermissionsHeader onModalOpen={onModalOpen} onCancelChanges={cancelChanges} />}

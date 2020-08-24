@@ -1,11 +1,11 @@
 import {
   GET_USERS,
   ADD_USER,
-  UPDATE_USER,
+  UPDATE_USER_FROM_LIST,
   DELETE_USER,
   TOGGLE_USER_STATUS,
   IS_LOADING,
-  RESET_ERROR,
+  RESET_NOTIFICATION,
 } from './actionTypes';
 
 export const getUsers = () => {
@@ -37,7 +37,7 @@ export const addUser = (user) => {
 
 export const updateUser = (payload) => {
   return {
-    type: UPDATE_USER,
+    type: UPDATE_USER_FROM_LIST,
     payload,
   };
 };
@@ -49,8 +49,8 @@ export const SetIsLoading = (payload) => {
   };
 };
 
-export const resetError = () => {
+export const resetNotification = () => {
   return {
-    type: RESET_ERROR,
+    type: RESET_NOTIFICATION,
   };
 };

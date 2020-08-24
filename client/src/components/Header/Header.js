@@ -7,6 +7,7 @@ import BarChartIcon from '@material-ui/icons/BarChart';
 import SettingsIcon from '@material-ui/icons/Settings';
 import Typography from '@material-ui/core/Typography';
 import DashboardIcon from '@material-ui/icons/Dashboard';
+import AppsIcon from '@material-ui/icons/Apps';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import { makeStyles } from '@material-ui/core/styles';
@@ -59,6 +60,10 @@ const Header = ({ logout, addDashboard }) => {
   const onSignOut = () => {
     logout();
     handleClose();
+  };
+
+  const handleDataSourcesClick = () => {
+    history.push('/data-sources');
   };
 
   const onAccountSettings = () => {
@@ -150,6 +155,10 @@ const Header = ({ logout, addDashboard }) => {
             Home page
           </div>
           <div className="header-controls">
+            <div className="data-sources-btn" onClick={handleDataSourcesClick}>
+              <AppsIcon className="header-icons" fontSize="large" />
+              Browse Data
+            </div>
             <AddIcon className="header-icons" fontSize="large" onClick={handleAddMenuClick} />
             <Menu
               id="add-menu"

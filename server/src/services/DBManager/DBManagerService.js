@@ -42,7 +42,7 @@ export default class DBManagerService {
         break;
       }
       default:
-        throw Error('unknown type');
+        manager = null;
     }
     return manager;
   }

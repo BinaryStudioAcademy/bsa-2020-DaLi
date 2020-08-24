@@ -33,4 +33,38 @@ export default class DBMongoManager {
       });
     return collectionFields;
   }
+
+  async getTableSchemaByName(name) {
+    let collectionFields = [];
+
+    await this.getTableDataByName(name).then((fields) => {
+      collectionFields = Object.keys(fields[0]);
+    });
+
+    const tableSchema = await Promise.all(
+      collectionFields.map(async (fieldName) => {
+        let fieldSchema = {};
+        await this.client
+          .db(this.dbName)
+          .collection(name)
+          .aggregate([
+            {
+              $project: {
+                type: { $type: `$${fieldName}` },
+              },
+            },
+          ])
+          .toArray()
+          .then((result) => {
+            fieldSchema = {
+              data_type: result[0].type,
+              column_name: fieldName,
+            };
+          });
+        return fieldSchema;
+      })
+    );
+
+    return tableSchema;
+  }
 }

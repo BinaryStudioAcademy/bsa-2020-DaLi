@@ -38,6 +38,7 @@ const Routes = ({ fetchUser, isAuthorized, isLoading }) => {
       <ProtectedRoute exact path="/account-settings" component={AccountSettingsPage} />
       <ProtectedRoute path="/admin" component={AdminPage} />
       <ProtectedRoute exact path="/dashboards/:id" component={DashboardPage} />
+      <ProtectedRoute exact path="/connection-database" component={ConnectionDatabasePage} />
       <Redirect to="/" />
     </Switch>
   );

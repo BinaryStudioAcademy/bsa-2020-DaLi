@@ -15,7 +15,23 @@ router.get('/', async (req, res, next) => {
   next();
 });
 
+router.get('/users', async (req, res, next) => {
+  const result = await UserGroupsService.getAllGroupsWithUsers();
+  // const a = result.map(({ Users, ...rest }) => {
+  //   return {
+  //     ...rest,
+  //     users: Users.map((user) => user.id),
+  //   };
+  // });
+  // console.log(JSON.stringify(a));
+  res.status(200).json(result);
+  next();
+});
+
 router.get('/:id', async (req, res, next) => {
+  if (req.params.id === 'users') {
+    return;
+  }
   const result = await UserGroupsService.getUserGroup({
     id: req.params.id,
   });

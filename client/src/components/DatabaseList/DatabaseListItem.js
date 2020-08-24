@@ -6,7 +6,7 @@ import { Button } from '@material-ui/core';
 import { Link } from 'react-router-dom';
 import { useStyles } from './styles';
 
-const DatabaseListItem = ({ database: { id, dbName, type }, onDelete }) => {
+const DatabaseListItem = ({ database: { id, dbNickname, type }, onDelete }) => {
   const classes = useStyles();
 
   return (
@@ -19,7 +19,7 @@ const DatabaseListItem = ({ database: { id, dbName, type }, onDelete }) => {
               pathname: `/admin/databases/${id}`,
             }}
           >
-            {dbName}
+            {dbNickname}
           </Link>
         </TableCell>
         <TableCell align="left">{type}</TableCell>

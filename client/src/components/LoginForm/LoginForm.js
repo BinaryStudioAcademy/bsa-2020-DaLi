@@ -17,7 +17,7 @@ const getStyles = (errors, touched, fieldName) => {
 const LoginForm = ({ setIsModalVisible, login }) => {
   return (
     <Formik
-      initialValues={{ email: '', password: '', rememberMe: false}}
+      initialValues={{ email: '', password: '', rememberMe: false }}
       validationSchema={SignInSchema}
       onSubmit={(values) => login(values)}
     >

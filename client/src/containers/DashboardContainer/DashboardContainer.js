@@ -55,7 +55,7 @@ const DashboardContainer = (props) => {
     if (!visualizations.length) {
       fetchVisualizations();
     }
-  }, [visualizations]);
+  }, [visualizations, fetchVisualizations]);
 
   useEffect(() => {
     getDashboard(id);

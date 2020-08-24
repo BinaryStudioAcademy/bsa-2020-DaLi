@@ -36,6 +36,13 @@ export const getUserGroup = async (id) => {
   }
   return item[0];
 };
+export const getAllGroupsWithUsers = async () => {
+  const item = await UserGroupsRepository.getAllGroupsWithUsers();
+  if (!item) {
+    return null;
+  }
+  return item;
+};
 
 export const addUser = async (data) => {
   const result1 = await UsersUserGroupsRepository.create(data);

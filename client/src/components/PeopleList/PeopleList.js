@@ -1,3 +1,4 @@
+/* eslint-disable */ 
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import Snackbar from '@material-ui/core/Snackbar';
@@ -13,6 +14,7 @@ import DeactivateUserModal from './DeactivateUserModal';
 import PeopleListHeader from '../PeopleListHeader';
 import { useStyles } from './styles';
 import { mockPeople } from './mockPeople';
+import PasswordModal from '../PasswordModal/PasswordModal';
 import PeopleTable from './PeopleTable';
 
 function TabPanel(props) {
@@ -43,6 +45,13 @@ const PeopleList = ({
   updateUser,
   toggleUserStatus,
   isLoading,
+  temporaryPassword,
+  clearTemporaryPassword,
+  resetPassword,
+  groups,
+  membership,
+  addUserToGroup,
+  deleteUserFromGroup,
   message,
   status,
   resetNotification,
@@ -50,10 +59,14 @@ const PeopleList = ({
   const classes = useStyles();
   const [addUserModalVisible, setAddUserModalVisible] = useState(false);
   const [deactivateUserModalVisible, setDeactivateUserModalVisible] = useState(false);
-  const [user, setUser] = React.useState(null);
+  const [user, setUser] = useState(null);
+  const [isNotificationVisible, setIsNotificationVisible] = useState(false);
+  const [notificationMessageStatus, setNotificationMessageStatus] = useState('');
+  const [notificationMessage, setNotificationMessage] = useState('');
   const [isInactiveUsers, setIsInactiveUsers] = useState(false);
   const [inactiveUsers, setInactiveUsers] = useState([]);
   const [activeUsers, setActiveUsers] = useState([]);
+  const [isResetPasswordVisible, setIsResetPasswordVisible] = useState(false);
 
   const [value, setValue] = useState(0);
 
@@ -97,6 +110,15 @@ const PeopleList = ({
     setDeactivateUserModalVisible(true);
   };
 
+  const showResetPasswordModal = (person) => {
+    setUser(person);
+    setIsResetPasswordVisible(true);
+  };
+
+  const hideResetPasswordModal = () => {
+    setIsResetPasswordVisible(false);
+  };
+
   return (
     <div className={classes.root}>
       {!isInactiveUsers ? (
@@ -107,6 +129,11 @@ const PeopleList = ({
             people={people}
             showAddUserModal={showAddUserModal}
             showDeactivateUserModal={showDeactivateUserModal}
+            showResetPasswordModal={showResetPasswordModal}
+            groups={groups}
+            membership={membership}
+            addUserToGroup={addUserToGroup}
+            deleteUserFromGroup={deleteUserFromGroup}
           />
         </>
       ) : (
@@ -157,6 +184,14 @@ const PeopleList = ({
         submitHandler={user ? updateUser : addUser}
         user={user}
       />
+      <PasswordModal
+        password={temporaryPassword}
+        clearPassword={clearTemporaryPassword}
+        resetPassword={resetPassword}
+        isReset={isResetPasswordVisible}
+        hideModal={hideResetPasswordModal}
+        user={user}
+      />
       <DeactivateUserModal
         isVisible={deactivateUserModalVisible}
         closeModal={hideDeactivateUserModal}
@@ -180,6 +215,13 @@ PeopleList.propTypes = {
   isLoading: PropTypes.bool,
   message: PropTypes.string,
   status: PropTypes.string,
+  temporaryPassword: PropTypes.string,
+  clearTemporaryPassword: PropTypes.func,
+  resetPassword: PropTypes.func,
+  membership: PropTypes.array,
+  addUserToGroup: PropTypes.func,
+  deleteUserFromGroup: PropTypes.func,
+  groups: PropTypes.array,
 };
 
 export default PeopleList;

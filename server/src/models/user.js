@@ -1,4 +1,5 @@
 import { Model } from 'sequelize';
+import { generatePassword } from '../helpers/generatePassword';
 
 export default (sequelize, DataTypes) => {
   class User extends Model {
@@ -29,8 +30,7 @@ export default (sequelize, DataTypes) => {
         unique: true,
       },
       password: {
-        allowNull: true,
-        defaultValue: 'P@$$w0rd',
+        allowNull: false,
         type: DataTypes.STRING,
       },
       isActive: {

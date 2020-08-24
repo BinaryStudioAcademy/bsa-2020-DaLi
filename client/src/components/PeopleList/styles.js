@@ -68,5 +68,8 @@ export const useStyles = makeStyles((theme) => ({
     '&:hover:not(.Mui-disabled):not(.Mui-focused):not(.Mui-error):before': {
       borderBottom: '3px solid grey',
     },
+    '&.Mui-disabled:before': {
+      border: 'none',
+    },
   },
 }));

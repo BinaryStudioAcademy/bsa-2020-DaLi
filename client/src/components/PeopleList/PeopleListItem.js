@@ -90,6 +90,7 @@ const PeopleListItem = ({
         <TableCell align="left">{person.email}</TableCell>
         <TableCell align="left">
           <Select
+            disabled={!active}
             className={classes.select}
             onChange={addValue}
             value="All Users"
@@ -109,15 +110,16 @@ const PeopleListItem = ({
             <MenuItem disabled value="All Users">
               All Users
             </MenuItem>
-            {membership.map((group) => {
-              if (group.name === 'All Users') return null;
-              return (
-                <MenuItem key={group.id} value={group.name}>
-                  {group.name}
-                  <Checkbox checked={group.users.findIndex((user) => user.userId === person.id) !== -1} />
-                </MenuItem>
-              );
-            })}
+            {membership &&
+              membership.map((group) => {
+                if (group.name === 'All Users') return null;
+                return (
+                  <MenuItem key={group.id} value={group.name}>
+                    {group.name}
+                    <Checkbox checked={group.users.findIndex((user) => user.userId === person.id) !== -1} />
+                  </MenuItem>
+                );
+              })}
           </Select>
         </TableCell>
         <TableCell align="left">{formatDate(person.lastLogin)}</TableCell>

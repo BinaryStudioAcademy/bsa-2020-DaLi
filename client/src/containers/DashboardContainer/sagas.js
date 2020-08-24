@@ -8,10 +8,17 @@ import {
   UPDATE_DASHBOARD_ERROR,
 } from './actionsTypes';
 import { dashboardsAPIService } from '../../services/api/dashboardsAPI.service';
+import { dbTableAPIService } from '../../services/api/dbTableAPI.service';
 
 export function* getDashboard(payload) {
   try {
     const dashboard = yield call(dashboardsAPIService.getDashboard, payload.id);
+    const arrayOfDataForVisualizations = yield all(
+      dashboard.Visualizations.map((visualization) => call(dbTableAPIService.getTable, visualization.tableId))
+    );
+    arrayOfDataForVisualizations.forEach((data, index) => {
+      dashboard.Visualizations[index].data = data;
+    });
     yield put({ type: GET_DASHBOARD_SUCCESS, payload: { dashboard } });
   } catch (error) {
     yield put({ type: GET_DASHBOARD_ERROR, payload: error });
@@ -41,6 +48,12 @@ export function* updateDashboard({
     );
     yield call(dashboardsAPIService.updateDashboard, dashboardId, updatedDashboard);
     const dashboard = yield call(dashboardsAPIService.getDashboard, dashboardId);
+    const arrayOfDataForVisualizations = yield all(
+      dashboard.Visualizations.map((visualization) => call(dbTableAPIService.getTable, visualization.tableId))
+    );
+    arrayOfDataForVisualizations.forEach((data, index) => {
+      dashboard.Visualizations[index].data = data;
+    });
     yield put({ type: UPDATE_DASHBOARD_SUCCESS, payload: { dashboard } });
   } catch (error) {
     yield put({ type: UPDATE_DASHBOARD_ERROR, payload: error });

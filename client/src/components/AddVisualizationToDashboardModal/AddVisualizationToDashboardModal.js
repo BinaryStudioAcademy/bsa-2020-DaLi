@@ -7,6 +7,7 @@ import SearchIcon from '@material-ui/icons/Search';
 import IconButton from '@material-ui/core/IconButton';
 import { Formik, Form, Field } from 'formik';
 import PropTypes from 'prop-types';
+import { dbTableAPIService } from '../../services/api/dbTableAPI.service';
 
 import './styles.css';
 import chooseIcon from '../../helpers/chooseIcon';
@@ -20,9 +21,11 @@ const AddVisualizationToDashboardModal = ({closeModal, addVisualization, isVisib
     setVisibleVisualizations(visualizations);
   }, [visualizations]);
 
-  const addNewVisualization = (id) => () => {
-    addVisualization(id);
-    closeModal();
+  const addNewVisualization = (id, tableId) => () => {
+    dbTableAPIService.getTable(tableId).then((data) => {
+      addVisualization(id, data);
+      closeModal();
+    });
   };
 
   const searchVisualizations = (value) => {
@@ -52,7 +55,11 @@ const AddVisualizationToDashboardModal = ({closeModal, addVisualization, isVisib
         <div className="visualizationToDashboardModalFooter">
           {visibleVisualizations.map((visualization) => {
             return (
-              <button key={visualization.id} type="button" onClick={addNewVisualization(visualization.id)}>
+              <button
+                key={visualization.id}
+                type="button"
+                onClick={addNewVisualization(visualization.id, visualization.tableId)}
+              >
                 {chooseIcon(visualization.type, { color: 'inherit', fontSize: 25 })}
                 {visualization.name}
               </button>

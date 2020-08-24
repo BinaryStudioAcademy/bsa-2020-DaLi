@@ -1,5 +1,3 @@
-/* eslint-disable */
-
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import Snackbar from '@material-ui/core/Snackbar';
@@ -61,9 +59,6 @@ const PeopleList = ({
   const [addUserModalVisible, setAddUserModalVisible] = useState(false);
   const [deactivateUserModalVisible, setDeactivateUserModalVisible] = useState(false);
   const [user, setUser] = useState(null);
-  // const [isNotificationVisible, setIsNotificationVisible] = useState(false);
-  // const [notificationMessageStatus, setNotificationMessageStatus] = useState('');
-  // const [notificationMessage, setNotificationMessage] = useState('');
   const [isInactiveUsers, setIsInactiveUsers] = useState(false);
   const [inactiveUsers, setInactiveUsers] = useState([]);
   const [activeUsers, setActiveUsers] = useState([]);

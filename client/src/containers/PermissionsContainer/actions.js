@@ -5,6 +5,7 @@ import {
   UPDATE_TABLES_PERMISSIONS,
   SAVE_CHANGES,
   CANCEL_CHANGES,
+  RESET_PERMISSIONS_STATE,
 } from './actionsTypes';
 
 export const getDatabasesPermissions = () => {
@@ -44,5 +45,11 @@ export const saveChanges = (updatedPermissions) => {
 export const cancelChanges = () => {
   return {
     type: CANCEL_CHANGES,
+  };
+};
+
+export const resetState = () => {
+  return {
+    type: RESET_PERMISSIONS_STATE,
   };
 };

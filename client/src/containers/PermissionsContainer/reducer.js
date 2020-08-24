@@ -11,6 +11,7 @@ import {
   SAVE_CHANGES,
   SAVE_CHANGES_SUCCESS,
   SAVE_CHANGES_ERROR,
+  RESET_PERMISSIONS_STATE,
 } from './actionsTypes';
 
 import {
@@ -164,6 +165,10 @@ const permissionsReducer = (state = initialState, { type, payload }) => {
         isLoading: false,
         error,
       };
+    }
+
+    case RESET_PERMISSIONS_STATE: {
+      return initialState;
     }
 
     default:

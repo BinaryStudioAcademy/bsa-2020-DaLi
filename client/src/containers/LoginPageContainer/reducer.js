@@ -1,4 +1,5 @@
 import {
+  LOGIN_USER,
   LOGIN_USER_SUCCESS,
   LOGIN_USER_ERROR,
   LOGOUT_USER_SUCCESS,
@@ -6,7 +7,6 @@ import {
   UPDATE_CURRENT_USER,
   FETCH_USER_SUCCESS,
   FETCH_USER_ERROR,
-  LOGIN_USER,
   FETCH_USER,
   LOGOUT_USER,
 } from './actionTypes';
@@ -49,6 +49,12 @@ const loginReducer = (state = initialState, { type, payload }) => {
         isAuthorized: false,
         isLoading: false,
         token: '',
+      };
+    }
+    case LOGIN_USER: {
+      return {
+        ...state,
+        error: '',
       };
     }
     case LOGIN_USER_ERROR:

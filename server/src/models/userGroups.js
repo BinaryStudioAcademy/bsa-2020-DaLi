@@ -11,6 +11,8 @@ export default (sequelize, DataTypes) => {
       UserGroups.hasMany(models.Permission, {
         foreignKey: 'userGroups_id',
         otherKey: 'permission_id',
+        onDelete: 'cascade',
+        hooks: true,
       });
     }
   }

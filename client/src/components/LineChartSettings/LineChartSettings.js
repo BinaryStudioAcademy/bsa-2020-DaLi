@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
-import { withStyles } from '@material-ui/core/styles';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import Box from '@material-ui/core/Box';
@@ -9,53 +8,16 @@ import InputLabel from '@material-ui/core/InputLabel';
 import FormControl from '@material-ui/core/FormControl';
 import FormLabel from '@material-ui/core/FormLabel';
 import NativeSelect from '@material-ui/core/NativeSelect';
-import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Switch from '@material-ui/core/Switch';
 import TextField from '@material-ui/core/TextField';
 import ColorPicker from 'material-ui-color-picker';
 import ToggleButton from '@material-ui/lab/ToggleButton';
 import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup';
-import { useStyles } from './styles';
+import { useStyles, switchStyles } from './styles';
 
-const PrettySwitch = withStyles((theme) => ({
-  root: {
-    width: 60,
-    height: 26,
-    padding: 0,
-    margin: theme.spacing(1),
-    overflow: 'unset',
-  },
-  switchBase: {
-    padding: 1,
-    '&$checked': {
-      transform: 'translateX(34px)',
-      color: theme.palette.common.white,
-      '& + $track': {
-        backgroundColor: '#519EE3',
-        opacity: 1,
-        border: 'none',
-      },
-    },
-    '&$focusVisible $thumb': {
-      color: '#519EE3',
-      border: '6px solid #fff',
-    },
-  },
-  thumb: {
-    width: 24,
-    height: 24,
-  },
-  track: {
-    borderRadius: 26 / 2,
-    border: `1px solid ${theme.palette.grey[400]}`,
-    backgroundColor: theme.palette.grey[50],
-    opacity: 1,
-    transition: theme.transitions.create(['background-color', 'border']),
-  },
-  checked: {},
-  focusVisible: {},
-}))(({ classes, ...props }) => {
+const PrettySwitch = (props) => {
+  const classes = switchStyles();
   return (
     <Switch
       focusVisibleClassName={classes.focusVisible}
@@ -70,7 +32,7 @@ const PrettySwitch = withStyles((theme) => ({
       {...props}
     />
   );
-});
+};
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -108,22 +70,77 @@ function a11yProps(index) {
 
 function LineChartSettings({ updateConfig, config: oldConfig }) {
   const classes = useStyles();
+
+  const { XAxis, YAxis } = oldConfig.axisData;
+  const {
+    goal,
+    color: barColor,
+    lineType: oldLineType,
+    showDataPointsValues: incomingShowDataPointsValues,
+    trendline,
+  } = oldConfig.display;
+
   const [value, setValue] = useState(0);
+  const [xAxis, setXAxis] = useState(XAxis.key || XAxis.availableKeys[0]);
+  const [yAxis, setYAxis] = useState(YAxis.key || YAxis.availableKeys[0]);
+  const [isGoalLine, setIsGoalLine] = useState(goal.display);
+  const [goalLine, setGoalLine] = useState(goal.value);
+  const [color, setColor] = useState(barColor);
+  const [isLabelXAxis, setIsLabelXAxis] = useState(XAxis.displayLabel);
+  const [isLabelYAxis, setIsLabelYAxis] = useState(YAxis.displayLabel);
+  const [labelXAxis, setLabelXAxis] = useState(XAxis.label);
+  const [labelYAxis, setLabelYAxis] = useState(YAxis.label);
+  const [showDataPointsValues, setShowDataPointsValues] = useState(incomingShowDataPointsValues);
+  const [showTrendline, setShowTrendline] = useState(trendline.display);
+  const [trendlineType, setTrendlineType] = useState(trendline.trendlineType);
+  const [lineType, setLineType] = useState(oldLineType);
+  const [polynomialOrder, setPolynomialOrder] = useState(trendline.polynomial.order);
   const [config, setConfig] = useState(oldConfig);
 
   useEffect(() => {
     updateConfig(config);
   }, [updateConfig, config]);
 
-  const { axisData, display } = config;
-  const { XAxis, YAxis } = axisData;
-  const { goal, color, showDataPointsValues, trendline, lineType } = display;
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
 
   const onDoneButton = () => {
-    updateConfig(config);
+    setConfig({
+      axisData: {
+        XAxis: {
+          availableKeys: XAxis.availableKeys,
+          key: xAxis,
+          label: labelXAxis,
+          displayLabel: isLabelXAxis,
+        },
+        YAxis: {
+          availableKeys: YAxis.availableKeys,
+          key: yAxis,
+          label: labelYAxis,
+          displayLabel: isLabelYAxis,
+        },
+      },
+      display: {
+        goal: {
+          display: isGoalLine,
+          value: Number.parseInt(goalLine),
+          label: 'Goal',
+        },
+        lineType,
+        color,
+        trendline: {
+          display: showTrendline,
+          trendlineType,
+          availableTrendlineTypes: ['linear', 'polynomial', 'exponential', 'logarithmical'],
+          polynomial: {
+            availableOrders: [2, 3, 4, 5],
+            order: polynomialOrder,
+          },
+        },
+        showDataPointsValues,
+      },
+    });
   };
 
   const valuesX = XAxis.availableKeys.map((value) => (
@@ -139,10 +156,6 @@ function LineChartSettings({ updateConfig, config: oldConfig }) {
 
   return (
     <div className={classes.root}>
-      <Button className={classes.backBtn}>
-        <ArrowBackIosIcon />
-        Line Options
-      </Button>
       <Tabs
         className={classes.tabs}
         value={value}
@@ -159,32 +172,38 @@ function LineChartSettings({ updateConfig, config: oldConfig }) {
       </Tabs>
       <TabPanel value={value} index={0}>
         <FormControl className={classes.formControl}>
-          <InputLabel className={classes.label} shrink htmlFor="x-native-label-placeholder">
+          <InputLabel className={classes.label} shrink id="xAxis-native-helper">
             X-Axis
           </InputLabel>
           <NativeSelect
             className={classes.select}
-            value={XAxis.key}
+            value={xAxis}
             onChange={(event) => {
-              axisData.XAxis.key = event.target.value;
-              axisData.XAxis.label = event.target.value;
-              setConfig({ ...config, axisData });
+              setXAxis(event.target.value);
+              setLabelXAxis(event.target.value);
+            }}
+            inputProps={{
+              id: 'xAxis-native-helper',
+              name: 'xAxis',
             }}
           >
             {valuesX}
           </NativeSelect>
         </FormControl>
         <FormControl className={classes.formControl}>
-          <InputLabel className={classes.label} shrink htmlFor="y-native-label-placeholder">
+          <InputLabel className={classes.label} shrink htmlFor="yAxis-native-helper">
             Y-Axis
           </InputLabel>
           <NativeSelect
             className={classes.select}
-            value={YAxis.key}
+            value={yAxis}
             onChange={(event) => {
-              axisData.YAxis.key = event.target.value;
-              axisData.YAxis.label = event.target.value;
-              setConfig({ ...config, axisData });
+              setYAxis(event.target.value);
+              setLabelYAxis(event.target.value);
+            }}
+            inputProps={{
+              id: 'yAxis-native-helper',
+              name: 'yAxis',
             }}
           >
             {valuesY}
@@ -193,30 +212,21 @@ function LineChartSettings({ updateConfig, config: oldConfig }) {
       </TabPanel>
       <TabPanel value={value} index={1}>
         <FormControlLabel
-          control={(() => (
-            <PrettySwitch
-              checked={goal.display}
-              onChange={(event) => {
-                display.goal.display = event.target.checked;
-                setConfig({ ...config, display });
-              }}
-            />
-          ))()}
+          control={<PrettySwitch checked={isGoalLine} onChange={(event) => setIsGoalLine(event.target.checked)} />}
           label="Goal line"
         />
-        {goal.display ? (
+        {isGoalLine ? (
           <TextField
             id="standard-basic"
-            label={goal.label}
+            label="Goal line"
             className={classes.input}
             type="number"
             InputLabelProps={{
               shrink: true,
             }}
-            value={goal.value}
+            value={goalLine}
             onChange={(event) => {
-              display.goal.value = event.target.value;
-              setConfig({ ...config, display });
+              setGoalLine(event.target.value);
             }}
           />
         ) : null}
@@ -225,38 +235,34 @@ function LineChartSettings({ updateConfig, config: oldConfig }) {
             <PrettySwitch
               checked={showDataPointsValues}
               onChange={(event) => {
-                display.showDataPointsValues = event.target.checked;
-                setConfig({ ...config, display });
+                setShowDataPointsValues(event.target.checked);
               }}
             />
           ))()}
           label="Show values on data points"
         />
         <FormControlLabel
-          className={classes.trendlineSwitch}
           control={(() => (
             <PrettySwitch
-              checked={trendline.display}
+              checked={showTrendline}
               onChange={(event) => {
-                display.trendline.display = event.target.checked;
-                setConfig({ ...config, display });
+                setShowTrendline(event.target.checked);
               }}
             />
           ))()}
           label="Show trendline"
         />
-        {trendline.display ? (
+        {showTrendline ? (
           <FormControl component="fieldset">
             <FormLabel component="legend" className={classes.legend}>
               Trendline type
             </FormLabel>
             <ToggleButtonGroup
               className={classes.btnGroup}
-              value={trendline.trendlineType}
+              value={trendlineType}
               exclusive
               onChange={(event, newTrendLineType) => {
-                display.trendline.trendlineType = newTrendLineType;
-                setConfig({ ...config, display });
+                setTrendlineType(newTrendLineType);
               }}
               aria-label="trendlineType"
             >
@@ -291,18 +297,17 @@ function LineChartSettings({ updateConfig, config: oldConfig }) {
             </ToggleButtonGroup>
           </FormControl>
         ) : null}
-        {trendline.display && trendline.trendlineType === 'polynomial' ? (
+        {showTrendline && trendlineType === 'polynomial' ? (
           <FormControl component="fieldset">
             <FormLabel component="legend" className={classes.legend}>
               Order
             </FormLabel>
             <ToggleButtonGroup
               className={classes.btnGroup}
-              value={trendline.polynomial.order.toString()}
+              value={polynomialOrder.toString()}
               exclusive
               onChange={(event, order) => {
-                display.trendline.polynomial.order = parseInt(order);
-                setConfig({ ...config, display });
+                setPolynomialOrder(parseInt(order));
               }}
               aria-label="trendlinePolynomialOrder"
             >
@@ -326,10 +331,7 @@ function LineChartSettings({ updateConfig, config: oldConfig }) {
           name="color"
           defaultValue="Сhoose your color"
           value={color}
-          onChange={(color) => {
-            display.color = color;
-            setConfig({ ...config, display });
-          }}
+          onChange={(color) => setColor(color)}
         />
         <FormControl component="fieldset">
           <FormLabel component="legend" className={classes.legend}>
@@ -340,8 +342,7 @@ function LineChartSettings({ updateConfig, config: oldConfig }) {
             value={lineType}
             exclusive
             onChange={(event, newLineType) => {
-              display.lineType = newLineType;
-              setConfig({ ...config, display });
+              setLineType(newLineType);
             }}
             aria-label="lineType"
           >
@@ -371,55 +372,38 @@ function LineChartSettings({ updateConfig, config: oldConfig }) {
       </TabPanel>
       <TabPanel value={value} index={2}>
         <FormControlLabel
-          control={(() => (
-            <PrettySwitch
-              checked={XAxis.displayLabel}
-              onChange={(event) => {
-                axisData.XAxis.displayLabel = event.target.checked;
-                setConfig({ ...config, axisData });
-              }}
-            />
-          ))()}
+          control={<PrettySwitch checked={isLabelXAxis} onChange={(event) => setIsLabelXAxis(event.target.checked)} />}
           label="Show label on x-axis"
         />
-        {XAxis.displayLabel ? (
+        {isLabelXAxis ? (
           <TextField
-            id="standard-basic"
+            id="XAxis"
             label="X-axis label"
             className={classes.input}
             InputLabelProps={{
               shrink: true,
             }}
-            value={XAxis.label}
+            value={labelXAxis}
             onChange={(event) => {
-              axisData.XAxis.label = event.target.value;
-              setConfig({ ...config, axisData });
+              setLabelXAxis(event.target.value);
             }}
           />
         ) : null}
         <FormControlLabel
-          control={(() => (
-            <PrettySwitch
-              checked={YAxis.displayLabel}
-              onChange={(event) => {
-                axisData.YAxis.displayLabel = event.target.checked;
-                setConfig({ ...config, axisData });
-              }}
-            />
-          ))()}
+          control={<PrettySwitch checked={isLabelYAxis} onChange={(event) => setIsLabelYAxis(event.target.checked)} />}
           label="Show label on y-axis"
         />
-        {YAxis.displayLabel ? (
+        {isLabelYAxis ? (
           <TextField
+            id="YAxis"
             label="Y-axis label"
             className={classes.input}
             InputLabelProps={{
               shrink: true,
             }}
-            value={YAxis.label}
+            value={labelYAxis}
             onChange={(event) => {
-              axisData.YAxis.label = event.target.value;
-              setConfig({ ...config, axisData });
+              setLabelYAxis(event.target.value);
             }}
           />
         ) : null}

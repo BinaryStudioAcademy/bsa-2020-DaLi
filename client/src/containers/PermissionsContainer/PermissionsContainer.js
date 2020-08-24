@@ -17,12 +17,19 @@ const PermissionsContainer = (props) => {
     saveChanges,
     cancelChanges,
     match,
+    resetState,
   } = props;
 
   const [dataType, setDataType] = useState('databases');
   const [currentDatabaseId, setCurrentDatabaseId] = useState('');
   const [isModalVisible, setIsModalVisible] = useState(false);
   const history = useHistory();
+
+  useEffect(() => {
+    return () => {
+      resetState();
+    };
+  }, [resetState]);
 
   useEffect(() => {
     if (!match.params.id) {
@@ -123,7 +130,7 @@ PermissionsContainer.propTypes = {
   saveChanges: PropTypes.func,
   cancelChanges: PropTypes.func,
   match: PropTypes.object,
-  cleanPermissionsState: PropTypes.func,
+  resetState: PropTypes.func,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(PermissionsContainer);

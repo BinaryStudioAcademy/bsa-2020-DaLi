@@ -6,7 +6,7 @@ import {
   ADD_USER,
   ADD_USER_SUCCESS,
   ADD_USER_ERROR,
-  UPDATE_USER,
+  UPDATE_USER_FROM_LIST,
   UPDATE_USER_SUCCESS,
   UPDATE_USER_ERROR,
   DELETE_USER,
@@ -92,7 +92,7 @@ export function* updateUser({ payload }) {
 }
 
 export function* watchUpdateUserData() {
-  yield takeEvery(UPDATE_USER, updateUser);
+  yield takeEvery(UPDATE_USER_FROM_LIST, updateUser);
 }
 
 export default function* usersSaga() {

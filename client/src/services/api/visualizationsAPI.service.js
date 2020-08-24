@@ -10,6 +10,8 @@ class VisualizationsAPIService extends baseAPIService {
 
   getVisualizations = () => this.getData('');
 
+  getVisualization = (id) => this.getData(`/${id}`);
+
   createVisualization = (newVisualization) => this.postData('', newVisualization);
 
   updateVisualization = (id, updatedVisualization) => this.patchData(`/${id}`, updatedVisualization);

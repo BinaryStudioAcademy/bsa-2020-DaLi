@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { useHistory, NavLink } from 'react-router-dom';
+import { useHistory, NavLink, useLocation } from 'react-router-dom';
 import AddIcon from '@material-ui/icons/Add';
 import BarChartIcon from '@material-ui/icons/BarChart';
 import SettingsIcon from '@material-ui/icons/Settings';
@@ -39,10 +39,12 @@ const useStyles = makeStyles({
 
 const Header = ({ logout, addDashboard }) => {
   const history = useHistory();
+  const location = useLocation();
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = useState(null);
   const [addMenuAnchorEl, setAddMenuAnchorEl] = useState(null);
   const [addDashboardModalVisible, setAddDashboardModalVisible] = useState(false);
+  const [isAdminPage, setIsAdminPage] = useState(false);
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -80,15 +82,11 @@ const Header = ({ logout, addDashboard }) => {
     history.push('/');
     handleClose();
   };
-
-  const isAdminPage = history.location.pathname.includes('/admin');
-
   const hideAddDashboardModal = () => {
     setAddDashboardModalVisible(false);
   };
 
   const showAddDashboardModal = () => {
-    // history.push('/select-visualization');
     setAddMenuAnchorEl(null);
     setAddDashboardModalVisible(true);
   };
@@ -97,6 +95,12 @@ const Header = ({ logout, addDashboard }) => {
     history.push('/');
     setAnchorEl(null);
   };
+
+  useEffect(() => {
+    const status = location.pathname.includes('/admin');
+    setIsAdminPage(status);
+    handleClose();
+  }, [location]);
 
   return (
     <header className={isAdminPage ? 'admin-header' : ''}>

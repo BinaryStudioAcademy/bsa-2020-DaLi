@@ -20,7 +20,8 @@ export const createDatabase = async (database) => {
 
   try {
     await manager.init();
-    const tablenames = await manager.getTablenames();
+    // dbName is necessary for fetching tables list for mysql
+    const tablenames = await manager.getTablenames(database.dbName);
     database = await DatabaseRepository.create(database);
     tablenames.forEach(async (name) => {
       const result = await createDBTable({ DatabaseId: database.id, name });

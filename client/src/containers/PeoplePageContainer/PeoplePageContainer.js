@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import { Grid } from '@material-ui/core';
 import { PeopleList } from '../../components';
 import PeoplePageMenu from './PeoplePageMenu';
-import { getUsers, addUser, updateUser, toggleUserStatus, resetError } from './actions';
+import { getUsers, addUser, updateUser, toggleUserStatus, resetNotification } from './actions';
 import { useStyles } from './styles';
 import UserGroupsPageContainer from '../UserGroupsPageContainer/UserGroupsPageContainer';
 import { getUserGroups, getUserGroup } from '../UserGroupsPageContainer/actions';
@@ -18,7 +18,8 @@ const PeoplePageContainer = ({
   getUsers,
   addUser,
   updateUser,
-  resetError,
+  toggleUserStatus,
+  resetNotification,
   getUserGroups,
   match,
   location,
@@ -34,13 +35,14 @@ const PeoplePageContainer = ({
       const id = location.pathname.split('groups/')[1];
       getUserGroup(id);
     } else {
+      setIsTheGroup(false);
       getUsers();
       getUserGroups();
     }
     return () => {
-      resetError();
+      resetNotification();
     };
-  }, [getUsers, resetError, getUserGroups, getUserGroup, location.pathname, match.isExact]);
+  }, [getUsers, resetNotification, getUserGroups, getUserGroup, location.pathname, match.isExact]);
 
   return (
     <Grid container className={classes.root}>
@@ -58,6 +60,7 @@ const PeoplePageContainer = ({
               isLoading={isLoading}
               message={message}
               status={status}
+              resetNotification={resetNotification}
             />
           )}
         />
@@ -98,7 +101,13 @@ PeoplePageContainer.propTypes = {
 };
 
 export default withRouter(
-  connect(mapStateToProps, { getUsers, addUser, updateUser, resetError, getUserGroups, getUserGroup })(
-    PeoplePageContainer
-  )
+  connect(mapStateToProps, {
+    getUsers,
+    addUser,
+    updateUser,
+    resetNotification,
+    toggleUserStatus,
+    getUserGroups,
+    getUserGroup,
+  })(PeoplePageContainer)
 );

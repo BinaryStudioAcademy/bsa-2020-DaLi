@@ -8,7 +8,7 @@ import {
   DELETE_USER_SUCCESS,
   DELETE_USER_ERROR,
   IS_LOADING,
-  RESET_ERROR,
+  RESET_NOTIFICATION,
 } from './actionTypes';
 
 const initialState = {
@@ -57,7 +57,7 @@ const usersListReducer = (state = initialState, { type, payload }) => {
         status: 'success',
       };
     }
-    case RESET_ERROR: {
+    case RESET_NOTIFICATION: {
       return {
         ...state,
         message: null,

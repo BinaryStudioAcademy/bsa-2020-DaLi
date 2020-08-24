@@ -32,7 +32,7 @@ const ProtectedRoute = ({ isAuthorized, component: Component, ...rest }) => {
 ProtectedRoute.propTypes = {
   isAuthorized: PropTypes.bool,
   location: PropTypes.any,
-  component: PropTypes.elementType,
+  component: PropTypes.any,
 };
 
 const mapStateToProps = ({ currentUser }) => ({

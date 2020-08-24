@@ -8,12 +8,10 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import Box from '@material-ui/core/Box';
-
 import AddUserModal from '../AddUserModal';
 import DeactivateUserModal from './DeactivateUserModal';
 import PeopleListHeader from '../PeopleListHeader';
 import { useStyles } from './styles';
-
 import { mockPeople } from './mockPeople';
 import PeopleTable from './PeopleTable';
 
@@ -45,28 +43,27 @@ const PeopleList = ({
   updateUser,
   toggleUserStatus,
   isLoading,
-  message: notificationMessageProps,
-  status: notificationMessageStatusProps,
+  message,
+  status,
+  resetNotification,
 }) => {
   const classes = useStyles();
   const [addUserModalVisible, setAddUserModalVisible] = useState(false);
   const [deactivateUserModalVisible, setDeactivateUserModalVisible] = useState(false);
   const [user, setUser] = React.useState(null);
-  const [isNotificationVisible, setIsNotificationVisible] = useState(false);
-  const [notificationMessageStatus, setNotificationMessageStatus] = useState('');
-  const [notificationMessage, setNotificationMessage] = useState('');
   const [isInactiveUsers, setIsInactiveUsers] = useState(false);
   const [inactiveUsers, setInactiveUsers] = useState([]);
   const [activeUsers, setActiveUsers] = useState([]);
 
-  const [value, setValue] = React.useState(0);
+  const [value, setValue] = useState(0);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
 
-  const displayNotification = () => setIsNotificationVisible(true);
-  const hideNotification = () => setIsNotificationVisible(false);
+  const hideNotification = () => {
+    resetNotification();
+  };
 
   useEffect(() => {
     const isDeactivatedUsers = people.filter((person) => !person.isActive).length > 0;
@@ -76,17 +73,7 @@ const PeopleList = ({
       setActiveUsers(people.filter((person) => person.isActive));
       setInactiveUsers(people.filter((person) => !person.isActive));
     }
-
-    const updateNotification = (message, messageStatus) => {
-      setNotificationMessage(message);
-      setNotificationMessageStatus(messageStatus);
-      if (message) {
-        displayNotification();
-      }
-    };
-
-    updateNotification(notificationMessageProps, notificationMessageStatusProps);
-  }, [notificationMessageStatusProps, notificationMessageProps]);
+  }, [people]);
 
   const hideAddUserModal = () => {
     setAddUserModalVisible(false);
@@ -155,12 +142,13 @@ const PeopleList = ({
 
       <Snackbar
         anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
-        open={isNotificationVisible}
+        open={!!message}
         autoHideDuration={6000}
+        transitionDuration={0}
         onClose={hideNotification}
       >
-        <Alert elevation={6} variant="filled" severity={notificationMessageStatus} onClose={hideNotification}>
-          {notificationMessage}
+        <Alert elevation={6} variant="filled" severity={status} onClose={hideNotification}>
+          {message}
         </Alert>
       </Snackbar>
       <AddUserModal
@@ -188,6 +176,7 @@ PeopleList.propTypes = {
   addUser: PropTypes.func,
   updateUser: PropTypes.func,
   toggleUserStatus: PropTypes.func,
+  resetNotification: PropTypes.func,
   isLoading: PropTypes.bool,
   message: PropTypes.string,
   status: PropTypes.string,

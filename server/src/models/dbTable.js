@@ -1,7 +1,16 @@
 import { Model } from 'sequelize';
 
 export default (sequelize, DataTypes) => {
-  class DBTable extends Model {}
+  class DBTable extends Model {
+    static associate(models) {
+      DBTable.hasMany(models.Permission, {
+        foreignKey: 'dbtable_id',
+        otherKey: 'permission_id',
+        onDelete: 'cascade',
+        hooks: true,
+      });
+    }
+  }
   DBTable.init(
     {
       id: {

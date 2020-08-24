@@ -21,8 +21,6 @@ import {
   cancelFullScreen,
 } from './helper';
 
-import mockData from './mockData';
-
 const DashboardContainer = (props) => {
   const { id, currentDashboard, isLoading, getDashboard, visualizations, updateDashboard, fetchVisualizations } = props;
 
@@ -132,10 +130,11 @@ const DashboardContainer = (props) => {
     discardChanges();
   };
 
-  const onVisualizationAdd = (visualizationId) => {
+  const onVisualizationAdd = (visualizationId, newVisualizationData) => {
     const newLayoutItem = createNewLayoutItem(visualizationId, currentLayout, cols, breakpoint);
     const visualization = getVisualization(visualizationId, visualizations);
     const updatedDeletedVisualizationsId = updateVisualizationsId(visualizationId, deletedVisualizationsId);
+    visualization.data = newVisualizationData;
 
     setDashboardVisualizations(dashboardVisualizations.concat(visualization));
     setAddedVisualizationsId(addedVisualizationsId.concat(visualizationId));
@@ -182,7 +181,9 @@ const DashboardContainer = (props) => {
   };
 
   return isLoading ? (
-    <CircularProgress size={40} left={-20} top={-20} style={{ marginLeft: '50%', marginTop: '50%' }} />
+    <div style={{ position: 'relative' }}>
+      <CircularProgress size={40} left={-20} top={10} style={{ marginLeft: '50%' }} />
+    </div>
   ) : (
     <>
       <AddVisualizationToDashboardModal
@@ -212,7 +213,6 @@ const DashboardContainer = (props) => {
         onLayoutChange={onLayoutChange}
         onBreakpointChange={onBreakpointChange}
         dashboardVisualizations={dashboardVisualizations}
-        data={mockData}
         getDashboardItems={getDashboardItems}
         onVisualizationDelete={onVisualizationDelete}
       />

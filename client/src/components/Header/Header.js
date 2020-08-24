@@ -1,12 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { useHistory, NavLink } from 'react-router-dom';
+import { useHistory, NavLink, useLocation } from 'react-router-dom';
 import AddIcon from '@material-ui/icons/Add';
-import BarChartIcon from '@material-ui/icons/BarChart';
 import SettingsIcon from '@material-ui/icons/Settings';
 import Typography from '@material-ui/core/Typography';
 import DashboardIcon from '@material-ui/icons/Dashboard';
+import AppsIcon from '@material-ui/icons/Apps';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import { makeStyles } from '@material-ui/core/styles';
@@ -39,10 +39,12 @@ const useStyles = makeStyles({
 
 const Header = ({ logout, addDashboard }) => {
   const history = useHistory();
+  const location = useLocation();
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = useState(null);
   const [addMenuAnchorEl, setAddMenuAnchorEl] = useState(null);
   const [addDashboardModalVisible, setAddDashboardModalVisible] = useState(false);
+  const [isAdminPage, setIsAdminPage] = useState(false);
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -61,14 +63,13 @@ const Header = ({ logout, addDashboard }) => {
     handleClose();
   };
 
+  const handleDataSourcesClick = () => {
+    history.push('/data-sources');
+  };
+
   const onAccountSettings = () => {
     history.push('/account-settings');
     setAnchorEl(null);
-  };
-
-  const addVisualization = () => {
-    history.push('/select-visualization');
-    setAddMenuAnchorEl(null);
   };
 
   const handleClickOnAdmin = () => {
@@ -80,15 +81,11 @@ const Header = ({ logout, addDashboard }) => {
     history.push('/');
     handleClose();
   };
-
-  const isAdminPage = history.location.pathname.includes('/admin');
-
   const hideAddDashboardModal = () => {
     setAddDashboardModalVisible(false);
   };
 
   const showAddDashboardModal = () => {
-    // history.push('/select-visualization');
     setAddMenuAnchorEl(null);
     setAddDashboardModalVisible(true);
   };
@@ -97,6 +94,12 @@ const Header = ({ logout, addDashboard }) => {
     history.push('/');
     setAnchorEl(null);
   };
+
+  useEffect(() => {
+    const status = location.pathname.includes('/admin');
+    setIsAdminPage(status);
+    handleClose();
+  }, [location]);
 
   return (
     <header className={isAdminPage ? 'admin-header' : ''}>
@@ -150,6 +153,15 @@ const Header = ({ logout, addDashboard }) => {
             Home page
           </div>
           <div className="header-controls">
+            <div
+              className="data-sources-btn"
+              onClick={handleDataSourcesClick}
+              onKeyDown={handleDataSourcesClick}
+              aria-hidden="true"
+            >
+              <AppsIcon className="header-icons" fontSize="large" />
+              Browse Data
+            </div>
             <AddIcon className="header-icons" fontSize="large" onClick={handleAddMenuClick} />
             <Menu
               id="add-menu"
@@ -158,10 +170,6 @@ const Header = ({ logout, addDashboard }) => {
               open={Boolean(addMenuAnchorEl)}
               onClose={() => setAddMenuAnchorEl(null)}
             >
-              <MenuItem onClick={addVisualization}>
-                <BarChartIcon />
-                Add Visualization
-              </MenuItem>
               <MenuItem onClick={showAddDashboardModal}>
                 <DashboardIcon />
                 Add Dashboard

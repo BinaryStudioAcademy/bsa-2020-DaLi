@@ -1,7 +1,6 @@
 /* eslint-disable no-unused-vars */
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
-import { makeStyles, withStyles } from '@material-ui/core/styles';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import Typography from '@material-ui/core/Typography';
@@ -17,45 +16,10 @@ import ColorPicker from 'material-ui-color-picker';
 import ToggleButton from '@material-ui/lab/ToggleButton';
 import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup';
 import FormLabel from '@material-ui/core/FormLabel';
+import { useStyles, switchStyles } from './styles';
 
-const PrettySwitch = withStyles((theme) => ({
-  root: {
-    width: 60,
-    height: 26,
-    padding: 0,
-    margin: theme.spacing(1),
-    overflow: 'unset',
-  },
-  switchBase: {
-    padding: 1,
-    '&$checked': {
-      transform: 'translateX(34px)',
-      color: theme.palette.common.white,
-      '& + $track': {
-        backgroundColor: '#519EE3',
-        opacity: 1,
-        border: 'none',
-      },
-    },
-    '&$focusVisible $thumb': {
-      color: '#519EE3',
-      border: '6px solid #fff',
-    },
-  },
-  thumb: {
-    width: 24,
-    height: 24,
-  },
-  track: {
-    borderRadius: 26 / 2,
-    border: `1px solid ${theme.palette.grey[400]}`,
-    backgroundColor: theme.palette.grey[50],
-    opacity: 1,
-    transition: theme.transitions.create(['background-color', 'border']),
-  },
-  checked: {},
-  focusVisible: {},
-}))(({ classes, ...props }) => {
+const PrettySwitch = (props) => {
+  const classes = switchStyles();
   return (
     <Switch
       focusVisibleClassName={classes.focusVisible}
@@ -70,7 +34,7 @@ const PrettySwitch = withStyles((theme) => ({
       {...props}
     />
   );
-});
+};
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -104,98 +68,6 @@ function a11yProps(index) {
     'aria-controls': `simple-tabpanel-${index}`,
   };
 }
-
-const useStyles = makeStyles((theme) => ({
-  root: {
-    flexGrow: 1,
-    backgroundColor: theme.palette.background.paper,
-    display: 'flex',
-    height: '100%',
-    maxWidth: '400px',
-    flexDirection: 'column',
-  },
-  backBtn: {
-    marginBottom: '2rem',
-    alignSelf: 'flex-start',
-  },
-  tabs: {
-    display: 'flex',
-    justifyContent: 'center',
-    marginBottom: '3rem',
-  },
-  tab: {
-    minWidth: 100,
-    backgroundColor: '#519ee3',
-    color: 'white',
-    borderRadius: '2rem',
-    marginRight: '1rem',
-    padding: '0.5rem',
-  },
-  indicator: {
-    display: 'none',
-  },
-  btn: {
-    backgroundColor: '#519ee3',
-    color: 'white',
-    borderRadius: '2rem',
-    padding: '1rem 4rem',
-  },
-  btnWrapper: {
-    marginTop: 'auto',
-    marginBottom: '2rem',
-    display: 'flex',
-    justifyContent: 'center',
-    width: 300,
-  },
-  formControl: {
-    margin: theme.spacing(1),
-    width: 300,
-    maxWidth: 300,
-    display: 'block',
-    marginBottom: '3rem',
-  },
-  select: {
-    maxWidth: '300px',
-    width: 300,
-  },
-  label: {
-    fontSize: 'bold',
-    fontWeight: '2rem',
-  },
-  input: {
-    display: 'flex',
-    margin: '25px 0px',
-  },
-  colorPicker: {
-    display: 'flex',
-    margin: '25px 25px 25px 0',
-  },
-  btnGroup: {
-    display: 'flex',
-  },
-  btnItem: {
-    flex: 1,
-    marginTop: '5px',
-    marginBottom: '10px',
-    borderColor: '#519ee3',
-    color: 'black',
-    textTransform: 'none',
-    '&$selected': {
-      backgroundColor: '#86BBEB',
-      color: 'white',
-    },
-  },
-  selected: {
-    backgroundColor: '#86BBEB',
-  },
-  trendlineSwitch: {
-    marginBottom: '20px',
-  },
-  legend: {
-    color: 'black',
-    marginTop: '10px',
-  },
-}));
 
 const BarChartSettings = ({ updateConfig, config: oldConfig }) => {
   const classes = useStyles();
@@ -299,7 +171,10 @@ const BarChartSettings = ({ updateConfig, config: oldConfig }) => {
           <NativeSelect
             className={classes.select}
             value={xAxis}
-            onChange={(event) => setXAxis(event.target.value)}
+            onChange={(event) => {
+              setXAxis(event.target.value);
+              setLabelXAxis(event.target.value);
+            }}
             inputProps={{
               id: 'xAxis-native-helper',
               name: 'xAxis',
@@ -315,7 +190,10 @@ const BarChartSettings = ({ updateConfig, config: oldConfig }) => {
           <NativeSelect
             className={classes.select}
             value={yAxis}
-            onChange={(event) => setYAxis(event.target.value)}
+            onChange={(event) => {
+              setYAxis(event.target.value);
+              setLabelYAxis(event.target.value);
+            }}
             inputProps={{
               id: 'yAxis-native-helper',
               name: 'yAxis',
@@ -456,7 +334,7 @@ const BarChartSettings = ({ updateConfig, config: oldConfig }) => {
         />
         {isLabelXAxis ? (
           <TextField
-            id="standard-basic"
+            id="XAxis"
             label="X-axis label"
             className={classes.input}
             InputLabelProps={{
@@ -474,7 +352,7 @@ const BarChartSettings = ({ updateConfig, config: oldConfig }) => {
         />
         {isLabelYAxis ? (
           <TextField
-            id="standard-basic"
+            id="YAxis"
             label="Y-axis label"
             className={classes.input}
             InputLabelProps={{

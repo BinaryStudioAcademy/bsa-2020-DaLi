@@ -66,7 +66,7 @@ const DashboardHeaderEdit = (props) => {
             onChange={onDescriptionChange}
           />
         </Grid>
-        <AddIcon fontSize="large" onClick={onVisualizationAdd} />
+        <AddIcon fontSize="large" onClick={onVisualizationAdd} className={classes.dashboardAddVisualisationBtn} />
       </Grid>
     </Grid>
   );

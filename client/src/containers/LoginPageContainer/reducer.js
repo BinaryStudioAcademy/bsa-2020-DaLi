@@ -1,4 +1,5 @@
 import {
+  LOGIN_USER,
   LOGIN_USER_SUCCESS,
   LOGIN_USER_ERROR,
   LOGOUT_USER_SUCCESS,
@@ -6,7 +7,6 @@ import {
   UPDATE_CURRENT_USER,
   FETCH_USER_SUCCESS,
   FETCH_USER_ERROR,
-  LOGIN_USER,
   FETCH_USER,
   LOGOUT_USER,
 } from './actionTypes';
@@ -51,6 +51,13 @@ const loginReducer = (state = initialState, { type, payload }) => {
         token: '',
       };
     }
+    case LOGIN_USER: {
+      return {
+        ...state,
+        error: '',
+        isLoading: true,
+      };
+    }
     case LOGIN_USER_ERROR:
     case LOGOUT_USER_ERROR:
     case FETCH_USER_ERROR: {
@@ -60,7 +67,6 @@ const loginReducer = (state = initialState, { type, payload }) => {
         isLoading: false,
       };
     }
-    case LOGIN_USER:
     case FETCH_USER:
     case LOGOUT_USER: {
       return {

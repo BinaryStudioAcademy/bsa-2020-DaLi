@@ -61,3 +61,11 @@ export const deleteUser = async (id) => {
   const result = await UsersUserGroupsRepository.deleteById(id);
   return result;
 };
+
+export const getGroupsByUser = async (id) => {
+  const item = await UsersUserGroupsRepository.getGroupsByUser(id);
+  if (!item) {
+    return null;
+  }
+  return item;
+};

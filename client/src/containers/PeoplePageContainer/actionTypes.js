@@ -1,5 +1,5 @@
 export const IS_LOADING = 'IS_LOADING';
-export const RESET_ERROR = 'RESET_ERROR';
+export const RESET_NOTIFICATION = 'RESET_NOTIFICATION';
 
 export const GET_USERS = 'GET_USERS';
 export const GET_USERS_SUCCESS = 'GET_USERS_SUCCESS';
@@ -9,7 +9,7 @@ export const ADD_USER = 'ADD_USER';
 export const ADD_USER_SUCCESS = 'ADD_USER_SUCCESS';
 export const ADD_USER_ERROR = 'ADD_USER_ERROR';
 
-export const UPDATE_USER = 'UPDATE_USER';
+export const UPDATE_USER_FROM_LIST = 'UPDATE_USER_FROM_LIST';
 export const UPDATE_USER_SUCCESS = 'UPDATE_USER_SUCCESS';
 export const UPDATE_USER_ERROR = 'UPDATE_USER_ERROR';
 

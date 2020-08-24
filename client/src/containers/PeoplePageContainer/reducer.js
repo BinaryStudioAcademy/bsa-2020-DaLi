@@ -8,13 +8,13 @@ import {
   DELETE_USER_SUCCESS,
   DELETE_USER_ERROR,
   IS_LOADING,
-  RESET_ERROR,
   SET_TEMPORARY_PASSWORD,
   CLEAR_TEMPORARY_PASSWORD,
   RESET_PASSWORD_ERROR,
   RESET_PASSWORD_SUCCESS,
   GET_MEMBERSHIPS_ERROR,
   GET_MEMBERSHIPS_SUCCESS,
+  RESET_NOTIFICATION,
 } from './actionTypes';
 
 const initialState = {
@@ -109,7 +109,7 @@ const usersListReducer = (state = initialState, { type, payload }) => {
         temporaryPassword: '',
       };
     }
-    case RESET_ERROR: {
+    case RESET_NOTIFICATION: {
       return {
         ...state,
         message: null,

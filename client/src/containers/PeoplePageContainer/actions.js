@@ -1,15 +1,15 @@
 import {
   GET_USERS,
   ADD_USER,
-  UPDATE_USER,
+  UPDATE_USER_FROM_LIST,
   DELETE_USER,
   IS_LOADING,
-  RESET_ERROR,
   SET_TEMPORARY_PASSWORD,
   TOGGLE_USER_STATUS,
   CLEAR_TEMPORARY_PASSWORD,
   RESET_PASSWORD,
   GET_MEMBERSHIPS,
+  RESET_NOTIFICATION,
 } from './actionTypes';
 
 export const getUsers = () => {
@@ -41,7 +41,7 @@ export const addUser = (user) => {
 
 export const updateUser = (payload) => {
   return {
-    type: UPDATE_USER,
+    type: UPDATE_USER_FROM_LIST,
     payload,
   };
 };
@@ -53,9 +53,9 @@ export const SetIsLoading = (payload) => {
   };
 };
 
-export const resetError = () => {
+export const resetNotification = () => {
   return {
-    type: RESET_ERROR,
+    type: RESET_NOTIFICATION,
   };
 };
 

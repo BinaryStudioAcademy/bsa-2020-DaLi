@@ -10,10 +10,10 @@ import {
   addUser,
   updateUser,
   toggleUserStatus,
-  resetError,
   clearTemporaryPassword,
   resetPassword,
   getMembership,
+  resetNotification,
 } from './actions';
 import { addUserToGroup, getUserGroups, getUserGroup, deleteUserFromGroup } from '../UserGroupsPageContainer/actions';
 import UserGroupsPageContainer from '../UserGroupsPageContainer/UserGroupsPageContainer';
@@ -27,10 +27,11 @@ const PeoplePageContainer = ({
   getUsers,
   addUser,
   updateUser,
-  resetError,
   temporaryPassword,
   clearTemporaryPassword,
   resetPassword,
+  toggleUserStatus,
+  resetNotification,
   getUserGroups,
   match,
   location,
@@ -56,9 +57,9 @@ const PeoplePageContainer = ({
       getUserGroups();
     }
     return () => {
-      resetError();
+      resetNotification();
     };
-  }, [getUsers, getMembership, resetError, getUserGroups, getUserGroup, location.pathname, match.isExact]);
+  }, [getUsers, getMembership, resetNotification, getUserGroups, getUserGroup, location.pathname, match.isExact]);
 
   return (
     <Grid container className={classes.root}>
@@ -82,6 +83,7 @@ const PeoplePageContainer = ({
               membership={membership}
               addUserToGroup={addUserToGroup}
               deleteUserFromGroup={deleteUserFromGroup}
+              resetNotification={resetNotification}
             />
           )}
         />
@@ -105,7 +107,7 @@ PeoplePageContainer.propTypes = {
   addUser: PropTypes.func,
   updateUser: PropTypes.func,
   toggleUserStatus: PropTypes.func,
-  resetError: PropTypes.func,
+  resetNotification: PropTypes.func,
   temporaryPassword: PropTypes.string,
   clearTemporaryPassword: PropTypes.func,
   resetPassword: PropTypes.func,
@@ -136,7 +138,6 @@ const mapDispatchToProps = {
   addUser,
   updateUser,
   toggleUserStatus,
-  resetError,
   clearTemporaryPassword,
   resetPassword,
   getUserGroups,
@@ -144,6 +145,7 @@ const mapDispatchToProps = {
   getMembership,
   addUserToGroup,
   deleteUserFromGroup,
+  resetNotification,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(PeoplePageContainer);

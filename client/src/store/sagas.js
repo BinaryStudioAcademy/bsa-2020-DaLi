@@ -7,6 +7,7 @@ import usersSaga from '../containers/PeoplePageContainer/sagas';
 import datasetsSaga from '../containers/DataSourcesDatasetsContainer/sagas';
 import userGroupsSaga from '../containers/UserGroupsPageContainer/sagas';
 import databasesSaga from '../containers/DatabasesPageContainer/sagas';
+import permissionsSaga from '../containers/PermissionsContainer/sagas';
 
 export function* rootSaga() {
   yield all([
@@ -18,5 +19,6 @@ export function* rootSaga() {
     datasetsSaga(),
     userGroupsSaga(),
     databasesSaga(),
+    permissionsSaga(),
   ]);
 }

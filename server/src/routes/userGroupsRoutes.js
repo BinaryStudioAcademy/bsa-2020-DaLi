@@ -5,12 +5,12 @@ const router = Router();
 
 router.get('/', async (req, res, next) => {
   const result = await UserGroupsService.getUserGroups();
-  const groups = result.map(group => {
-    let res = JSON.parse(JSON.stringify(group))
+  const groups = result.map((group) => {
+    const res = JSON.parse(JSON.stringify(group));
     res.userCount = res.Users.length;
-    delete res.Users
-    return res
-  })
+    delete res.Users;
+    return res;
+  });
   res.status(200).json(groups);
   next();
 });

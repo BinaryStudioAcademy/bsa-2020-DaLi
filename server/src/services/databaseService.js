@@ -1,9 +1,8 @@
 /* eslint-disable import/no-cycle */
 import DatabaseRepository from '../repositories/databaseRepository';
 import DBManager from './DBManager/DBManagerService';
-import { createDBTable } from './dbTableService';
+import { createDBTable, getAllByDatabaseId } from './dbTableService';
 import { setInitialDBPermissions } from './permissionService';
-import { getAllByDatabaseId } from './dbTableService';
 
 export const getDatabases = async () => {
   const result = await DatabaseRepository.getAll();

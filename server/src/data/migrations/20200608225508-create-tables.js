@@ -1,4 +1,4 @@
-/* eslint-disable prettier/prettier */
+/* eslint-disable */
 export default {
   up: (queryInterface, Sequelize) => queryInterface.sequelize
     .query('CREATE EXTENSION IF NOT EXISTS pgcrypto;')

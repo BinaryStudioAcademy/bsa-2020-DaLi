@@ -1,4 +1,3 @@
-/* eslint-disable */ 
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import Snackbar from '@material-ui/core/Snackbar';
@@ -60,9 +59,6 @@ const PeopleList = ({
   const [addUserModalVisible, setAddUserModalVisible] = useState(false);
   const [deactivateUserModalVisible, setDeactivateUserModalVisible] = useState(false);
   const [user, setUser] = useState(null);
-  const [isNotificationVisible, setIsNotificationVisible] = useState(false);
-  const [notificationMessageStatus, setNotificationMessageStatus] = useState('');
-  const [notificationMessage, setNotificationMessage] = useState('');
   const [isInactiveUsers, setIsInactiveUsers] = useState(false);
   const [inactiveUsers, setInactiveUsers] = useState([]);
   const [activeUsers, setActiveUsers] = useState([]);
@@ -151,16 +147,22 @@ const PeopleList = ({
             <PeopleTable
               active
               people={activeUsers}
+              membership={membership}
               showAddUserModal={showAddUserModal}
               showDeactivateUserModal={showDeactivateUserModal}
+              addUserToGroup={addUserToGroup}
+              deleteUserFromGroup={deleteUserFromGroup}
             />
           </TabPanel>
           <TabPanel value={value} index={1}>
             <PeopleTable
               active={false}
               people={inactiveUsers}
+              membership={membership}
               showAddUserModal={showAddUserModal}
               showDeactivateUserModal={showDeactivateUserModal}
+              addUserToGroup={addUserToGroup}
+              deleteUserFromGroup={deleteUserFromGroup}
               toggleUserStatus={toggleUserStatus}
             />
           </TabPanel>

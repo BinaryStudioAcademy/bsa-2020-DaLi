@@ -33,17 +33,17 @@ Object.keys(models).forEach((key) => {
   }
 });
 
-//временная заглушка для создания двух обязательных групп
+// временная заглушка для создания двух обязательных групп
 setTimeout(async () => {
   try {
     const groups = await models.UserGroups.findAll();
-    if(groups.length<2) {
+    if (groups.length < 2) {
       await models.UserGroups.create({ name: 'Administrators' });
       await models.UserGroups.create({ name: 'All Users' });
     }
   } catch (error) {
     console.log(error);
   }
-},5000);
+}, 5000);
 
 export default models;

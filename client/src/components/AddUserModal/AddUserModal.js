@@ -11,20 +11,22 @@ import { Formik, Form, Field } from 'formik';
 import PropTypes from 'prop-types';
 
 import './styles.css';
+import PasswordModal from '../PasswordModal/PasswordModal';
 
 const ValidationSchema = Yup.object({
   firstName: Yup.string().required('First name is required'),
   lastName: Yup.string().required('Last name is required'),
   email: Yup.string().required('Email is required'),
 });
-// eslint-disable-next-line
-const AddUserModal = ({closeModal, submitHandler, isVisible, user}) => {
+
+const AddUserModal = ({ closeModal, submitHandler, isVisible, user }) => {
+  const [passwordModalVisible, setPasswordModalVisible] = React.useState(false);
 
   const cancel = (resetForm) => () => {
     resetForm();
     closeModal();
   };
-  // eslint-disable-next-line
+
   const handleSubmit = (values) => {
     closeModal();
     if (user) {
@@ -33,6 +35,14 @@ const AddUserModal = ({closeModal, submitHandler, isVisible, user}) => {
       submitHandler(values);
     }
   };
+
+  const openPasswordModal = () => {
+    setPasswordModalVisible(true);
+  };
+  const closePasswordModal = () => {
+    setPasswordModalVisible(false);
+  };
+
   return (
     <Dialog open={isVisible || false} maxWidth="sm" fullWidth>
       <DialogTitle>
@@ -56,67 +66,70 @@ const AddUserModal = ({closeModal, submitHandler, isVisible, user}) => {
         validationSchema={ValidationSchema}
         onSubmit={handleSubmit}
       >
-        {/* eslint-disable-next-line */}
-        {(props) => <MyForm editMode={!!user} cancel={cancel} {...props}/>}
+        {(props) => <MyForm openPasswordModal={openPasswordModal} editMode={!!user} cancel={cancel} {...props} />}
       </Formik>
+      <PasswordModal open={passwordModalVisible} closePasswordModal={closePasswordModal} />
     </Dialog>
   );
 };
 
-const MyForm = ({ resetForm, isValid, dirty, cancel, errors, touched, editMode }) => (
-  <Form className="addUserModalForm">
-    <DialogContent className="MyFieldContainer">
-      <div className="labelsContainer">
-        <span>First name</span>
-        <p>{touched.firstName && errors.firstName}</p>
-      </div>
-      <Field
-        name="firstName"
-        as="input"
-        placeholder="Johnny"
-        style={touched.firstName && errors.firstName ? { borderColor: 'red' } : {}}
-      />
-      <div className="labelsContainer">
-        <span>Last name</span>
-        <p>{touched.lastName && errors.lastName}</p>
-      </div>
-      <Field
-        name="lastName"
-        as="input"
-        placeholder="Appleseed"
-        style={touched.name && errors.name ? { borderColor: 'red' } : {}}
-      />
-      <div className="labelsContainer">
-        <span>Email</span>
-        <p>{touched.email && errors.email}</p>
-      </div>
-      <Field
-        name="email"
-        as="input"
-        placeholder="youlooknicetoday@email.com"
-        style={touched.name && errors.name ? { borderColor: 'red' } : {}}
-      />
-    </DialogContent>
-    <MuiDialogActions className="addUserModalFooter">
-      <Button onClick={cancel(resetForm)} variant="outlined" style={{ textTransform: 'none', fontSize: 12 }}>
-        Cancel
-      </Button>
-      <Button
-        type="submit"
-        variant="outlined"
-        disabled={isValid && !dirty}
-        style={{ textTransform: 'none', fontSize: 12 }}
-      >
-        {editMode ? 'Update' : 'Create'}
-      </Button>
-    </MuiDialogActions>
-  </Form>
-);
+const MyForm = ({ resetForm, isValid, dirty, cancel, errors, touched, editMode }) => {
+  return (
+    <Form className="addUserModalForm">
+      <DialogContent className="MyFieldContainer">
+        <div className="labelsContainer">
+          <span>First name</span>
+          <p>{touched.firstName && errors.firstName}</p>
+        </div>
+        <Field
+          name="firstName"
+          as="input"
+          placeholder="Johnny"
+          style={touched.firstName && errors.firstName ? { borderColor: 'red' } : {}}
+        />
+        <div className="labelsContainer">
+          <span>Last name</span>
+          <p>{touched.lastName && errors.lastName}</p>
+        </div>
+        <Field
+          name="lastName"
+          as="input"
+          placeholder="Appleseed"
+          style={touched.name && errors.name ? { borderColor: 'red' } : {}}
+        />
+        <div className="labelsContainer">
+          <span>Email</span>
+          <p>{touched.email && errors.email}</p>
+        </div>
+        <Field
+          name="email"
+          as="input"
+          placeholder="youlooknicetoday@email.com"
+          style={touched.name && errors.name ? { borderColor: 'red' } : {}}
+        />
+      </DialogContent>
+      <MuiDialogActions className="addUserModalFooter">
+        <Button onClick={cancel(resetForm)} variant="outlined" style={{ textTransform: 'none', fontSize: 12 }}>
+          Cancel
+        </Button>
+        <Button
+          type="submit"
+          variant="outlined"
+          disabled={isValid && !dirty}
+          style={{ textTransform: 'none', fontSize: 12 }}
+        >
+          {editMode ? 'Update' : 'Create'}
+        </Button>
+      </MuiDialogActions>
+    </Form>
+  );
+};
 
 AddUserModal.propTypes = {
   closeModal: PropTypes.func,
   addUser: PropTypes.func,
   isVisible: PropTypes.bool,
+  submitHandler: PropTypes.func,
   user: PropTypes.shape({
     id: PropTypes.string,
     firstName: PropTypes.string,

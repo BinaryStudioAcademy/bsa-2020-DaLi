@@ -3,8 +3,12 @@ import {
   ADD_USER,
   UPDATE_USER_FROM_LIST,
   DELETE_USER,
-  TOGGLE_USER_STATUS,
   IS_LOADING,
+  SET_TEMPORARY_PASSWORD,
+  TOGGLE_USER_STATUS,
+  CLEAR_TEMPORARY_PASSWORD,
+  RESET_PASSWORD,
+  GET_MEMBERSHIPS,
   RESET_NOTIFICATION,
 } from './actionTypes';
 
@@ -52,5 +56,31 @@ export const SetIsLoading = (payload) => {
 export const resetNotification = () => {
   return {
     type: RESET_NOTIFICATION,
+  };
+};
+
+export const setTemporaryPassword = (payload) => {
+  return {
+    type: SET_TEMPORARY_PASSWORD,
+    payload,
+  };
+};
+
+export const clearTemporaryPassword = () => {
+  return {
+    type: CLEAR_TEMPORARY_PASSWORD,
+  };
+};
+
+export const resetPassword = (id) => {
+  return {
+    type: RESET_PASSWORD,
+    id,
+  };
+};
+
+export const getMembership = () => {
+  return {
+    type: GET_MEMBERSHIPS,
   };
 };

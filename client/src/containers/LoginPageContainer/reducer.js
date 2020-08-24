@@ -55,6 +55,7 @@ const loginReducer = (state = initialState, { type, payload }) => {
       return {
         ...state,
         error: '',
+        isLoading: true,
       };
     }
     case LOGIN_USER_ERROR:
@@ -66,7 +67,6 @@ const loginReducer = (state = initialState, { type, payload }) => {
         isLoading: false,
       };
     }
-    case LOGIN_USER:
     case FETCH_USER:
     case LOGOUT_USER: {
       return {

@@ -71,11 +71,15 @@ export const useStyles = makeStyles(() => ({
     alignItems: 'center',
     paddingRight: 24,
 
-    '& span': {
+    '& button': {
       marginRight: 10,
       color: '#509ee3',
       border: '1px solid #ffffff',
       cursor: 'pointer',
+      backgroundColor: '#ffffff',
+      outline: 'none',
+      fontSize: 15,
+      padding: 0,
       '&:hover': {
         borderBottom: '1px solid #509ee3',
       },

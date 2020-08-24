@@ -1,6 +1,6 @@
-/* eslint-disable */
+import React, { useState, useRef } from 'react';
+import PropTypes from 'prop-types';
 
-import React, { useState} from 'react';
 import Modal from '@material-ui/core/Modal';
 import CloseIcon from '@material-ui/icons/Close';
 import EventNoteIcon from '@material-ui/icons/EventNote';
@@ -8,6 +8,7 @@ import { Button } from '@material-ui/core';
 import { useStyles } from './styles';
 
 const PasswordModal = ({ password, clearPassword, isReset, hideModal, resetPassword, user }) => {
+  const inputRef = useRef(null);
   const classes = useStyles();
   const [open, setOpen] = useState(Boolean(password));
 
@@ -24,7 +25,7 @@ const PasswordModal = ({ password, clearPassword, isReset, hideModal, resetPassw
   };
 
   const handleShowPassword = () => {
-    inputRef.current.type = inputRef.current.type === 'password' ? 'text' : 'password'
+    inputRef.current.type = inputRef.current.type === 'password' ? 'text' : 'password';
   };
 
   const copyPassword = () => {
@@ -33,12 +34,10 @@ const PasswordModal = ({ password, clearPassword, isReset, hideModal, resetPassw
       e.preventDefault();
     };
 
-    document.addEventListener('copy', listener); 
+    document.addEventListener('copy', listener);
     document.execCommand('copy');
     document.removeEventListener('copy', listener);
   };
-
-  console.log(user);
 
   const resetModalBody = user && (
     <div className={classes.modalContainer}>
@@ -64,9 +63,11 @@ const PasswordModal = ({ password, clearPassword, isReset, hideModal, resetPassw
         <div className={classes.passwordContainerTitle}>
           <span>TEMPORARY PASSWORD</span>
         </div>
-        <input type="password" value={password} readOnly/>
+        <input ref={inputRef} type="password" value={password} readOnly />
         <div className={classes.passwordIcons}>
-          <span onClick={handleShowPassword}>Show</span>
+          <button type="button" onClick={handleShowPassword}>
+            Show
+          </button>
           <EventNoteIcon className={classes.passwordIcon} onClick={copyPassword} />
         </div>
       </div>
@@ -77,15 +78,19 @@ const PasswordModal = ({ password, clearPassword, isReset, hideModal, resetPassw
   );
 
   return (
-    <Modal
-      className={classes.modal}
-      open={open || !!isReset}
-      onClose={handleClose}
-      disableBackdropClick={isReset ? false : true}
-    >
+    <Modal className={classes.modal} open={open || !!isReset} onClose={handleClose} disableBackdropClick={!isReset}>
       {isReset ? resetModalBody : passwordModalBody}
     </Modal>
   );
+};
+
+PasswordModal.propTypes = {
+  password: PropTypes.string,
+  clearPassword: PropTypes.func,
+  isReset: PropTypes.bool,
+  hideModal: PropTypes.func,
+  resetPassword: PropTypes.func,
+  user: PropTypes.object,
 };
 
 export default PasswordModal;

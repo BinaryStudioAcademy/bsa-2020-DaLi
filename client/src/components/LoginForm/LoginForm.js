@@ -7,7 +7,13 @@ import './styles.css';
 
 const SignInSchema = Yup.object().shape({
   email: Yup.string().email('Invalid email').required('Required'),
-  password: Yup.string().required('Required'),
+  password: Yup.string()
+    .required('No password provided.')
+    .min(8, 'Password is too short - should be 8 chars minimum.')
+    .matches(
+      /^(?=.*[A-Za-z])(?=.*\d)(?=.*[-!$%^&*()_+|~=:;<>?,#@.])[A-Za-z\d-!$%^&*()_+|~=:;<>?,#@.]{8,}$/,
+      'Password must contain one uppercase, one lowercase, one number and one special character.'
+    ),
 });
 
 const getStyles = (errors, touched, fieldName) => {

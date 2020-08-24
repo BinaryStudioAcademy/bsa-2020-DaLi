@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Switch, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import { ProtectedRoute, PublicRoute } from '../containers';
+import { ProtectedRoute, PublicRoute, DataSourcesDatasetsContainer, DataSourcesTablesContainer } from '../containers';
 import {
   LoginPage,
   SelectVisualizationPage,
@@ -16,7 +16,6 @@ import {
 } from '../pages';
 import { getToken } from '../helpers/jwtToken';
 import { fetchUser } from '../containers/LoginPageContainer/actions';
-import { DataSourcesDatasetsContainer, DataSourcesTablesContainer } from '../containers/index';
 
 const Routes = ({ fetchUser, isAuthorized, isLoading }) => {
   const hasToken = !!getToken();

@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { useHistory, NavLink, useLocation } from 'react-router-dom';
 import AddIcon from '@material-ui/icons/Add';
-import BarChartIcon from '@material-ui/icons/BarChart';
 import SettingsIcon from '@material-ui/icons/Settings';
 import Typography from '@material-ui/core/Typography';
 import DashboardIcon from '@material-ui/icons/Dashboard';
@@ -71,11 +70,6 @@ const Header = ({ logout, addDashboard }) => {
   const onAccountSettings = () => {
     history.push('/account-settings');
     setAnchorEl(null);
-  };
-
-  const addVisualization = () => {
-    history.push('/select-visualization');
-    setAddMenuAnchorEl(null);
   };
 
   const handleClickOnAdmin = () => {
@@ -158,11 +152,13 @@ const Header = ({ logout, addDashboard }) => {
           <div role="button" tabIndex="0" className="header-logo" onClick={onHomePage} aria-hidden="true">
             Home page
           </div>
-          <div role="button" tabIndex="0" className="header-logo" onClick={onTest} aria-hidden="true">
-            Home page
-          </div>
           <div className="header-controls">
-            <div className="data-sources-btn" onClick={handleDataSourcesClick}>
+            <div
+              className="data-sources-btn"
+              onClick={handleDataSourcesClick}
+              onKeyDown={handleDataSourcesClick}
+              aria-hidden="true"
+            >
               <AppsIcon className="header-icons" fontSize="large" />
               Browse Data
             </div>
@@ -174,10 +170,6 @@ const Header = ({ logout, addDashboard }) => {
               open={Boolean(addMenuAnchorEl)}
               onClose={() => setAddMenuAnchorEl(null)}
             >
-              <MenuItem onClick={addVisualization}>
-                <BarChartIcon />
-                Add Visualization
-              </MenuItem>
               <MenuItem onClick={showAddDashboardModal}>
                 <DashboardIcon />
                 Add Dashboard

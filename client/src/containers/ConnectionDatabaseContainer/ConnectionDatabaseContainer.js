@@ -26,7 +26,7 @@ const getStyles = (errors, touched, fieldName) => {
 };
 
 const ConnectionDatabaseContainer = ({ addDatabase, isNotification, message, status, hideNotification }) => {
-  const availableDatabases = ['postgres'];
+  const availableDatabases = ['PostgreSQL', 'MongoDB'];
   const classes = useStyles();
   const initialDatabaseValues = {
     type: availableDatabases[0],

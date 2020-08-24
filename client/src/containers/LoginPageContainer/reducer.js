@@ -7,7 +7,6 @@ import {
   UPDATE_CURRENT_USER,
   FETCH_USER_SUCCESS,
   FETCH_USER_ERROR,
-  LOGIN_USER,
   FETCH_USER,
   LOGOUT_USER,
 } from './actionTypes';

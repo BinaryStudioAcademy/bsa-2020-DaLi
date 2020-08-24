@@ -1,5 +1,6 @@
 import UserGroupsRepository from '../repositories/userGroupsRepository';
 import UsersUserGroupsRepository from '../repositories/usersUserGroupsRepository';
+import { setInitialDBPermissionsOnGroupAdd } from './permissionService';
 
 export const getUserGroups = async () => {
   const result = await UserGroupsRepository.getAllWithUsers();
@@ -8,6 +9,7 @@ export const getUserGroups = async () => {
 
 export const createUserGroup = async (data) => {
   const result = await UserGroupsRepository.create(data);
+  await setInitialDBPermissionsOnGroupAdd(result.id);
   return result;
 };
 

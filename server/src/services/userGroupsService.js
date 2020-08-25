@@ -8,9 +8,13 @@ export const getUserGroups = async () => {
 };
 
 export const createUserGroup = async (data) => {
-  const result = await UserGroupsRepository.create(data);
-  await setInitialDBPermissionsOnGroupAdd(result.id);
-  return result;
+  try {
+    const result = await UserGroupsRepository.create(data);
+    await setInitialDBPermissionsOnGroupAdd(result.id);
+    return result;
+  } catch (err) {
+    throw new Error(err.message)
+  }
 };
 
 export const deleteUserGroup = async (id) => {

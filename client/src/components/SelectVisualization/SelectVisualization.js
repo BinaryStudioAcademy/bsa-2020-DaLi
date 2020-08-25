@@ -23,11 +23,11 @@ const SelectVisualization = ({ tableId }) => {
   const [schema, setSchema] = useState(null);
 
   useEffect(() => {
-    dbTableAPIService.getTable(tableId).then((data) => setData(data));
     dbTableAPIService.getTableSchema(tableId).then((schema) => setSchema(schema));
+    dbTableAPIService.getTable(tableId).then((data) => setData(data));
   }, [tableId]);
 
-  return data ? (
+  return data && schema ? (
     <div className="select-visualization-container">
       {myVisualizations.map((item) => {
         return (

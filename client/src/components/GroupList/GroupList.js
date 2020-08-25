@@ -55,12 +55,7 @@ const GroupList = ({
   };
 
   const createUserGroup = (values) => {
-    const isExistsGroup = groups.findIndex((group) => group.name === values.name) !== -1;
-    if (isExistsGroup) {
-      setError({ message: 'A group with the same name already exists' });
-    } else {
-      addUserGroup(values);
-    }
+    addUserGroup(values);
     closeForm();
   };
 

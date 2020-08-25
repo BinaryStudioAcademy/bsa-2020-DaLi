@@ -6,6 +6,8 @@ import databasesListReducer from '../containers/DatabasesPageContainer/reducer';
 import accountSettingsReducer from '../containers/AccountSettingsContainer/reducer';
 import analyticsReducer from '../containers/AnalyticsTabsContainer/reducer';
 import currentDashboardReducer from '../containers/DashboardContainer/reducer';
+import permissionsReducer from '../containers/PermissionsContainer/reducer';
+import datasetsListReducer from '../containers/DataSourcesDatasetsContainer/reducer';
 import userGroupsReducer from '../containers/UserGroupsPageContainer/reducer';
 import connectionDatabaseReducer from '../containers/ConnectionDatabaseContainer/reducer';
 
@@ -18,7 +20,9 @@ export default combineReducers({
     groups: userGroupsReducer,
     databases: databasesListReducer,
     connectionDatabase: connectionDatabaseReducer,
+    permissions: permissionsReducer,
   }),
   accountSettingsReducer,
   currentDashboard: currentDashboardReducer,
+  datasets: datasetsListReducer,
 });

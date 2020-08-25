@@ -1,5 +1,6 @@
-function createInitBarChartConfig(dataSample) {
+function createInitBarChartConfig(dataSample, schema, getYKeys) {
   const keys = Object.keys(dataSample);
+  const YKeys = getYKeys(schema);
   if (keys.length < 2) throw Error('The table must contain at least 2 columns');
   return {
     axisData: {
@@ -10,9 +11,9 @@ function createInitBarChartConfig(dataSample) {
         displayLabel: true,
       },
       YAxis: {
-        availableKeys: keys,
-        key: keys[1],
-        label: keys[1],
+        availableKeys: YKeys,
+        key: YKeys[0],
+        label: YKeys[0],
         displayLabel: true,
       },
     },

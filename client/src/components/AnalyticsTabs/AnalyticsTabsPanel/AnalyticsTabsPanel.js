@@ -9,12 +9,23 @@ import DashboardIcon from '@material-ui/icons/Dashboard';
 import Tooltip from '@material-ui/core/Tooltip';
 import InfoIcon from '@material-ui/icons/Info';
 import DeleteIcon from '@material-ui/icons/Delete';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
+import { dbTableAPIService } from '../../../services/api/dbTableAPI.service';
 
 import { useStyles } from './styles';
 
 const AnalyticsTabsPanel = ({ value, index, data, deleteVisualization, deleteDashboard }) => {
   const classes = useStyles();
+  const history = useHistory();
+
+  const onVisualizationsClick = (id, tableId) => {
+    dbTableAPIService.getTable(tableId).then((data) =>
+      history.push({
+        pathname: `/visualizations/${id}`,
+        data,
+      })
+    );
+  };
 
   const chooseIcon = (type) => {
     switch (type) {
@@ -36,9 +47,9 @@ const AnalyticsTabsPanel = ({ value, index, data, deleteVisualization, deleteDas
   return (
     <Typography component="div" hidden={value !== index}>
       <Box className={classes.root}>
-        {data.map((item) => {
+        {data.map((item, dataIndex) => {
           return (
-            <div className={classes.itemContainer} key={item.name}>
+            <div className={classes.itemContainer} key={dataIndex}>
               {!item.type ? (
                 <>
                   <Link to={`/dashboards/${item.id}`} className={classes.item}>
@@ -52,10 +63,14 @@ const AnalyticsTabsPanel = ({ value, index, data, deleteVisualization, deleteDas
                 </>
               ) : (
                 <>
-                  <Link to={`/visualizations/${item.id}`} className={classes.item}>
+                  <div
+                    className={classes.item}
+                    onClick={() => onVisualizationsClick(item.id, item.tableId)}
+                    aria-hidden="true"
+                  >
                     {chooseIcon(item.type)}
                     <span>{item.name}</span>
-                  </Link>
+                  </div>
                   <DeleteIcon className={classes.menuIcon} id={item.id} onClick={deleteVisualization(item.id)} />
                 </>
               )}

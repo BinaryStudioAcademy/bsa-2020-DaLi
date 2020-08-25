@@ -4,6 +4,7 @@ const useStyles = makeStyles((theme) => ({
   content: {
     backgroundColor: '#f9fbfc',
     borderTop: '1px solid #eee',
+    height: 'calc(100vh - 55px)',
   },
   wrapper: {
     width: '100%',

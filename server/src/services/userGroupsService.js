@@ -1,5 +1,6 @@
 import UserGroupsRepository from '../repositories/userGroupsRepository';
 import UsersUserGroupsRepository from '../repositories/usersUserGroupsRepository';
+import { setInitialDBPermissionsOnGroupAdd } from './permissionService';
 
 export const getUserGroups = async () => {
   const result = await UserGroupsRepository.getAllWithUsers();
@@ -8,6 +9,7 @@ export const getUserGroups = async () => {
 
 export const createUserGroup = async (data) => {
   const result = await UserGroupsRepository.create(data);
+  await setInitialDBPermissionsOnGroupAdd(result.id);
   return result;
 };
 
@@ -36,6 +38,13 @@ export const getUserGroup = async (id) => {
   }
   return item[0];
 };
+export const getAllGroupsWithUsers = async () => {
+  const item = await UserGroupsRepository.getAllGroupsWithUsers();
+  if (!item) {
+    return null;
+  }
+  return item;
+};
 
 export const addUser = async (data) => {
   const result1 = await UsersUserGroupsRepository.create(data);
@@ -53,4 +62,12 @@ export const deleteUser = async (id) => {
   }
   const result = await UsersUserGroupsRepository.deleteById(id);
   return result;
+};
+
+export const getGroupsByUser = async (id) => {
+  const item = await UsersUserGroupsRepository.getGroupsByUser(id);
+  if (!item) {
+    return null;
+  }
+  return item;
 };

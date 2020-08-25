@@ -12,6 +12,8 @@ import AccountSettingsContainer from './AccountSettingsContainer';
 import DashboardContainer from './DashboardContainer/DashboardContainer';
 import AdminContainer from './AdminContainer/AdminContainer';
 import AnalyticsTabsContainer from './AnalyticsTabsContainer/AnalyticsTabsContainer';
+import DataSourcesDatasetsContainer from './DataSourcesDatasetsContainer/DataSourcesDatasetsContainer';
+import DataSourcesTablesContainer from './DataSourcesTablesContainer/DataSourcesTablesContainer';
 import ConnectionDatabaseContainer from './ConnectionDatabaseContainer/ConnectionDatabaseContainer';
 
 export {
@@ -29,5 +31,7 @@ export {
   DashboardContainer,
   AdminContainer,
   AnalyticsTabsContainer,
+  DataSourcesDatasetsContainer,
+  DataSourcesTablesContainer,
   ConnectionDatabaseContainer,
 };

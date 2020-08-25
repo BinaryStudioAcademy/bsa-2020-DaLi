@@ -26,6 +26,10 @@ export default (sequelize, DataTypes) => {
         type: DataTypes.JSON,
         allowNull: false,
       },
+      tableId: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
       createdAt: DataTypes.DATE,
       updatedAt: DataTypes.DATE,
     },

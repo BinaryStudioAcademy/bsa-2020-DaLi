@@ -1,9 +1,9 @@
 import { ADD_DATABASE_ERROR, ADD_DATABASE_HIDE } from './actionTypes';
 
 const initialState = {
-  isNotification: true,
-  message: 'smth',
-  status: 'error',
+  isNotification: false,
+  message: '',
+  status: '',
 };
 
 const connectionDatabaseReducer = (state = initialState, { type, payload }) => {

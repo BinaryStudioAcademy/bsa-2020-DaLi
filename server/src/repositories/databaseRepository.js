@@ -8,11 +8,20 @@ class DatabaseRepository extends BaseRepository {
       include: [
         {
           model: models.DBTable,
-          // attributes: [
-          //   ['userGroups_id', 'groupId'],
-          //   ['permissionGranted', 'access'],
-          // ],
-          // include: { model: models.UserGroups, attributes: [['name', 'groupName']] },
+          attributes: [
+            ['id', 'tableId'],
+            ['name', 'tableName'],
+          ],
+          include: [
+            {
+              model: models.Permission,
+              attributes: [
+                ['userGroups_id', 'groupId'],
+                ['permissionGranted', 'access'],
+              ],
+              include: { model: models.UserGroups, attributes: [['name', 'groupName']] },
+            },
+          ],
         },
       ],
     });

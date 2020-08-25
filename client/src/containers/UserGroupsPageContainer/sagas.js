@@ -12,6 +12,7 @@ import {
 } from './actionTypes';
 import { userGroupsAPIService } from '../../services/api/userGroupsAPI.service';
 import { SetIsLoading, setError } from './actions';
+import { GET_MEMBERSHIPS } from '../PeoplePageContainer/actionTypes';
 
 export function* getUserGroupsSaga() {
   try {
@@ -95,6 +96,7 @@ export function* addUserToGroupSaga(payload) {
     yield put(SetIsLoading(true));
     yield call(userGroupsAPIService.addUserToGroup, payload.userGroupsId, payload.usersId);
     yield put({ type: GET_USER_GROUP, id: payload.userGroupsId });
+    yield put({ type: GET_MEMBERSHIPS });
   } catch (error) {
     yield put(setError(error));
     yield put(SetIsLoading(false));
@@ -110,6 +112,7 @@ export function* deleteUserFromGroupSaga(payload) {
     yield put(SetIsLoading(true));
     yield call(userGroupsAPIService.deleteUserFromGroup, payload.userGroupsId, payload.usersUserGroupsId);
     yield put({ type: GET_USER_GROUP, id: payload.userGroupsId });
+    yield put({ type: GET_MEMBERSHIPS });
   } catch (error) {
     yield put(setError(error));
     yield put(SetIsLoading(false));

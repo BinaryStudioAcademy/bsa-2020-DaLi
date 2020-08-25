@@ -63,6 +63,18 @@ export const setInitialDBPermissions = async (tableid) => {
   });
 };
 
+export const setInitialDBPermissionsOnGroupAdd = async (groupId) => {
+  const dbTables = await DBTable.getAll();
+  dbTables.forEach(async (table) => {
+    const permission = ACCESS_DENIED;
+    await PermissionRepository.create({
+      userGroups_id: groupId,
+      permissionGranted: permission,
+      dbtable_id: table.id,
+    });
+  });
+};
+
 export const getDBPermissions = async (databaseId) => {
   const permissions = await PermissionRepository.getAll();
   const groups = await UserGroupsRepository.getAll();

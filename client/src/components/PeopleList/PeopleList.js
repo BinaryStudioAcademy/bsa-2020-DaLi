@@ -13,6 +13,7 @@ import DeactivateUserModal from './DeactivateUserModal';
 import PeopleListHeader from '../PeopleListHeader';
 import { useStyles } from './styles';
 import { mockPeople } from './mockPeople';
+import PasswordModal from '../PasswordModal/PasswordModal';
 import PeopleTable from './PeopleTable';
 
 function TabPanel(props) {
@@ -43,6 +44,12 @@ const PeopleList = ({
   updateUser,
   toggleUserStatus,
   isLoading,
+  temporaryPassword,
+  clearTemporaryPassword,
+  resetPassword,
+  membership,
+  addUserToGroup,
+  deleteUserFromGroup,
   message,
   status,
   resetNotification,
@@ -50,10 +57,11 @@ const PeopleList = ({
   const classes = useStyles();
   const [addUserModalVisible, setAddUserModalVisible] = useState(false);
   const [deactivateUserModalVisible, setDeactivateUserModalVisible] = useState(false);
-  const [user, setUser] = React.useState(null);
+  const [user, setUser] = useState(null);
   const [isInactiveUsers, setIsInactiveUsers] = useState(false);
   const [inactiveUsers, setInactiveUsers] = useState([]);
   const [activeUsers, setActiveUsers] = useState([]);
+  const [isResetPasswordVisible, setIsResetPasswordVisible] = useState(false);
 
   const [value, setValue] = useState(0);
 
@@ -97,6 +105,15 @@ const PeopleList = ({
     setDeactivateUserModalVisible(true);
   };
 
+  const showResetPasswordModal = (person) => {
+    setUser(person);
+    setIsResetPasswordVisible(true);
+  };
+
+  const hideResetPasswordModal = () => {
+    setIsResetPasswordVisible(false);
+  };
+
   return (
     <div className={classes.root}>
       {!isInactiveUsers ? (
@@ -105,8 +122,12 @@ const PeopleList = ({
           <PeopleTable
             active
             people={people}
+            membership={membership}
             showAddUserModal={showAddUserModal}
             showDeactivateUserModal={showDeactivateUserModal}
+            showResetPasswordModal={showResetPasswordModal}
+            addUserToGroup={addUserToGroup}
+            deleteUserFromGroup={deleteUserFromGroup}
           />
         </>
       ) : (
@@ -124,16 +145,24 @@ const PeopleList = ({
             <PeopleTable
               active
               people={activeUsers}
+              membership={membership}
               showAddUserModal={showAddUserModal}
               showDeactivateUserModal={showDeactivateUserModal}
+              showResetPasswordModal={showResetPasswordModal}
+              addUserToGroup={addUserToGroup}
+              deleteUserFromGroup={deleteUserFromGroup}
             />
           </TabPanel>
           <TabPanel value={value} index={1}>
             <PeopleTable
               active={false}
               people={inactiveUsers}
+              membership={membership}
               showAddUserModal={showAddUserModal}
               showDeactivateUserModal={showDeactivateUserModal}
+              showResetPasswordModal={showResetPasswordModal}
+              addUserToGroup={addUserToGroup}
+              deleteUserFromGroup={deleteUserFromGroup}
               toggleUserStatus={toggleUserStatus}
             />
           </TabPanel>
@@ -155,6 +184,14 @@ const PeopleList = ({
         isVisible={addUserModalVisible}
         closeModal={hideAddUserModal}
         submitHandler={user ? updateUser : addUser}
+        user={user}
+      />
+      <PasswordModal
+        password={temporaryPassword}
+        clearPassword={clearTemporaryPassword}
+        resetPassword={resetPassword}
+        isReset={isResetPasswordVisible}
+        hideModal={hideResetPasswordModal}
         user={user}
       />
       <DeactivateUserModal
@@ -180,6 +217,12 @@ PeopleList.propTypes = {
   isLoading: PropTypes.bool,
   message: PropTypes.string,
   status: PropTypes.string,
+  temporaryPassword: PropTypes.string,
+  clearTemporaryPassword: PropTypes.func,
+  resetPassword: PropTypes.func,
+  membership: PropTypes.array,
+  addUserToGroup: PropTypes.func,
+  deleteUserFromGroup: PropTypes.func,
 };
 
 export default PeopleList;

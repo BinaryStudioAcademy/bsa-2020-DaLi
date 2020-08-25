@@ -742,6 +742,7 @@ module.exports = {
         },
         type: {
           type: 'string',
+          enum: ['PostgreSQL', 'MongoDB', 'MySQL'],
         },
         host: {
           type: 'string',

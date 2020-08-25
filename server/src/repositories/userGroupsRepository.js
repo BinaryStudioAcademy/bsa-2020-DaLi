@@ -22,6 +22,16 @@ class UserGroupsRepository extends BaseRepository {
       ],
     });
   }
+
+  getAllGroupsWithUsers() {
+    return this.model.findAll({
+      include: [
+        {
+          model: models.User,
+        },
+      ],
+    });
+  }
 }
 
 export default new UserGroupsRepository(models.UserGroups);

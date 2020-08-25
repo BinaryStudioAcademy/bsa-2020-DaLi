@@ -42,6 +42,8 @@ const ViewVisualizationContainer = (props) => {
     updateVisualizationName,
     location: { data, schema, tableId },
     fetchVisualization,
+    createVisualization,
+    history,
   } = props;
 
   const [currentView, setCurrentView] = useState('table');
@@ -99,13 +101,10 @@ const ViewVisualizationContainer = (props) => {
 
   const hideNotification = () => setIsNotificationVisible(false);
 
-  const createVisualization = ({ name, description }) => {
-    updateVisualizationName({ name, description });
+  const onVisualizationCreate = ({ name, description }) => {
     const newVisualization = createNewVisualization(currentVisualization, name, description, tableId);
-    visualizationsAPIService.createVisualization(newVisualization);
+    createVisualization(newVisualization, history);
     closeModal();
-    setIsVisualizationExist(true);
-    props.history.push('/');
   };
 
   const updateVisualization = () => {
@@ -145,7 +144,7 @@ const ViewVisualizationContainer = (props) => {
       <Grid container className="view-visualization-container">
         <SaveVisualizationModal
           closeModal={closeModal}
-          saveVisualization={isVisualizationExist ? editVisualizationName : createVisualization}
+          saveVisualization={isVisualizationExist ? editVisualizationName : onVisualizationCreate}
           isVisible={isModalOpen}
           title={isVisualizationExist ? 'Edit visualization name' : 'Save visualization'}
           name={currentVisualization.name}
@@ -201,6 +200,7 @@ ViewVisualizationContainer.propTypes = {
     schema: PropTypes.array,
     tableId: PropTypes.string,
   }),
+  createVisualization: PropTypes.func,
 };
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(ViewVisualizationContainer));

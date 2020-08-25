@@ -3,6 +3,7 @@ import {
   UPDATE_VISUALIZATION_CONFIG,
   UPDATE_VISUALIZATION_NAME,
   FETCH_VISUALIZATION,
+  CREATE_VISUALIZATION,
 } from './actionTypes';
 
 export const setVisualization = (visualization) => {
@@ -30,5 +31,12 @@ export const updateVisualizationName = ({ name, description }) => {
   return {
     type: UPDATE_VISUALIZATION_NAME,
     payload: { name, description },
+  };
+};
+
+export const createVisualization = (newVisualization, history) => {
+  return {
+    type: CREATE_VISUALIZATION,
+    payload: { newVisualization, history },
   };
 };

@@ -16,6 +16,9 @@ import {
 } from '../pages';
 import { getToken } from '../helpers/jwtToken';
 import { fetchUser } from '../containers/LoginPageContainer/actions';
+import MapVisualization from '../containers/MapVisualization/MapVisualization';
+import MapVisualization2 from '../containers/MapVisualization2/MapVisualization2';
+import GoogleApiWrapper from '../containers/MapVisualizationGoogle/MapVisualizationGoogle';
 
 const Routes = ({ fetchUser, isAuthorized, isLoading }) => {
   const hasToken = !!getToken();
@@ -41,6 +44,9 @@ const Routes = ({ fetchUser, isAuthorized, isLoading }) => {
       <ProtectedRoute exact path="/dashboards/:id" component={DashboardPage} />
       <ProtectedRoute exact path="/data-sources" component={DataSourcesDatasetsContainer} />
       <ProtectedRoute exact path="/data-sources/:id" component={DataSourcesTablesContainer} />
+      <ProtectedRoute exact path="/map" component={MapVisualization} />
+      <ProtectedRoute exact path="/map2" component={MapVisualization2} />
+      <ProtectedRoute exact path="/google" component={GoogleApiWrapper} />
       <Redirect to="/" />
     </Switch>
   );

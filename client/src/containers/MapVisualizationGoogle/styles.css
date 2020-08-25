@@ -1,0 +1,9 @@
+.map-visualization-svg {
+  height: 90vh;
+  width: 100vw;
+}
+
+.circle:hover {
+  stroke: black;
+  stroke-width: 4px;
+}

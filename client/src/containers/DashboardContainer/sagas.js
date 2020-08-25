@@ -1,5 +1,6 @@
 import { put, call, takeEvery, all } from 'redux-saga/effects';
 import {
+  ADD_DASHBOARD,
   GET_DASHBOARD,
   GET_DASHBOARD_ERROR,
   GET_DASHBOARD_SUCCESS,
@@ -9,6 +10,16 @@ import {
 } from './actionsTypes';
 import { dashboardsAPIService } from '../../services/api/dashboardsAPI.service';
 import { dbTableAPIService } from '../../services/api/dbTableAPI.service';
+
+export function* addDashboardSaga({ payload }) {
+  const { newDashboard, history } = payload;
+  const { id } = yield call(dashboardsAPIService.createDashboard, newDashboard);
+  history.push(`/dashboards/${id}`);
+}
+
+export function* watchAddDashboardSaga() {
+  yield takeEvery(ADD_DASHBOARD, addDashboardSaga);
+}
 
 export function* getDashboard(payload) {
   try {
@@ -65,5 +76,5 @@ export function* watchUpdateDashboardSaga() {
 }
 
 export default function* currentDashboardSaga() {
-  yield all([watchGetDashboardSaga(), watchUpdateDashboardSaga()]);
+  yield all([watchAddDashboardSaga(), watchGetDashboardSaga(), watchUpdateDashboardSaga()]);
 }

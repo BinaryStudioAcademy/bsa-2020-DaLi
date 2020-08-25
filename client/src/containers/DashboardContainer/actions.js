@@ -1,5 +1,12 @@
-import { GET_DASHBOARD, UPDATE_DASHBOARD } from './actionsTypes';
+import { ADD_DASHBOARD, GET_DASHBOARD, UPDATE_DASHBOARD } from './actionsTypes';
 import { FETCH_VISUALIZATIONS } from '../AnalyticsTabsContainer/actionsTypes';
+
+export const addDashboard = (newDashboard, history) => {
+  return {
+    type: ADD_DASHBOARD,
+    payload: { newDashboard, history },
+  };
+};
 
 export const getDashboard = (id) => {
   return {

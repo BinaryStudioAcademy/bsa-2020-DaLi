@@ -4,7 +4,6 @@ import {
   GET_ANALYTICS_SUCCESS,
   GET_ANALYTICS_ERROR,
   DELETE_VISUALIZATION,
-  ADD_DASHBOARD,
   DELETE_DASHBOARD,
   FETCH_VISUALIZATIONS,
   FETCH_VISUALIZATIONS_SUCCESS,
@@ -49,15 +48,6 @@ export function* watchDeleteVisualizationSaga() {
   yield takeEvery(DELETE_VISUALIZATION, deleteVisualizationSaga);
 }
 
-export function* addDashboardSaga(payload) {
-  yield call(dashboardsAPIService.createDashboard, payload.newDashboard);
-  yield put({ type: GET_ANALYTICS });
-}
-
-export function* watchAddDashboardSaga() {
-  yield takeEvery(ADD_DASHBOARD, addDashboardSaga);
-}
-
 export function* deleteDashboardSaga(payload) {
   yield call(dashboardsAPIService.deleteDashboard, payload.id);
   yield put({ type: GET_ANALYTICS });
@@ -71,7 +61,6 @@ export default function* analyticsSaga() {
   yield all([
     watchGetAnalyticsSaga(),
     watchDeleteVisualizationSaga(),
-    watchAddDashboardSaga(),
     watchDeleteDashboardSaga(),
     watchFetchVisualizationsSaga(),
   ]);

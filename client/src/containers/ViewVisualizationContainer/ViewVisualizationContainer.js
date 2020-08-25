@@ -29,9 +29,6 @@ import {
   createNewVisualization,
   createUpdatedVisualization,
 } from './helpers';
-
-import mockData from './mockData';
-
 import './ViewVisualizationContainer.css';
 
 const ViewVisualizationContainer = (props) => {
@@ -43,6 +40,8 @@ const ViewVisualizationContainer = (props) => {
     setVisualization,
     updateVisualizationConfig,
     updateVisualizationName,
+    location: { data, schema, tableId },
+    fetchVisualization,
   } = props;
 
   const [currentView, setCurrentView] = useState('table');
@@ -57,20 +56,25 @@ const ViewVisualizationContainer = (props) => {
     const isNewVisualization = checkIsVisualizationNew(id);
     if (isNewVisualization) {
       setIsVisualizationExist(false);
-      const dataSample = createDataSample(mockData);
-      visualization = createInitVisualization(id, dataSample, userId);
-    } else {
+      const dataSample = createDataSample(data);
+      visualization = createInitVisualization(id, dataSample, userId, schema);
+      setVisualization(visualization);
+    } else if (visualizations.length) {
       visualization = getVisualization(visualizations, id);
+      setIsVisualizationExist(true);
+      setVisualization(visualization);
+    } else {
+      fetchVisualization(id);
       setIsVisualizationExist(true);
     }
     setVisualization(visualization);
-  }, [id, visualizations, userId, setVisualization]);
+  }, [id, visualizations, userId, setVisualization, data, schema, fetchVisualization]);
 
   const visualizationComponent = getVisualizationComponent(
     currentVisualization.type,
     currentVisualization.config,
     updateVisualizationConfig,
-    mockData
+    data
   );
 
   const visualizationSettings = getVisualizationSettings(
@@ -81,7 +85,7 @@ const ViewVisualizationContainer = (props) => {
 
   const visualizationIcon = getVisualizationIcon(currentVisualization.type);
 
-  const contentViewComponent = currentView === 'table' ? <InitialTable data={mockData} /> : visualizationComponent;
+  const contentViewComponent = currentView === 'table' ? <InitialTable data={data} /> : visualizationComponent;
 
   const onSwitchContentView = (viewType) => setCurrentView(viewType);
 
@@ -97,7 +101,7 @@ const ViewVisualizationContainer = (props) => {
 
   const createVisualization = ({ name, description }) => {
     updateVisualizationName({ name, description });
-    const newVisualization = createNewVisualization(currentVisualization, name, description);
+    const newVisualization = createNewVisualization(currentVisualization, name, description, tableId);
     visualizationsAPIService.createVisualization(newVisualization);
     closeModal();
     setIsVisualizationExist(true);
@@ -188,9 +192,15 @@ ViewVisualizationContainer.propTypes = {
   userId: PropTypes.string,
   currentVisualization: PropTypes.object,
   setVisualization: PropTypes.func,
+  fetchVisualization: PropTypes.func,
   updateVisualizationConfig: PropTypes.func,
   updateVisualizationName: PropTypes.func,
   history: PropTypes.object,
+  location: PropTypes.shape({
+    data: PropTypes.array,
+    schema: PropTypes.array,
+    tableId: PropTypes.string,
+  }),
 };
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(ViewVisualizationContainer));

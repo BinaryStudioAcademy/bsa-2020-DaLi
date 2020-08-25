@@ -6,16 +6,23 @@ import {
   ADD_USER,
   ADD_USER_SUCCESS,
   ADD_USER_ERROR,
-  UPDATE_USER,
+  UPDATE_USER_FROM_LIST,
   UPDATE_USER_SUCCESS,
   UPDATE_USER_ERROR,
   DELETE_USER,
   DELETE_USER_SUCCESS,
   DELETE_USER_ERROR,
   TOGGLE_USER_STATUS,
+  RESET_PASSWORD,
+  RESET_PASSWORD_SUCCESS,
+  RESET_PASSWORD_ERROR,
+  GET_MEMBERSHIPS,
+  GET_MEMBERSHIPS_SUCCESS,
+  GET_MEMBERSHIPS_ERROR,
 } from './actionTypes';
 import { usersAPIService } from '../../services/api/usersAPI.service';
-import { SetIsLoading } from './actions';
+import { SetIsLoading, setTemporaryPassword } from './actions';
+import { userGroupsAPIService } from '../../services/api/userGroupsAPI.service';
 
 export function* getUsersSaga() {
   try {
@@ -33,11 +40,28 @@ export function* watchGetUsersSaga() {
   yield takeEvery(GET_USERS, getUsersSaga);
 }
 
+export function* getUsersMembershipSaga() {
+  try {
+    yield put(SetIsLoading(true));
+    const response = yield call(userGroupsAPIService.getAllGroupsWithUsers);
+    yield put({ type: GET_MEMBERSHIPS_SUCCESS, payload: response });
+    yield put(SetIsLoading(false));
+  } catch (error) {
+    yield put({ type: GET_MEMBERSHIPS_ERROR, error });
+    yield put(SetIsLoading(false));
+  }
+}
+
+export function* watchGetUsersMembershipSaga() {
+  yield takeEvery(GET_MEMBERSHIPS, getUsersMembershipSaga);
+}
+
 export function* addUserSaga(payload) {
   try {
     yield put(SetIsLoading(true));
-    yield call(usersAPIService.createUser, payload.user);
+    const response = yield call(usersAPIService.createUser, payload.user);
     yield put({ type: ADD_USER_SUCCESS });
+    yield put(setTemporaryPassword(response.password));
     yield put({ type: GET_USERS });
   } catch (error) {
     yield put({ type: ADD_USER_ERROR, error });
@@ -92,7 +116,21 @@ export function* updateUser({ payload }) {
 }
 
 export function* watchUpdateUserData() {
-  yield takeEvery(UPDATE_USER, updateUser);
+  yield takeEvery(UPDATE_USER_FROM_LIST, updateUser);
+}
+
+export function* resetUserPasswordSaga(payload) {
+  try {
+    const response = yield call(usersAPIService.updateUser, payload.id, { password: null });
+
+    yield put({ type: RESET_PASSWORD_SUCCESS, payload: response });
+  } catch (error) {
+    yield put({ type: RESET_PASSWORD_ERROR, payload: error });
+  }
+}
+
+export function* watchResetUserPasswordSaga() {
+  yield takeEvery(RESET_PASSWORD, resetUserPasswordSaga);
 }
 
 export default function* usersSaga() {
@@ -102,5 +140,7 @@ export default function* usersSaga() {
     watchAddUserSaga(),
     watchUpdateUserData(),
     watchToggleUserStatus(),
+    watchResetUserPasswordSaga(),
+    watchGetUsersMembershipSaga(),
   ]);
 }

@@ -88,6 +88,11 @@ const useStyles = makeStyles(() => ({
     left: '0',
     top: '-20px',
   },
+  dashboardAddVisualisationBtn: {
+    '&:hover': {
+      cursor: 'pointer',
+    },
+  },
 }));
 
 export default useStyles;

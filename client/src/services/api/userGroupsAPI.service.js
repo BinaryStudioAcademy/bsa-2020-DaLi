@@ -10,6 +10,8 @@ class UserGroupsAPIService extends baseAPIService {
 
   getUserGroups = () => this.getData('');
 
+  getAllGroupsWithUsers = () => this.getData('/users');
+
   getUserGroup = (id) => this.getDataById(`/${id}`);
 
   createUserGroup = (newUserGroup) => this.postData('', newUserGroup);
@@ -20,6 +22,6 @@ class UserGroupsAPIService extends baseAPIService {
 
   addUserToGroup = (userGroupsId, usersId) => this.postData(`/${userGroupsId}`, { users_id: usersId });
 
-  deleteUserFromGroup = (userGroupsId, usersUserGroupsId) => this.deleteData(`/${userGroupsId}`, { usersUserGroupsId });
+  deleteUserFromGroup = (userGroupsId, usersUserGroupsId) => this.deleteData(`${userGroupsId}`, { usersUserGroupsId });
 }
 export const userGroupsAPIService = new UserGroupsAPIService();

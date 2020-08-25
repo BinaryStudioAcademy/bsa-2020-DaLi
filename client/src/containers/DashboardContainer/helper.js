@@ -41,11 +41,15 @@ export const createUpdatedDashboard = (name, description, layout, layouts) => {
   return updatedDashboard;
 };
 
-export const getDashboardItems = (dashboardVisualizations, layout, data, onVisualizationDelete) => {
-  return dashboardVisualizations.map((dashboardVisualization) => {
+export const getDashboardItems = (dashboardVisualizations, layout, onVisualizationDelete) => {
+  const result = dashboardVisualizations.map((dashboardVisualization) => {
     const visualization = getParsedVisualization(dashboardVisualization);
     const layoutItem = getLayoutItem(layout, visualization.id);
-    const visualizationComponent = getVisualizationComponent(visualization.type, visualization.config, data);
+    const visualizationComponent = getVisualizationComponent(
+      visualization.type,
+      visualization.config,
+      visualization.data
+    );
     return (
       <div className="dashboard-layout-item" key={visualization.id} data-grid={layoutItem}>
         <div className="dashboard-layout-item__header">
@@ -62,6 +66,7 @@ export const getDashboardItems = (dashboardVisualizations, layout, data, onVisua
       </div>
     );
   });
+  return result;
 };
 
 export const updateVisualizationsId = (visualizationId, currentVisualizationsId) => {

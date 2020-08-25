@@ -1,14 +1,23 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
-import { withRouter, Switch, Route } from 'react-router-dom';
+import { Switch, Route } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { Grid } from '@material-ui/core';
 import { PeopleList } from '../../components';
 import PeoplePageMenu from './PeoplePageMenu';
-import { getUsers, addUser, updateUser, toggleUserStatus, resetError } from './actions';
-import { useStyles } from './styles';
+import {
+  getUsers,
+  addUser,
+  updateUser,
+  toggleUserStatus,
+  clearTemporaryPassword,
+  resetPassword,
+  getMembership,
+  resetNotification,
+} from './actions';
+import { addUserToGroup, getUserGroups, getUserGroup, deleteUserFromGroup } from '../UserGroupsPageContainer/actions';
 import UserGroupsPageContainer from '../UserGroupsPageContainer/UserGroupsPageContainer';
-import { getUserGroups, getUserGroup } from '../UserGroupsPageContainer/actions';
+import { useStyles } from './styles';
 
 const PeoplePageContainer = ({
   people,
@@ -18,11 +27,19 @@ const PeoplePageContainer = ({
   getUsers,
   addUser,
   updateUser,
-  resetError,
+  temporaryPassword,
+  clearTemporaryPassword,
+  resetPassword,
+  toggleUserStatus,
+  resetNotification,
   getUserGroups,
   match,
   location,
   getUserGroup,
+  getMembership,
+  membership,
+  addUserToGroup,
+  deleteUserFromGroup,
 }) => {
   const classes = useStyles();
 
@@ -36,12 +53,13 @@ const PeoplePageContainer = ({
     } else {
       setIsTheGroup(false);
       getUsers();
+      getMembership();
       getUserGroups();
     }
     return () => {
-      resetError();
+      resetNotification();
     };
-  }, [getUsers, resetError, getUserGroups, getUserGroup, location.pathname, match.isExact]);
+  }, [getUsers, getMembership, resetNotification, getUserGroups, getUserGroup, location.pathname, match.isExact]);
 
   return (
     <Grid container className={classes.root}>
@@ -59,6 +77,13 @@ const PeoplePageContainer = ({
               isLoading={isLoading}
               message={message}
               status={status}
+              temporaryPassword={temporaryPassword}
+              clearTemporaryPassword={clearTemporaryPassword}
+              resetPassword={resetPassword}
+              membership={membership}
+              addUserToGroup={addUserToGroup}
+              deleteUserFromGroup={deleteUserFromGroup}
+              resetNotification={resetNotification}
             />
           )}
         />
@@ -73,15 +98,6 @@ const PeoplePageContainer = ({
   );
 };
 
-const mapStateToProps = (state) => {
-  return {
-    people: state.admin.people.users,
-    isLoading: state.admin.people.isLoading,
-    message: state.admin.people.message,
-    status: state.admin.people.status,
-  };
-};
-
 PeoplePageContainer.propTypes = {
   message: PropTypes.string,
   status: PropTypes.string,
@@ -91,15 +107,45 @@ PeoplePageContainer.propTypes = {
   addUser: PropTypes.func,
   updateUser: PropTypes.func,
   toggleUserStatus: PropTypes.func,
-  resetError: PropTypes.func,
+  resetNotification: PropTypes.func,
+  temporaryPassword: PropTypes.string,
+  clearTemporaryPassword: PropTypes.func,
+  resetPassword: PropTypes.func,
   getUserGroups: PropTypes.func,
   match: PropTypes.object,
   location: PropTypes.object,
   getUserGroup: PropTypes.func,
+  getMembership: PropTypes.func,
+  membership: PropTypes.array,
+  addUserToGroup: PropTypes.func,
+  deleteUserFromGroup: PropTypes.func,
 };
 
-export default withRouter(
-  connect(mapStateToProps, { getUsers, addUser, updateUser, resetError, getUserGroups, getUserGroup })(
-    PeoplePageContainer
-  )
-);
+const mapStateToProps = ({ admin: { people, groups } }) => {
+  return {
+    people: people.users,
+    membership: people.membership,
+    isLoading: people.isLoading,
+    message: people.message,
+    status: people.status,
+    temporaryPassword: people.temporaryPassword,
+    groups: groups.groups,
+  };
+};
+
+const mapDispatchToProps = {
+  getUsers,
+  addUser,
+  updateUser,
+  toggleUserStatus,
+  clearTemporaryPassword,
+  resetPassword,
+  getUserGroups,
+  getUserGroup,
+  getMembership,
+  addUserToGroup,
+  deleteUserFromGroup,
+  resetNotification,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(PeoplePageContainer);

@@ -1,3 +1,4 @@
+/* eslint-disable */
 import UserRepository from '../repositories/userRepository';
 import UserGroupsRepository from '../repositories/userGroupsRepository';
 import UsersUserGroupsRepository from '../repositories/usersUserGroupsRepository';

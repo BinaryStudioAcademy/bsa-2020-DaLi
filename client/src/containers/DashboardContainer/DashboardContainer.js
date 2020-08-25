@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import { getDashboard, updateDashboard } from './actions';
+import { getDashboard, updateDashboard, fetchVisualizations } from './actions';
 
 import { DashboardHeader, DashboardLayout, AddVisualizationToDashboardModal } from '../../components';
 import {
@@ -21,10 +21,8 @@ import {
   cancelFullScreen,
 } from './helper';
 
-import mockData from './mockData';
-
 const DashboardContainer = (props) => {
-  const { id, currentDashboard, isLoading, getDashboard, visualizations, updateDashboard } = props;
+  const { id, currentDashboard, isLoading, getDashboard, visualizations, updateDashboard, fetchVisualizations } = props;
 
   const [oldName, setOldName] = useState('');
   const [name, setName] = useState(null);
@@ -52,6 +50,12 @@ const DashboardContainer = (props) => {
       setViewDashboardMode('default');
     }
   };
+
+  useEffect(() => {
+    if (!visualizations.length) {
+      fetchVisualizations();
+    }
+  }, [visualizations, fetchVisualizations]);
 
   useEffect(() => {
     getDashboard(id);
@@ -126,10 +130,11 @@ const DashboardContainer = (props) => {
     discardChanges();
   };
 
-  const onVisualizationAdd = (visualizationId) => {
+  const onVisualizationAdd = (visualizationId, newVisualizationData) => {
     const newLayoutItem = createNewLayoutItem(visualizationId, currentLayout, cols, breakpoint);
     const visualization = getVisualization(visualizationId, visualizations);
     const updatedDeletedVisualizationsId = updateVisualizationsId(visualizationId, deletedVisualizationsId);
+    visualization.data = newVisualizationData;
 
     setDashboardVisualizations(dashboardVisualizations.concat(visualization));
     setAddedVisualizationsId(addedVisualizationsId.concat(visualizationId));
@@ -176,7 +181,9 @@ const DashboardContainer = (props) => {
   };
 
   return isLoading ? (
-    <CircularProgress size={40} left={-20} top={-20} style={{ marginLeft: '50%', marginTop: '50%' }} />
+    <div style={{ position: 'relative' }}>
+      <CircularProgress size={40} left={-20} top={10} style={{ marginLeft: '50%' }} />
+    </div>
   ) : (
     <>
       <AddVisualizationToDashboardModal
@@ -206,13 +213,13 @@ const DashboardContainer = (props) => {
         onLayoutChange={onLayoutChange}
         onBreakpointChange={onBreakpointChange}
         dashboardVisualizations={dashboardVisualizations}
-        data={mockData}
         getDashboardItems={getDashboardItems}
         onVisualizationDelete={onVisualizationDelete}
       />
     </>
   );
 };
+
 DashboardContainer.propTypes = {
   id: PropTypes.string,
   currentDashboard: PropTypes.object,
@@ -220,6 +227,7 @@ DashboardContainer.propTypes = {
   isLoading: PropTypes.bool,
   getDashboard: PropTypes.func,
   updateDashboard: PropTypes.func,
+  fetchVisualizations: PropTypes.func,
 };
 
 const mapStateToProps = ({ currentDashboard, analytics }) => ({
@@ -228,6 +236,6 @@ const mapStateToProps = ({ currentDashboard, analytics }) => ({
   visualizations: analytics.visualizations,
 });
 
-const mapDispatchToProps = { getDashboard, updateDashboard };
+const mapDispatchToProps = { getDashboard, updateDashboard, fetchVisualizations };
 
 export default connect(mapStateToProps, mapDispatchToProps)(DashboardContainer);

@@ -26,20 +26,21 @@ const getStyles = (errors, touched, fieldName) => {
 };
 
 const ConnectionDatabaseContainer = ({ addDatabase, isNotification, message, status, hideNotification }) => {
-  const availableDatabases = ['postgres'];
+  const availableDatabases = { PostgreSQL: 5432, MySQL: 3306, MongoDB: 27017 };
+
   const classes = useStyles();
   const initialDatabaseValues = {
-    type: availableDatabases[0],
+    type: Object.keys(availableDatabases)[0],
     name: '',
     host: '',
-    port: '',
+    port: Object.values(availableDatabases)[0],
     databaseName: '',
     username: '',
     password: '',
   };
   const history = useHistory();
 
-  const databaseOptions = availableDatabases.map((value) => (
+  const databaseOptions = Object.keys(availableDatabases).map((value) => (
     <option value={value} key={value}>
       {value}
     </option>
@@ -81,7 +82,10 @@ const ConnectionDatabaseContainer = ({ addDatabase, isNotification, message, sta
                   Database type
                 </label>
                 <NativeSelect
-                  onChange={(event) => setFieldValue('type', event.target.value)}
+                  onChange={(event) => {
+                    setFieldValue('port', availableDatabases[event.target.value]);
+                    setFieldValue('type', event.target.value);
+                  }}
                   value={values.type}
                   name="type"
                   id="type"

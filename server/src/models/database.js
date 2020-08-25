@@ -30,7 +30,7 @@ export default (sequelize, DataTypes) => {
       },
       port: {
         type: DataTypes.INTEGER,
-        allowNull: false,
+        allowNull: true,
       },
       dbName: {
         type: DataTypes.STRING,

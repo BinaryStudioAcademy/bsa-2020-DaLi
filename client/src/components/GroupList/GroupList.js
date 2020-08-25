@@ -13,6 +13,9 @@ import RowItem from './RowItem';
 import UserGroupForm from './UserGroupForm';
 import UserForm from './UserForm';
 
+const ADMINISTRATORS = 'Administrators';
+const ALL_USERS = 'All Users';
+
 const GroupList = ({
   groups,
   addUserGroup,
@@ -91,7 +94,13 @@ const GroupList = ({
             )}
             {!isTheGroup &&
               groups.map((group) => (
-                <RowItem key={group.id} item={group} deleteGroup={deleteGroup} updateUserGroup={updateUserGroup} />
+                <RowItem
+                  key={group.id}
+                  item={group}
+                  deleteGroup={deleteGroup}
+                  updateUserGroup={updateUserGroup}
+                  isAllowChange={group.name !== ADMINISTRATORS && group.name !== ALL_USERS}
+                />
               ))}
             {isTheGroup &&
               currentGroup.Users.map((user) => (

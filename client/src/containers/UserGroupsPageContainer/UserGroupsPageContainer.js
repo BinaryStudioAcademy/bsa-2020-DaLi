@@ -2,6 +2,8 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
+import Alert from '@material-ui/lab/Alert';
+import { Snackbar } from '@material-ui/core';
 import { GroupList } from '../../components';
 import {
   resetError,
@@ -11,6 +13,7 @@ import {
   getUserGroup,
   addUserToGroup,
   deleteUserFromGroup,
+  setError,
 } from './actions';
 
 const UserGroupsPageContainer = ({
@@ -25,6 +28,10 @@ const UserGroupsPageContainer = ({
   users,
   addUserToGroup,
   deleteUserFromGroup,
+  isError,
+  messageError,
+  resetError,
+  setError,
 }) => {
   const deleteGroup = (id) => () => {
     deleteUserGroup(id);
@@ -51,8 +58,19 @@ const UserGroupsPageContainer = ({
           users={users}
           addUser={addUser}
           deleteUser={deleteUser}
+          setError={setError}
         />
       )}
+      <Snackbar
+        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+        open={isError}
+        autoHideDuration={6000}
+        onClose={resetError}
+      >
+        <Alert elevation={6} variant="filled" severity="error" onClose={resetError}>
+          {messageError}
+        </Alert>
+      </Snackbar>
     </>
   );
 };
@@ -75,6 +93,7 @@ UserGroupsPageContainer.propTypes = {
   isLoading: PropTypes.bool,
   addUserGroup: PropTypes.func,
   deleteUserGroup: PropTypes.func,
+  setError: PropTypes.func,
   resetError: PropTypes.func,
   isTheGroup: PropTypes.bool,
   currentGroup: PropTypes.object,
@@ -94,5 +113,6 @@ export default withRouter(
     getUserGroup,
     addUserToGroup,
     deleteUserFromGroup,
+    setError,
   })(UserGroupsPageContainer)
 );

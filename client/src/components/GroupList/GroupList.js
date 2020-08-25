@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-// import { NavLink, useHistory } from 'react-router-dom';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -26,6 +25,7 @@ const GroupList = ({
   addUser,
   deleteUser,
   users = [],
+  setError,
 }) => {
   const [isVisibleForm, setIsVisibleForm] = useState(false);
 
@@ -55,7 +55,12 @@ const GroupList = ({
   };
 
   const createUserGroup = (values) => {
-    addUserGroup(values);
+    const isExistsGroup = groups.findIndex((group) => group.name === values.name) !== -1;
+    if (isExistsGroup) {
+      setError({ message: 'A group with the same name already exists' });
+    } else {
+      addUserGroup(values);
+    }
     closeForm();
   };
 
@@ -131,6 +136,7 @@ GroupList.propTypes = {
   users: PropTypes.array,
   addUser: PropTypes.func,
   deleteUser: PropTypes.func,
+  setError: PropTypes.func,
 };
 
 export default GroupList;

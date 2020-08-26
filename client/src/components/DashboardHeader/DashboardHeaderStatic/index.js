@@ -18,7 +18,7 @@ const DashboardHeaderStatic = (props) => {
           classes={{
             tooltip: classes.dashboardStaticDescription,
           }}
-          title={description}
+          title={description || ''}
         >
           <InfoIcon className={classes.dashboardStaticDescriptionIcon} />
         </Tooltip>

@@ -1,6 +1,8 @@
 import { put, call, takeEvery, all } from 'redux-saga/effects';
 import { authAPIService } from '../../services/api/AuthAPI.service';
 import { userAPIService } from '../../services/api/userAPI.service';
+import { usersAPIService } from '../../services/api/usersAPI.service';
+import { userGroupsAPIService } from '../../services/api/userGroupsAPI.service';
 import { setToken, removeToken } from '../../helpers/jwtToken';
 import {
   LOGIN_USER_SUCCESS,
@@ -16,6 +18,8 @@ import {
   FETCH_USER_SUCCESS,
   FETCH_USER,
   FETCH_USER_ERROR,
+  REGISTER_ADMIN,
+  REGISTER_ADMIN_ERROR,
 } from './actionTypes';
 
 export function* loginSaga(payload) {
@@ -73,6 +77,31 @@ export function* watchUpdateUserData() {
   yield takeEvery(UPDATE_USER, updateUser);
 }
 
+export function* registerAdmin({ payload }) {
+  try {
+    const { email, password } = payload;
+    const createUser = yield call(usersAPIService.createUser, payload);
+    const { id } = createUser;
+    const loginResponse = yield call(authAPIService.loginUser, { email, password });
+    setToken(loginResponse.token);
+    const allGroups = yield call(userGroupsAPIService.getUserGroups);
+    let adminGroupId = '';
+    allGroups.forEach((group) => {
+      if (group.name === 'Administrators') {
+        adminGroupId = group.id;
+      }
+    });
+    yield call(userGroupsAPIService.addUserToGroup, adminGroupId, id);
+    yield put({ type: LOGIN_USER_SUCCESS, payload: loginResponse });
+  } catch (error) {
+    yield put({ type: REGISTER_ADMIN_ERROR, payload: error });
+  }
+}
+
+export function* watchRegisterAdmin() {
+  yield takeEvery(REGISTER_ADMIN, registerAdmin);
+}
+
 export default function* authSaga() {
-  yield all([watchLoginSaga(), watchLogoutSaga(), watchUpdateUserData(), watchFetchUserSaga()]);
+  yield all([watchLoginSaga(), watchLogoutSaga(), watchUpdateUserData(), watchFetchUserSaga(), watchRegisterAdmin()]);
 }

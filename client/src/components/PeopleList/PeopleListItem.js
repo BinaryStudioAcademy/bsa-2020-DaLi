@@ -32,6 +32,7 @@ const PeopleListItem = ({
   membership,
   addUserToGroup,
   deleteUserFromGroup,
+  currentUserId,
 }) => {
   const classes = useStyles();
   const colors = colorStyles();
@@ -113,6 +114,13 @@ const PeopleListItem = ({
             {membership &&
               membership.map((group) => {
                 if (group.name === 'All Users') return null;
+                if (group.name === 'Administrators' && person.id === currentUserId) {
+                  return (
+                    <MenuItem key={group.id} disabled value="Administrators">
+                      Administrators
+                    </MenuItem>
+                  );
+                }
                 return (
                   <MenuItem key={group.id} value={group.name}>
                     {group.name}
@@ -137,7 +145,9 @@ const PeopleListItem = ({
                 >
                   <MenuItem onClick={onEditUser}>Edit user</MenuItem>
                   <MenuItem onClick={handleResetPassword}>Reset password</MenuItem>
-                  <MenuItem onClick={onDeactivateUser}>Deactivate user</MenuItem>
+                  <MenuItem onClick={onDeactivateUser} disabled={person.id === currentUserId}>
+                    Deactivate user
+                  </MenuItem>
                 </Menu>
               )}
             </>
@@ -162,6 +172,7 @@ PeopleListItem.propTypes = {
   addUserToGroup: PropTypes.func,
   deleteUserFromGroup: PropTypes.func,
   active: PropTypes.bool,
+  currentUserId: PropTypes.string,
 };
 
 export default PeopleListItem;

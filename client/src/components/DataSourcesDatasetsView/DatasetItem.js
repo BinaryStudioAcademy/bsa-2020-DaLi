@@ -6,13 +6,11 @@ import { FaDatabase } from 'react-icons/fa';
 
 import './styles.css';
 
-const DataSourcesViewItem = ({ dataset, getTables, setCurrentDbName }) => {
+const DataSourcesViewItem = ({ dataset }) => {
   const history = useHistory();
 
   const handleDatasetClick = (dataset) => {
     history.push(`/data-sources/${dataset.id}`);
-    setCurrentDbName(dataset.dbNickname);
-    getTables(dataset.id);
   };
 
   return (
@@ -25,8 +23,6 @@ const DataSourcesViewItem = ({ dataset, getTables, setCurrentDbName }) => {
 
 DataSourcesViewItem.propTypes = {
   dataset: PropTypes.object,
-  getTables: PropTypes.func,
-  setCurrentDbName: PropTypes.func,
 };
 
 export default DataSourcesViewItem;

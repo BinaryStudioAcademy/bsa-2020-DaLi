@@ -26,7 +26,7 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-const DataSourcesDatasetsView = ({ datasets, getTables, setCurrentDbName }) => {
+const DataSourcesDatasetsView = ({ datasets }) => {
   const classes = useStyles();
 
   return (
@@ -38,9 +38,7 @@ const DataSourcesDatasetsView = ({ datasets, getTables, setCurrentDbName }) => {
       </Breadcrumbs>
       <Grid container className={classes.itemList}>
         {datasets.map((dataset) => {
-          return (
-            <DatasetItem key={dataset.id} dataset={dataset} getTables={getTables} setCurrentDbName={setCurrentDbName} />
-          );
+          return <DatasetItem key={dataset.id} dataset={dataset} />;
         })}
       </Grid>
     </main>
@@ -49,8 +47,6 @@ const DataSourcesDatasetsView = ({ datasets, getTables, setCurrentDbName }) => {
 
 DataSourcesDatasetsView.propTypes = {
   datasets: PropTypes.array,
-  getTables: PropTypes.func,
-  setCurrentDbName: PropTypes.func,
 };
 
 export default DataSourcesDatasetsView;

@@ -5,6 +5,7 @@ import {
   GET_TABLES_ERROR,
   GET_TABLES_SUCCESS,
   SET_CUREENT_DB_NAME,
+  GET_DATASET_NAME_ERROR,
 } from './actionTypes';
 
 const initialState = {
@@ -19,6 +20,7 @@ const initialState = {
 
 const datasetsListReducer = (state = initialState, { type, payload }) => {
   switch (type) {
+    case GET_DATASET_NAME_ERROR:
     case GET_DATASETS_ERROR:
     case GET_TABLES_ERROR:
       return {

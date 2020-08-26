@@ -10,6 +10,8 @@ class DatabasesAPIService extends baseAPIService {
 
   getDatabases = () => this.getData('');
 
+  getDatabase = (id) => this.getDataById(`/${id}`);
+
   deleteDatabase = (id) => this.deleteData(`${id}`);
 
   addDatabase = (data) => this.postData('', data);

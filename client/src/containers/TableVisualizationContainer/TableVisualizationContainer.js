@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import { EnhancedTable } from '../../components';
 
-import { updateColumnsOrder, getRows } from './helper';
+import { updateColumns, getRows } from './helper';
 
 const TableVisualizationContainer = ({ config, updateConfig, data }) => {
   const { columns, sort } = config;
@@ -19,7 +19,7 @@ const TableVisualizationContainer = ({ config, updateConfig, data }) => {
     updateConfig(updatedConfig);
   };
 
-  const updatedColumns = updateColumnsOrder(columns);
+  const updatedColumns = updateColumns(columns);
   const rows = getRows(data, updatedColumns, sortOrder, sortOrderBy);
 
   return (

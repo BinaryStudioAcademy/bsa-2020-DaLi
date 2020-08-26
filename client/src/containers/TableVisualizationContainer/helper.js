@@ -26,10 +26,12 @@ const stableSort = (array, comparator) => {
 
 const sortRows = (rows, sortOrder, sortOrderBy) => stableSort(rows, getComparator(sortOrder, sortOrderBy));
 
-export const updateColumnsOrder = (columns) => {
-  return columns.sort((a, b) => {
-    return a.order - b.order;
-  });
+export const updateColumns = (columns) => {
+  return columns
+    .filter((column) => column.visible)
+    .sort((a, b) => {
+      return a.order - b.order;
+    });
 };
 
 const createColumnsOrder = (columns) => {
@@ -44,7 +46,7 @@ const removeRows = (data, columns) => {
   return data.map((item) => {
     const updatedItem = {};
     Object.keys(item).map((key) => {
-      if (columns.find((column) => column.id === key)) {
+      if (columns.find((column) => column.id === key && column.visible)) {
         updatedItem[key] = item[key];
       }
       return null;

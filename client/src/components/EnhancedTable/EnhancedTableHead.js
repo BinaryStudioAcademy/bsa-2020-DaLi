@@ -18,7 +18,7 @@ const EnhancedTableHead = (props) => {
         {columns.map((columnHeader) => (
           <TableCell key={columnHeader.id} sortDirection={sortOrderBy === columnHeader.id ? sortOrder : false}>
             <TableSortLabel
-              active={sortOrder === columnHeader.id}
+              active={sortOrderBy === columnHeader.id}
               direction={sortOrderBy === columnHeader.id ? sortOrder : 'asc'}
               onClick={createSortHandler(columnHeader.id)}
             >

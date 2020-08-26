@@ -18,6 +18,7 @@ const PeopleTable = ({
   membership,
   addUserToGroup,
   deleteUserFromGroup,
+  currentUserId,
 }) => {
   return (
     <TableContainer>
@@ -54,6 +55,7 @@ const PeopleTable = ({
               membership={membership}
               addUserToGroup={addUserToGroup}
               deleteUserFromGroup={deleteUserFromGroup}
+              currentUserId={currentUserId}
             />
           ))}
         </TableBody>
@@ -72,5 +74,6 @@ PeopleTable.propTypes = {
   membership: PropTypes.array,
   addUserToGroup: PropTypes.func,
   deleteUserFromGroup: PropTypes.func,
+  currentUserId: PropTypes.string,
 };
 export default PeopleTable;

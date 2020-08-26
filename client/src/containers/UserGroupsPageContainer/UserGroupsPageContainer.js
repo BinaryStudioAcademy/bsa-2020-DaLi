@@ -13,7 +13,6 @@ import {
   getUserGroup,
   addUserToGroup,
   deleteUserFromGroup,
-  setError,
 } from './actions';
 
 const UserGroupsPageContainer = ({
@@ -31,7 +30,6 @@ const UserGroupsPageContainer = ({
   isError,
   messageError,
   resetError,
-  setError,
 }) => {
   const deleteGroup = (id) => () => {
     deleteUserGroup(id);
@@ -58,7 +56,6 @@ const UserGroupsPageContainer = ({
           users={users}
           addUser={addUser}
           deleteUser={deleteUser}
-          setError={setError}
         />
       )}
       <Snackbar
@@ -113,6 +110,5 @@ export default withRouter(
     getUserGroup,
     addUserToGroup,
     deleteUserFromGroup,
-    setError,
   })(UserGroupsPageContainer)
 );

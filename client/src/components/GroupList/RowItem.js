@@ -77,7 +77,7 @@ const RowItem = ({ item, deleteGroup, updateUserGroup, isTheGroup, deleteUser, i
                 </Menu>
               </>
             )}
-            {isTheGroup && (
+            {isTheGroup && isAllowChange && (
               <IconButton aria-label="close" size="small" onClick={deleteItem(item.UsersUserGroups.id)}>
                 <CloseIcon style={{ fontSize: 18, color: '#c6cfd4' }} />
               </IconButton>

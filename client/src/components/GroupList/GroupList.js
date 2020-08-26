@@ -25,7 +25,6 @@ const GroupList = ({
   addUser,
   deleteUser,
   users = [],
-  setError,
 }) => {
   const [isVisibleForm, setIsVisibleForm] = useState(false);
 
@@ -112,6 +111,10 @@ const GroupList = ({
                   deleteGroup={deleteGroup}
                   updateUserGroup={updateUserGroup}
                   deleteUser={deleteUser}
+                  isAllowChange={
+                    (currentGroup.name !== ADMINISTRATORS || currentGroup.Users.length > 1) &&
+                    currentGroup.name !== ALL_USERS
+                  }
                 />
               ))}
           </TableBody>
@@ -131,7 +134,6 @@ GroupList.propTypes = {
   users: PropTypes.array,
   addUser: PropTypes.func,
   deleteUser: PropTypes.func,
-  setError: PropTypes.func,
 };
 
 export default GroupList;

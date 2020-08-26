@@ -137,7 +137,9 @@ export const getDBPermissions = async (databaseId) => {
   return data;
 };
 
-export const getPermissions = async () => DatabaseRepository.getPermissions();
+// export const getPermissions = async () => DatabaseRepository.getPermissions();
+export const getPermissions = async () =>
+  DatabaseRepository.getAllowedDatabasesByUserGroup('ccabcf2f-5e5f-4d37-bf32-1d882889b3b4');
 
 export const updateDBPermissions = async (permissions) => {
   const result = await Promise.all(

@@ -32,7 +32,7 @@ function BarChart(props) {
       ),
     };
 
-    d3.select('.d3-tip').remove();
+    chart.select('.d3-tip').remove();
     const tip = d3Tip()
       .attr('class', 'd3-tip')
       .offset([-10, 0])
@@ -65,6 +65,9 @@ function BarChart(props) {
       barsInfo = chart.selectAll().data(data).join('g');
     }
 
+    chart.append('g').attr('class', 'x-axis axis').call(xAxis);
+    chart.append('g').attr('class', 'y-axis axis').call(yAxis);
+
     chart
       .append('g')
       .attr('class', 'bars')
@@ -85,20 +88,23 @@ function BarChart(props) {
         const current = yScale(d[YAxis.key]);
         let barHeight = Math.abs(zero - current);
         if (yDataRange.min >= 0) {
-          barHeight -= height * 0.02;
+          const chartElemY = chart.node().getBoundingClientRect().y;
+          const xAxisElemY = chart.select('.x-axis').node().getBoundingClientRect().y;
+          const xAxisY = xAxisElemY - chartElemY;
+          barHeight = xAxisY - current;
         }
         return barHeight;
       })
       .attr('width', xScale.bandwidth())
       .on('mouseenter', (_, index) => {
-        d3.selectAll('.bar')
+        chart.selectAll('.bar')
           .filter((__, i) => i !== index)
           .transition()
           .duration(500)
           .attr('opacity', 0.6);
       })
       .on('mouseleave', () => {
-        d3.selectAll('.bar').transition().duration(500).attr('opacity', 1);
+        chart.selectAll('.bar').transition().duration(500).attr('opacity', 1);
       })
       .on('mouseover', tip.show)
       .on('mouseout', tip.hide);
@@ -136,9 +142,6 @@ function BarChart(props) {
         .text((a) => `${a[YAxis.key]}`);
     }
 
-    chart.append('g').attr('class', 'x-axis axis').call(xAxis);
-    chart.append('g').attr('class', 'y-axis axis').call(yAxis);
-
     if (yDataRange.min < 0) {
       chart
         .append('line')
@@ -167,9 +170,10 @@ function BarChart(props) {
       chart
         .append('text')
         .attr('class', 'label')
-        .attr('x', -(height / 2) - margin.left)
+        .attr('x', -(height / 2))
         .attr('y', margin.left - 10)
         .attr('transform', 'rotate(-90)')
+        .attr('text-anchor', 'middle')
         .text(YAxis.label);
     }
 
@@ -177,7 +181,7 @@ function BarChart(props) {
       chart
         .append('text')
         .attr('class', 'label')
-        .attr('x', width / 2 + margin.bottom)
+        .attr('x', width / 2)
         .attr('y', height - margin.bottom + 30)
         .attr('text-anchor', 'middle')
         .text(XAxis.label);
@@ -209,7 +213,7 @@ function BarChart(props) {
 
     window.addEventListener('resize', onResize);
     return ()=>window.removeEventListener('resize', onResize);
-  }, [JSON.stringify(props), width, height]);
+  }, [JSON.stringify(props), props.chart, props.data,width, height]);
   
   return <svg ref={svgRef} />;
 }

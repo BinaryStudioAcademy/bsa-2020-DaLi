@@ -24,13 +24,6 @@ router.get(
   '/users',
   asyncHandler(async (req, res, next) => {
     const result = await UserGroupsService.getAllGroupsWithUsers();
-    // const a = result.map(({ Users, ...rest }) => {
-    //   return {
-    //     ...rest,
-    //     users: Users.map((user) => user.id),
-    //   };
-    // });
-    // console.log(JSON.stringify(a));
     if (result) {
       res.status(200).json(result);
       next();

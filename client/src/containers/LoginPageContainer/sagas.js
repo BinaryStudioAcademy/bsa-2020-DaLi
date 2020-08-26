@@ -21,7 +21,7 @@ import {
 export function* loginSaga(payload) {
   try {
     const response = yield call(authAPIService.loginUser, payload.request);
-    setToken(response.token);
+    setToken(response.token, payload.request.rememberMe);
     yield put({ type: LOGIN_USER_SUCCESS, payload: response });
   } catch (error) {
     removeToken();

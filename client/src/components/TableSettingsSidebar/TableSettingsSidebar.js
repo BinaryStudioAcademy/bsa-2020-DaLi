@@ -22,7 +22,7 @@ const testConfig = {
   },
 };
 
-const TableSettingsSidebar = ({ config, updateConfig }) => {
+const TableSettingsSidebar = ({ config, updateConfig, userNotificationError }) => {
   config = config || testConfig;
 
   const [tableConfig, setTableConfig] = useState(config);
@@ -65,7 +65,12 @@ const TableSettingsSidebar = ({ config, updateConfig }) => {
   };
 
   const saveConfig = () => {
-    updateConfig(tableConfig);
+    if (tableConfig.columns.length) {
+      updateConfig(tableConfig);
+    } else {
+      userNotificationError('The table cannot be without columns');
+      setTableConfig(config);
+    }
   };
 
   const getListStyle = (isDraggingOver) => ({
@@ -110,6 +115,7 @@ const TableSettingsSidebar = ({ config, updateConfig }) => {
 TableSettingsSidebar.propTypes = {
   config: PropTypes.object,
   updateConfig: PropTypes.func,
+  userNotificationError: PropTypes.func,
 };
 
 export default TableSettingsSidebar;

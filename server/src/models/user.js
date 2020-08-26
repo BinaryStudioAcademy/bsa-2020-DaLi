@@ -1,5 +1,4 @@
 import { Model } from 'sequelize';
-import { generatePassword } from '../helpers/generatePassword';
 
 export default (sequelize, DataTypes) => {
   class User extends Model {

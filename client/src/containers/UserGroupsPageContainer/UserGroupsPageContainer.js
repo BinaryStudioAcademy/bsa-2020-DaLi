@@ -30,6 +30,7 @@ const UserGroupsPageContainer = ({
   isError,
   messageError,
   resetError,
+  currentUserId,
 }) => {
   const deleteGroup = (id) => () => {
     deleteUserGroup(id);
@@ -56,6 +57,7 @@ const UserGroupsPageContainer = ({
           users={users}
           addUser={addUser}
           deleteUser={deleteUser}
+          currentUserId={currentUserId}
         />
       )}
       <Snackbar
@@ -74,6 +76,7 @@ const UserGroupsPageContainer = ({
 
 const mapStateToProps = (state) => {
   return {
+    currentUserId: state.currentUser.user.id,
     users: state.admin.people.users,
     groups: state.admin.groups.groups,
     currentGroup: state.admin.groups.currentGroup,
@@ -99,6 +102,7 @@ UserGroupsPageContainer.propTypes = {
   updateUserGroup: PropTypes.func,
   addUserToGroup: PropTypes.func,
   deleteUserFromGroup: PropTypes.func,
+  currentUserId: PropTypes.string,
 };
 
 export default withRouter(

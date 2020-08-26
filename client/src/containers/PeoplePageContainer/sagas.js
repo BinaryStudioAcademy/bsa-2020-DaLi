@@ -7,8 +7,8 @@ import {
   ADD_USER_SUCCESS,
   ADD_USER_ERROR,
   UPDATE_USER_FROM_LIST,
-  UPDATE_USER_SUCCESS,
-  UPDATE_USER_ERROR,
+  UPDATE_USER_FROM_LIST_SUCCESS,
+  UPDATE_USER_FROM_LIST_ERROR,
   DELETE_USER,
   DELETE_USER_SUCCESS,
   DELETE_USER_ERROR,
@@ -93,10 +93,10 @@ export function* toggleUserStatus({ payload }) {
   try {
     yield put(SetIsLoading(true));
     yield call(usersAPIService.toggleUserStatus, payload.id, payload.data);
-    yield put({ type: UPDATE_USER_SUCCESS });
+    yield put({ type: UPDATE_USER_FROM_LIST_SUCCESS });
     yield put({ type: GET_USERS });
   } catch (error) {
-    yield put({ type: UPDATE_USER_ERROR, payload: error, error });
+    yield put({ type: UPDATE_USER_FROM_LIST_ERROR, payload: error, error });
     yield put(SetIsLoading(false));
   }
 }
@@ -108,10 +108,10 @@ export function* watchToggleUserStatus() {
 export function* updateUser({ payload }) {
   try {
     const res = yield call(usersAPIService.updateUser, payload.id, payload.data);
-    yield put({ type: UPDATE_USER_SUCCESS, payload: res });
+    yield put({ type: UPDATE_USER_FROM_LIST_SUCCESS, payload: res });
     yield put({ type: GET_USERS });
   } catch (error) {
-    yield put({ type: UPDATE_USER_ERROR, payload: error });
+    yield put({ type: UPDATE_USER_FROM_LIST_ERROR, payload: error });
   }
 }
 

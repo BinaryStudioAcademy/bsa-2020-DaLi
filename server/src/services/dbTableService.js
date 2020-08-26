@@ -1,4 +1,5 @@
 /* eslint-disable import/no-cycle */
+import createError from 'http-errors';
 import DBTable from '../repositories/dbTableRepository';
 import DBManager from './DBManager/DBManagerService';
 
@@ -18,10 +19,11 @@ export const getTableData = async (id) => {
       await manager.init();
       data = await manager.getTableDataByName(table.name);
     } catch (error) {
-      console.log('///////////////////// ON GET TABLE DATA FAILED');
-      console.log(error);
-      console.log('///////////////////// ON GET TABLE DATA FAILED');
+      // console.log('///////////////////// ON GET TABLE DATA FAILED');
+      // console.log(error);
+      // console.log('///////////////////// ON GET TABLE DATA FAILED');
       data = null;
+      throw createError(500, 'Get table data failed');
     }
 
     manager.destroy();
@@ -40,10 +42,11 @@ export const getTableSchema = async (id) => {
       await manager.init();
       schema = await manager.getTableSchemaByName(table.name);
     } catch (error) {
-      console.log('///////////////////// ON GET TABLE SCHEMA FAILED');
-      console.log(error);
-      console.log('///////////////////// ON GET TABLE SCHEMA FAILED');
+      // console.log('///////////////////// ON GET TABLE SCHEMA FAILED');
+      // console.log(error);
+      // console.log('///////////////////// ON GET TABLE SCHEMA FAILED');
       schema = null;
+      throw createError(500, 'Get table schema failed');
     }
 
     manager.destroy();
@@ -64,7 +67,7 @@ export const createDBTable = async (data) => {
 export const deleteDBTable = async (id) => {
   const item = await DBTable.getById(id);
   if (!item) {
-    return null;
+    throw createError(404, `Table with id of ${id} not found`);
   }
   const result = await DBTable.deleteById(id);
   return result;
@@ -73,7 +76,7 @@ export const deleteDBTable = async (id) => {
 export const updateDBTable = async (id, dataToUpdate) => {
   const item = await DBTable.getById(id);
   if (!item) {
-    return null;
+    throw createError(404, `Table with id of ${id} not found`);
   }
   const result = await DBTable.updateById(id, dataToUpdate);
   return result;
@@ -82,7 +85,7 @@ export const updateDBTable = async (id, dataToUpdate) => {
 export const getDBTable = async (id) => {
   const item = await DBTable.getById(id);
   if (!item) {
-    return null;
+    throw createError(404, `Table with id of ${id} not found`);
   }
   return item;
 };

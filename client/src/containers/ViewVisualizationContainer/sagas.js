@@ -1,5 +1,10 @@
 import { all, put, call, takeEvery } from 'redux-saga/effects';
-import { FETCH_VISUALIZATION, FETCH_VISUALIZATION_SUCCESS, CREATE_VISUALIZATION } from './actionTypes';
+import {
+  FETCH_VISUALIZATION,
+  FETCH_VISUALIZATION_SUCCESS,
+  CREATE_VISUALIZATION,
+  CREATE_VISUALIZATION_ERROR,
+} from './actionTypes';
 import { visualizationsAPIService } from '../../services/api/visualizationsAPI.service';
 
 export function* fetchVisualizationSaga(action) {
@@ -12,9 +17,13 @@ export function* watchFetchVisualizationSaga() {
 }
 
 function* createVisualization({ payload }) {
-  const { newVisualization, history } = payload;
-  yield call(visualizationsAPIService.createVisualization, newVisualization);
-  history.push('/');
+  try {
+    const { newVisualization, history } = payload;
+    yield call(visualizationsAPIService.createVisualization, newVisualization);
+    history.push('/');
+  } catch (error) {
+    yield put({ type: CREATE_VISUALIZATION_ERROR, payload: { error } });
+  }
 }
 
 export function* watchCreateVisualization() {

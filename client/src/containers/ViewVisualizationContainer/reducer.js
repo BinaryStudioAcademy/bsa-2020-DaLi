@@ -3,6 +3,7 @@ import {
   UPDATE_VISUALIZATION_CONFIG,
   UPDATE_VISUALIZATION_NAME,
   FETCH_VISUALIZATION_SUCCESS,
+  CREATE_VISUALIZATION_ERROR,
 } from './actionTypes';
 
 const viewVisualizationReducer = (state = {}, { type, payload }) => {
@@ -36,6 +37,14 @@ const viewVisualizationReducer = (state = {}, { type, payload }) => {
         ...state,
         name,
         description,
+      };
+    }
+
+    case CREATE_VISUALIZATION_ERROR: {
+      const { error } = payload;
+      return {
+        ...state,
+        error,
       };
     }
 

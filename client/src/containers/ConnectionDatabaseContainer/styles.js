@@ -68,11 +68,16 @@ const useStyles = makeStyles((theme) => ({
     fontSize: '20px',
     margin: '20px 0 10px',
   },
-  titleSection: {
-    color: '#C8CED2',
-  },
   emptySpace: {
-    margin: '0px 20px',
+    margin: '0px 5px',
+  },
+  breadcrumbs: {
+    color: '#C8CED2',
+    transition: '0.5s',
+    textDecoration: 'none',
+    '&:hover': {
+      color: '#2e353b',
+    },
   },
 }));
 

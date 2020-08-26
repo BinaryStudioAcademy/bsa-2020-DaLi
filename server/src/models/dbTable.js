@@ -9,6 +9,7 @@ export default (sequelize, DataTypes) => {
         onDelete: 'cascade',
         hooks: true,
       });
+      DBTable.belongsTo(models.Database);
     }
   }
   DBTable.init(

@@ -1,5 +1,6 @@
 import PermissionRepository from '../repositories/permissionRepository';
 import UserGroupsRepository from '../repositories/userGroupsRepository';
+import UserRepository from '../repositories/userRepository';
 import DatabaseRepository from '../repositories/databaseRepository';
 import DBTable from '../repositories/dbTableRepository';
 import { ACCESS_GRANTED, ACCESS_DENIED, ACCESS_LIMITED, ADMIN_GROUP } from '../config/types';
@@ -139,7 +140,8 @@ export const getDBPermissions = async (databaseId) => {
 
 // export const getPermissions = async () => DatabaseRepository.getPermissions();
 export const getPermissions = async () =>
-  DatabaseRepository.getAllowedDatabasesByUserGroup('ccabcf2f-5e5f-4d37-bf32-1d882889b3b4');
+  // DatabaseRepository.getAllowedDatabasesByUserGroup('ccabcf2f-5e5f-4d37-bf32-1d882889b3b4');
+  UserRepository.getAllowedDatabases('b1f9a0bb-da49-4788-87bc-f584ed56e8b3');
 
 export const updateDBPermissions = async (permissions) => {
   const result = await Promise.all(

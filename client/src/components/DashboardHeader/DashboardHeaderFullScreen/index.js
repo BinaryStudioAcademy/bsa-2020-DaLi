@@ -13,14 +13,16 @@ const DashboardHeaderFullScreen = (props) => {
     <Grid className={classes.dashboardFullScreenHeader}>
       <Grid className={classes.dashboardFullScreenTitle} item container>
         <Typography className={classes.dashboardFullScreenName}>{name}</Typography>
-        <Tooltip
-          classes={{
-            tooltip: classes.dashboardFullScreenDescription,
-          }}
-          title={description}
-        >
-          <InfoIcon className={classes.dashboardFullScreenDescriptionIcon} />
-        </Tooltip>
+        {description?.length ? (
+          <Tooltip
+            classes={{
+              tooltip: classes.dashboardFullScreenDescription,
+            }}
+            title={description}
+          >
+            <InfoIcon className={classes.dashboardFullScreenDescriptionIcon} />
+          </Tooltip>
+        ) : null}
       </Grid>
       <FullscreenExitIcon className={classes.dashboardFullScreenButton} onClick={onSetDefaultViewMode} />
     </Grid>

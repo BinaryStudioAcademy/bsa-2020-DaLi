@@ -29,11 +29,6 @@ const DashboardLayout = (props) => {
     }
   };
 
-  layout.forEach((item) => {
-    item.minW = 4;
-    item.minH = 3;
-  });
-
   const dashboardLayoutClasses = getDashboardLayoutClasses();
   const dashboardItems = getDashboardItems(dashboardVisualizations, layout, onVisualizationDelete);
 

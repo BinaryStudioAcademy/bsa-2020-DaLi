@@ -37,7 +37,7 @@ router.post('/', async (req, res, next) => {
   }
 });
 
-router.patch('/:id', async (req, res) => {
+router.patch('/:id', async (req, res, next) => {
   try {
     if (req.body.password === null) {
       req.body.password = generatePassword();
@@ -49,13 +49,10 @@ router.patch('/:id', async (req, res) => {
       },
       req.body
     );
+
     res.json(result);
   } catch (err) {
-    res.status(err.code);
-    res.json({
-      error: true,
-      message: err.message,
-    });
+    next(err);
   }
 });
 

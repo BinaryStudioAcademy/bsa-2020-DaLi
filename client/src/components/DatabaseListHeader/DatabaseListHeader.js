@@ -8,7 +8,7 @@ const DatabaseListHeader = () => {
   const history = useHistory();
 
   const handleAddDatabase = () => {
-    history.push('/connection-database');
+    history.push('connection-database');
   };
 
   return (

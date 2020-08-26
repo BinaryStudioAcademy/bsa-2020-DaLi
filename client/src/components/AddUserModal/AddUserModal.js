@@ -14,9 +14,15 @@ import './styles.css';
 import PasswordModal from '../PasswordModal/PasswordModal';
 
 const ValidationSchema = Yup.object({
-  firstName: Yup.string().required('First name is required'),
-  lastName: Yup.string().required('Last name is required'),
-  email: Yup.string().required('Email is required'),
+  firstName: Yup.string()
+    .required('First name is required')
+    .min(3, 'First name must be at least 3 characters')
+    .max(10, 'First name must be at most 30 characters'),
+  lastName: Yup.string()
+    .required('Last name is required')
+    .min(3, 'Last name must be at least 3 characters')
+    .max(10, 'Last name must be at most 30 characters'),
+  email: Yup.string().required('Email is required').email('Invalid email'),
 });
 
 const AddUserModal = ({ closeModal, submitHandler, isVisible, user }) => {

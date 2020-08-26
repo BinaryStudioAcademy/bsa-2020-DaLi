@@ -3,8 +3,9 @@ import { Grid, Typography, Snackbar } from '@material-ui/core';
 import Alert from '@material-ui/lab/Alert';
 import * as Yup from 'yup';
 import { Formik, Form, Field, ErrorMessage, getIn } from 'formik';
+import { Link, useHistory } from 'react-router-dom';
 import NativeSelect from '@material-ui/core/NativeSelect';
-import { useHistory } from 'react-router-dom';
+
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import useStyles from './styles';
@@ -64,10 +65,18 @@ const ConnectionDatabaseContainer = ({ addDatabase, isNotification, message, sta
   return (
     <Grid className={classes.content} xs item container direction="column" alignItems="center">
       <Typography className={classes.titleName}>
-        <span className={classes.titleSection}>
-          DATABASES <span className={classes.emptySpace}> &gt; </span>
-          <span style={{ color: '#000' }}>ADD DATABASE</span>
-        </span>
+        <div>
+          <Link
+            to={{
+              pathname: '/admin/databases',
+            }}
+            className={classes.breadcrumbs}
+          >
+            DATABASES
+          </Link>
+          <span className={classes.emptySpace}> &gt; </span>
+          <span style={{ color: '#2e353b' }}>ADD DATABASE</span>
+        </div>
       </Typography>
       <div className={classes.wrapper}>
         <Formik

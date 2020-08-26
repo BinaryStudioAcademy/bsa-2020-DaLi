@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-// import { NavLink, useHistory } from 'react-router-dom';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -13,6 +12,9 @@ import RowItem from './RowItem';
 import UserGroupForm from './UserGroupForm';
 import UserForm from './UserForm';
 
+const ADMINISTRATORS = 'Administrators';
+const ALL_USERS = 'All Users';
+
 const GroupList = ({
   groups,
   addUserGroup,
@@ -23,6 +25,7 @@ const GroupList = ({
   addUser,
   deleteUser,
   users = [],
+  currentUserId,
 }) => {
   const [isVisibleForm, setIsVisibleForm] = useState(false);
 
@@ -91,7 +94,13 @@ const GroupList = ({
             )}
             {!isTheGroup &&
               groups.map((group) => (
-                <RowItem key={group.id} item={group} deleteGroup={deleteGroup} updateUserGroup={updateUserGroup} />
+                <RowItem
+                  key={group.id}
+                  item={group}
+                  deleteGroup={deleteGroup}
+                  updateUserGroup={updateUserGroup}
+                  isAllowChange={group.name !== ADMINISTRATORS && group.name !== ALL_USERS}
+                />
               ))}
             {isTheGroup &&
               currentGroup.Users.map((user) => (
@@ -103,6 +112,11 @@ const GroupList = ({
                   deleteGroup={deleteGroup}
                   updateUserGroup={updateUserGroup}
                   deleteUser={deleteUser}
+                  isAllowChange={
+                    (currentGroup.name !== ADMINISTRATORS ||
+                      (user.id !== currentUserId && currentGroup.Users.length > 1)) &&
+                    currentGroup.name !== ALL_USERS
+                  }
                 />
               ))}
           </TableBody>
@@ -122,6 +136,7 @@ GroupList.propTypes = {
   users: PropTypes.array,
   addUser: PropTypes.func,
   deleteUser: PropTypes.func,
+  currentUserId: PropTypes.string,
 };
 
 export default GroupList;

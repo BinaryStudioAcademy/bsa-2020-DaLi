@@ -53,6 +53,7 @@ const PeopleList = ({
   message,
   status,
   resetNotification,
+  currentUserId,
 }) => {
   const classes = useStyles();
   const [addUserModalVisible, setAddUserModalVisible] = useState(false);
@@ -128,6 +129,7 @@ const PeopleList = ({
             showResetPasswordModal={showResetPasswordModal}
             addUserToGroup={addUserToGroup}
             deleteUserFromGroup={deleteUserFromGroup}
+            currentUserId={currentUserId}
           />
         </>
       ) : (
@@ -151,6 +153,7 @@ const PeopleList = ({
               showResetPasswordModal={showResetPasswordModal}
               addUserToGroup={addUserToGroup}
               deleteUserFromGroup={deleteUserFromGroup}
+              currentUserId={currentUserId}
             />
           </TabPanel>
           <TabPanel value={value} index={1}>
@@ -164,6 +167,7 @@ const PeopleList = ({
               addUserToGroup={addUserToGroup}
               deleteUserFromGroup={deleteUserFromGroup}
               toggleUserStatus={toggleUserStatus}
+              currentUserId={currentUserId}
             />
           </TabPanel>
         </div>
@@ -223,6 +227,7 @@ PeopleList.propTypes = {
   membership: PropTypes.array,
   addUserToGroup: PropTypes.func,
   deleteUserFromGroup: PropTypes.func,
+  currentUserId: PropTypes.string,
 };
 
 export default PeopleList;

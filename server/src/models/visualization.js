@@ -11,7 +11,7 @@ export default (sequelize, DataTypes) => {
         defaultValue: DataTypes.UUIDV4,
       },
       type: {
-        type: DataTypes.ENUM(['LINE_CHART', 'BAR_CHART', 'TABLE']),
+        type: DataTypes.ENUM(['LINE_CHART', 'BAR_CHART', 'TABLE', 'MAP']),
         allowNull: false,
       },
       name: {

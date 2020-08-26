@@ -3,10 +3,12 @@ import SaveVisualizationModal from './SaveVisualizationModal/SaveVisualizationMo
 import AddDashboardModal from './AddDashboardModal/AddDashboardModal';
 import SignUp from './SignUp/SignUp';
 import BarChart from './BarChart/BarChart';
+import MapVisualization from './MapVisualization/MapVisualization';
 import LoginForm from './LoginForm';
 import Modal from './Modal';
 import LineChart from './LineChart/LineChart';
 import LineChartSettings from './LineChartSettings';
+import MapSettingsSidebar from './MapSettingsSidebar/MapSettingsSidebar';
 import EnhancedTable from './EnhancedTable/EnhancedTable';
 import InitialTable from './InitialTable/InitialTable';
 import SelectVisualization from './SelectVisualization/SelectVisualization';
@@ -34,6 +36,7 @@ import PermissionsModal from './PermissionsModal/PermissionsModal';
 
 export {
   BarChart,
+  MapVisualization,
   Header,
   SaveVisualizationModal,
   AddDashboardModal,
@@ -48,6 +51,7 @@ export {
   ViewVisualizationMain,
   ViewVisualizationHeader,
   TableSettingsSidebar,
+  MapSettingsSidebar,
   LineChartSettings,
   BarChartSettings,
   PeopleList,

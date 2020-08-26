@@ -5,6 +5,7 @@ import Box from '@material-ui/core/Box';
 import EqualizerOutlinedIcon from '@material-ui/icons/EqualizerOutlined';
 import TimelineOutlinedIcon from '@material-ui/icons/TimelineOutlined';
 import TableChartOutlinedIcon from '@material-ui/icons/TableChartOutlined';
+import MapOutlinedIcon from '@material-ui/icons/MapOutlined';
 import DashboardIcon from '@material-ui/icons/Dashboard';
 import Tooltip from '@material-ui/core/Tooltip';
 import InfoIcon from '@material-ui/icons/Info';
@@ -37,6 +38,9 @@ const AnalyticsTabsPanel = ({ value, index, data, deleteVisualization, deleteDas
       }
       case 'TABLE': {
         return <TableChartOutlinedIcon className={classes.icon} />;
+      }
+      case 'MAP': {
+        return <MapOutlinedIcon className={classes.icon} />;
       }
       default: {
         return <DashboardIcon className={classes.icon} />;

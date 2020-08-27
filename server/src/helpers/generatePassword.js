@@ -1,9 +1,8 @@
-/* eslint-disable */
-export function generatePassword(passwordLength = 8) {
+export const generatePassword = (passwordLength = 8) => {
   const chars = 'abcdefghijklmnopqrstuvwxyz';
-  const upperCaseChars = chars.toUpperCase();
-  const numberChars = '0123456789';
   const specialChars = '!@#$%^&*()_+:<>?|;,.~';
+  const numberChars = '0123456789';
+  const upperCaseChars = chars.toUpperCase();
 
   const specialCharsReg = /[-!$%^&*()_+|~=:;<>?,#@.]/g;
   const numberCharsReg = /[0-9]+/g;
@@ -15,7 +14,7 @@ export function generatePassword(passwordLength = 8) {
 
   let generatedPassword = '';
 
-  for (let i = 0; i <= passwordLength; i++) {
+  for (let i = 0; i < passwordLength; i++) {
     generatedPassword += usableChars[getRandomIndex(usableChars.length)];
   }
 
@@ -30,4 +29,4 @@ export function generatePassword(passwordLength = 8) {
   }
 
   return generatedPassword;
-}
+};

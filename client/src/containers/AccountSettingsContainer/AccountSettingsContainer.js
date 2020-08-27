@@ -19,28 +19,21 @@ const ProfileSchema = Yup.object().shape({
 });
 
 const PasswordSchema = Yup.object().shape({
-  currentPassword: Yup.string()
-    .max(30)
-    .required('Required')
-    .matches(
-      /^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]/,
-      'Password must contain one uppercase, one number and one special character.'
-    )
-    .min(8, 'Password is too short - should be 8 chars minimum.'),
+  currentPassword: Yup.string().required('Required'),
   newPassword: Yup.string()
     .max(30)
     .required('Required')
     .matches(
-      /^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]/,
-      'Password must contain one uppercase, one number and one special character.'
+      /^(?=.*[A-Za-z])(?=.*\d)(?=.*[-!$%^&*()_+|~=:;<>?,#@.])[A-Za-z\d-!$%^&*()_+|~=:;<>?,#@.]{8,}$/,
+      'Password must contain one uppercase, one lowercase, one number and one special character.'
     )
     .min(8, 'Password is too short - should be 8 chars minimum.'),
   confirmedPassword: Yup.string()
     .max(30)
     .required('Required')
     .matches(
-      /^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]/,
-      'Password must contain one uppercase, one number and one special character.'
+      /^(?=.*[A-Za-z])(?=.*\d)(?=.*[-!$%^&*()_+|~=:;<>?,#@.])[A-Za-z\d-!$%^&*()_+|~=:;<>?,#@.]{8,}$/,
+      'Password must contain one uppercase, one lowercase, one number and one special character.'
     )
     .min(8, 'Password is too short - should be 8 chars minimum.'),
 });

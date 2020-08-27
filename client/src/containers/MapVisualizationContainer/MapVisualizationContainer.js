@@ -1,20 +1,9 @@
-/* eslint-disable */
 import React from 'react';
-import { MapVisualization } from '../../components';
 import PropTypes from 'prop-types';
+import { MapVisualizationGoogle, MapVisualizationSchematic } from '../../components';
+import schematicMap from './newYork.json';
 
-function MapVisualizationContainer({ data, config }) {
-  const chart = {
-    margin: {
-      top: 40,
-      right: 40,
-      bottom: 60,
-      left: 60,
-    },
-    height: 600,
-    width: 1000,
-  };
-
+const MapVisualizationContainer = ({ data, config }) => {
   return (
     <div
       style={{
@@ -22,10 +11,14 @@ function MapVisualizationContainer({ data, config }) {
         height: '100%',
       }}
     >
-      <MapVisualization data={data} settings={config} chart={chart} />
+      {config.view === 'google' ? (
+        <MapVisualizationGoogle data={data} settings={config} />
+      ) : (
+        <MapVisualizationSchematic schematicMap={schematicMap} data={data} settings={config} />
+      )}
     </div>
   );
-}
+};
 
 MapVisualizationContainer.propTypes = {
   data: PropTypes.array,

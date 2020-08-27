@@ -12,7 +12,8 @@ router.get(
     const result = await DatabaseService.getDatabases();
     res.data = result;
     next();
-  }, permissionsMiddleware)
+  }),
+  permissionsMiddleware
 );
 
 router.get(
@@ -21,7 +22,8 @@ router.get(
     const result = await DatabaseService.getDatabaseTables(req.params.id);
     res.data = result;
     next();
-  }, permissionsMiddleware)
+  }),
+  permissionsMiddleware
 );
 
 router.get(
@@ -37,7 +39,8 @@ router.get(
       const err = createError(404, `Database with id of ${req.params.id} not found`);
       next(err);
     }
-  }, permissionsMiddleware)
+  }),
+  permissionsMiddleware
 );
 
 router.post(

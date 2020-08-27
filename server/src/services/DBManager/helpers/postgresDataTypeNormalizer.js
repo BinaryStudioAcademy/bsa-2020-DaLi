@@ -1,7 +1,11 @@
 function includesStringSubstringFromArr(arr, string) {
-  return arr.reduce((substring, hasSubstring) => {
-    return string.includes(substring) || hasSubstring;
-  }, false);
+  let result = false;
+  arr.forEach((substring) => {
+    if (string.includes(substring)) {
+      result = true;
+    }
+  });
+  return result;
 }
 
 export default function normalizer(postgresType) {

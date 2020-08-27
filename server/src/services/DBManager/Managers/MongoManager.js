@@ -58,8 +58,8 @@ export default class DBMongoManager {
           .toArray()
           .then((result) => {
             fieldSchema = {
-              data_type: result[0].type,
-              column_name: schemaNormalizer(fieldName),
+              data_type: schemaNormalizer(result[0].type),
+              column_name: fieldName,
             };
           });
         return fieldSchema;

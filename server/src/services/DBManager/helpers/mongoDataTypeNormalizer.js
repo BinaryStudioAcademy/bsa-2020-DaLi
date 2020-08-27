@@ -1,15 +1,19 @@
 function includesStringSubstringFromArr(arr, string) {
-  return arr.reduce((substring, hasSubstring) => {
-    return string.includes(substring) || hasSubstring;
-  }, false);
+  let result = false;
+  arr.forEach((substring) => {
+    if (string.includes(substring)) {
+      result = true;
+    }
+  });
+  return result;
 }
 
 export default function normalizer(mongoType) {
   mongoType = mongoType.toLowerCase();
-  const numericTypes = ['double', 'int', 'long', 'decimal' ];
-  const dateTypes = ['date', 'timestamp' ];
-  const stringTypes = ['string', 'binData', 'symbol' ];
-  const booleanTypes = ['bool' ];
+  const numericTypes = ['double', 'int', 'long', 'decimal'];
+  const dateTypes = ['date', 'timestamp'];
+  const stringTypes = ['string', 'binData', 'symbol'];
+  const booleanTypes = ['bool'];
 
   let type = 'other';
   if (includesStringSubstringFromArr(numericTypes, mongoType)) {

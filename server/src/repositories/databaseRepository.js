@@ -27,12 +27,12 @@ class DatabaseRepository extends BaseRepository {
     });
   }
 
-  getAllowedDatabasesByUserGroup(groupId) {
+  getAllowedDatabasesByUserId(userId) {
     const result = this.model
       .findAll({
         attributes: [['id', 'databaseId']],
         // plain: true,
-        group: ['databaseId'],
+        // group: ['databaseId'],
         include: [
           {
             model: models.DBTable,
@@ -44,7 +44,18 @@ class DatabaseRepository extends BaseRepository {
                 where: {
                   permissionGranted: 'granted',
                 },
-                include: { model: models.UserGroups, attributes: [], where: { id: groupId } },
+                include: {
+                  model: models.UserGroups,
+                  attributes: [],
+                  // where: { id: userId },
+                  include: [
+                    {
+                      model: models.User,
+                      attributes: [],
+                      where: { id: userId },
+                    },
+                  ],
+                },
               },
             ],
           },
@@ -52,7 +63,8 @@ class DatabaseRepository extends BaseRepository {
         raw: true,
         nest: true,
       })
-      .then((result) => result.map((el) => el.databaseId));
+      .then((result) => result.map((el) => el.databaseId))
+      .then((result) => [...new Set(result)]);
 
     return result;
   }

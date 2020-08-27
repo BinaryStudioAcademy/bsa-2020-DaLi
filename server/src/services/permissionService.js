@@ -140,8 +140,8 @@ export const getDBPermissions = async (databaseId) => {
 
 // export const getPermissions = async () => DatabaseRepository.getPermissions();
 export const getPermissions = async () =>
-  // DatabaseRepository.getAllowedDatabasesByUserGroup('ccabcf2f-5e5f-4d37-bf32-1d882889b3b4');
-  UserRepository.getAllowedDatabases('b1f9a0bb-da49-4788-87bc-f584ed56e8b3');
+  DatabaseRepository.getAllowedDatabasesByUserId('c26b8b14-9161-45b2-9c90-4d528476a08c');
+// UserRepository.getAllowedDatabases('b1f9a0bb-da49-4788-87bc-f584ed56e8b3');
 
 export const updateDBPermissions = async (permissions) => {
   const result = await Promise.all(

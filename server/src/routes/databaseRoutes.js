@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import * as DatabaseService from '../services/databaseService';
-import { permissionsMiddleware } from '../middlewares/permissions';
+import { permissionsMiddleware } from '../middlewares/permissionsMiddleware';
 
 const router = Router();
 

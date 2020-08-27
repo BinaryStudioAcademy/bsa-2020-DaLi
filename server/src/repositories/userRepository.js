@@ -9,6 +9,10 @@ class UserRepository extends BaseRepository {
   getByEmail(email) {
     return this.model.findOne({ where: { email } });
   }
+
+  getUserById(id) {
+    return this.model.findOne({ where: { id } });
+  }
 }
 
 export default new UserRepository(models.User);

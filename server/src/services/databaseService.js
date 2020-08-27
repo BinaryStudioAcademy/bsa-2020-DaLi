@@ -58,16 +58,12 @@ export const updateDatabaseTables = async (id) => {
     );
 
     excessTableNames.forEach(async (name) => {
-      const { id } = savedTables.find((t) => t.name === name);
-      await deleteDBTable(id);
+      const table = savedTables.find((t) => t.name === name);
+      await deleteDBTable({ id: table.id });
     });
 
     newTableNames.forEach(async (name) => {
-      console.log();
-      console.log('table', 'udssdgsjdjsdjds');
-      console.log();
       const table = await createDBTable({ DatabaseId: database.id, name });
-      console.log(table, 'udssdgsjdjsdjds');
       await setInitialDBPermissions(table.id);
     });
 
@@ -76,9 +72,7 @@ export const updateDatabaseTables = async (id) => {
       deleted: excessTableNames,
     };
   } catch (error) {
-    console.log('///////////////////// ON UPDATE DB TABLES FAILED');
-    console.log(error);
-    console.log('///////////////////// ON UPDATE DB TABLES FAILED');
+    throw createError(500, 'Database tables update failed');
   }
 };
 

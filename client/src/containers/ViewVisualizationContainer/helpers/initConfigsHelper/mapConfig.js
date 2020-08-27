@@ -51,7 +51,7 @@ function createInitMapConfig(dataSample) {
   const columns = createMapColumns(dataSample);
   const initTableConfig = {
     columns,
-    view: 'google',
+    view: 'Google heat map',
   };
   return initTableConfig;
 }

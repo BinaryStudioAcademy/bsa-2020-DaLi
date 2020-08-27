@@ -6,6 +6,7 @@ import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
 import Button from '@material-ui/core/Button';
 import NativeSelect from '@material-ui/core/NativeSelect';
+import { FormControl, InputLabel } from '@material-ui/core';
 import { useStyles } from './styles';
 
 function TabPanel(props) {
@@ -76,23 +77,74 @@ const MapSettingsSidebar = ({ updateConfig, config: oldConfig }) => {
         <Tab className={classes.tab} label="Labels" {...a11yProps(2)} />
       </Tabs>
       <TabPanel value={value} index={0}>
-        Data
+        <FormControl className={classes.formControl}>
+          <InputLabel className={classes.label} shrink id="Longitude">
+            Longitude
+          </InputLabel>
+          <NativeSelect
+            className={classes.select}
+            value={viewName}
+            onChange={(event) => {
+              changeView(event.target.value);
+            }}
+          >
+            <option value="Google heat map" key="google-heat">
+              Google heat map
+            </option>
+            <option value="Google bubble map" key="google-bubble">
+              Google bubble map
+            </option>
+            <option value="D3 bubble map" key="d3-bubble">
+              D3 bubble map
+            </option>
+          </NativeSelect>
+        </FormControl>
+        <FormControl className={classes.formControl}>
+          <InputLabel className={classes.label} shrink id="Latitude">
+            Latitude
+          </InputLabel>
+          <NativeSelect
+            className={classes.select}
+            value={viewName}
+            onChange={(event) => {
+              changeView(event.target.value);
+            }}
+          >
+            <option value="Google heat map" key="google-heat">
+              Google heat map
+            </option>
+            <option value="Google bubble map" key="google-bubble">
+              Google bubble map
+            </option>
+            <option value="D3 bubble map" key="d3-bubble">
+              D3 bubble map
+            </option>
+          </NativeSelect>
+        </FormControl>
       </TabPanel>
       <TabPanel value={value} index={1}>
-        <NativeSelect
-          className={classes.select}
-          value={viewName}
-          onChange={(event) => {
-            changeView(event.target.value);
-          }}
-        >
-          <option value="google" key="google">
-            google
-          </option>
-          <option value="basic" key="basic">
-            basic
-          </option>
-        </NativeSelect>
+        <FormControl className={classes.formControl}>
+          <InputLabel className={classes.label} shrink id="xAxis-native-helper">
+            Map View
+          </InputLabel>
+          <NativeSelect
+            className={classes.select}
+            value={viewName}
+            onChange={(event) => {
+              changeView(event.target.value);
+            }}
+          >
+            <option value="Google heat map" key="google-heat">
+              Google heat map
+            </option>
+            <option value="Google bubble map" key="google-bubble">
+              Google bubble map
+            </option>
+            <option value="D3 bubble map" key="d3-bubble">
+              D3 bubble map
+            </option>
+          </NativeSelect>
+        </FormControl>
       </TabPanel>
       <TabPanel value={value} index={2}>
         Labels

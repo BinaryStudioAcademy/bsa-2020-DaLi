@@ -16,7 +16,6 @@
     "d3-tip": "^0.9.1",
     "formik": "^2.1.5",
     "google-map-react": "^2.0.8",
-    "google-maps-react": "^2.0.6",
     "history": "^5.0.0",
     "material-ui-color-picker": "^3.5.0",
     "prop-types": "^15.7.2",

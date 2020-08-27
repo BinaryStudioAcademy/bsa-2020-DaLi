@@ -22,11 +22,16 @@ export const register = async (user) => {
     const newUser = await UserRepository.create({ ...user, password: hashPassword });
     await UsersUserGroupsRepository.create({ users_id: newUser.id, userGroups_id: allUsersGroupID });
     return {
-      status: 201,
-      response: {
-        success: true,
-        user: newUser,
-      },
+      user: newUser,
     };
   }
+};
+
+export const autoLogin = async (id, token) => {
+  const candidate = await UserRepository.getById({ id });
+  const { firstName, lastName, email } = candidate;
+  return {
+    token: token.split(' ')[1],
+    user: { id, email, firstName, lastName },
+  };
 };

@@ -28,10 +28,10 @@ passport.use(
 );
 
 passport.use(
-  'jwt',
   new JwtStrategy(options, async ({ id }, done) => {
     try {
       const user = await userRepository.getUserById(id);
+
       return user ? done(null, user) : done({ status: 401, message: 'Token is invalid.' }, null);
     } catch (err) {
       return done(err);

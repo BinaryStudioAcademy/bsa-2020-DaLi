@@ -1,6 +1,5 @@
 import { Router } from 'express';
 import * as AuthService from '../services/authService';
-import * as UserService from '../services/userService';
 import authenticationMiddleware from '../middlewares/authenticationMiddleware';
 import registrationMiddleware from '../middlewares/registrationMiddleware';
 import jwtMiddleware from '../middlewares/jwtMiddleware';
@@ -18,7 +17,8 @@ router.post('/register', registrationMiddleware, async (req, res) => {
 });
 
 router.get('/user', jwtMiddleware, async (req, res) => {
-  const response = await UserService.getUser(req.user.id);
+  const token = req.headers.authorization;
+  const response = await AuthService.autoLogin(req.user.id, token);
   res.send(response);
 });
 

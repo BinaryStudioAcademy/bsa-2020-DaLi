@@ -1,13 +1,8 @@
 import * as PermissionService from '../services/permissionService';
 import * as UserGroupsService from '../services/userGroupsService';
-import * as AuthService from '../services/authService';
 
 export const permissionsMiddleware = async (req, res) => {
-  // Need update token logic, after fix passport
-  const token = req.headers.authorization;
-  const { response } = await AuthService.getUserByToken(token);
-
-  const userGroups = await UserGroupsService.getGroupsByUser(response.user.id);
+  const userGroups = await UserGroupsService.getGroupsByUser(req.user.id);
   const userGroupsName = userGroups.map((group) => group.UserGroup.name);
 
   if (userGroupsName.indexOf('Administrators') !== -1) {

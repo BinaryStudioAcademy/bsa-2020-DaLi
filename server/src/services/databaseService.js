@@ -121,3 +121,4 @@ export const updateDatabase = async (id, dataToUpdate) => {
   const result = await DatabaseRepository.updateById(id, dataToUpdate);
   return result;
 };
+

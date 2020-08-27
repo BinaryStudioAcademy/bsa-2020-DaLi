@@ -59,7 +59,7 @@ const useStyles = makeStyles((theme) => ({
   accountSettingsTabPanel: {
     width: '100%',
     [theme.breakpoints.up('sm')]: {
-      width: '450px',
+      width: '600px',
     },
     padding: '30px',
     boxSizing: 'border-box',
@@ -72,9 +72,11 @@ const useStyles = makeStyles((theme) => ({
     marginBottom: '5px',
   },
   field: {
+    position: 'relative',
     width: '100%',
     fontWeight: '600',
     color: '#333333f5',
+    marginBottom: 0,
   },
   update: {
     backgroundColor: '#5BA4CF',
@@ -90,16 +92,16 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   error: {
-    position: 'absolute',
     fontWeight: 'bold',
     fontStyle: 'italic',
     color: 'red',
     bottom: '2.5rem',
-    left: '110%',
-    width: '600px',
+    fontSize: '0.75rem',
   },
   relative: {
     position: 'relative',
+    padding: '15px 0',
+    height: '75px',
   },
 }));
 

@@ -1,7 +1,9 @@
+/* eslint-disable consistent-return */
+/* eslint-disable array-callback-return */
 /* eslint-disable import/no-cycle */
 import DatabaseRepository from '../repositories/databaseRepository';
 import DBManager from './DBManager/DBManagerService';
-import { createDBTable, getAllByDatabaseId } from './dbTableService';
+import { createDBTable, getAllByDatabaseId, deleteDBTable } from './dbTableService';
 import { setInitialDBPermissions } from './permissionService';
 
 export const getDatabases = async () => {
@@ -12,6 +14,71 @@ export const getDatabases = async () => {
 export const getDatabaseTables = async (id) => {
   const tables = await getAllByDatabaseId(id);
   return tables;
+};
+
+export const getDatabase = async (id) => {
+  const item = await DatabaseRepository.getById(id);
+  if (!item) {
+    return null;
+  }
+  return item;
+};
+
+export const updateDatabaseTables = async (id) => {
+  const database = await getDatabase({ id });
+  let manager = new DBManager(database);
+  manager = await manager.create();
+
+  try {
+    await manager.init();
+    const savedTables = await getAllByDatabaseId(id);
+    const savedTableNames = savedTables.map((i) => i.name);
+    // dbName is necessary for fetching tables list for mysql
+    const currentTableNames = await manager.getTablenames(database.dbName);
+
+    const newTableNames = savedTableNames.reduce(
+      (resultTables, oldTableName) => {
+        if (resultTables.includes(oldTableName)) {
+          return resultTables.filter((t) => t !== oldTableName);
+        }
+        return resultTables;
+      },
+      [...currentTableNames]
+    );
+
+    const excessTableNames = currentTableNames.reduce(
+      (resultTables, currTableName) => {
+        if (resultTables.includes(currTableName)) {
+          return resultTables.filter((t) => t !== currTableName);
+        }
+        return resultTables;
+      },
+      [...savedTableNames]
+    );
+
+    await excessTableNames.forEach(async (name) => {
+      const { id } = savedTables.find((t) => t.name === name);
+      await deleteDBTable(id);
+    });
+
+    await newTableNames.forEach(async (name) => {
+      console.log();
+      console.log('table', 'udssdgsjdjsdjds');
+      console.log();
+      const table = await createDBTable({ DatabaseId: database.id, name });
+      console.log(table, 'udssdgsjdjsdjds');
+      await setInitialDBPermissions(table.id);
+    });
+
+    return {
+      added: newTableNames,
+      deleted: excessTableNames,
+    };
+  } catch (error) {
+    console.log('///////////////////// ON UPDATE DB TABLES FAILED');
+    console.log(error);
+    console.log('///////////////////// ON UPDATE DB TABLES FAILED');
+  }
 };
 
 export const createDatabase = async (database) => {
@@ -29,8 +96,7 @@ export const createDatabase = async (database) => {
     });
   } catch (error) {
     console.log('///////////////////// ON CREATE DB TABLE GENERATOR FAILED');
-    console.log(error);
-    console.log('Incoming DB INVALID');
+    console.log('Invalid database credentials', error.message);
     console.log('///////////////////// ON CREATE DB TABLE GENERATOR FAILED');
     database = null;
   }
@@ -56,12 +122,4 @@ export const updateDatabase = async (id, dataToUpdate) => {
   }
   const result = await DatabaseRepository.updateById(id, dataToUpdate);
   return result;
-};
-
-export const getDatabase = async (id) => {
-  const item = await DatabaseRepository.getById(id);
-  if (!item) {
-    return null;
-  }
-  return item;
 };

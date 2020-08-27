@@ -543,6 +543,36 @@ module.exports = {
         },
       },
     },
+    '/databases/{id}/tables/update': {
+      patch: {
+        security: [
+          {
+            JWT: [],
+          },
+        ],
+        tags: ['Databases'],
+        summary: 'Update database tables by id',
+        parameters: [
+          {
+            name: 'id',
+            in: 'path',
+            description: 'ID of database',
+            required: true,
+            schema: {
+              $ref: '#/definitions/Id',
+            },
+          },
+        ],
+        responses: {
+          200: {
+            description: 'Successful operation',
+          },
+          404: {
+            description: 'Database not found',
+          },
+        },
+      },
+    },
     '/tables/{id}/data': {
       get: {
         security: [

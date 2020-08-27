@@ -14,6 +14,16 @@ router.get(
   permissionsMiddleware
 );
 
+router.patch(
+  '/:id/tables/update',
+  async (req, res, next) => {
+    const result = await DatabaseService.updateDatabaseTables(req.params.id);
+    res.json(result);
+    next();
+  },
+  permissionsMiddleware
+);
+
 router.get(
   '/:id/tables',
   async (req, res, next) => {

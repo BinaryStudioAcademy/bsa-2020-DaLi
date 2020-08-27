@@ -3,7 +3,6 @@
 import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-// import CircularProgress from '@material-ui/core/CircularProgress';
 import { DataSourcesTablesView } from '../../components';
 import { getTables, getDatabaseNameById, syncDatabaseTables } from '../DataSourcesDatasetsContainer/actions';
 
@@ -20,11 +19,6 @@ const DataSourcesTablesContainer = ({
     getDatabaseNameById(match.params.id);
   }, []);
 
-  // return isLoading ? (
-  //   <div style={{ position: 'relative' }}>
-  //     <CircularProgress size={40} left={-20} top={10} style={{ marginLeft: '50%' }} />
-  //   </div>
-  // ) : (
   return (
     <DataSourcesTablesView
       tables={tables}
@@ -33,8 +27,6 @@ const DataSourcesTablesContainer = ({
       currentDbName={currentDbName}
     />
   );
-  // );;
-  // );
 };
 
 DataSourcesTablesContainer.propTypes = {

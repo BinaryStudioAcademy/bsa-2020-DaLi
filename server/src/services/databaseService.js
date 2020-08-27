@@ -1,4 +1,5 @@
 /* eslint-disable import/no-cycle */
+import createError from 'http-errors';
 import DatabaseRepository from '../repositories/databaseRepository';
 import DBManager from './DBManager/DBManagerService';
 import { createDBTable, getAllByDatabaseId } from './dbTableService';
@@ -28,11 +29,12 @@ export const createDatabase = async (database) => {
       await setInitialDBPermissions(result.id);
     });
   } catch (error) {
-    console.log('///////////////////// ON CREATE DB TABLE GENERATOR FAILED');
-    console.log(error);
-    console.log('Incoming DB INVALID');
-    console.log('///////////////////// ON CREATE DB TABLE GENERATOR FAILED');
+    // console.log('///////////////////// ON CREATE DB TABLE GENERATOR FAILED');
+    // console.log(error);
+    // console.log('Incoming DB INVALID');
+    // console.log('///////////////////// ON CREATE DB TABLE GENERATOR FAILED');
     database = null;
+    throw createError(500, 'Table creation failed');
   }
 
   await manager.destroy();
@@ -43,7 +45,7 @@ export const createDatabase = async (database) => {
 export const deleteDatabase = async (id) => {
   const item = await DatabaseRepository.getById(id);
   if (!item) {
-    return null;
+    throw createError(404, `Database with id of ${id} not found`);
   }
   const result = await DatabaseRepository.deleteById(id);
   return result;
@@ -52,7 +54,7 @@ export const deleteDatabase = async (id) => {
 export const updateDatabase = async (id, dataToUpdate) => {
   const item = await DatabaseRepository.getById(id);
   if (!item) {
-    return null;
+    throw createError(404, `Database with id of ${id} not found`);
   }
   const result = await DatabaseRepository.updateById(id, dataToUpdate);
   return result;
@@ -61,7 +63,7 @@ export const updateDatabase = async (id, dataToUpdate) => {
 export const getDatabase = async (id) => {
   const item = await DatabaseRepository.getById(id);
   if (!item) {
-    return null;
+    throw createError(404, `Database with id of ${id} not found`);
   }
   return item;
 };

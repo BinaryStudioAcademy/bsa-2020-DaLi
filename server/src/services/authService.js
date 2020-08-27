@@ -1,6 +1,7 @@
 import jwt from 'jsonwebtoken';
 import jwtDecode from 'jwt-decode';
 import bcrypt from 'bcrypt';
+import createError from 'http-errors';
 import jwtConfig from '../config/jwt.config';
 import UserRepository from '../repositories/userRepository';
 
@@ -11,13 +12,7 @@ export const login = async (user) => {
     // if (bcrypt.compareSync(user.password, candidate.password)) {
     // not hashed password
     if (!candidate.isActive) {
-      return {
-        status: 403,
-        response: {
-          success: false,
-          message: 'User account deactivated',
-        },
-      };
+      throw createError(403, 'User account deactivated');
     }
     if (candidate.password === user.password) {
       const { id, email, firstName, lastName } = candidate;
@@ -38,21 +33,9 @@ export const login = async (user) => {
         },
       };
     }
-    return {
-      status: 401,
-      response: {
-        success: false,
-        message: 'Wrong password entered',
-      },
-    };
+    throw createError(401, 'Wrong password entered');
   }
-  return {
-    status: 404,
-    response: {
-      success: false,
-      message: 'User with such email was not found',
-    },
-  };
+  throw createError(404, 'User with such email was not found');
 };
 
 export const register = async (user) => {
@@ -71,26 +54,14 @@ export const register = async (user) => {
       },
     };
   }
-  return {
-    status: 409,
-    response: {
-      success: false,
-      message: 'User with such email already exists',
-    },
-  };
+  throw createError(409, 'User with such email already exists');
 };
 
 export const getUserByToken = async (token) => {
   const { id } = jwtDecode(token);
   const candidate = await UserRepository.getById({ id });
   if (!candidate) {
-    return {
-      status: 404,
-      response: {
-        success: false,
-        message: 'User not found',
-      },
-    };
+    throw createError(404, 'User not found');
   }
 
   const { firstName, lastName, email } = candidate;

@@ -1,6 +1,7 @@
 /* eslint-disable consistent-return */
 /* eslint-disable array-callback-return */
 /* eslint-disable import/no-cycle */
+import createError from 'http-errors';
 import DatabaseRepository from '../repositories/databaseRepository';
 import DBManager from './DBManager/DBManagerService';
 import { createDBTable, getAllByDatabaseId, deleteDBTable } from './dbTableService';
@@ -19,7 +20,7 @@ export const getDatabaseTables = async (id) => {
 export const getDatabase = async (id) => {
   const item = await DatabaseRepository.getById(id);
   if (!item) {
-    return null;
+    throw createError(404, `Database with id of ${id} not found`);
   }
   return item;
 };
@@ -56,12 +57,12 @@ export const updateDatabaseTables = async (id) => {
       [...savedTableNames]
     );
 
-    await excessTableNames.forEach(async (name) => {
+    excessTableNames.forEach(async (name) => {
       const { id } = savedTables.find((t) => t.name === name);
       await deleteDBTable(id);
     });
 
-    await newTableNames.forEach(async (name) => {
+    newTableNames.forEach(async (name) => {
       console.log();
       console.log('table', 'udssdgsjdjsdjds');
       console.log();
@@ -82,6 +83,11 @@ export const updateDatabaseTables = async (id) => {
 };
 
 export const createDatabase = async (database) => {
+  const isRepeat = await DatabaseRepository.findDatabaseWithCredentials({ ...database });
+  if (isRepeat) {
+    throw createError(400, 'Such database is already exists');
+  }
+
   let manager = new DBManager(database);
   manager = await manager.create();
 
@@ -95,10 +101,8 @@ export const createDatabase = async (database) => {
       await setInitialDBPermissions(result.id);
     });
   } catch (error) {
-    console.log('///////////////////// ON CREATE DB TABLE GENERATOR FAILED');
-    console.log('Invalid database credentials', error.message);
-    console.log('///////////////////// ON CREATE DB TABLE GENERATOR FAILED');
     database = null;
+    throw createError(500, `Table creation failed, invalid database credentials: ${error.message}`);
   }
 
   await manager.destroy();
@@ -109,7 +113,7 @@ export const createDatabase = async (database) => {
 export const deleteDatabase = async (id) => {
   const item = await DatabaseRepository.getById(id);
   if (!item) {
-    return null;
+    throw createError(404, `Database with id of ${id} not found`);
   }
   const result = await DatabaseRepository.deleteById(id);
   return result;
@@ -118,7 +122,7 @@ export const deleteDatabase = async (id) => {
 export const updateDatabase = async (id, dataToUpdate) => {
   const item = await DatabaseRepository.getById(id);
   if (!item) {
-    return null;
+    throw createError(404, `Database with id of ${id} not found`);
   }
   const result = await DatabaseRepository.updateById(id, dataToUpdate);
   return result;

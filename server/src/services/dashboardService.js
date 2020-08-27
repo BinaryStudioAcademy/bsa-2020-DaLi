@@ -21,15 +21,6 @@ export const deleteDashboard = async (id) => {
   return result;
 };
 
-export const updateDashboard = async (id, dataToUpdate) => {
-  const item = await DashboardRepository.getById(id);
-  if (!item) {
-    throw createError(404, `Dashboard with id of ${id} not found`);
-  }
-  const result = await DashboardRepository.updateById(id, dataToUpdate);
-  return result;
-};
-
 export const getDashboard = async (id) => {
   const item = await DashboardRepository.getWithVisualizations(id.id);
   if (!item) {
@@ -54,4 +45,29 @@ export const deleteVisualization = async (id) => {
   }
   const result = await DashboardVisualizationsRepository.deleteById(id);
   return result;
+};
+
+export const updateDashboard = async (dashboardId, dataToUpdate) => {
+  const currentDashboard = await DashboardRepository.getById({ id: dashboardId });
+  if (!currentDashboard) {
+    throw createError(404, `Dashboard with id of ${dashboardId} not found`);
+  }
+  const { newVisualizationsId, deletedDashboardVisualizationsId, updatedDashboardData } = dataToUpdate;
+
+  await Promise.all(
+    newVisualizationsId.map((newVisualizationId) => {
+      const newDashboardVisualization = { visualizations_id: newVisualizationId, dashboards_id: dashboardId };
+      return DashboardVisualizationsRepository.create(newDashboardVisualization);
+    })
+  );
+  await Promise.all(
+    deletedDashboardVisualizationsId.map((deletedDashboardVisualizationId) => {
+      return deleteVisualization({ id: deletedDashboardVisualizationId });
+    })
+  );
+
+  await DashboardRepository.updateById({ id: dashboardId }, updatedDashboardData);
+
+  const [updatedDashboard] = await DashboardRepository.getWithVisualizations(dashboardId);
+  return updatedDashboard;
 };

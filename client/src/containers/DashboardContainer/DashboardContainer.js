@@ -112,7 +112,7 @@ const DashboardContainer = (props) => {
     if (!name.length) {
       return;
     }
-    const updatedDashboard = createUpdatedDashboard(name, description, currentLayout, currentLayouts);
+    const updatedDashboardData = createUpdatedDashboard(name, description, currentLayout, currentLayouts);
     const newVisualizationsId = getNewVisualizationsId(addedVisualizationsId, currentDashboard.Visualizations);
     const deletedDashboardVisualizationsId = getDashboardVisualizationsId(
       deletedVisualizationsId,
@@ -123,7 +123,7 @@ const DashboardContainer = (props) => {
       dashboardId: id,
       newVisualizationsId,
       deletedDashboardVisualizationsId,
-      updatedDashboard,
+      updatedDashboardData,
     });
 
     setViewDashboardMode('default');

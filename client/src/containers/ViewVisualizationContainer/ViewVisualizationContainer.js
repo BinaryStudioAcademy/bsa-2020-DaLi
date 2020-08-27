@@ -50,6 +50,13 @@ const ViewVisualizationContainer = (props) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isNotificationVisible, setIsNotificationVisible] = useState(false);
   const [notificationMessage, setNotificationMessage] = useState('');
+  const [notificationType, setNotificationType] = useState('success');
+
+  const userNotificationError = (notification) => {
+    setIsNotificationVisible(true);
+    setNotificationMessage(notification);
+    setNotificationType('error');
+  };
 
   useEffect(() => {
     let visualization;
@@ -80,7 +87,8 @@ const ViewVisualizationContainer = (props) => {
   const visualizationSettings = getVisualizationSettings(
     currentVisualization.type,
     currentVisualization.config,
-    updateVisualizationConfig
+    updateVisualizationConfig,
+    userNotificationError
   );
 
   const visualizationIcon = getVisualizationIcon(currentVisualization.type);
@@ -112,6 +120,7 @@ const ViewVisualizationContainer = (props) => {
     const updatedVisualization = createUpdatedVisualization(currentVisualization);
     visualizationsAPIService.updateVisualization(id, updatedVisualization);
     setNotificationMessage('Visualization has been successfully updated');
+    setNotificationType('success');
     displayNotification(true);
   };
 
@@ -157,7 +166,7 @@ const ViewVisualizationContainer = (props) => {
           autoHideDuration={6000}
           onClose={hideNotification}
         >
-          <Alert elevation={6} variant="filled" severity="success" onClose={hideNotification}>
+          <Alert elevation={6} variant="filled" severity={notificationType} onClose={hideNotification}>
             {notificationMessage}
           </Alert>
         </Snackbar>

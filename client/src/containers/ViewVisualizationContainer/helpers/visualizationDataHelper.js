@@ -42,14 +42,20 @@ export const getVisualizationIcon = (visualizationType) => {
   }
 };
 
-export const getVisualizationSettings = (visualizationType, config, updateConfig) => {
+export const getVisualizationSettings = (visualizationType, config, updateConfig, userNotificationError) => {
   switch (visualizationType) {
     case 'BAR_CHART':
       return <BarChartSettings config={config} updateConfig={updateConfig} />;
     case 'LINE_CHART':
       return <LineChartSettings config={config} updateConfig={updateConfig} />;
     case 'TABLE':
-      return <TableSettingsSidebar config={config} updateConfig={updateConfig} />;
+      return (
+        <TableSettingsSidebar
+          config={config}
+          updateConfig={updateConfig}
+          userNotificationError={userNotificationError}
+        />
+      );
     case 'MAP':
       return <MapSettingsSidebar config={config} updateConfig={updateConfig} />;
     default:

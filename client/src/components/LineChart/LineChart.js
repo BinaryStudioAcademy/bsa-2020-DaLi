@@ -13,7 +13,7 @@ function LineChart({ settings, data, chart: chartSize }) {
   const { goal, trendline, showDataPointsValues, lineType = 'curveNatural', color } = settings.display;
   const XAxis = settings.axisData.XAxis;
   const YAxis = settings.axisData.YAxis;
-  data = data.sort((a, b) => a[XAxis.key] - b[XAxis.key]);
+  // data = data.sort((a, b) => a[XAxis.key] - b[XAxis.key]);
   const [config, setConfig] = useState({});
   const svgRef = useRef();
   const [width, setWidth] = useState(chartSize.width);
@@ -48,7 +48,7 @@ function LineChart({ settings, data, chart: chartSize }) {
       .domain([yDataRange.min, yDataRange.max])
       .range([height - margin.bottom, margin.top]);
 
-    d3.select('.d3-tip').remove();
+    chart.select('.d3-tip').remove();
     const tip = d3Tip()
       .attr('class', 'd3-tip')
       .offset([-10, 0])
@@ -159,9 +159,10 @@ function LineChart({ settings, data, chart: chartSize }) {
       chart
         .append('text')
         .attr('class', 'label')
-        .attr('x', -(height / 2) - margin.left)
-        .attr('y', margin.left / 4)
+        .attr('x', -height / 2)
+        .attr('y', margin.left -10)
         .attr('transform', 'rotate(-90)')
+        .attr('text-anchor', 'middle')
         .text(YAxis.label);
     }
 
@@ -169,8 +170,8 @@ function LineChart({ settings, data, chart: chartSize }) {
       chart
         .append('text')
         .attr('class', 'label')
-        .attr('x', width / 2 + margin.bottom)
-        .attr('y', height - margin.bottom * 0.2)
+        .attr('x', width / 2 )
+        .attr('y', height - margin.bottom + 30)
         .attr('text-anchor', 'middle')
         .text(XAxis.label);
     }

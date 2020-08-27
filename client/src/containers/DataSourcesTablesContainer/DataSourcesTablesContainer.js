@@ -8,7 +8,7 @@ const DataSourcesTablesContainer = ({ tables, getTables, currentDbName, getDatab
   useEffect(() => {
     getTables(match.params.id);
     getDatabaseNameById(match.params.id);
-  }, [tables, currentDbName, getTables, getDatabaseNameById, match.params.id]);
+  }, []);
 
   return <DataSourcesTablesView tables={tables} currentDbName={currentDbName} />;
 };

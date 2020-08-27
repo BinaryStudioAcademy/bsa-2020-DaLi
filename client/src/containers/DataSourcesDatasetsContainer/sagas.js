@@ -8,6 +8,9 @@ import {
   GET_TABLES_SUCCESS,
   GET_DATASET_NAME,
   SET_CUREENT_DB_NAME,
+  SYNC_DB_TABLES,
+  SYNC_DB_TABLES_ERROR,
+  SYNC_DB_TABLES_SUCCESS,
 } from './actionTypes';
 import { databasesAPIService } from '../../services/api/databasesAPI.service';
 import { setIsLoading } from './actions';
@@ -57,6 +60,22 @@ export function* watchGetDatabaseNameById() {
   yield takeEvery(GET_DATASET_NAME, getDatabaseNameById);
 }
 
+export function* syncDatabaseTables(payload) {
+  try {
+    yield put(setIsLoading(true));
+    const tables = yield call(databasesAPIService.syncDatabaseTables, payload.id);
+    yield put({ type: SYNC_DB_TABLES_SUCCESS, payload: tables });
+    yield put({ type: GET_TABLES, id: payload.id });
+  } catch (error) {
+    yield put({ type: SYNC_DB_TABLES_ERROR, error });
+    yield put(setIsLoading(false));
+  }
+}
+
+export function* watchSyncDatabaseTables() {
+  yield takeEvery(SYNC_DB_TABLES, syncDatabaseTables);
+}
+
 export default function* datasetsSaga() {
-  yield all([watchGetDatasetsSaga(), watchGetTablesSaga(), watchGetDatabaseNameById()]);
+  yield all([watchGetDatasetsSaga(), watchGetTablesSaga(), watchGetDatabaseNameById(), watchSyncDatabaseTables()]);
 }

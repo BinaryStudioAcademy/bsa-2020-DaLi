@@ -1,4 +1,4 @@
-import { GET_DATASETS, GET_TABLES, IS_DATASETS_LOADING, GET_DATASET_NAME } from './actionTypes';
+import { GET_DATASETS, GET_TABLES, IS_DATASETS_LOADING, GET_DATASET_NAME, SYNC_DB_TABLES } from './actionTypes';
 
 export const getDatasets = () => {
   return {
@@ -9,6 +9,13 @@ export const getDatasets = () => {
 export const getTables = (id) => {
   return {
     type: GET_TABLES,
+    id,
+  };
+};
+
+export const syncDatabaseTables = (id) => {
+  return {
+    type: SYNC_DB_TABLES,
     id,
   };
 };

@@ -68,13 +68,13 @@ const DashboardContainer = (props) => {
     setDescription(currentDashboard.description);
     setDashboardVisualizations(currentDashboard.Visualizations || []);
     setCurrentLayout(dashboardConfig?.layout || []);
-    setCurrentLayouts(dashboardConfig?.layouts || []);
+    setCurrentLayouts(dashboardConfig?.layouts || {});
 
     setOldName(currentDashboard.name);
     setOldDescription(currentDashboard.description);
     setOldDashboardVisualizations(currentDashboard.Visualizations || []);
     setOldLayout(dashboardConfig?.layout || []);
-    setOldLayouts(dashboardConfig?.layouts || []);
+    setOldLayouts(dashboardConfig?.layouts || {});
 
     document.addEventListener('fullscreenchange', fullScreenListener);
   }, [currentDashboard]);
@@ -132,13 +132,12 @@ const DashboardContainer = (props) => {
 
   const onVisualizationAdd = (visualizationId, newVisualizationData) => {
     const newLayoutItem = createNewLayoutItem(visualizationId, currentLayout, cols, breakpoint);
+    setCurrentLayout(currentLayout.concat(newLayoutItem));
     const visualization = getVisualization(visualizationId, visualizations);
     const updatedDeletedVisualizationsId = updateVisualizationsId(visualizationId, deletedVisualizationsId);
     visualization.data = newVisualizationData;
-
     setDashboardVisualizations(dashboardVisualizations.concat(visualization));
     setAddedVisualizationsId(addedVisualizationsId.concat(visualizationId));
-    setCurrentLayout(currentLayout.concat(newLayoutItem));
     setDeletedVisualizationsId(updatedDeletedVisualizationsId);
   };
 

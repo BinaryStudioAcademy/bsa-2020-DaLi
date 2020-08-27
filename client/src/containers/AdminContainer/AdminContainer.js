@@ -3,6 +3,8 @@ import { Switch, Route } from 'react-router-dom';
 import PeoplePageContainer from '../PeoplePageContainer/PeoplePageContainer';
 import PermissionsContainer from '../PermissionsContainer/PermissionsContainer';
 import DatabasesPageContainer from '../DatabasesPageContainer/DatabasesPageContainer';
+// import { ConnectionDatabasePage } from '../../pages/ConnectionDatabasePage';
+import ConnectionDatabaseContainer from '../ConnectionDatabaseContainer/ConnectionDatabaseContainer';
 
 function AdminContainer() {
   return (
@@ -19,6 +21,7 @@ function AdminContainer() {
             return <div>Database id {match.params.id}</div>;
           }}
         />
+        <Route path="/admin/connection-database" component={ConnectionDatabaseContainer} />
       </Switch>
     </main>
   );

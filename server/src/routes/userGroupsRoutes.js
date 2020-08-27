@@ -17,13 +17,6 @@ router.get('/', async (req, res, next) => {
 
 router.get('/users', async (req, res, next) => {
   const result = await UserGroupsService.getAllGroupsWithUsers();
-  // const a = result.map(({ Users, ...rest }) => {
-  //   return {
-  //     ...rest,
-  //     users: Users.map((user) => user.id),
-  //   };
-  // });
-  // console.log(JSON.stringify(a));
   res.status(200).json(result);
   next();
 });
@@ -45,12 +38,13 @@ router.get('/:id', async (req, res, next) => {
 });
 
 router.post('/', async (req, res, next) => {
-  const result = await UserGroupsService.createUserGroup(req.body);
-  if (result) {
-    res.status(200).json(result);
-    next();
-  } else {
-    const err = new Error('User group creation failed');
+  try {
+    const result = await UserGroupsService.createUserGroup(req.body);
+    if (result) {
+      res.status(200).json(result);
+      next();
+    }
+  } catch (err) {
     next(err);
   }
 });

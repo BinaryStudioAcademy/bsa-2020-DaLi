@@ -13,9 +13,11 @@ const TableVisualizationContainer = ({ config, updateConfig, data }) => {
 
   const handleRequestSort = (_event, property) => {
     const isAsc = sortOrderBy === property && sortOrder === 'asc';
-    setSortOrder(isAsc ? 'desc' : 'asc');
-    setSortOrderBy(property);
-    const updatedConfig = { ...config, sort: { order: sortOrder, orderBy: sortOrderBy } };
+    const updatedSortOrder = isAsc ? 'desc' : 'asc';
+    const updateSortOrderBy = property;
+    setSortOrder(updatedSortOrder);
+    setSortOrderBy(updateSortOrderBy);
+    const updatedConfig = { ...config, sort: { order: updatedSortOrder, orderBy: updateSortOrderBy } };
     updateConfig(updatedConfig);
   };
 

@@ -70,6 +70,7 @@ const useStyles = makeStyles((theme) => ({
     fontWeight: '900',
     display: 'block',
     marginBottom: '5px',
+    padding: '0 2px',
   },
   field: {
     position: 'relative',
@@ -82,11 +83,13 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: '#5BA4CF',
     color: '#fff',
     border: 'none',
+    marginTop: 10,
     '&:hover:enabled': {
       cursor: 'pointer',
     },
   },
   save: {
+    marginTop: 10,
     '&:hover:enabled': {
       cursor: 'pointer',
     },
@@ -97,6 +100,7 @@ const useStyles = makeStyles((theme) => ({
     color: 'red',
     bottom: '2.5rem',
     fontSize: '0.75rem',
+    padding: '2px 5px',
   },
   relative: {
     position: 'relative',

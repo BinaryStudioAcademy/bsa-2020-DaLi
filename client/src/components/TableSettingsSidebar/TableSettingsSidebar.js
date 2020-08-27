@@ -80,7 +80,8 @@ const TableSettingsSidebar = ({ config, updateConfig, userNotificationError }) =
   };
 
   const saveConfig = () => {
-    if (tableConfig.columns.length) {
+    const isVisibleColumnsExist = tableConfig.columns.filter((column) => column.visible).length;
+    if (isVisibleColumnsExist) {
       updateConfig(tableConfig);
     } else {
       userNotificationError('The table cannot be without columns');

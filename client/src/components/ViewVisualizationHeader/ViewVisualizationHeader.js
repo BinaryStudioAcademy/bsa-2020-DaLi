@@ -18,7 +18,7 @@ const ViewVisualizationHeader = (props) => {
     name,
     description,
     visualizationType,
-    openRightSideBar,
+    onToggleRightSideBar,
   } = props;
   const classes = useStyles();
 
@@ -61,7 +61,7 @@ const ViewVisualizationHeader = (props) => {
           className={classes.viewVisualizationFilterButton}
           variant="contained"
           startIcon={<FilterListIcon />}
-          onClick={openRightSideBar('FILTER')}
+          onClick={onToggleRightSideBar('FILTER')}
         >
           Filter
         </Button>
@@ -69,7 +69,7 @@ const ViewVisualizationHeader = (props) => {
           className={classes.viewVisualizationSummarizeButton}
           variant="contained"
           startIcon={<GamesOutlinedIcon />}
-          onClick={openRightSideBar('SUMMARIZE')}
+          onClick={onToggleRightSideBar('SUMMARIZE')}
         >
           Summarize
         </Button>
@@ -85,7 +85,7 @@ ViewVisualizationHeader.propTypes = {
   name: PropTypes.string,
   description: PropTypes.string,
   visualizationType: PropTypes.string,
-  openRightSideBar: PropTypes.func,
+  onToggleRightSideBar: PropTypes.func,
 };
 
 export default ViewVisualizationHeader;

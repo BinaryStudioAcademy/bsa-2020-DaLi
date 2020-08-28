@@ -27,7 +27,7 @@ const SelectVisualization = ({ tableId }) => {
     dbTableAPIService.getTableSchema(tableId).then((schema) => setSchema(schema));
   }, [tableId]);
 
-  return data ? (
+  return data && schema ? (
     <div className="select-visualization-container">
       {myVisualizations.map((item) => {
         return (

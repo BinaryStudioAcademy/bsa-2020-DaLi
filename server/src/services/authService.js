@@ -1,6 +1,4 @@
 import UserRepository from '../repositories/userRepository';
-import UserGroupsRepository from '../repositories/userGroupsRepository';
-import UsersUserGroupsRepository from '../repositories/usersUserGroupsRepository';
 import { createToken } from '../helpers/tokenHelper';
 import { encrypt } from '../helpers/cryptoHelper';
 
@@ -16,11 +14,10 @@ export const login = async (data) => {
 export const register = async (user) => {
   const candidate = await UserRepository.getByEmail(user.email);
   if (!candidate) {
-    const allGroups = await UserGroupsRepository.getAll();
-    const allUsersGroupID = allGroups.filter((group) => group.name === 'All Users')[0].id;
-    const hashPassword = await encrypt(user.password);
-    const newUser = await UserRepository.create({ ...user, password: hashPassword });
-    await UsersUserGroupsRepository.create({ users_id: newUser.id, userGroups_id: allUsersGroupID });
+    await UserRepository.createUsersWithDefaultGroups({
+      ...user,
+      password: encrypt(user.password),
+    });
     return {
       status: 'Register success',
     };

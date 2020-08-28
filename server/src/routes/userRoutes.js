@@ -51,10 +51,6 @@ router.post(
 router.patch(
   '/:id',
   asyncHandler(async (req, res, next) => {
-    if (req.body.password === null) {
-      req.body.password = generatePassword();
-    }
-
     const result = await UserService.updateUser(
       {
         id: req.params.id,

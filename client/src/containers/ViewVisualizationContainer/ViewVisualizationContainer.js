@@ -30,6 +30,7 @@ import {
   createUpdatedVisualization,
 } from './helpers';
 import './ViewVisualizationContainer.css';
+import { getRightSidebarComponent } from './helpers/rightSidebarHelper';
 
 const ViewVisualizationContainer = (props) => {
   const {
@@ -111,6 +112,8 @@ const ViewVisualizationContainer = (props) => {
     }
   };
 
+  const selectComponentForRightSidebar = getRightSidebarComponent(rightSideBarType);
+
   const openModal = () => setIsModalOpen(true);
 
   const closeModal = () => setIsModalOpen(false);
@@ -191,7 +194,7 @@ const ViewVisualizationContainer = (props) => {
           onToggleSideBar={onToggleSideBar}
           onSwitchContentView={onSwitchContentView}
         />
-        {isRightSideBarOpen && <ViewVisualizationSidebar component={visualizationSettings} />}
+        {isRightSideBarOpen && <ViewVisualizationSidebar component={selectComponentForRightSidebar} />}
       </Grid>
     </>
   );

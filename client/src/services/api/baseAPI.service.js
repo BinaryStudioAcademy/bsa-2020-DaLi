@@ -13,7 +13,6 @@ const baseRequest = async (request) => {
 class baseAPIService {
   constructor(baseURL) {
     this.baseURL = baseURL;
-    this.accessToken = getToken() || '';
   }
 
   getData = async (endpoint, params) => {
@@ -31,7 +30,7 @@ class baseAPIService {
     const response = await baseRequest({
       method: 'get',
       url: `${this.baseURL}${endpoint}`,
-      headers: { Authorization: `Bearer ${this.accessToken}` },
+      headers: { Authorization: `Bearer ${getToken()}` },
       params,
     });
 
@@ -42,7 +41,7 @@ class baseAPIService {
     const response = await baseRequest({
       method: 'post',
       url: `${this.baseURL}${endpoint}`,
-      headers: { Authorization: `Bearer ${this.accessToken}` },
+      headers: { Authorization: `Bearer ${getToken()}` },
       data,
     });
 
@@ -53,7 +52,7 @@ class baseAPIService {
     const response = await baseRequest({
       method: 'put',
       url: `${this.baseURL}${endpoint}`,
-      headers: { Authorization: `Bearer ${this.accessToken}` },
+      headers: { Authorization: `Bearer ${getToken()}` },
       data,
     });
 
@@ -64,7 +63,7 @@ class baseAPIService {
     const response = await baseRequest({
       method: 'patch',
       url: `${this.baseURL}${endpoint}`,
-      headers: { Authorization: `Bearer ${this.accessToken}` },
+      headers: { Authorization: `Bearer ${getToken()}` },
       data,
     });
     return response;
@@ -74,7 +73,7 @@ class baseAPIService {
     const response = await baseRequest({
       method: 'delete',
       url: `${this.baseURL}/${endpoint}`,
-      headers: { Authorization: `Bearer ${this.accessToken}` },
+      headers: { Authorization: `Bearer ${getToken()}` },
       params,
     });
 

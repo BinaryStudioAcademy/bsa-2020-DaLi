@@ -3,7 +3,7 @@ export const setToken = (token, rememberMe = false) => {
 };
 
 export const getToken = () => {
-  return localStorage.getItem('token') || sessionStorage.getItem('token');
+  return localStorage.getItem('token') || sessionStorage.getItem('token') || '';
 };
 
 export const removeToken = () => {

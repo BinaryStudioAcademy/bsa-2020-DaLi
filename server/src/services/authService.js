@@ -5,6 +5,7 @@ import { encryptSync } from '../helpers/cryptoHelper';
 export const login = async (data) => {
   const currentUser = await UserRepository.getUserById(data.id);
   const { id, email, firstName, lastName } = currentUser;
+  await UserRepository.updateById({ id }, { lastLogin: new Date(Date.now()) });
   return {
     token: createToken({ id }),
     user: { id, email, firstName, lastName },

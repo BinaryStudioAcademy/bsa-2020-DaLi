@@ -120,7 +120,7 @@ const ViewVisualizationContainer = (props) => {
     }
   };
 
-  const openRightSideBar = (type) => () => {
+  const onToggleRightSideBar = (type) => () => {
     if (rightSideBarType === type) {
       setIsRightSideBarOpen(false);
       setRightSideBarType('');
@@ -188,6 +188,7 @@ const ViewVisualizationContainer = (props) => {
         tableId={tableId}
         visualizationType={visualizationType}
         openRightSideBar={openRightSideBar}
+        onToggleRightSideBar={onToggleRightSideBar}
       />
       <Grid container className="view-visualization-container">
         <SaveVisualizationModal

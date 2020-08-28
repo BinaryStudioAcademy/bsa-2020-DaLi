@@ -18,7 +18,7 @@ export default class BaseRepository {
       const result = await this.model.create(data);
       return result;
     } catch (error) {
-      throw new Error(error.errors[0].message)
+      throw new Error(error.errors[0].message);
     }
   }
 

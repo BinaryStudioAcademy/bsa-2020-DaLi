@@ -1,4 +1,4 @@
-import { GET_DATASETS, GET_TABLES, IS_DATASETS_LOADING, SET_CUREENT_DB_NAME } from './actionTypes';
+import { GET_DATASETS, GET_TABLES, IS_DATASETS_LOADING, GET_DATASET_NAME, SYNC_DB_TABLES } from './actionTypes';
 
 export const getDatasets = () => {
   return {
@@ -13,10 +13,17 @@ export const getTables = (id) => {
   };
 };
 
-export const setCurrentDbName = (payload) => {
+export const syncDatabaseTables = (id) => {
   return {
-    type: SET_CUREENT_DB_NAME,
-    payload,
+    type: SYNC_DB_TABLES,
+    id,
+  };
+};
+
+export const getDatabaseNameById = (id) => {
+  return {
+    type: GET_DATASET_NAME,
+    id,
   };
 };
 

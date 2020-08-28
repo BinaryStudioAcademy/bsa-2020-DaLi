@@ -112,7 +112,7 @@ const ViewVisualizationContainer = (props) => {
     }
   };
 
-  const selectComponentForRightSidebar = getRightSidebarComponent(rightSideBarType);
+  const selectComponentForRightSidebar = getRightSidebarComponent(rightSideBarType, currentVisualization);
 
   const openModal = () => setIsModalOpen(true);
 

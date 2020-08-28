@@ -3,12 +3,12 @@ import { FILTER, SUMMARIZE } from '../componentTypes';
 import SummarizeBar from '../../../components/SummarizeBar/SummarizeBar';
 import FilterBar from '../../../components/FilterBar/FilterBar';
 
-export const getRightSidebarComponent = (type) => {
+export const getRightSidebarComponent = (type, currentVisualization) => {
   switch (type) {
     case FILTER:
-      return <FilterBar />;
+      return <FilterBar currentVisualization={currentVisualization} />;
     case SUMMARIZE:
-      return <SummarizeBar />;
+      return <SummarizeBar currentVisualization={currentVisualization} />;
     default:
       return null;
   }

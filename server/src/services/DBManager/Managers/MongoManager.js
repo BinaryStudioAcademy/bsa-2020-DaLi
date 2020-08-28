@@ -1,4 +1,5 @@
 import { MongoClient } from 'mongodb';
+import schemaNormalizer from '../helpers/mongoDataTypeNormalizer';
 
 export default class DBMongoManager {
   constructor(databaseURL, dbName) {
@@ -57,7 +58,7 @@ export default class DBMongoManager {
           .toArray()
           .then((result) => {
             fieldSchema = {
-              data_type: result[0].type,
+              data_type: schemaNormalizer(result[0].type),
               column_name: fieldName,
             };
           });

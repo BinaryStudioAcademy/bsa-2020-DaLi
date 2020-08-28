@@ -24,7 +24,6 @@ import {
   getVisualizationSettings,
   getVisualizationIcon,
   checkIsVisualizationNew,
-  createDataSample,
   createInitVisualization,
   createNewVisualization,
   createUpdatedVisualization,
@@ -66,8 +65,7 @@ const ViewVisualizationContainer = (props) => {
     const isNewVisualization = checkIsVisualizationNew(id);
     if (isNewVisualization) {
       setIsVisualizationExist(false);
-      const dataSample = createDataSample(data);
-      visualization = createInitVisualization(id, dataSample, userId, schema);
+      visualization = createInitVisualization(id, userId, schema);
       setVisualization(visualization);
     } else if (visualizations.length) {
       visualization = getVisualization(visualizations, id);

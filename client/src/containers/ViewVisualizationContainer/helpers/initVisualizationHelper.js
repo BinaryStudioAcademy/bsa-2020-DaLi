@@ -1,19 +1,32 @@
+/* eslint-disable camelcase */
 import { VISUALIZATIONS_TYPES_TO_CREATE } from '../constants';
 import { createInitBarChartConfig, createInitLineChartConfig, createInitTableConfig } from './initConfigsHelper';
 
 export const checkIsVisualizationNew = (id) => VISUALIZATIONS_TYPES_TO_CREATE.includes(id);
 
-export const createDataSample = (data) => data[0];
-
 export const getYKeys = (schema) => {
-  const columnsOfTypeInt = schema.filter((obj) => {
-    return obj.data_type === 'integer';
+  const availableKeys = schema.filter(({ data_type }) => {
+    const isNum = data_type === 'number';
+    const isBool = data_type === 'boolean';
+    return isNum || isBool;
   });
 
-  return columnsOfTypeInt.map((obj) => obj.column_name);
+  return availableKeys.map((obj) => obj.column_name);
 };
 
-export const createInitVisualization = (visualizationType, dataSample, userId, schema) => {
+export const getXKeys = (schema) => {
+  const availableKeys = schema.filter(({ data_type }) => {
+    const isNum = data_type === 'number';
+    const isBool = data_type === 'boolean';
+    const isStr = data_type === 'string';
+    const isDate = data_type === 'date';
+    return isNum || isBool || isStr || isDate;
+  });
+
+  return availableKeys.map((obj) => obj.column_name);
+};
+
+export const createInitVisualization = (visualizationType, userId, schema) => {
   const newVisualization = {
     name: '',
     description: '',
@@ -23,15 +36,15 @@ export const createInitVisualization = (visualizationType, dataSample, userId, s
   };
   switch (visualizationType) {
     case 'bar-chart':
-      newVisualization.config = createInitBarChartConfig(dataSample, schema, getYKeys);
+      newVisualization.config = createInitBarChartConfig(schema, getYKeys, getXKeys);
       newVisualization.type = 'BAR_CHART';
       break;
     case 'line-chart':
-      newVisualization.config = createInitLineChartConfig(dataSample, schema, getYKeys);
+      newVisualization.config = createInitLineChartConfig(schema, getYKeys, getXKeys);
       newVisualization.type = 'LINE_CHART';
       break;
     case 'table':
-      newVisualization.config = createInitTableConfig(dataSample, schema, getYKeys);
+      newVisualization.config = createInitTableConfig(schema);
       newVisualization.type = 'TABLE';
       break;
     default:

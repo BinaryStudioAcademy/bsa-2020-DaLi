@@ -16,7 +16,7 @@ export const register = async (user) => {
   if (!candidate) {
     await UserRepository.createUsersWithDefaultGroups({
       ...user,
-      password: encrypt(user.password),
+      password: await encrypt(user.password),
     });
     return {
       status: 'Register success',

@@ -1,6 +1,7 @@
 import createError from 'http-errors';
 import UserRepository from '../repositories/userRepository';
 import { compare, encryptSync } from '../helpers/cryptoHelper';
+import { generatePassword } from '../helpers/generatePassword';
 
 export const getUsers = async () => {
   const result = await UserRepository.getAll();
@@ -54,14 +55,18 @@ export const updateUser = async (id, dataToUpdate) => {
     }
   }
 
-  const password = dataToUpdate.password ? dataToUpdate.password : '';
-  const result = await UserRepository.updateById(id, {
-    ...dataToUpdate,
-    password: encryptSync(dataToUpdate.password),
-  });
+  if (dataToUpdate.password === null) {
+    dataToUpdate.password = generatePassword();
+    const password = dataToUpdate.password || '';
+    const result = await UserRepository.updateById(id, {
+      ...dataToUpdate,
+      password: encryptSync(dataToUpdate.password),
+    });
+    result.password = password;
 
-  if (password) result.password = password;
-
+    return result;
+  }
+  const result = await UserRepository.updateById(id, dataToUpdate);
   return result;
 };
 

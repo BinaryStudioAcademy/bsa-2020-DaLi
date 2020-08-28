@@ -1,4 +1,5 @@
 import Sequelize from 'sequelize';
+import schemaNormalizer from '../helpers/postgresDataTypeNormalizer';
 
 export default class DBPostgresManager {
   constructor(databaseURL) {
@@ -68,7 +69,11 @@ export default class DBPostgresManager {
         table_name = '${name}';`
       )
       .then((data) => {
-        return data[0];
+        const schema = data[0];
+        schema.forEach((item) => {
+          item.data_type = schemaNormalizer(item.data_type);
+        });
+        return schema;
       });
   }
 }

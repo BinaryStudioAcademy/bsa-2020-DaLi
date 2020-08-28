@@ -46,6 +46,8 @@ const ViewVisualizationContainer = (props) => {
 
   const [currentView, setCurrentView] = useState('table');
   const [isSideBarOpen, setIsSideBarOpen] = useState(false);
+  const [isRightSideBarOpen, setIsRightSideBarOpen] = useState(false);
+  const [rightSideBarType, setRightSideBarType] = useState('');
   const [isVisualizationExist, setIsVisualizationExist] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isNotificationVisible, setIsNotificationVisible] = useState(false);
@@ -99,6 +101,16 @@ const ViewVisualizationContainer = (props) => {
 
   const onToggleSideBar = () => setIsSideBarOpen(!isSideBarOpen);
 
+  const openRightSideBar = (type) => () => {
+    if (rightSideBarType === type) {
+      setIsRightSideBarOpen(false);
+      setRightSideBarType('');
+    } else {
+      setRightSideBarType(type);
+      setIsRightSideBarOpen(true);
+    }
+  };
+
   const openModal = () => setIsModalOpen(true);
 
   const closeModal = () => setIsModalOpen(false);
@@ -150,6 +162,7 @@ const ViewVisualizationContainer = (props) => {
         name={currentVisualization.name}
         description={currentVisualization.description}
         visualizationType={id}
+        openRightSideBar={openRightSideBar}
       />
       <Grid container className="view-visualization-container">
         <SaveVisualizationModal
@@ -178,6 +191,7 @@ const ViewVisualizationContainer = (props) => {
           onToggleSideBar={onToggleSideBar}
           onSwitchContentView={onSwitchContentView}
         />
+        {isRightSideBarOpen && <ViewVisualizationSidebar component={visualizationSettings} />}
       </Grid>
     </>
   );

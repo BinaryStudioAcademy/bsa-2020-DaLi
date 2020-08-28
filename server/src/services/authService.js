@@ -22,7 +22,7 @@ export const register = async (user) => {
     const newUser = await UserRepository.create({ ...user, password: hashPassword });
     await UsersUserGroupsRepository.create({ users_id: newUser.id, userGroups_id: allUsersGroupID });
     return {
-      user: newUser,
+      status: 'Register success',
     };
   }
 };

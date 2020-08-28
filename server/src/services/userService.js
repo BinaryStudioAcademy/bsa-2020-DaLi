@@ -1,4 +1,3 @@
-/* eslint-disable */
 import createError from 'http-errors';
 import UserRepository from '../repositories/userRepository';
 import UserGroupsRepository from '../repositories/userGroupsRepository';
@@ -16,12 +15,17 @@ export const createUser = async (data) => {
   }
   const allGroups = await UserGroupsRepository.getAll();
   const allUsersGroupID = allGroups.filter((group) => group.name === 'All Users')[0].id;
+  let password = '';
   if (data.password) {
     const encryptPassword = await encrypt(data.password);
+    password = data.password;
     data.password = encryptPassword;
   }
   const result = await UserRepository.create(data);
   await UsersUserGroupsRepository.create({ users_id: result.id, userGroups_id: allUsersGroupID });
+  if (password) {
+    result.password = password;
+  }
   return result;
 };
 

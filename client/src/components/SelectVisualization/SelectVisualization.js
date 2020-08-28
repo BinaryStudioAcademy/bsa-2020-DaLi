@@ -4,6 +4,7 @@ import TimelineOutlinedIcon from '@material-ui/icons/TimelineOutlined';
 import TableChartOutlinedIcon from '@material-ui/icons/TableChartOutlined';
 import { NavLink } from 'react-router-dom';
 import PropTypes from 'prop-types';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import { dbTableAPIService } from '../../services/api/dbTableAPI.service';
 
 import './styles.css';
@@ -48,7 +49,9 @@ const SelectVisualization = ({ tableId }) => {
       })}
     </div>
   ) : (
-    <p>loading</p>
+    <div style={{ position: 'relative' }}>
+      <CircularProgress size={40} left={-20} top={10} style={{ marginLeft: '50%' }} />
+    </div>
   );
 };
 

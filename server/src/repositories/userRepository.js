@@ -12,6 +12,11 @@ class UserRepository extends BaseRepository {
     return this.model.findOne({ where: { email } });
   }
 
+  getUserById(id) {
+    console.log(id);
+    return this.model.findOne({ where: { id } });
+  }
+
   async createUsersWithDefaultGroups(user) {
     const allGroups = await UserGroupsRepository.getAll();
     const allUsersGroupID = allGroups.filter((group) => group.name === 'All Users')[0].id;

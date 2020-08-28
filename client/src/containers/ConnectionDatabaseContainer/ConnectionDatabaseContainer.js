@@ -18,7 +18,7 @@ const AddDatabaseSchema = Yup.object().shape({
   port: Yup.string().matches(/^\d+$/, 'The field should have digits only').required('Required'),
   databaseName: Yup.string().required('Required'),
   username: Yup.string().required('Required'),
-  password: Yup.string().max(30).required('Required'),
+  password: Yup.string().max(100).required('Required'),
 });
 
 const getStyles = (errors, touched, fieldName) => {

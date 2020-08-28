@@ -54,7 +54,6 @@ module.exports = {
     },
     '/auth/register': {
       post: {
-        deprecated: true,
         tags: ['Authentication'],
         summary: 'Register user',
         requestBody: {

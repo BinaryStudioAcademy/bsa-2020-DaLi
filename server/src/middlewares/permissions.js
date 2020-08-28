@@ -1,4 +1,5 @@
 import asyncHandler from 'express-async-handler';
+import UserRepository from '../repositories/userRepository';
 import * as AuthService from '../services/authService';
 
 export const permissionsMiddleware = asyncHandler(async (req, res) => {

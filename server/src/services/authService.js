@@ -4,8 +4,6 @@ import bcrypt from 'bcrypt';
 import createError from 'http-errors';
 import jwtConfig from '../config/jwt.config';
 import UserRepository from '../repositories/userRepository';
-import UserGroupsRepository from '../repositories/userGroupsRepository';
-import UsersUserGroupsRepository from '../repositories/usersUserGroupsRepository';
 
 export const login = async (user) => {
   const candidate = await UserRepository.getByEmail(user.email);
@@ -44,10 +42,10 @@ export const register = async (user) => {
   const candidate = await UserRepository.getByEmail(user.email);
   if (!candidate) {
     const salt = bcrypt.genSaltSync(10);
-    const allGroups = await UserGroupsRepository.getAll();
-    const allUsersGroupID = allGroups.filter((group) => group.name === 'All Users')[0].id;
-    const newUser = await UserRepository.create({ ...user, password: bcrypt.hashSync(user.password, salt) });
-    await UsersUserGroupsRepository.create({ users_id: newUser.id, userGroups_id: allUsersGroupID });
+    const newUser = await UserRepository.createUsersWithDefaultGroups({
+      ...user,
+      password: bcrypt.hashSync(user.password, salt),
+    });
     return {
       status: 201,
       response: {

@@ -1,8 +1,6 @@
 /* eslint-disable */
 import createError from 'http-errors';
 import UserRepository from '../repositories/userRepository';
-import UserGroupsRepository from '../repositories/userGroupsRepository';
-import UsersUserGroupsRepository from '../repositories/usersUserGroupsRepository';
 
 export const getUsers = async () => {
   const result = await UserRepository.getAll();
@@ -13,10 +11,7 @@ export const createUser = async (data) => {
   if (await UserRepository.getByEmail(data.email)) {
     throw createError(409, 'This email is assigned to another user');
   }
-  const allGroups = await UserGroupsRepository.getAll();
-  const allUsersGroupID = allGroups.filter((group) => group.name === 'All Users')[0].id;
-  const result = await UserRepository.create(data);
-  await UsersUserGroupsRepository.create({ users_id: result.id, userGroups_id: allUsersGroupID });
+  const result = await UserRepository.createUsersWithDefaultGroups(data);
   return result;
 };
 

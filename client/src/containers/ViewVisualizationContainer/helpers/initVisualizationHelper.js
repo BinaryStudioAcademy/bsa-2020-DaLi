@@ -6,11 +6,36 @@ export const checkIsVisualizationNew = (id) => VISUALIZATIONS_TYPES_TO_CREATE.in
 export const createDataSample = (data) => data[0];
 
 export const getYKeys = (schema) => {
-  const columnsOfTypeInt = schema.filter((obj) => {
-    return obj.data_type === 'integer';
+  const mongoDbAvailableTypes = ['int', 'double', 'long'];
+  const postgresAvailableTypes = [
+    'smallint',
+    'integer',
+    'bigint',
+    'decimal',
+    'numeric',
+    'real',
+    'double precision',
+    'smallserial',
+    'serial',
+    'bigserial',
+  ];
+  const mySQLAvailableTypes = [
+    'TINYINT',
+    'SMALLINT',
+    'MEDIUMINT',
+    'INT',
+    'BIGINT',
+    'DECIMAL',
+    'FLOAT',
+    'DOUBLE',
+    'BIT',
+  ];
+  const allAvailableTypes = [...mongoDbAvailableTypes, ...postgresAvailableTypes, ...mySQLAvailableTypes];
+  const columnsOfNumericType = schema.filter((obj) => {
+    return allAvailableTypes.includes(obj.data_type);
   });
 
-  return columnsOfTypeInt.map((obj) => obj.column_name);
+  return columnsOfNumericType.map((obj) => obj.column_name);
 };
 
 export const createInitVisualization = (visualizationType, dataSample, userId, schema) => {

@@ -9,7 +9,6 @@ import LineChart from './LineChart/LineChart';
 import LineChartSettings from './LineChartSettings';
 import EnhancedTable from './EnhancedTable/EnhancedTable';
 import InitialTable from './InitialTable/InitialTable';
-import SelectVisualization from './SelectVisualization/SelectVisualization';
 import ViewVisualizationSidebar from './ViewVisualizationSidebar';
 import ViewVisualizationMain from './ViewVisualizationMain';
 import ViewVisualizationHeader from './ViewVisualizationHeader/ViewVisualizationHeader';
@@ -43,7 +42,6 @@ export {
   SignUp,
   EnhancedTable,
   InitialTable,
-  SelectVisualization,
   ViewVisualizationSidebar,
   ViewVisualizationMain,
   ViewVisualizationHeader,

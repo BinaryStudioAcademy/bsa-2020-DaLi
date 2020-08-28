@@ -57,7 +57,7 @@ export const updateUser = async (id, dataToUpdate) => {
 
   if (dataToUpdate.password === null) {
     dataToUpdate.password = generatePassword();
-    const password = dataToUpdate.password ? dataToUpdate.password : '';
+    const password = dataToUpdate.password || '';
     const result = await UserRepository.updateById(id, {
       ...dataToUpdate,
       password: encryptSync(dataToUpdate.password),

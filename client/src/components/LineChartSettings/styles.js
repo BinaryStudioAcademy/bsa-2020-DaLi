@@ -90,6 +90,10 @@ export const useStyles = makeStyles((theme) => ({
     color: 'black',
     marginTop: '10px',
   },
+  addSeriesBtn: {
+    textTransform: 'none',
+    color: '#86BBEB',
+  },
 }));
 
 export const switchStyles = makeStyles((theme) => ({

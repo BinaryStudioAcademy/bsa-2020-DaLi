@@ -208,6 +208,9 @@ function LineChartSettings({ updateConfig, config: oldConfig }) {
           >
             {valuesY}
           </NativeSelect>
+          <Button variant="contained" className={classes.addSeriesBtn}>
+            Add another series
+          </Button>
         </FormControl>
       </TabPanel>
       <TabPanel value={value} index={1}>

@@ -32,6 +32,7 @@ router.get(
     const result = await DatabaseService.getDatabase({
       id: req.params.id,
     });
+
     if (result) {
       res.data = result;
       next();

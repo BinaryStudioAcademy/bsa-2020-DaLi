@@ -2,7 +2,7 @@ import { Router } from 'express';
 import asyncHandler from 'express-async-handler';
 import createError from 'http-errors';
 import * as DatabaseService from '../services/databaseService';
-import { permissionsMiddleware } from '../middlewares/permissions';
+import { permissionsMiddleware } from '../middlewares/permissionsMiddleware';
 
 const router = Router();
 

@@ -57,6 +57,9 @@ export const useStyles = makeStyles({
       marginLeft: '10px',
     },
   },
+  formError: {
+    border: '1px solid red !important',
+  },
   select: {
     flexGrow: 4,
   },

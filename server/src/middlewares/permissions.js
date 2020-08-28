@@ -1,7 +1,7 @@
-import UserRepository from '../repositories/userRepository';
+import asyncHandler from 'express-async-handler';
 import * as AuthService from '../services/authService';
 
-export const permissionsMiddleware = async (req, res) => {
+export const permissionsMiddleware = asyncHandler(async (req, res) => {
   // Need update token logic, after fix passport
   const token = req.headers.authorization;
   const { response } = await AuthService.getUserByToken(token);
@@ -14,7 +14,5 @@ export const permissionsMiddleware = async (req, res) => {
   }
 
   const data = res.data.filter((item) => dataId.includes(item.id));
-
-  console.log(data);
   return res.send(data);
-};
+});

@@ -26,48 +26,6 @@ class DatabaseRepository extends BaseRepository {
       ],
     });
   }
-
-  getAllowedDatabasesByUserId(userId) {
-    const result = this.model
-      .findAll({
-        attributes: [['id', 'databaseId']],
-        // plain: true,
-        // group: ['databaseId'],
-        include: [
-          {
-            model: models.DBTable,
-            attributes: [],
-            include: [
-              {
-                model: models.Permission,
-                attributes: [],
-                where: {
-                  permissionGranted: 'granted',
-                },
-                include: {
-                  model: models.UserGroups,
-                  attributes: [],
-                  // where: { id: userId },
-                  include: [
-                    {
-                      model: models.User,
-                      attributes: [],
-                      where: { id: userId },
-                    },
-                  ],
-                },
-              },
-            ],
-          },
-        ],
-        raw: true,
-        nest: true,
-      })
-      .then((result) => result.map((el) => el.databaseId))
-      .then((result) => [...new Set(result)]);
-
-    return result;
-  }
 }
 
 export default new DatabaseRepository(models.Database);

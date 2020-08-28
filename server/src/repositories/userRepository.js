@@ -53,6 +53,43 @@ class UserRepository extends BaseRepository {
       .then((result) => [...new Set(result)]);
     return result;
   }
+
+  getAllowedTables(userId) {
+    const result = this.model
+      .findAll({
+        where: { id: userId },
+        attributes: [],
+        raw: true,
+        nest: true,
+        include: [
+          {
+            model: models.UserGroups,
+            attributes: [],
+            through: { attributes: [] },
+            raw: true,
+            nest: true,
+            include: [
+              {
+                model: models.Permission,
+                attributes: [],
+                where: {
+                  permissionGranted: 'granted',
+                },
+                include: [
+                  {
+                    model: models.DBTable,
+                    attributes: ['id'],
+                  },
+                ],
+              },
+            ],
+          },
+        ],
+      })
+      .then((result) => result.map((el) => el.UserGroups.Permissions.DBTable.id))
+      .then((result) => [...new Set(result)]);
+    return result;
+  }
 }
 
 export default new UserRepository(models.User);

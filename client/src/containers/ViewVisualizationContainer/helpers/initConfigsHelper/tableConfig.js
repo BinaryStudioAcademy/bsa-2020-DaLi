@@ -31,8 +31,10 @@ const createTableColumn = (key, index, value) => {
   const column = {
     id: key,
     title: createColumnTitle(key),
+    initOrder: index,
     order: index,
     type: setColumnType(key, value),
+    visible: true,
   };
   return column;
 };

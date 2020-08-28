@@ -40,7 +40,7 @@ export const createInitVisualization = (visualizationType, dataSample, userId, s
       newVisualization.type = 'TABLE';
       break;
     case 'map':
-      newVisualization.config = createInitMapConfig(dataSample, schema, getYKeys);
+      newVisualization.config = createInitMapConfig(dataSample);
       newVisualization.type = 'MAP';
       break;
     default:

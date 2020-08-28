@@ -4,18 +4,43 @@
 }
 
 .circle {
-  width: 40px;
-  height: 40px;
-  background-color: rgba(255, 0, 0, 0.5);
-  border: 3px solid red;
+  width: 30px;
+  height: 30px;
+  background-color: rgba(0, 0, 0, 0.4);
+  border-width: 3px;
+  border-style: solid;
   border-radius: 100%;
+  box-sizing: border-box;
+  transform: translate(-15px, -15px);
 }
 
 .circle:hover {
-  stroke: black;
-  stroke-width: 4px;
+  border-width: 4px;
 }
 
 .d3-tip {
   white-space: pre-line;
+}
+
+.google-tip {
+  transform: translate(-43%, -85px);
+  font: 14px sans-serif;
+  padding: 12px;
+  background: rgba(0, 0, 0, 0.8);
+  color: rgb(185, 185, 185);
+  border-radius: 2px;
+  width: max-content;
+  position: relative;
+}
+
+.google-tip::after {
+  content: "";
+  position: absolute;
+  width: 0;
+  height: 0;
+  border-left: 3px solid transparent;
+  border-right: 3px solid transparent;
+  border-top: 10px solid rgba(0, 0, 0, 0.8);
+  bottom: -9px;
+  left: 48%;
 }

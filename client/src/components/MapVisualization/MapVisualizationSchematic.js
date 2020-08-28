@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import useResizeObserver from './useResizeObserver';
 import './styles.css';
 
-const MapVisualizationSchematic = ({ schematicMap, data }) => {
+const MapVisualizationSchematic = ({ schematicMap, data, settings }) => {
   const svgRef = useRef();
   const wrapperRef = useRef();
   const dimensions = useResizeObserver(wrapperRef);
@@ -16,14 +16,6 @@ const MapVisualizationSchematic = ({ schematicMap, data }) => {
     const { width, height } = dimensions || wrapperRef.current.getBoundingClientRect();
 
     const projection = geoMercator().fitSize([width, height], schematicMap).precision(5);
-
-    const markers = data.map((marker) => {
-      return {
-        name: marker.name,
-        long: marker.lng,
-        lat: marker.lat,
-      };
-    });
 
     svg
       .append('g')
@@ -47,26 +39,35 @@ const MapVisualizationSchematic = ({ schematicMap, data }) => {
       );
     svg.call(tip).attr('height', '100%').attr('width', '100%');
 
-    svg
-      .selectAll('myCircles')
-      .data(markers)
-      .enter()
-      .append('circle')
-      .attr('cx', (d) => {
-        return projection([d.long, d.lat])[0];
-      })
-      .attr('cy', (d) => {
-        return projection([d.long, d.lat])[1];
-      })
-      .attr('r', 5)
-      .attr('class', 'circle')
-      .style('fill', '#000000')
-      .attr('stroke', '#000000')
-      .attr('stroke-width', 3)
-      .attr('fill-opacity', 0.4)
-      .attr('white-space', 'pre-line')
-      .on('mouseover', tip.show)
-      .on('mouseout', tip.hide);
+    if (settings.latitude && settings.longitude) {
+      const markers = data.map((marker) => {
+        return {
+          name: marker[settings.name],
+          long: marker[settings.longitude],
+          lat: marker[settings.latitude],
+        };
+      });
+      svg
+        .selectAll('myCircles')
+        .data(markers)
+        .enter()
+        .append('circle')
+        .attr('cx', (d) => {
+          return projection([d.long, d.lat])[0];
+        })
+        .attr('cy', (d) => {
+          return projection([d.long, d.lat])[1];
+        })
+        .attr('r', 5)
+        .attr('class', 'circle')
+        .style('fill', settings.color)
+        .attr('stroke', settings.color)
+        .attr('stroke-width', 3)
+        .attr('fill-opacity', 0.4)
+        .attr('white-space', 'pre-line')
+        .on('mouseover', tip.show)
+        .on('mouseout', tip.hide);
+    }
   });
 
   return (

@@ -1,22 +1,24 @@
-/* eslint-disable */
 import createError from 'http-errors';
 import UserRepository from '../repositories/userRepository';
-import UserGroupsRepository from '../repositories/userGroupsRepository';
-import UsersUserGroupsRepository from '../repositories/usersUserGroupsRepository';
+import { compare, encryptSync } from '../helpers/cryptoHelper';
 
 export const getUsers = async () => {
   const result = await UserRepository.getAll();
   return result;
 };
 
-export const createUser = async (data) => {
-  if (await UserRepository.getByEmail(data.email)) {
+export const createUser = async (user) => {
+  if (await UserRepository.getByEmail(user.email)) {
     throw createError(409, 'This email is assigned to another user');
   }
-  const allGroups = await UserGroupsRepository.getAll();
-  const allUsersGroupID = allGroups.filter((group) => group.name === 'All Users')[0].id;
-  const result = await UserRepository.create(data);
-  await UsersUserGroupsRepository.create({ users_id: result.id, userGroups_id: allUsersGroupID });
+  const password = user.password ? user.password : '';
+  const result = await UserRepository.createUsersWithDefaultGroups({
+    ...user,
+    password: encryptSync(user.password),
+  });
+
+  if (password) result.password = password;
+
   return result;
 };
 
@@ -39,17 +41,27 @@ export const updateUser = async (id, dataToUpdate) => {
       throw createError(409, 'This email is assigned to another user');
     }
   }
+
   if (dataToUpdate.oldPassword) {
-    if (dataToUpdate.oldPassword !== item.password) {
+    const currentPassword = await compare(dataToUpdate.oldPassword, item.password);
+
+    if (!currentPassword) {
       throw createError(409, 'Wrong current password');
-    } else if (dataToUpdate.password === item.password) {
+    } else if (await compare(dataToUpdate.password, item.password)) {
       throw createError(409, 'New password cannot match the current one');
     } else {
       delete dataToUpdate.oldPassword;
     }
   }
 
-  const result = await UserRepository.updateById(id, dataToUpdate);
+  const password = dataToUpdate.password ? dataToUpdate.password : '';
+  const result = await UserRepository.updateById(id, {
+    ...dataToUpdate,
+    password: encryptSync(dataToUpdate.password),
+  });
+
+  if (password) result.password = password;
+
   return result;
 };
 

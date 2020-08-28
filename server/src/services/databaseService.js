@@ -1,7 +1,10 @@
+/* eslint-disable consistent-return */
+/* eslint-disable array-callback-return */
 /* eslint-disable import/no-cycle */
+import createError from 'http-errors';
 import DatabaseRepository from '../repositories/databaseRepository';
 import DBManager from './DBManager/DBManagerService';
-import { createDBTable, getAllByDatabaseId } from './dbTableService';
+import { createDBTable, getAllByDatabaseId, deleteDBTable } from './dbTableService';
 import { setInitialDBPermissions } from './permissionService';
 
 export const getDatabases = async () => {
@@ -14,7 +17,71 @@ export const getDatabaseTables = async (id) => {
   return tables;
 };
 
+export const getDatabase = async (id) => {
+  const item = await DatabaseRepository.getById(id);
+  if (!item) {
+    throw createError(404, `Database with id of ${id} not found`);
+  }
+  return item;
+};
+
+export const updateDatabaseTables = async (id) => {
+  const database = await getDatabase({ id });
+  let manager = new DBManager(database);
+  manager = await manager.create();
+
+  try {
+    await manager.init();
+    const savedTables = await getAllByDatabaseId(id);
+    const savedTableNames = savedTables.map((i) => i.name);
+    // dbName is necessary for fetching tables list for mysql
+    const currentTableNames = await manager.getTablenames(database.dbName);
+
+    const newTableNames = savedTableNames.reduce(
+      (resultTables, oldTableName) => {
+        if (resultTables.includes(oldTableName)) {
+          return resultTables.filter((t) => t !== oldTableName);
+        }
+        return resultTables;
+      },
+      [...currentTableNames]
+    );
+
+    const excessTableNames = currentTableNames.reduce(
+      (resultTables, currTableName) => {
+        if (resultTables.includes(currTableName)) {
+          return resultTables.filter((t) => t !== currTableName);
+        }
+        return resultTables;
+      },
+      [...savedTableNames]
+    );
+
+    excessTableNames.forEach(async (name) => {
+      const table = savedTables.find((t) => t.name === name);
+      await deleteDBTable({ id: table.id });
+    });
+
+    newTableNames.forEach(async (name) => {
+      const table = await createDBTable({ DatabaseId: database.id, name });
+      await setInitialDBPermissions(table.id);
+    });
+
+    return {
+      added: newTableNames,
+      deleted: excessTableNames,
+    };
+  } catch (error) {
+    throw createError(500, 'Database tables update failed');
+  }
+};
+
 export const createDatabase = async (database) => {
+  const isRepeat = await DatabaseRepository.findDatabaseWithCredentials({ ...database });
+  if (isRepeat) {
+    throw createError(400, 'Such database is already exists');
+  }
+
   let manager = new DBManager(database);
   manager = await manager.create();
 
@@ -28,11 +95,8 @@ export const createDatabase = async (database) => {
       await setInitialDBPermissions(result.id);
     });
   } catch (error) {
-    console.log('///////////////////// ON CREATE DB TABLE GENERATOR FAILED');
-    console.log(error);
-    console.log('Incoming DB INVALID');
-    console.log('///////////////////// ON CREATE DB TABLE GENERATOR FAILED');
     database = null;
+    throw createError(500, `Table creation failed, invalid database credentials: ${error.message}`);
   }
 
   await manager.destroy();
@@ -43,7 +107,7 @@ export const createDatabase = async (database) => {
 export const deleteDatabase = async (id) => {
   const item = await DatabaseRepository.getById(id);
   if (!item) {
-    return null;
+    throw createError(404, `Database with id of ${id} not found`);
   }
   const result = await DatabaseRepository.deleteById(id);
   return result;
@@ -52,16 +116,9 @@ export const deleteDatabase = async (id) => {
 export const updateDatabase = async (id, dataToUpdate) => {
   const item = await DatabaseRepository.getById(id);
   if (!item) {
-    return null;
+    throw createError(404, `Database with id of ${id} not found`);
   }
   const result = await DatabaseRepository.updateById(id, dataToUpdate);
   return result;
 };
 
-export const getDatabase = async (id) => {
-  const item = await DatabaseRepository.getById(id);
-  if (!item) {
-    return null;
-  }
-  return item;
-};

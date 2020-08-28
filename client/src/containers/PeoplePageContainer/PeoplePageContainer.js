@@ -40,6 +40,7 @@ const PeoplePageContainer = ({
   membership,
   addUserToGroup,
   deleteUserFromGroup,
+  currentUserId,
 }) => {
   const classes = useStyles();
 
@@ -84,6 +85,7 @@ const PeoplePageContainer = ({
               addUserToGroup={addUserToGroup}
               deleteUserFromGroup={deleteUserFromGroup}
               resetNotification={resetNotification}
+              currentUserId={currentUserId}
             />
           )}
         />
@@ -119,10 +121,12 @@ PeoplePageContainer.propTypes = {
   membership: PropTypes.array,
   addUserToGroup: PropTypes.func,
   deleteUserFromGroup: PropTypes.func,
+  currentUserId: PropTypes.string,
 };
 
-const mapStateToProps = ({ admin: { people, groups } }) => {
+const mapStateToProps = ({ currentUser, admin: { people, groups } }) => {
   return {
+    currentUserId: currentUser.user.id,
     people: people.users,
     membership: people.membership,
     isLoading: people.isLoading,

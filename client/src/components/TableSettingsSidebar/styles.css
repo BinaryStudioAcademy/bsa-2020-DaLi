@@ -50,3 +50,11 @@
     width: 50%;
     padding: 10px 0;
 }
+
+.columns-restore-icon{
+    font-size: 15px !important;
+}
+
+.columns-restore-icon:hover{
+    cursor: pointer;
+}

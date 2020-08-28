@@ -7,6 +7,8 @@ const createTableColumns = (schema) => {
       title: createColumnTitle(item.column_name),
       order: index,
       type: item.data_type,
+      visible: true,
+      initOrder: index,
     };
   });
 };

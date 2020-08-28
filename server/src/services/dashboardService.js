@@ -1,3 +1,4 @@
+import createError from 'http-errors';
 import DashboardRepository from '../repositories/dashboardRepository';
 import DashboardVisualizationsRepository from '../repositories/dashboardVisualizationsRepository';
 
@@ -14,7 +15,7 @@ export const createDashboard = async (data) => {
 export const deleteDashboard = async (id) => {
   const item = await DashboardRepository.getById(id);
   if (!item) {
-    return null;
+    throw createError(404, `Dashboard with id of ${id} not found`);
   }
   const result = await DashboardRepository.deleteById(id);
   return result;
@@ -23,7 +24,7 @@ export const deleteDashboard = async (id) => {
 export const updateDashboard = async (id, dataToUpdate) => {
   const item = await DashboardRepository.getById(id);
   if (!item) {
-    return null;
+    throw createError(404, `Dashboard with id of ${id} not found`);
   }
   const result = await DashboardRepository.updateById(id, dataToUpdate);
   return result;
@@ -32,7 +33,7 @@ export const updateDashboard = async (id, dataToUpdate) => {
 export const getDashboard = async (id) => {
   const item = await DashboardRepository.getWithVisualizations(id.id);
   if (!item) {
-    return null;
+    throw createError(404, `Dashboard with id of ${id} not found`);
   }
   return item[0];
 };
@@ -49,7 +50,7 @@ export const addVisualization = async (data) => {
 export const deleteVisualization = async (id) => {
   const item = await DashboardVisualizationsRepository.getById(id);
   if (!item) {
-    return null;
+    throw createError(404, `Dashboard-visualization link with id of ${id} not found`);
   }
   const result = await DashboardVisualizationsRepository.deleteById(id);
   return result;

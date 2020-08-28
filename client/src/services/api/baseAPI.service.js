@@ -10,7 +10,6 @@ const baseRequest = async (request) => {
     );
   }
 };
-
 class baseAPIService {
   constructor(baseURL) {
     this.baseURL = baseURL;
@@ -21,7 +20,7 @@ class baseAPIService {
     const response = await baseRequest({
       method: 'GET',
       url: `${this.baseURL}${endpoint}`,
-      headers: { Authorization: `Bearer ${this.accessToken}` },
+      headers: { Authorization: `Bearer ${getToken()}` },
       params,
     });
 

@@ -1,6 +1,6 @@
 import createError from 'http-errors';
 import UserRepository from '../repositories/userRepository';
-import { encrypt, compare } from '../helpers/cryptoHelper';
+import { compare, encryptSync } from '../helpers/cryptoHelper';
 
 export const getUsers = async () => {
   const result = await UserRepository.getAll();
@@ -14,7 +14,7 @@ export const createUser = async (user) => {
   const password = user.password ? user.password : '';
   const result = await UserRepository.createUsersWithDefaultGroups({
     ...user,
-    password: await encrypt(user.password),
+    password: encryptSync(user.password),
   });
 
   if (password) result.password = password;
@@ -57,7 +57,7 @@ export const updateUser = async (id, dataToUpdate) => {
   const password = dataToUpdate.password ? dataToUpdate.password : '';
   const result = await UserRepository.updateById(id, {
     ...dataToUpdate,
-    password: await encrypt(dataToUpdate.password),
+    password: encryptSync(dataToUpdate.password),
   });
 
   if (password) result.password = password;

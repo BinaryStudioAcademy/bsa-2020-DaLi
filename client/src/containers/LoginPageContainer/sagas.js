@@ -38,6 +38,7 @@ export function* fetchUserSaga() {
     const response = yield call(authAPIService.getCurrentUser);
     yield put({ type: FETCH_USER_SUCCESS, payload: response });
   } catch (error) {
+    removeToken();
     yield put({ type: FETCH_USER_ERROR, payload: error });
   }
 }

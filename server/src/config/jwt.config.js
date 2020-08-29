@@ -2,10 +2,5 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 
-const secretKey = process.env.SECRET_KEY;
-const expiresIn = process.env.JWT_EXPIRES_IN;
-
-export default {
-  secretKey,
-  expiresIn,
-};
+export const secretKey = process.env.SECRET_KEY;
+export const expiresIn = process.env.JWT_EXPIRES_IN;

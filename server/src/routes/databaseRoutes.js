@@ -2,7 +2,7 @@ import { Router } from 'express';
 import asyncHandler from 'express-async-handler';
 import createError from 'http-errors';
 import * as DatabaseService from '../services/databaseService';
-import { permissionsMiddleware } from '../middlewares/permissions';
+import { permissionsMiddleware } from '../middlewares/permissionsMiddleware';
 
 const router = Router();
 
@@ -11,6 +11,16 @@ router.get(
   asyncHandler(async (req, res, next) => {
     const result = await DatabaseService.getDatabases();
     res.data = result;
+    next();
+  }),
+  permissionsMiddleware
+);
+
+router.patch(
+  '/:id/tables/update',
+  asyncHandler(async (req, res, next) => {
+    const result = await DatabaseService.updateDatabaseTables(req.params.id);
+    res.json(result);
     next();
   }),
   permissionsMiddleware

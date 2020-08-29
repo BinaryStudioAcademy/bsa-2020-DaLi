@@ -13,7 +13,7 @@ function LineChart({ settings, data, chart: chartSize }) {
   const { goal, trendline, showDataPointsValues, lineType = 'curveNatural', color } = settings.display;
   const XAxis = settings.axisData.XAxis;
   const YAxis = settings.axisData.YAxis;
-  // data = data.sort((a, b) => a[XAxis.key] - b[XAxis.key]);
+  data.forEach(item => item[YAxis.key] = Number(item[YAxis.key]))
   const [config, setConfig] = useState({});
   const svgRef = useRef();
   const [width, setWidth] = useState(chartSize.width);

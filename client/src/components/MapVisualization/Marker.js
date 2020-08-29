@@ -23,12 +23,12 @@ const Marker = ({ name, lng, lat, color, showTip, hideTip, locationNameForInfo }
 };
 
 Marker.propTypes = {
-  name: PropTypes.string,
-  lng: PropTypes.string,
-  lat: PropTypes.string,
+  name: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+  lng: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+  lat: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   color: PropTypes.string,
   showTip: PropTypes.func,
   hideTip: PropTypes.func,
-  locationNameForInfo: PropTypes.string,
+  locationNameForInfo: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
 };
 export default Marker;

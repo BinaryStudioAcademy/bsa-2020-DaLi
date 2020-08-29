@@ -5,7 +5,7 @@ function createInitMapConfig(sample) {
   });
   const initTableConfig = {
     keys,
-    name: '',
+    name: keys[0],
     latitude: '',
     longitude: '',
     view: 'Google heat map',

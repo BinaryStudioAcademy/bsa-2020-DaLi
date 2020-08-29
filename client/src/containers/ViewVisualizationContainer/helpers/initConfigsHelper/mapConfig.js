@@ -1,5 +1,8 @@
-function createInitMapConfig(dataSample) {
-  const keys = Object.keys(dataSample);
+function createInitMapConfig(sample) {
+  const keys = [];
+  sample.forEach((record) => {
+    keys.push(record.column_name);
+  });
   const initTableConfig = {
     keys,
     name: '',

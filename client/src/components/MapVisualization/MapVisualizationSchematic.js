@@ -12,6 +12,7 @@ const MapVisualizationSchematic = ({ schematicMap, data, settings }) => {
 
   useEffect(() => {
     const svg = select(svgRef.current);
+    svg.selectAll('*').remove();
 
     const { width, height } = dimensions || wrapperRef.current.getBoundingClientRect();
 

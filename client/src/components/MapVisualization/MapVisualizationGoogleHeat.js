@@ -27,7 +27,7 @@ const MapVisualizationGoogleHeat = ({ data, settings }) => {
       options={options}
       defaultCenter={{ lat: 40.71274, lng: -74.005974 }}
       defaultZoom={4}
-      bootstrapURLKeys={{ key: 'AIzaSyDDqI4sXO6zvU1PZJyZoUTV6DISqOUYclg' }}
+      bootstrapURLKeys={{ key: 'AIzaSyDDqI4sXO6zvU1PZJyZoUTV6DISqOUYclg', libraries: 'visualization' }}
       heatmapLibrary
       heatmap={heatMapData}
     />

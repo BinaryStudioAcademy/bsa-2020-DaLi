@@ -1,9 +1,11 @@
 import React from 'react';
 import GoogleMapReact from 'google-map-react';
 import PropTypes from 'prop-types';
+import config from '../../config/index';
 import './styles.css';
 
 const MapVisualizationGoogleHeat = ({ data, settings }) => {
+  const API_GOOGLE_KEY = config.api.google;
   const positions = data.map((location) => {
     return {
       ...location,
@@ -27,7 +29,7 @@ const MapVisualizationGoogleHeat = ({ data, settings }) => {
       options={options}
       defaultCenter={{ lat: 40.71274, lng: -74.005974 }}
       defaultZoom={4}
-      bootstrapURLKeys={{ key: 'AIzaSyDDqI4sXO6zvU1PZJyZoUTV6DISqOUYclg', libraries: 'visualization' }}
+      bootstrapURLKeys={{ key: API_GOOGLE_KEY, libraries: 'visualization' }}
       heatmapLibrary
       heatmap={heatMapData}
     />

@@ -2,10 +2,13 @@ import React, { useState } from 'react';
 import GoogleMapReact from 'google-map-react';
 import PropTypes from 'prop-types';
 import Marker from './Marker';
+import config from '../../config/index';
 import './styles.css';
 
 const MapVisualizationGoogle = ({ data, settings }) => {
   const [locationNameForInfo, setLocationNameForInfo] = useState('');
+
+  const API_GOOGLE_KEY = config.api.google;
 
   const showTip = (locationName) => {
     setLocationNameForInfo(locationName);
@@ -39,7 +42,7 @@ const MapVisualizationGoogle = ({ data, settings }) => {
       options={options}
       defaultCenter={{ lat: 40.71274, lng: -74.005974 }}
       defaultZoom={4}
-      bootstrapURLKeys={{ key: 'AIzaSyDDqI4sXO6zvU1PZJyZoUTV6DISqOUYclg' }}
+      bootstrapURLKeys={{ key: API_GOOGLE_KEY }}
     >
       {settings.longitude && settings.latitude ? displayMarkers() : null}
     </GoogleMapReact>

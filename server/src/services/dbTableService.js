@@ -8,7 +8,7 @@ export const getAllByDatabaseId = async (id) => {
   return result;
 };
 
-export const getTableData = async (id) => {
+export const getTableData = async (id, { settings }) => {
   let data = null;
   const table = await DBTable.getById(id);
   if (table) {
@@ -17,11 +17,9 @@ export const getTableData = async (id) => {
 
     try {
       await manager.init();
-      data = await manager.getTableDataByName(table.name);
+      data = await manager.getTableDataByName(table.name, settings);
     } catch (error) {
-      // console.log('///////////////////// ON GET TABLE DATA FAILED');
-      // console.log(error);
-      // console.log('///////////////////// ON GET TABLE DATA FAILED');
+      console.log(error.message);
       data = null;
       throw createError(500, 'Get table data failed');
     }

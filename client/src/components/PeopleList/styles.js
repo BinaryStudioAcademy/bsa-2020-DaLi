@@ -72,4 +72,16 @@ export const useStyles = makeStyles((theme) => ({
       border: 'none',
     },
   },
+  peopleListHeader: {
+    height: '60px',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    width: '100%',
+    boxSizing: 'border-box',
+  },
+  peopleListTitle: {
+    fontWeight: '500',
+    fontSize: '20px',
+  },
 }));

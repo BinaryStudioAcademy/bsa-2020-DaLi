@@ -1,6 +1,6 @@
 import UserRepository from '../repositories/userRepository';
 import { createToken } from '../helpers/tokenHelper';
-import { encrypt } from '../helpers/cryptoHelper';
+import { encryptSync } from '../helpers/cryptoHelper';
 
 export const login = async (data) => {
   const currentUser = await UserRepository.getUserById(data.id);
@@ -16,7 +16,7 @@ export const register = async (user) => {
   if (!candidate) {
     await UserRepository.createUsersWithDefaultGroups({
       ...user,
-      password: encrypt(user.password),
+      password: encryptSync(user.password),
     });
     return {
       status: 'Register success',

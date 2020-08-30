@@ -16,9 +16,8 @@ import ViewVisualizationHeader from './ViewVisualizationHeader/ViewVisualization
 import TableSettingsSidebar from './TableSettingsSidebar/TableSettingsSidebar';
 import BarChartSettings from './BarChartSettings';
 import PeopleList from './PeopleList';
-import PeopleListHeader from './PeopleListHeader';
+import PeopleListModal from './PeopleListModal/PeopleListModal';
 import GroupList from './GroupList';
-import AddUserModal from './AddUserModal';
 import AddVisualizationToDashboardModal from './AddVisualizationToDashboardModal/AddVisualizationToDashboardModal';
 import AnalyticsTabs from './AnalyticsTabs/AnalyticsTabs';
 import DashboardHeader from './DashboardHeader/DashboardHeader';
@@ -51,9 +50,8 @@ export {
   LineChartSettings,
   BarChartSettings,
   PeopleList,
-  PeopleListHeader,
+  PeopleListModal,
   GroupList,
-  AddUserModal,
   AddVisualizationToDashboardModal,
   AnalyticsTabs,
   DashboardHeader,

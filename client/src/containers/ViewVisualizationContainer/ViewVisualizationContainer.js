@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { Grid, Snackbar } from '@material-ui/core';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 import Alert from '@material-ui/lab/Alert';
 
@@ -22,11 +23,13 @@ import {
   getVisualizationComponent,
   getVisualizationSettings,
   getVisualizationIcon,
+  getSelectVisualizationSidebar,
   checkIsVisualizationNew,
   createDataSample,
   createInitVisualization,
   createNewVisualization,
   createUpdatedVisualization,
+  checkIsVisualizationTypeChangedDuringCreation,
 } from './helpers';
 import './ViewVisualizationContainer.css';
 
@@ -39,7 +42,7 @@ const ViewVisualizationContainer = (props) => {
     setVisualization,
     updateVisualizationConfig,
     updateVisualizationName,
-    location: { tableId },
+    location: { tableId, prevPath },
     fetchVisualization,
     fetchDataAndSchema,
     data,
@@ -52,12 +55,22 @@ const ViewVisualizationContainer = (props) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isNotificationVisible, setIsNotificationVisible] = useState(false);
   const [notificationMessage, setNotificationMessage] = useState('');
+  const [sideBarPage, setSideBarPage] = useState(0);
 
   useEffect(() => {
+    const isRedirectedFromNewVisualization = checkIsVisualizationTypeChangedDuringCreation(prevPath);
     const isNewVisualization = checkIsVisualizationNew(id);
-    if (isNewVisualization) {
+    if (!tableId && isNewVisualization) {
+      props.history.push('/data-sources');
+    }
+    if (isNewVisualization && isRedirectedFromNewVisualization) {
+      const dataSample = createDataSample(data);
+      const visualization = createInitVisualization(id, dataSample, userId, schema);
+      setVisualization(visualization);
+    } else if (isNewVisualization) {
       fetchDataAndSchema(tableId);
-    } else {
+    }
+    if (!isNewVisualization) {
       fetchVisualization(id);
       setIsVisualizationExist(true);
     }
@@ -69,7 +82,6 @@ const ViewVisualizationContainer = (props) => {
         setIsVisualizationExist(false);
         const dataSample = createDataSample(data);
         const visualization = createInitVisualization(id, dataSample, userId, schema);
-        visualization.tableId = tableId;
         setVisualization(visualization);
       }
     }
@@ -93,7 +105,16 @@ const ViewVisualizationContainer = (props) => {
 
   const onSwitchContentView = (viewType) => setCurrentView(viewType);
 
-  const onToggleSideBar = () => setIsSideBarOpen(!isSideBarOpen);
+  const onToggleSideBar = (newSideBarPage) => {
+    if (newSideBarPage !== sideBarPage && isSideBarOpen) {
+      setSideBarPage(newSideBarPage);
+    } else if (newSideBarPage === sideBarPage && isSideBarOpen) {
+      setIsSideBarOpen(false);
+    } else {
+      setIsSideBarOpen(true);
+      setSideBarPage(newSideBarPage);
+    }
+  };
 
   const openModal = () => setIsModalOpen(true);
 
@@ -136,11 +157,17 @@ const ViewVisualizationContainer = (props) => {
     closeModal();
   };
 
-  if (currentVisualization.loading) {
-    return <p>loading</p>;
-  }
+  const selectVisualizationSidebar = getSelectVisualizationSidebar(tableId);
 
-  return (
+  /* if (currentVisualization.loading) {
+    return <p>loading</p>;
+  } */
+
+  return currentVisualization.loading ? (
+    <div style={{ position: 'relative' }}>
+      <CircularProgress size={40} left={-20} top={10} style={{ marginLeft: '50%' }} />
+    </div>
+  ) : (
     <>
       <ViewVisualizationHeader
         onVisualizationSave={onVisualizationSave}
@@ -169,13 +196,19 @@ const ViewVisualizationContainer = (props) => {
             {notificationMessage}
           </Alert>
         </Snackbar>
-        {isSideBarOpen && <ViewVisualizationSidebar component={visualizationSettings} />}
+        {isSideBarOpen && (
+          <ViewVisualizationSidebar
+            components={[visualizationSettings, selectVisualizationSidebar]}
+            sideBarPage={sideBarPage}
+          />
+        )}
         <ViewVisualizationMain
           contentViewComponent={contentViewComponent}
           currentContentView={currentView}
           visualizationIcon={visualizationIcon}
           onToggleSideBar={onToggleSideBar}
           onSwitchContentView={onSwitchContentView}
+          isVisualizationExist={isVisualizationExist}
         />
       </Grid>
     </>
@@ -211,6 +244,7 @@ ViewVisualizationContainer.propTypes = {
   history: PropTypes.object,
   location: PropTypes.shape({
     tableId: PropTypes.string,
+    prevPath: PropTypes.string,
   }),
 };
 

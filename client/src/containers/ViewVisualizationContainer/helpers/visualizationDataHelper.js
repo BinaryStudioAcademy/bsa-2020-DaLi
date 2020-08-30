@@ -7,8 +7,12 @@ import TableChartOutlinedIcon from '@material-ui/icons/TableChartOutlined';
 import BarChart from '../../BarChartContainer/BarChartContainer';
 import LineChart from '../../LineChartContainer/LineChartContainer';
 import TableVisualization from '../../TableVisualizationContainer/TableVisualizationContainer';
-
-import { BarChartSettings, LineChartSettings, TableSettingsSidebar } from '../../../components';
+import {
+  BarChartSettings,
+  LineChartSettings,
+  TableSettingsSidebar,
+  SelectVisualizationSidebar,
+} from '../../../components';
 
 export const getVisualizationComponent = (visualizationType, config, updateConfig, data) => {
   switch (visualizationType) {
@@ -47,4 +51,8 @@ export const getVisualizationSettings = (visualizationType, config, updateConfig
     default:
       return null;
   }
+};
+
+export const getSelectVisualizationSidebar = (tableId) => {
+  return <SelectVisualizationSidebar tableId={tableId} />;
 };

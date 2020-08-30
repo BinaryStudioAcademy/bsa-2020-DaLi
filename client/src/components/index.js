@@ -30,6 +30,7 @@ import DeleteVisualizationWarning from './DeleteVisualizationWarning/DeleteVisua
 import PermissionsHeader from './PermissionsHeader/PermissionsHeader';
 import PermissionsTable from './PermissionsTable/PermissionsTable';
 import PermissionsModal from './PermissionsModal/PermissionsModal';
+import SelectVisualizationSidebar from './SelectVisualizationSidebar/SelectVisualizationSidebar';
 
 export {
   BarChart,
@@ -64,4 +65,5 @@ export {
   PermissionsHeader,
   PermissionsTable,
   PermissionsModal,
+  SelectVisualizationSidebar,
 };

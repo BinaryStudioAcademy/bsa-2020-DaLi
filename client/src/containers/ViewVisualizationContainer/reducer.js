@@ -14,6 +14,7 @@ const viewVisualizationReducer = (state = { loading: true, created: false }, { t
     case SET_VISUALIZATION_SUCCESS: {
       const { visualization } = payload;
       return {
+        ...state,
         ...visualization,
         loading: false,
         created: true,
@@ -24,6 +25,7 @@ const viewVisualizationReducer = (state = { loading: true, created: false }, { t
       const { visualization } = payload;
       visualization.config = JSON.parse(visualization.config);
       return {
+        ...state,
         ...visualization,
         loading: false,
         created: true,

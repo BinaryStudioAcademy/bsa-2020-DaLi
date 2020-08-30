@@ -30,10 +30,9 @@ export function* watchFetchVisualizationSaga() {
 export function* setVisualizationSaga({ payload }) {
   yield put({ type: SET_VISUALIZATION_IN_PROGRESS });
   const { visualization } = payload;
-  const visualizationData = yield call(dbTableAPIService.getTable, visualization.tableId);
   yield put({
     type: SET_VISUALIZATION_SUCCESS,
-    payload: { visualization: { ...visualization, data: visualizationData } },
+    payload: { visualization: { ...visualization } },
   });
 }
 

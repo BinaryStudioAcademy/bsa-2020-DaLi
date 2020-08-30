@@ -1,6 +1,11 @@
 /* eslint-disable camelcase */
 import { VISUALIZATIONS_TYPES_TO_CREATE } from '../constants';
-import { createInitBarChartConfig, createInitLineChartConfig, createInitTableConfig } from './initConfigsHelper';
+import {
+  createInitBarChartConfig,
+  createInitLineChartConfig,
+  createInitTableConfig,
+  createInitMapConfig,
+} from './initConfigsHelper';
 
 export const checkIsVisualizationNew = (id) => VISUALIZATIONS_TYPES_TO_CREATE.includes(id);
 
@@ -46,6 +51,10 @@ export const createInitVisualization = (visualizationType, userId, schema) => {
     case 'table':
       newVisualization.config = createInitTableConfig(schema);
       newVisualization.type = 'TABLE';
+      break;
+    case 'map':
+      newVisualization.config = createInitMapConfig(schema);
+      newVisualization.type = 'MAP';
       break;
     default:
       return null;

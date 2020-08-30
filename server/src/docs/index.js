@@ -766,7 +766,7 @@ module.exports = {
       properties: {
         type: {
           type: 'string',
-          enum: ['LINE_CHART', 'BAR_CHART', 'TABLE'],
+          enum: ['LINE_CHART', 'BAR_CHART', 'TABLE', 'MAP'],
         },
         name: {
           type: 'string',

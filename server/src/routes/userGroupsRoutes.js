@@ -61,7 +61,7 @@ router.post(
       res.status(201).json(result);
       next();
     } else {
-      const err = createError(500, 'User group creation failed');
+      const err = createError(400, 'User group creation failed');
       next(err);
     }
   })
@@ -100,7 +100,7 @@ router.delete(
       });
     }
     if (result) {
-      res.status(200).json(result);
+      res.status(200).json();
       next();
     } else if (req.query.usersUserGroupsId) {
       const err = createError(404, 'User not found');
@@ -124,7 +124,7 @@ router.post(
       res.status(200).json(result);
       next();
     } else {
-      const err = createError(500, 'User has not been added');
+      const err = createError(400, 'User has not been added');
       next(err);
     }
   })

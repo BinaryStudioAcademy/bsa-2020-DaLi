@@ -20,7 +20,7 @@ export const getDatabaseTables = async (id) => {
 export const getDatabase = async (id) => {
   const item = await DatabaseRepository.getById(id);
   if (!item) {
-    throw createError(404, `Database with id of ${id} not found`);
+    throw createError(404, `Database with id of ${id.id} not found`);
   }
   return item;
 };
@@ -72,14 +72,14 @@ export const updateDatabaseTables = async (id) => {
       deleted: excessTableNames,
     };
   } catch (error) {
-    throw createError(500, 'Database tables update failed');
+    throw createError(400, 'Database tables update failed');
   }
 };
 
 export const createDatabase = async (database) => {
   const isRepeat = await DatabaseRepository.findDatabaseWithCredentials({ ...database });
   if (isRepeat) {
-    throw createError(400, 'Such database is already exists');
+    throw createError(409, 'Such database is already exists');
   }
 
   let manager = new DBManager(database);
@@ -96,7 +96,7 @@ export const createDatabase = async (database) => {
     });
   } catch (error) {
     database = null;
-    throw createError(500, `Table creation failed, invalid database credentials: ${error.message}`);
+    throw createError(400, `Table creation failed, invalid database credentials: ${error.message}`);
   }
 
   await manager.destroy();
@@ -107,7 +107,7 @@ export const createDatabase = async (database) => {
 export const deleteDatabase = async (id) => {
   const item = await DatabaseRepository.getById(id);
   if (!item) {
-    throw createError(404, `Database with id of ${id} not found`);
+    throw createError(404, `Database with id of ${id.id} not found`);
   }
   const result = await DatabaseRepository.deleteById(id);
   return result;
@@ -116,9 +116,8 @@ export const deleteDatabase = async (id) => {
 export const updateDatabase = async (id, dataToUpdate) => {
   const item = await DatabaseRepository.getById(id);
   if (!item) {
-    throw createError(404, `Database with id of ${id} not found`);
+    throw createError(404, `Database with id of ${id.id} not found`);
   }
   const result = await DatabaseRepository.updateById(id, dataToUpdate);
   return result;
 };
-

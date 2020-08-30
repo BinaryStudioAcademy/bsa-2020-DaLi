@@ -18,7 +18,7 @@ router.post(
       res.status(200).json(result);
       next();
     } else {
-      const err = createError(500, 'fetching table data failed');
+      const err = createError(400, 'fetching table data failed');
       next(err);
     }
   })
@@ -34,7 +34,7 @@ router.get(
       res.status(200).json(result);
       next();
     } else {
-      const err = createError(500, 'fetching table schema failed');
+      const err = createError(400, 'fetching table schema failed');
       next(err);
     }
   })

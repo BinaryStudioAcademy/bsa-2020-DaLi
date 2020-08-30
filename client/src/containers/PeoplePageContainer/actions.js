@@ -10,6 +10,9 @@ import {
   RESET_PASSWORD,
   GET_MEMBERSHIPS,
   RESET_NOTIFICATION,
+  OPEN_MODAL,
+  SET_FORM_DATA,
+  CLOSE_MODAL,
 } from './actionTypes';
 
 export const getUsers = () => {
@@ -82,5 +85,25 @@ export const resetPassword = (id) => {
 export const getMembership = () => {
   return {
     type: GET_MEMBERSHIPS,
+  };
+};
+
+export const openModal = (payload = {}) => {
+  return {
+    type: OPEN_MODAL,
+    payload,
+  };
+};
+
+export const closeModal = () => {
+  return {
+    type: CLOSE_MODAL,
+  };
+};
+
+export const setFormData = (payload) => {
+  return {
+    type: SET_FORM_DATA,
+    payload,
   };
 };

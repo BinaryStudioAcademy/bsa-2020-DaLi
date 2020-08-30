@@ -15,6 +15,9 @@ import {
   GET_MEMBERSHIPS_ERROR,
   GET_MEMBERSHIPS_SUCCESS,
   RESET_NOTIFICATION,
+  OPEN_MODAL,
+  SET_FORM_DATA,
+  CLOSE_MODAL,
 } from './actionTypes';
 
 const initialState = {
@@ -25,6 +28,12 @@ const initialState = {
   error: null,
   message: '',
   status: '',
+  modal: {},
+  formData: {
+    firstName: '',
+    lastName: '',
+    email: '',
+  },
 };
 
 const usersListReducer = (state = initialState, { type, payload }) => {
@@ -120,6 +129,29 @@ const usersListReducer = (state = initialState, { type, payload }) => {
       return {
         ...state,
         isLoading: payload,
+      };
+    }
+    case OPEN_MODAL: {
+      return {
+        ...state,
+        modal: { user: payload.user, type: payload.type, open: true },
+      };
+    }
+    case CLOSE_MODAL: {
+      return {
+        ...state,
+        modal: {},
+        formData: {
+          firstName: '',
+          lastName: '',
+          email: '',
+        },
+      };
+    }
+    case SET_FORM_DATA: {
+      return {
+        ...state,
+        formData: payload,
       };
     }
     default:

@@ -5,6 +5,7 @@ import Box from '@material-ui/core/Box';
 import EqualizerOutlinedIcon from '@material-ui/icons/EqualizerOutlined';
 import TimelineOutlinedIcon from '@material-ui/icons/TimelineOutlined';
 import TableChartOutlinedIcon from '@material-ui/icons/TableChartOutlined';
+import MapOutlinedIcon from '@material-ui/icons/MapOutlined';
 import DashboardIcon from '@material-ui/icons/Dashboard';
 import Tooltip from '@material-ui/core/Tooltip';
 import InfoIcon from '@material-ui/icons/Info';
@@ -38,6 +39,9 @@ const AnalyticsTabsPanel = ({ value, index, data, deleteVisualization, deleteDas
       case 'TABLE': {
         return <TableChartOutlinedIcon className={classes.icon} />;
       }
+      case 'MAP': {
+        return <MapOutlinedIcon className={classes.icon} />;
+      }
       default: {
         return <DashboardIcon className={classes.icon} />;
       }
@@ -56,9 +60,11 @@ const AnalyticsTabsPanel = ({ value, index, data, deleteVisualization, deleteDas
                     {chooseIcon(item.type)}
                     <span>{item.name}</span>
                   </Link>
-                  <Tooltip title={item.description} placement="left" className={classes.description}>
-                    <InfoIcon />
-                  </Tooltip>
+                  {item.description.length ? (
+                    <Tooltip title={item.description} placement="left" className={classes.description}>
+                      <InfoIcon />
+                    </Tooltip>
+                  ) : null}
                   <DeleteIcon className={classes.menuIcon} id={item.id} onClick={deleteDashboard(item.id)} />
                 </>
               ) : (

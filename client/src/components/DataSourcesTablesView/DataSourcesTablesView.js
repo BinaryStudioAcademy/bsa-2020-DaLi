@@ -5,14 +5,20 @@ import Breadcrumbs from '@material-ui/core/Breadcrumbs';
 import Typography from '@material-ui/core/Typography';
 import { NavLink } from 'react-router-dom';
 import NavigateNextIcon from '@material-ui/icons/NavigateNext';
-import { Grid } from '@material-ui/core';
+import { Grid, Button } from '@material-ui/core';
+import SyncIcon from '@material-ui/icons/Sync';
 import TableItem from './TableItem';
 
 import './styles.css';
 
 const useStyles = makeStyles(() => ({
-  breadcrumbs: {
-    marginBottom: '15px',
+  header: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    width: '100%',
+    boxSizing: 'border-box',
+    paddingBottom: '20px',
   },
   breadcrumbsItem: {
     textDecoration: 'none',
@@ -36,29 +42,30 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-const DataSourcesTablesView = ({ tables, currentDbName }) => {
+const DataSourcesTablesView = ({ tables, currentDbName, databaseId, syncDatabaseTables }) => {
   const classes = useStyles();
 
   return (
     <main className="data-source-view">
-      <Breadcrumbs
-        className={classes.breadcrumbs}
-        separator={<NavigateNextIcon className={classes.separator} />}
-        aria-label="breadcrumb"
-      >
-        <NavLink
-          className={classes.breadcrumbsItem}
-          color="inherit"
-          to={{
-            pathname: '/data-sources',
-          }}
-        >
-          Our data
-        </NavLink>
-        <Typography className={classes.breadcrumbsItem} color="textPrimary">
-          {currentDbName}
-        </Typography>
-      </Breadcrumbs>
+      <Grid className={classes.header}>
+        <Breadcrumbs separator={<NavigateNextIcon className={classes.separator} />} aria-label="breadcrumb">
+          <NavLink
+            className={classes.breadcrumbsItem}
+            color="inherit"
+            to={{
+              pathname: '/data-sources',
+            }}
+          >
+            Our data
+          </NavLink>
+          <Typography className={classes.breadcrumbsItem} color="textPrimary">
+            {currentDbName}
+          </Typography>
+        </Breadcrumbs>
+        <Button variant="contained" startIcon={<SyncIcon />} onClick={() => syncDatabaseTables(databaseId)}>
+          sync tables
+        </Button>
+      </Grid>
       <Grid container className={classes.itemList}>
         {tables.map((table) => {
           return <TableItem key={table.id} table={table} />;
@@ -71,6 +78,8 @@ const DataSourcesTablesView = ({ tables, currentDbName }) => {
 DataSourcesTablesView.propTypes = {
   tables: PropTypes.array,
   currentDbName: PropTypes.string,
+  syncDatabaseTables: PropTypes.func,
+  databaseId: PropTypes.string,
 };
 
 export default DataSourcesTablesView;

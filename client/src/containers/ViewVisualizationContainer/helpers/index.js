@@ -7,7 +7,6 @@ import {
 } from './visualizationDataHelper';
 import {
   checkIsVisualizationNew,
-  createDataSample,
   createInitVisualization,
   checkIsVisualizationTypeChangedDuringCreation,
 } from './initVisualizationHelper';
@@ -19,7 +18,6 @@ export {
   getVisualizationSettings,
   getVisualizationIcon,
   checkIsVisualizationNew,
-  createDataSample,
   createInitVisualization,
   createNewVisualization,
   createUpdatedVisualization,

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 import Button from '@material-ui/core/Button';
+import { GrPowerReset } from 'react-icons/gr';
 
 import PropertyItem from './PropertyItem';
 import './styles.css';
@@ -22,7 +23,7 @@ const testConfig = {
   },
 };
 
-const TableSettingsSidebar = ({ config, updateConfig }) => {
+const TableSettingsSidebar = ({ config, updateConfig, userNotificationError }) => {
   config = config || testConfig;
 
   const [tableConfig, setTableConfig] = useState(config);
@@ -58,14 +59,34 @@ const TableSettingsSidebar = ({ config, updateConfig }) => {
   };
 
   const deleteColumn = (id) => () => {
-    const result = [...tableConfig.columns];
-    const index = result.findIndex((item) => item.id === id);
-    result.splice(index, 1);
-    updateColumnConfig(result);
+    const columns = [...tableConfig.columns];
+    const updatedColumns = columns.map((column) => {
+      if (column.id === id) {
+        return { ...column, visible: false };
+      }
+      return column;
+    });
+    updateColumnConfig(updatedColumns);
+  };
+
+  const onColumnsRestore = () => {
+    const columns = [...tableConfig.columns];
+    const updatedColumns = columns
+      .map((column) => ({ ...column, visible: true, order: column.initOrder }))
+      .sort((a, b) => {
+        return a.order - b.order;
+      });
+    setTableConfig({ ...tableConfig, columns: updatedColumns });
   };
 
   const saveConfig = () => {
-    updateConfig(tableConfig);
+    const isVisibleColumnsExist = tableConfig.columns.filter((column) => column.visible).length;
+    if (isVisibleColumnsExist) {
+      updateConfig(tableConfig);
+    } else {
+      userNotificationError('The table cannot be without columns');
+      setTableConfig(config);
+    }
   };
 
   const getListStyle = (isDraggingOver) => ({
@@ -74,7 +95,9 @@ const TableSettingsSidebar = ({ config, updateConfig }) => {
 
   return (
     <div className="table-settings-sidebar-container">
-      <h3>Visible columns</h3>
+      <h3>
+        Visible columns <GrPowerReset className="columns-restore-icon" onClick={onColumnsRestore} />
+      </h3>
       <p>Click and drag to change their order</p>
       <DragDropContext onDragEnd={onDragEnd}>
         <Droppable droppableId="droppable">
@@ -85,15 +108,18 @@ const TableSettingsSidebar = ({ config, updateConfig }) => {
               className="property-item-container"
               style={getListStyle(snapshot.isDraggingOver)}
             >
-              {tableConfig.columns.map((property, index) => (
-                <PropertyItem
-                  name={property.title}
-                  id={property.id}
-                  key={property.id}
-                  index={index}
-                  deleteColumn={deleteColumn}
-                />
-              ))}
+              {tableConfig.columns.map(
+                (column, index) =>
+                  column.visible && (
+                    <PropertyItem
+                      name={column.title}
+                      id={column.id}
+                      key={column.id}
+                      index={index}
+                      deleteColumn={deleteColumn}
+                    />
+                  )
+              )}
             </div>
           )}
         </Droppable>
@@ -110,6 +136,7 @@ const TableSettingsSidebar = ({ config, updateConfig }) => {
 TableSettingsSidebar.propTypes = {
   config: PropTypes.object,
   updateConfig: PropTypes.func,
+  userNotificationError: PropTypes.func,
 };
 
 export default TableSettingsSidebar;

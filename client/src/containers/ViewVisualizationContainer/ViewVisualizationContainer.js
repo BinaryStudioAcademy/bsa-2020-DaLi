@@ -25,7 +25,6 @@ import {
   getVisualizationIcon,
   getSelectVisualizationSidebar,
   checkIsVisualizationNew,
-  createDataSample,
   createInitVisualization,
   createNewVisualization,
   createUpdatedVisualization,
@@ -56,6 +55,13 @@ const ViewVisualizationContainer = (props) => {
   const [isNotificationVisible, setIsNotificationVisible] = useState(false);
   const [notificationMessage, setNotificationMessage] = useState('');
   const [sideBarPage, setSideBarPage] = useState(0);
+  const [notificationType, setNotificationType] = useState('success');
+
+  const userNotificationError = (notification) => {
+    setIsNotificationVisible(true);
+    setNotificationMessage(notification);
+    setNotificationType('error');
+  };
 
   useEffect(() => {
     const isRedirectedFromNewVisualization = checkIsVisualizationTypeChangedDuringCreation(prevPath);
@@ -64,8 +70,8 @@ const ViewVisualizationContainer = (props) => {
       props.history.push('/data-sources');
     }
     if (isNewVisualization && isRedirectedFromNewVisualization) {
-      const dataSample = createDataSample(data);
-      const visualization = createInitVisualization(id, dataSample, userId, schema);
+      // const dataSample = createDataSample(data);
+      const visualization = createInitVisualization(id, userId, schema);
       setVisualization(visualization);
     } else if (isNewVisualization) {
       fetchDataAndSchema(tableId);
@@ -80,8 +86,7 @@ const ViewVisualizationContainer = (props) => {
     if ('data' in currentVisualization) {
       if (currentVisualization.created !== true) {
         setIsVisualizationExist(false);
-        const dataSample = createDataSample(data);
-        const visualization = createInitVisualization(id, dataSample, userId, schema);
+        const visualization = createInitVisualization(id, userId, schema);
         setVisualization(visualization);
       }
     }
@@ -97,7 +102,8 @@ const ViewVisualizationContainer = (props) => {
   const visualizationSettings = getVisualizationSettings(
     currentVisualization.type,
     currentVisualization.config,
-    updateVisualizationConfig
+    updateVisualizationConfig,
+    userNotificationError
   );
   const visualizationIcon = getVisualizationIcon(currentVisualization.type);
 
@@ -137,6 +143,7 @@ const ViewVisualizationContainer = (props) => {
     const updatedVisualization = createUpdatedVisualization(currentVisualization);
     visualizationsAPIService.updateVisualization(id, updatedVisualization);
     setNotificationMessage('Visualization has been successfully updated');
+    setNotificationType('success');
     displayNotification(true);
   };
 
@@ -192,7 +199,7 @@ const ViewVisualizationContainer = (props) => {
           autoHideDuration={6000}
           onClose={hideNotification}
         >
-          <Alert elevation={6} variant="filled" severity="success" onClose={hideNotification}>
+          <Alert elevation={6} variant="filled" severity={notificationType} onClose={hideNotification}>
             {notificationMessage}
           </Alert>
         </Snackbar>

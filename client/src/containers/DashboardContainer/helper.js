@@ -2,6 +2,7 @@ import React from 'react';
 import DeleteIcon from '@material-ui/icons/Delete';
 import BarChart from '../BarChartContainer/BarChartContainer';
 import LineChart from '../LineChartContainer/LineChartContainer';
+import MapVisualization from '../MapVisualizationContainer/MapVisualizationContainer';
 import TableVisualization from '../TableVisualizationContainer/TableVisualizationContainer';
 
 export const getVisualization = (visualizationId, visualizations) => {
@@ -25,6 +26,8 @@ export const getVisualizationComponent = (visualizationType, config, data) => {
       return <LineChart config={config} data={data} />;
     case 'TABLE':
       return <TableVisualization config={config} updateConfig={() => {}} data={data} />;
+    case 'MAP':
+      return <MapVisualization config={config} data={data} />;
     default:
       return null;
   }

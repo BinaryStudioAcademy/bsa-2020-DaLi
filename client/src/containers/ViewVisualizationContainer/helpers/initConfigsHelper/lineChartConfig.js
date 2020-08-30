@@ -1,8 +1,6 @@
-function createInitLineChartConfig(dataSample, schema, getYKeys, getXKeys) {
-  const keys = Object.keys(dataSample);
+function createInitLineChartConfig(schema, getYKeys, getXKeys) {
   const YKeys = getYKeys(schema);
   const XKeys = getXKeys(schema);
-  if (keys.length < 2) throw Error('The table must contain at least 2 columns');
   return {
     axisData: {
       XAxis: {

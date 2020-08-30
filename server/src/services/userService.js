@@ -33,10 +33,7 @@ export const deleteUser = async (id) => {
 };
 
 export const updateUser = async (id, dataToUpdate) => {
-  console.log('./////////////////////////////////////////////////');
-  console.log(id, dataToUpdate);
   const item = await UserRepository.getById(id);
-  console.log(item);
   if (!item) {
     throw createError(404, `User with id of ${id} not found`);
   }

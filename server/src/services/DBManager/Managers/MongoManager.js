@@ -1,4 +1,5 @@
 import { MongoClient } from 'mongodb';
+import schemaNormalizer from '../helpers/mongoDataTypeNormalizer';
 
 export default class DBMongoManager {
   constructor(databaseURL, dbName) {
@@ -16,9 +17,16 @@ export default class DBMongoManager {
     return this.client.close();
   }
 
-  getTablenames() {
-    const collectionList = this.client.db(this.dbName).listCollections();
-    return collectionList.map((collection) => collection.name);
+  async getTablenames() {
+    let tableNames = [];
+    await this.client
+      .db(this.dbName)
+      .listCollections()
+      .toArray()
+      .then((collections) => {
+        tableNames = collections.map((collection) => collection.name);
+      });
+    return tableNames;
   }
 
   async getTableDataByName(name) {
@@ -57,7 +65,7 @@ export default class DBMongoManager {
           .toArray()
           .then((result) => {
             fieldSchema = {
-              data_type: result[0].type,
+              data_type: schemaNormalizer(result[0].type),
               column_name: fieldName,
             };
           });

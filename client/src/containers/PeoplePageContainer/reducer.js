@@ -74,17 +74,25 @@ const usersListReducer = (state = initialState, { type, payload }) => {
         membership: data,
       };
     }
-    case ADD_USER_ERROR:
-    case DELETE_USER_ERROR:
-    case UPDATE_USER_FROM_LIST_ERROR:
-    case GET_USERS_ERROR:
-    case RESET_PASSWORD_ERROR:
     case GET_MEMBERSHIPS_ERROR: {
       return {
         ...state,
         error: payload,
         temporaryPasswords: '',
         membership: [],
+        message: payload.message,
+        status: 'error',
+      };
+    }
+    case ADD_USER_ERROR:
+    case DELETE_USER_ERROR:
+    case UPDATE_USER_FROM_LIST_ERROR:
+    case GET_USERS_ERROR:
+    case RESET_PASSWORD_ERROR: {
+      return {
+        ...state,
+        error: payload,
+        temporaryPasswords: '',
         message: payload.message,
         status: 'error',
       };

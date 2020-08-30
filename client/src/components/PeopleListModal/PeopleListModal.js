@@ -29,6 +29,7 @@ const PeopleListModal = ({
   toggleUserStatus,
   password,
   resetPassword,
+  currentUserId,
 }) => {
   const classes = useStyles();
 
@@ -43,6 +44,7 @@ const PeopleListModal = ({
             formData={formData}
             user={modal.user}
             setFormData={setFormData}
+            currentUserId={currentUserId}
           />
         </>
       </Modal>
@@ -88,6 +90,7 @@ const PeopleListModal = ({
 };
 
 PeopleListModal.propTypes = {
+  currentUserId: PropTypes.string,
   openModal: PropTypes.func,
   isOpen: PropTypes.bool,
   modal: PropTypes.object,
@@ -101,8 +104,9 @@ PeopleListModal.propTypes = {
   resetPassword: PropTypes.func,
 };
 
-const mapStateToProps = ({ admin: { people } }) => {
+const mapStateToProps = ({ currentUser, admin: { people } }) => {
   return {
+    currentUserId: currentUser.user.id,
     isOpen: people.modal.open,
     modal: people.modal,
     formData: people.formData,

@@ -107,7 +107,9 @@ export function* updateUser({ payload }) {
     yield put({ type: UPDATE_USER_FROM_LIST_SUCCESS, payload: res });
     yield put({ type: CLOSE_MODAL });
     yield put({ type: GET_USERS });
-    yield put({ type: FETCH_USER });
+    if (payload.isCurrentUser) {
+      yield put({ type: FETCH_USER });
+    }
   } catch (error) {
     yield put({ type: UPDATE_USER_FROM_LIST_ERROR, payload: error });
   }

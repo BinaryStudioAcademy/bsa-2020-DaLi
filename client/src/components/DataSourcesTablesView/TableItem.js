@@ -22,8 +22,8 @@ const TableItem = ({ table }) => {
 
   const onTableClick = () => {
     history.push({
-      pathname: '/select-visualization',
-      state: { tableId: table.id },
+      pathname: '/select-visualization/table',
+      tableId: table.id,
     });
   };
 

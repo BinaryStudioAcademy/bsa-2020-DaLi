@@ -19,7 +19,6 @@ import {
 import InitialTable from '../InitialTableContainer/InitialTableContainer';
 
 import {
-  getVisualization,
   getVisualizationComponent,
   getVisualizationSettings,
   getVisualizationIcon,
@@ -40,8 +39,11 @@ const ViewVisualizationContainer = (props) => {
     setVisualization,
     updateVisualizationConfig,
     updateVisualizationName,
-    location: { data, schema, tableId },
+    location: { tableId },
     fetchVisualization,
+    fetchDataAndSchema,
+    data,
+    schema,
   } = props;
 
   const [currentView, setCurrentView] = useState('table');
@@ -61,22 +63,33 @@ const ViewVisualizationContainer = (props) => {
   };
 
   useEffect(() => {
-    let visualization;
     const isNewVisualization = checkIsVisualizationNew(id);
     if (isNewVisualization) {
-      setIsVisualizationExist(false);
-      visualization = createInitVisualization(id, userId, schema);
-      setVisualization(visualization);
-    } else if (visualizations.length) {
-      visualization = getVisualization(visualizations, id);
-      setIsVisualizationExist(true);
-      setVisualization(visualization);
+      //   setIsVisualizationExist(false);
+      //   visualization = createInitVisualization(id, userId, schema);
+      //   setVisualization(visualization);
+      // } else if (visualizations.length) {
+      //   visualization = getVisualization(visualizations, id);
+      //   setIsVisualizationExist(true);
+      //   setVisualization(visualization);
+      fetchDataAndSchema(tableId);
     } else {
       fetchVisualization(id);
       setIsVisualizationExist(true);
     }
-    setVisualization(visualization);
-  }, [id, visualizations, userId, setVisualization, data, schema, fetchVisualization]);
+  }, [id, visualizations, userId, setVisualization, fetchVisualization]);
+
+  useEffect(() => {
+    if ('data' in currentVisualization) {
+      if (currentVisualization.created !== true) {
+        setIsVisualizationExist(false);
+        // const dataSample = createDataSample(data);
+        const visualization = createInitVisualization(id, dataSample, userId, schema);
+        visualization.tableId = tableId;
+        setVisualization(visualization);
+      }
+    }
+  }, [data]);
 
   const visualizationComponent = getVisualizationComponent(
     currentVisualization.type,
@@ -91,7 +104,6 @@ const ViewVisualizationContainer = (props) => {
     updateVisualizationConfig,
     userNotificationError
   );
-
   const visualizationIcon = getVisualizationIcon(currentVisualization.type);
 
   const contentViewComponent = currentView === 'table' ? <InitialTable data={data} /> : visualizationComponent;
@@ -154,6 +166,10 @@ const ViewVisualizationContainer = (props) => {
     closeModal();
   };
 
+  if (currentVisualization.loading) {
+    return <p>loading</p>;
+  }
+
   return (
     <>
       <ViewVisualizationHeader
@@ -203,6 +219,8 @@ const mapStateToProps = (state) => {
     currentVisualization: state.currentVisualization,
     visualizations: state.analytics.visualizations,
     userId: state.currentUser.user.id,
+    data: state.currentVisualization.data,
+    schema: state.currentVisualization.schema,
   };
 };
 
@@ -219,10 +237,11 @@ ViewVisualizationContainer.propTypes = {
   fetchVisualization: PropTypes.func,
   updateVisualizationConfig: PropTypes.func,
   updateVisualizationName: PropTypes.func,
+  fetchDataAndSchema: PropTypes.func,
+  data: PropTypes.array,
+  schema: PropTypes.array,
   history: PropTypes.object,
   location: PropTypes.shape({
-    data: PropTypes.array,
-    schema: PropTypes.array,
     tableId: PropTypes.string,
   }),
 };

@@ -7,8 +7,6 @@ import PropTypes from 'prop-types';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import { dbTableAPIService } from '../../services/api/dbTableAPI.service';
 
-import './styles.css';
-
 const iconStyles = {
   fontSize: 200,
 };

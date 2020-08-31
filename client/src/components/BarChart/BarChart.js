@@ -21,6 +21,7 @@ function BarChart(props) {
     const chart = d3.select(svgRef.current);
     chart.selectAll('*').remove();
     const { data } = props;
+    data.forEach(item => item[YAxis.key] = Number(item[YAxis.key]));
     const yDataRange = {
       min: calcMinYDataValue(
         d3.min(data, (d) => d[YAxis.key]),

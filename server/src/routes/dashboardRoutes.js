@@ -35,10 +35,10 @@ router.post(
   asyncHandler(async (req, res, next) => {
     const result = await DashboardService.createDashboard(req.body);
     if (result) {
-      res.status(200).json(result);
+      res.status(201).json(result);
       next();
     } else {
-      const err = createError(500, 'Dashboard creation failed');
+      const err = createError(400, 'Dashboard creation failed');
       next(err);
     }
   })
@@ -57,7 +57,7 @@ router.patch(
       res.status(200).json(result);
       next();
     } else {
-      const err = createError(500, 'Dashboard update failed');
+      const err = createError(400, 'Dashboard update failed');
       next(err);
     }
   })
@@ -77,7 +77,7 @@ router.delete(
       });
     }
     if (result) {
-      res.status(200).json(result);
+      res.status(200).json();
       next();
     } else if (req.query.dashboardVisualizationsId) {
       const err = createError(404, 'Visualization not found');
@@ -101,7 +101,7 @@ router.post(
       res.status(200).json(result);
       next();
     } else {
-      const err = createError(500, 'Visualization has not been added');
+      const err = createError(400, 'Visualization has not been added');
       next(err);
     }
   })

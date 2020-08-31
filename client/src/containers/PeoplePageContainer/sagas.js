@@ -32,7 +32,7 @@ export function* getUsersSaga() {
     yield put({ type: GET_USERS_SUCCESS, payload: res });
     yield put(SetIsLoading(false));
   } catch (error) {
-    yield put({ type: GET_USERS_ERROR, error });
+    yield put({ type: GET_USERS_ERROR, payload: error });
     yield put(SetIsLoading(false));
   }
 }
@@ -48,7 +48,7 @@ export function* getUsersMembershipSaga() {
     yield put({ type: GET_MEMBERSHIPS_SUCCESS, payload: response });
     yield put(SetIsLoading(false));
   } catch (error) {
-    yield put({ type: GET_MEMBERSHIPS_ERROR, error });
+    yield put({ type: GET_MEMBERSHIPS_ERROR, payload: error });
     yield put(SetIsLoading(false));
   }
 }
@@ -65,7 +65,7 @@ export function* addUserSaga(payload) {
     yield put(setTemporaryPassword(response.password));
     yield put({ type: GET_USERS });
   } catch (error) {
-    yield put({ type: ADD_USER_ERROR, error });
+    yield put({ type: ADD_USER_ERROR, payload: error });
     yield put(SetIsLoading(false));
   }
 }
@@ -81,7 +81,7 @@ export function* deleteUserSaga(payload) {
     yield put({ type: DELETE_USER_SUCCESS });
     yield put({ type: GET_USERS });
   } catch (error) {
-    yield put({ type: DELETE_USER_ERROR, error });
+    yield put({ type: DELETE_USER_ERROR, payload: error });
     yield put(SetIsLoading(false));
   }
 }

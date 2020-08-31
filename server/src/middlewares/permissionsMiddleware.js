@@ -16,4 +16,4 @@ export const permissionsMiddleware = asyncHandler(async (req, res) => {
 
   const data = res.data.filter((item) => dataId.includes(item.id));
   return res.send(data);
-};
+});

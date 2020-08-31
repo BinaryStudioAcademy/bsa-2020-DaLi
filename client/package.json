@@ -17,6 +17,7 @@
     "formik": "^2.1.5",
     "history": "^5.0.0",
     "material-ui-color-picker": "^3.5.0",
+    "moment": "^2.27.0",
     "prop-types": "^15.7.2",
     "qs": "^6.9.4",
     "query-string": "^6.13.1",

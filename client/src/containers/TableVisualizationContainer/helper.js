@@ -1,3 +1,5 @@
+import moment from 'moment';
+
 const descendingComparator = (a, b, orderBy) => {
   if (b[orderBy] < a[orderBy]) {
     return -1;
@@ -62,9 +64,146 @@ const updateRowsOrder = (rows, columns) => {
   });
 };
 
+const formatNumbers = (columnConfig, data) => {
+  let formattedData = data;
+  const { decimalPlaces, multiplyBy, separatorType } = columnConfig;
+
+  if (multiplyBy) {
+    formattedData *= multiplyBy;
+  }
+
+  if (separatorType || decimalPlaces) {
+    const currentDecimalPlaces = decimalPlaces || 0;
+
+    switch (separatorType) {
+      case 1: {
+        formattedData = Number(formattedData).toLocaleString('ru', {
+          minimumFractionDigits: currentDecimalPlaces,
+        });
+        break;
+      }
+      case 2: {
+        formattedData = Number(formattedData).toLocaleString('en', {
+          minimumFractionDigits: currentDecimalPlaces,
+        });
+        break;
+      }
+      case 3: {
+        formattedData = Number(formattedData).toLocaleString('de', {
+          minimumFractionDigits: currentDecimalPlaces,
+        });
+        break;
+      }
+      default: {
+        formattedData = Number(formattedData).toLocaleString('en', {
+          useGrouping: false,
+          minimumFractionDigits: currentDecimalPlaces,
+        });
+      }
+    }
+  }
+
+  return formattedData;
+};
+
+const formatDate = (columnConfig, data) => {
+  let formattedDate = moment(data).format('MMMM DD, YYYY');
+  let formatterTime = '';
+  const { displayTime, timeStyle, timeType } = columnConfig;
+
+  if (timeType) {
+    switch (timeType) {
+      case 1: {
+        formattedDate = moment(data).format('DD MMMM, YYYY');
+        break;
+      }
+      case 2: {
+        formattedDate = moment(data).format('dddd, MMMM DD, YYYY');
+        break;
+      }
+      case 3: {
+        formattedDate = moment(data).format('MM/DD/YYYY');
+        break;
+      }
+      case 4: {
+        formattedDate = moment(data).format('DD/MM/YYYY');
+        break;
+      }
+      case 5: {
+        formattedDate = moment(data).format('YYYY/MM/DD');
+        break;
+      }
+      default: {
+        break;
+      }
+    }
+  }
+
+  if (displayTime) {
+    switch (displayTime) {
+      case '1': {
+        formatterTime = moment(data).format('hh:mm A');
+        break;
+      }
+      case '2': {
+        formatterTime = moment(data).format('hh:mm:ss A');
+        break;
+      }
+      case '3': {
+        formatterTime = moment(data).format('hh:mm:ss:SSS A');
+        break;
+      }
+      default: {
+        break;
+      }
+    }
+  }
+
+  if (displayTime && timeStyle) {
+    switch (displayTime) {
+      case '1': {
+        formatterTime = moment(data).format('HH:mm');
+        break;
+      }
+      case '2': {
+        formatterTime = moment(data).format('HH:mm:ss');
+        break;
+      }
+      case '3': {
+        formatterTime = moment(data).format('HH:mm:ss:SSS');
+        break;
+      }
+      default: {
+        break;
+      }
+    }
+  }
+
+  return `${formattedDate} ${formatterTime && formatterTime}`;
+};
+
+const formatRowsData = (data, columns) => {
+  return data.map((item) => {
+    const updatedItem = {};
+    Object.keys(item).map((key) => {
+      const currentColumn = columns.find((column) => column.id === key);
+      if (columns.find((column) => column.id === key && column.type === 'number')) {
+        updatedItem[key] = formatNumbers(currentColumn, item[key]);
+      } else if (columns.find((column) => column.id === key && column.type === 'date')) {
+        updatedItem[key] = formatDate(currentColumn, item[key]);
+      } else {
+        updatedItem[key] = item[key];
+      }
+      return null;
+    });
+    return updatedItem;
+  });
+};
+
 export const getRows = (data, columns, sortOrder, sortOrderBy) => {
   const rows = removeRows(data, columns);
-  const updatedRows = updateRowsOrder(rows, columns);
+  const formattedRows = formatRowsData(rows, columns);
+  const updatedRows = updateRowsOrder(formattedRows, columns);
   const sortedRows = sortRows(updatedRows, sortOrder, sortOrderBy);
   return sortedRows;
 };

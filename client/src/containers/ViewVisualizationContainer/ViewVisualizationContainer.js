@@ -1,5 +1,4 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-/* eslint-disable no-console */
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
@@ -56,7 +55,6 @@ const ViewVisualizationContainer = (props) => {
   const [isSideBarOpen, setIsSideBarOpen] = useState(false);
   const [isRightSideBarOpen, setIsRightSideBarOpen] = useState(false);
   const [rightSideBarType, setRightSideBarType] = useState('');
-  // const [isVisualizationExist, setIsVisualizationExist] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isNotificationVisible, setIsNotificationVisible] = useState(false);
   const [notificationMessage, setNotificationMessage] = useState('');
@@ -143,7 +141,12 @@ const ViewVisualizationContainer = (props) => {
 
   const createVisualization = ({ name, description }) => {
     updateVisualizationName({ name, description });
-    const newVisualization = createNewVisualization(currentVisualization, name, description, tableId);
+    const newVisualization = createNewVisualization(
+      currentVisualization,
+      name,
+      description,
+      currentVisualization.tableId
+    );
     visualizationsAPIService.createVisualization(newVisualization);
     closeModal();
     props.history.push('/');
@@ -234,7 +237,7 @@ const ViewVisualizationContainer = (props) => {
 const mapStateToProps = (state) => {
   return {
     currentVisualization: state.currentVisualization,
-    visualizations: state.analytics.visualizations,
+    // visualizations: state.analytics.visualizations,
     userId: state.currentUser.user.id,
     data: state.currentVisualization.data,
     schema: state.currentVisualization.schema,

@@ -20,7 +20,12 @@ const PeopleListHeader = ({ addUser }) => {
     <div>
       <Grid className={classes.peopleListHeader}>
         <Typography className={classes.peopleListTitle}>People</Typography>
-        <Button className={classes.addPersonButton} variant="contained" onClick={showAddUserModal}>
+        <Button
+          className={classes.addPersonButton}
+          variant="contained"
+          onClick={showAddUserModal}
+          id="admin-addSomeone"
+        >
           Add someone
         </Button>
       </Grid>

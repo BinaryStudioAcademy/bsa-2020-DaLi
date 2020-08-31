@@ -91,6 +91,7 @@ const MyForm = ({ resetForm, isValid, dirty, cancel, errors, touched, editMode }
           name="firstName"
           as="input"
           placeholder="Johnny"
+          id="addUser-firstName"
           style={touched.firstName && errors.firstName ? { borderColor: 'red' } : {}}
         />
         <div className="labelsContainer">
@@ -101,6 +102,7 @@ const MyForm = ({ resetForm, isValid, dirty, cancel, errors, touched, editMode }
           name="lastName"
           as="input"
           placeholder="Appleseed"
+          id="addUser-lastName"
           style={touched.name && errors.name ? { borderColor: 'red' } : {}}
         />
         <div className="labelsContainer">
@@ -110,12 +112,18 @@ const MyForm = ({ resetForm, isValid, dirty, cancel, errors, touched, editMode }
         <Field
           name="email"
           as="input"
+          id="addUser-email"
           placeholder="youlooknicetoday@email.com"
           style={touched.name && errors.name ? { borderColor: 'red' } : {}}
         />
       </DialogContent>
       <MuiDialogActions className="addUserModalFooter">
-        <Button onClick={cancel(resetForm)} variant="outlined" style={{ textTransform: 'none', fontSize: 12 }}>
+        <Button
+          onClick={cancel(resetForm)}
+          variant="outlined"
+          style={{ textTransform: 'none', fontSize: 12 }}
+          id="addUser-cancel"
+        >
           Cancel
         </Button>
         <Button
@@ -123,6 +131,7 @@ const MyForm = ({ resetForm, isValid, dirty, cancel, errors, touched, editMode }
           variant="outlined"
           disabled={isValid && !dirty}
           style={{ textTransform: 'none', fontSize: 12 }}
+          id="addUser-create"
         >
           {editMode ? 'Update' : 'Create'}
         </Button>

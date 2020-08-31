@@ -143,9 +143,17 @@ const PeopleListItem = ({
                   open={Boolean(menuAnchorEl)}
                   onClose={() => setMenuAnchorEl(null)}
                 >
-                  <MenuItem onClick={onEditUser}>Edit user</MenuItem>
-                  <MenuItem onClick={handleResetPassword}>Reset password</MenuItem>
-                  <MenuItem onClick={onDeactivateUser} disabled={person.id === currentUserId}>
+                  <MenuItem onClick={onEditUser} id="admin-people-editUser">
+                    Edit user
+                  </MenuItem>
+                  <MenuItem onClick={handleResetPassword} id="admin-people-resetPass">
+                    Reset password
+                  </MenuItem>
+                  <MenuItem
+                    onClick={onDeactivateUser}
+                    disabled={person.id === currentUserId}
+                    id="admin-people-deactivateUser"
+                  >
                     Deactivate user
                   </MenuItem>
                 </Menu>
@@ -153,7 +161,7 @@ const PeopleListItem = ({
             </>
           ) : (
             <Tooltip title="Reactivate this account" arrow>
-              <ReplayIcon onClick={onReactivateUser} style={{ cursor: 'pointer' }} />
+              <ReplayIcon onClick={onReactivateUser} style={{ cursor: 'pointer' }} id="admin-people-reactivateUser" />
             </Tooltip>
           )}
         </TableCell>

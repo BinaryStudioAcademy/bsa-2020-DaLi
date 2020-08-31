@@ -22,6 +22,7 @@ const DeactivateUserModal = ({ isVisible, closeModal, user, confirmHandler }) =>
           size="small"
           style={{ position: 'absolute', top: 20, right: 24 }}
           onClick={closeModal}
+          id="deactivateModal-close"
         >
           <CloseIcon style={{ fontSize: 18, color: '#c6cfd4' }} />
         </IconButton>
@@ -35,6 +36,7 @@ const DeactivateUserModal = ({ isVisible, closeModal, user, confirmHandler }) =>
           variant="outlined"
           style={{ textTransform: 'none', backgroundColor: '#ff0000', color: '#ffffff' }}
           onClick={onClickHandler}
+          id="deactivateModal-deactivate"
         >
           Deactivate
         </Button>

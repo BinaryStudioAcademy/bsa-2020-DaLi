@@ -71,7 +71,7 @@ const PasswordModal = ({ password, clearPassword, isReset, hideModal, resetPassw
           <EventNoteIcon className={classes.passwordIcon} onClick={copyPassword} />
         </div>
       </div>
-      <Button className={classes.doneButton} onClick={handleClose}>
+      <Button className={classes.doneButton} onClick={handleClose} id="addUser-done">
         Done
       </Button>
     </div>

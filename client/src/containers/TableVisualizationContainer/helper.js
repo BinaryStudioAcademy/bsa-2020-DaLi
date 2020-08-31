@@ -108,6 +108,8 @@ const formatNumbers = (columnConfig, data) => {
 
 const formatDate = (columnConfig, data) => {
   let formattedDate = moment(data).format('MMMM DD, YYYY');
+  if (formattedDate === 'Invalid date') return '';
+
   let formatterTime = '';
   const { displayTime, timeStyle, timeType } = columnConfig;
 

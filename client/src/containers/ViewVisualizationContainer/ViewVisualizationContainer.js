@@ -16,6 +16,8 @@ import {
   ViewVisualizationMain,
   ViewVisualizationHeader,
   SaveVisualizationModal,
+  FilterBar,
+  SummarizeBar,
 } from '../../components';
 import InitialTable from '../InitialTableContainer/InitialTableContainer';
 

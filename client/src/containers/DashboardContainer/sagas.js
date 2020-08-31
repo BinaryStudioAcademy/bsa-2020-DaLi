@@ -33,21 +33,14 @@ export function* updateDashboard({
   dashboardId,
   newVisualizationsId,
   deletedDashboardVisualizationsId,
-  updatedDashboard,
+  updatedDashboardData,
 }) {
   try {
-    yield all(
-      deletedDashboardVisualizationsId.map((dashboardVisualizationId) =>
-        call(dashboardsAPIService.deleteVisualizationFromDashboard, dashboardId, dashboardVisualizationId)
-      )
-    );
-    yield all(
-      newVisualizationsId.map((visualizationId) =>
-        call(dashboardsAPIService.addVisualizationToDashboard, dashboardId, visualizationId)
-      )
-    );
-    yield call(dashboardsAPIService.updateDashboard, dashboardId, updatedDashboard);
-    const dashboard = yield call(dashboardsAPIService.getDashboard, dashboardId);
+    const dashboard = yield call(dashboardsAPIService.updateDashboard, dashboardId, {
+      newVisualizationsId,
+      deletedDashboardVisualizationsId,
+      updatedDashboardData,
+    });
     const arrayOfDataForVisualizations = yield all(
       dashboard.Visualizations.map((visualization) => call(dbTableAPIService.getTable, visualization.tableId))
     );

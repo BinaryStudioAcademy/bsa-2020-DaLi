@@ -1,9 +1,13 @@
+import createError from 'http-errors';
 import UserRepository from '../repositories/userRepository';
 import { createToken } from '../helpers/tokenHelper';
 import { encryptSync } from '../helpers/cryptoHelper';
 
 export const login = async (data) => {
   const currentUser = await UserRepository.getUserById(data.id);
+  if (!currentUser.isActive) {
+    throw createError(403, 'User account deactivated');
+  }
   const { id, email, firstName, lastName } = currentUser;
   await UserRepository.updateById({ id }, { lastLogin: new Date(Date.now()) });
   return {

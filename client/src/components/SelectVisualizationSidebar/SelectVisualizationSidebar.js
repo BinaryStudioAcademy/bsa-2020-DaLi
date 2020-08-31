@@ -30,7 +30,6 @@ const SelectVisualizationSidebar = ({ tableId }) => {
 
   return (
     <div className={classes.basicContainer}>
-      {/* <div className={classes.lineContainer}> */}
       {myVisualizations.map((item, index) => {
         return (
           <Button key={index} onClick={() => onButtonClick(item.type)} className={classes.buttonStyle}>
@@ -39,7 +38,6 @@ const SelectVisualizationSidebar = ({ tableId }) => {
           </Button>
         );
       })}
-      {/* </div> */}
     </div>
   );
 };

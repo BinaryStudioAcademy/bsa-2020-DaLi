@@ -70,7 +70,6 @@ const ViewVisualizationContainer = (props) => {
       props.history.push('/data-sources');
     }
     if (isNewVisualization && isRedirectedFromNewVisualization) {
-      // const dataSample = createDataSample(data);
       const visualization = createInitVisualization(id, userId, schema);
       setVisualization(visualization);
     } else if (isNewVisualization) {
@@ -165,10 +164,6 @@ const ViewVisualizationContainer = (props) => {
   };
 
   const selectVisualizationSidebar = getSelectVisualizationSidebar(tableId);
-
-  /* if (currentVisualization.loading) {
-    return <p>loading</p>;
-  } */
 
   return currentVisualization.loading ? (
     <div style={{ position: 'relative' }}>

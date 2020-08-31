@@ -118,7 +118,6 @@ function BarChart(props) {
           .append('text')
           .attr('class', 'bar__value')
           .attr('x', (a) => {
-            console.log(`band ${xScale.bandwidth()}`);
             return xScale(a[XAxis.key]) + (2*index+1)*xScale.bandwidth()/(2*YAxis.key.length)})
           .attr('y', (a) => yScale(a[YKey]) - 20)
           .attr('text-anchor', 'middle')

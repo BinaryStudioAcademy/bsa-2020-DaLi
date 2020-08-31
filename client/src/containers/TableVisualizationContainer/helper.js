@@ -113,51 +113,47 @@ const formatDate = (columnConfig, data) => {
   let formatterTime = '';
   const { displayTime, timeStyle, timeType } = columnConfig;
 
-  if (timeType) {
-    switch (timeType) {
-      case 1: {
-        formattedDate = moment(data).format('DD MMMM, YYYY');
-        break;
-      }
-      case 2: {
-        formattedDate = moment(data).format('dddd, MMMM DD, YYYY');
-        break;
-      }
-      case 3: {
-        formattedDate = moment(data).format('MM/DD/YYYY');
-        break;
-      }
-      case 4: {
-        formattedDate = moment(data).format('DD/MM/YYYY');
-        break;
-      }
-      case 5: {
-        formattedDate = moment(data).format('YYYY/MM/DD');
-        break;
-      }
-      default: {
-        break;
-      }
+  switch (timeType) {
+    case 1: {
+      formattedDate = moment(data).format('DD MMMM, YYYY');
+      break;
+    }
+    case 2: {
+      formattedDate = moment(data).format('dddd, MMMM DD, YYYY');
+      break;
+    }
+    case 3: {
+      formattedDate = moment(data).format('MM/DD/YYYY');
+      break;
+    }
+    case 4: {
+      formattedDate = moment(data).format('DD/MM/YYYY');
+      break;
+    }
+    case 5: {
+      formattedDate = moment(data).format('YYYY/MM/DD');
+      break;
+    }
+    default: {
+      break;
     }
   }
 
-  if (displayTime) {
-    switch (displayTime) {
-      case '1': {
-        formatterTime = moment(data).format('hh:mm A');
-        break;
-      }
-      case '2': {
-        formatterTime = moment(data).format('hh:mm:ss A');
-        break;
-      }
-      case '3': {
-        formatterTime = moment(data).format('hh:mm:ss:SSS A');
-        break;
-      }
-      default: {
-        break;
-      }
+  switch (displayTime) {
+    case '1': {
+      formatterTime = moment(data).format('hh:mm A');
+      break;
+    }
+    case '2': {
+      formatterTime = moment(data).format('hh:mm:ss A');
+      break;
+    }
+    case '3': {
+      formatterTime = moment(data).format('hh:mm:ss:SSS A');
+      break;
+    }
+    default: {
+      break;
     }
   }
 
@@ -189,9 +185,9 @@ const formatRowsData = (data, columns) => {
     const updatedItem = {};
     Object.keys(item).map((key) => {
       const currentColumn = columns.find((column) => column.id === key);
-      if (columns.find((column) => column.id === key && column.type === 'number')) {
+      if (currentColumn.type === 'number') {
         updatedItem[key] = formatNumbers(currentColumn, item[key]);
-      } else if (columns.find((column) => column.id === key && column.type === 'date')) {
+      } else if (currentColumn.type === 'date') {
         updatedItem[key] = formatDate(currentColumn, item[key]);
       } else {
         updatedItem[key] = item[key];

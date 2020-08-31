@@ -8,7 +8,7 @@ import TableRow from '@material-ui/core/TableRow';
 const EnhancedTableBody = (props) => {
   const { rows, maxColumnsValue } = props;
 
-  const calcWidth = (maxColumnsValue, columnName, cellValue) => {
+  const calcWidthInPercent = (maxColumnsValue, columnName, cellValue) => {
     const currentColumn = maxColumnsValue.filter(({ column }) => column === columnName)[0];
     const numericCellValue = parseFloat(cellValue.replace(/\s/g, ''));
     const width = (100 / currentColumn.maxValue) * numericCellValue;
@@ -29,7 +29,7 @@ const EnhancedTableBody = (props) => {
                       <div className="mini-bar-chart">
                         <div
                           className="mini-bar-chart-progress"
-                          style={{ width: `${calcWidth(maxColumnsValue, key, row[key])}` }}
+                          style={{ width: `${calcWidthInPercent(maxColumnsValue, key, row[key])}` }}
                         />
                       </div>
                     )}

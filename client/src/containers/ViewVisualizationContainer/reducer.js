@@ -24,6 +24,7 @@ const viewVisualizationReducer = (state = { loading: true, created: false }, { t
     case FETCH_VISUALIZATION_WITH_DATA_AND_SCHEMA_SUCCESS: {
       const { visualization } = payload;
       visualization.config = JSON.parse(visualization.config);
+      visualization.datasetSettings = visualization.datasetSettings.map((s) => JSON.parse(s));
       return {
         ...state,
         ...visualization,

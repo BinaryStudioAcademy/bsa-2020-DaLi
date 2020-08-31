@@ -16,6 +16,8 @@ import {
   ViewVisualizationMain,
   ViewVisualizationHeader,
   SaveVisualizationModal,
+  FilterBar,
+  SummarizeBar,
 } from '../../components';
 import InitialTable from '../InitialTableContainer/InitialTableContainer';
 
@@ -31,8 +33,8 @@ import {
   checkIsVisualizationTypeChangedDuringCreation,
 } from './helpers';
 import './ViewVisualizationContainer.css';
-import FilterBar from '../../components/FilterBar/FilterBar';
-import SummarizeBar from '../../components/SummarizeBar/SummarizeBar';
+// import FilterBar from '../../components/FilterBar/FilterBar';
+// import SummarizeBar from '../../components/SummarizeBar/SummarizeBar';
 
 const ViewVisualizationContainer = (props) => {
   const {
@@ -154,6 +156,8 @@ const ViewVisualizationContainer = (props) => {
   };
 
   const updateVisualization = () => {
+    // currentVisualization.
+    console.log(currentVisualization);
     const updatedVisualization = createUpdatedVisualization(currentVisualization);
     visualizationsAPIService.updateVisualization(visualizationId, updatedVisualization);
     setNotificationMessage('Visualization has been successfully updated');

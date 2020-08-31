@@ -1,3 +1,4 @@
+import createError from 'http-errors';
 import PermissionRepository from '../repositories/permissionRepository';
 import UserGroupsRepository from '../repositories/userGroupsRepository';
 import UserRepository from '../repositories/userRepository';
@@ -77,6 +78,11 @@ export const setInitialDBPermissionsOnGroupAdd = async (groupId) => {
 };
 
 export const getDBPermissions = async (databaseId) => {
+  const db = await DatabaseRepository.getById({ databaseId });
+
+  if (!db) {
+    throw createError(404, `Database with id of ${databaseId} not found`);
+  }
   const permissions = await PermissionRepository.getAll();
   const groups = await UserGroupsRepository.getAll();
   const tables = await DBTable.getAllByDatabaseId(databaseId);

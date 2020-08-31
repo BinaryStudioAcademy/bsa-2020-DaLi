@@ -10,6 +10,13 @@ export default (sequelize, DataTypes) => {
         hooks: true,
       });
       DBTable.belongsTo(models.Database);
+
+      DBTable.hasMany(models.Visualization, {
+        foreignKey: { name: 'tableId', allowNull: false },
+        otherKey: 'visualization_id',
+        onDelete: 'cascade',
+        hooks: true,
+      });
     }
   }
   DBTable.init(

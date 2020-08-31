@@ -29,6 +29,7 @@ jobs:
       - name: Build React App
         env:
           REACT_APP_API_URL: ${{ secrets.API_URL }}
+          REACT_APP_GOOGLE_MAP_API_KEY: ${{ secrets.GOOGLE_MAP_API_KEY }}
         run: yarn build
       - name: Deploy to S3
         run: aws s3 sync ./build/ s3://${{ secrets.AWS_S3_BUCKET }} --delete

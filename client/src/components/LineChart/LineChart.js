@@ -13,7 +13,7 @@ function LineChart({ settings, data, chart: chartSize }) {
   const { goal, trendline, showDataPointsValues, lineType = 'curveNatural', color } = settings.display;
   const XAxis = settings.axisData.XAxis;
   const YAxis = settings.axisData.YAxis;
-  // data = data.sort((a, b) => a[XAxis.key] - b[XAxis.key]);
+  data.forEach(item => item[YAxis.key] = Number(item[YAxis.key]))
   const [config, setConfig] = useState({});
   const svgRef = useRef();
   const [width, setWidth] = useState(chartSize.width);
@@ -160,7 +160,7 @@ function LineChart({ settings, data, chart: chartSize }) {
         .append('text')
         .attr('class', 'label')
         .attr('x', -height / 2)
-        .attr('y', margin.left -10)
+        .attr('y', margin.left - 10)
         .attr('transform', 'rotate(-90)')
         .attr('text-anchor', 'middle')
         .text(YAxis.label);
@@ -170,7 +170,7 @@ function LineChart({ settings, data, chart: chartSize }) {
       chart
         .append('text')
         .attr('class', 'label')
-        .attr('x', width / 2 )
+        .attr('x', width / 2)
         .attr('y', height - margin.bottom + 30)
         .attr('text-anchor', 'middle')
         .text(XAxis.label);
@@ -192,7 +192,7 @@ function LineChart({ settings, data, chart: chartSize }) {
 
   const onResize = () => {
     setHeight(svgRef.current.parentElement.offsetHeight);
-    setWidth(svgRef.current.parentElement.offsetWidth)
+    setWidth(svgRef.current.parentElement.offsetWidth);
   };
 
   useEffect(() => {
@@ -201,7 +201,7 @@ function LineChart({ settings, data, chart: chartSize }) {
     draw();
 
     window.addEventListener('resize', onResize);
-    return ()=>window.removeEventListener('resize', onResize);
+    return () => window.removeEventListener('resize', onResize);
   }, [JSON.stringify(settings), data, chartSize, width, height]);
 
   return <svg ref={svgRef} />;

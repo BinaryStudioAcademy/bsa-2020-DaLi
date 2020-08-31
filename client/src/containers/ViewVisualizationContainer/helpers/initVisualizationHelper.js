@@ -31,13 +31,14 @@ export const getXKeys = (schema) => {
   return availableKeys.map((obj) => obj.column_name);
 };
 
-export const createInitVisualization = (visualizationType, userId, schema) => {
+export const createInitVisualization = (visualizationType, userId, schema, tableId) => {
   const newVisualization = {
     name: '',
     description: '',
     config: '',
     type: '',
     UserId: userId,
+    tableId,
   };
   switch (visualizationType) {
     case 'bar-chart':

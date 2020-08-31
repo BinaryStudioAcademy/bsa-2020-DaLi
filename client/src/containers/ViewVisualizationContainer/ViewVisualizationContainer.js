@@ -1,4 +1,4 @@
-/* eslint-disable no-console */
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
@@ -32,14 +32,16 @@ import { getRightSidebarComponent } from './helpers/rightSidebarHelper';
 
 const ViewVisualizationContainer = (props) => {
   const {
-    id,
-    visualizations,
-    userId,
+    id: visualizationId,
     currentVisualization,
+    // visualizations,
+    userId,
     setVisualization,
     updateVisualizationConfig,
     updateVisualizationName,
-    location: { tableId },
+    location,
+    history,
+    // location: { tableId },
     fetchVisualization,
     fetchDataAndSchema,
     data,
@@ -55,6 +57,7 @@ const ViewVisualizationContainer = (props) => {
   const [isNotificationVisible, setIsNotificationVisible] = useState(false);
   const [notificationMessage, setNotificationMessage] = useState('');
   const [notificationType, setNotificationType] = useState('success');
+  // const [tableId, setTableId] = useState(null);
 
   const userNotificationError = (notification) => {
     setIsNotificationVisible(true);
@@ -63,29 +66,23 @@ const ViewVisualizationContainer = (props) => {
   };
 
   useEffect(() => {
-    const isNewVisualization = checkIsVisualizationNew(id);
-    if (isNewVisualization) {
-      //   setIsVisualizationExist(false);
-      //   visualization = createInitVisualization(id, userId, schema);
-      //   setVisualization(visualization);
-      // } else if (visualizations.length) {
-      //   visualization = getVisualization(visualizations, id);
-      //   setIsVisualizationExist(true);
-      //   setVisualization(visualization);
-      fetchDataAndSchema(tableId);
-    } else {
-      fetchVisualization(id);
-      setIsVisualizationExist(true);
+    const isNewVisualization = checkIsVisualizationNew(visualizationId);
+
+    if (!isNewVisualization) {
+      fetchVisualization(visualizationId);
+    } else if (isNewVisualization && location.tableId) {
+      fetchDataAndSchema(currentVisualization.tableId);
+    } else if (isNewVisualization && !location.tableId) {
+      history.push('/data-sources');
     }
-  }, [id, visualizations, userId, setVisualization, fetchVisualization]);
+  }, [schema, data, currentVisualization]);
 
   useEffect(() => {
     if ('data' in currentVisualization) {
       if (currentVisualization.created !== true) {
         setIsVisualizationExist(false);
-        // const dataSample = createDataSample(data);
-        const visualization = createInitVisualization(id, dataSample, userId, schema);
-        visualization.tableId = tableId;
+        const visualization = createInitVisualization(visualizationId, userId, schema);
+        visualization.tableId = location.tableId;
         setVisualization(visualization);
       }
     }
@@ -134,7 +131,12 @@ const ViewVisualizationContainer = (props) => {
 
   const createVisualization = ({ name, description }) => {
     updateVisualizationName({ name, description });
-    const newVisualization = createNewVisualization(currentVisualization, name, description, tableId);
+    const newVisualization = createNewVisualization(
+      currentVisualization,
+      name,
+      description,
+      currentVisualization.tableId
+    );
     visualizationsAPIService.createVisualization(newVisualization);
     closeModal();
     setIsVisualizationExist(true);
@@ -143,7 +145,7 @@ const ViewVisualizationContainer = (props) => {
 
   const updateVisualization = () => {
     const updatedVisualization = createUpdatedVisualization(currentVisualization);
-    visualizationsAPIService.updateVisualization(id, updatedVisualization);
+    visualizationsAPIService.updateVisualization(visualizationId, updatedVisualization);
     setNotificationMessage('Visualization has been successfully updated');
     setNotificationType('success');
     displayNotification(true);
@@ -178,7 +180,7 @@ const ViewVisualizationContainer = (props) => {
         isVisualizationExist={isVisualizationExist}
         name={currentVisualization.name}
         description={currentVisualization.description}
-        visualizationType={id}
+        visualizationType={visualizationId}
         onToggleRightSideBar={onToggleRightSideBar}
       />
       <Grid container className="view-visualization-container">
@@ -217,7 +219,7 @@ const ViewVisualizationContainer = (props) => {
 const mapStateToProps = (state) => {
   return {
     currentVisualization: state.currentVisualization,
-    visualizations: state.analytics.visualizations,
+    // visualizations: state.analytics.visualizations,
     userId: state.currentUser.user.id,
     data: state.currentVisualization.data,
     schema: state.currentVisualization.schema,

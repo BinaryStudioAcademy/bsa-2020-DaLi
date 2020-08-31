@@ -6,14 +6,36 @@ import TableCell from '@material-ui/core/TableCell';
 import TableRow from '@material-ui/core/TableRow';
 
 const EnhancedTableBody = (props) => {
-  const { rows } = props;
+  const { rows, maxColumnsValue } = props;
+
+  const calcWidth = (maxColumnsValue, columnName, cellValue) => {
+    const currentColumn = maxColumnsValue.filter(({ column }) => column === columnName)[0];
+    const numericCellValue = parseFloat(cellValue.replace(/\s/g, ''));
+    const width = (100 / currentColumn.maxValue) * numericCellValue;
+    return `${width}%`;
+  };
+
   return (
     <TableBody>
       {rows.map((row, index) => {
         return (
           <TableRow key={index}>
             {Object.keys(row).map((key, innerIndex) => {
-              return <TableCell key={innerIndex}>{row[key]}</TableCell>;
+              return (
+                <TableCell key={innerIndex}>
+                  <div className="cell-container">
+                    {row[key]}
+                    {maxColumnsValue.findIndex(({ column }) => column === key) !== -1 && (
+                      <div className="mini-bar-chart">
+                        <div
+                          className="mini-bar-chart-progress"
+                          style={{ width: `${calcWidth(maxColumnsValue, key, row[key])}` }}
+                        />
+                      </div>
+                    )}
+                  </div>
+                </TableCell>
+              );
             })}
           </TableRow>
         );
@@ -24,6 +46,7 @@ const EnhancedTableBody = (props) => {
 
 EnhancedTableBody.propTypes = {
   rows: PropTypes.array,
+  maxColumnsValue: PropTypes.array,
 };
 
 export default EnhancedTableBody;

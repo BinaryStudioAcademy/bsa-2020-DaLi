@@ -13,7 +13,7 @@ const EnhancedTable = (props) => {
   const { columns, rows, sortOrder, sortOrderBy, handleRequestSort } = props;
 
   return (
-    <TableContainer className="enhanced-table">
+    <TableContainer className="enhanced-table" id="tableVisualization">
       <Table>
         <EnhancedTableHead
           columns={columns}

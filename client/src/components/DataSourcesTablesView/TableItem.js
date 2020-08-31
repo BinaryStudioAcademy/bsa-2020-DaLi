@@ -28,7 +28,12 @@ const TableItem = ({ table }) => {
   };
 
   return (
-    <Grid item className="data-source-item table-item" onClick={() => onTableClick()}>
+    <Grid
+      item
+      className="data-source-item table-item"
+      onClick={() => onTableClick()}
+      id={`dataset-table-${table.name}`}
+    >
       <div className="data-source-table-item-icon">
         <AppsIcon style={{ color: '#7073a9', fontSize: 30 }} />
       </div>

@@ -51,6 +51,7 @@ const ViewVisualizationHeader = (props) => {
           variant="contained"
           startIcon={<SaveIcon />}
           onClick={onVisualizationSave}
+          id="saveVisualization"
         >
           Save
         </Button>

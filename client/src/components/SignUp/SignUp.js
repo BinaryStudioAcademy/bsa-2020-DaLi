@@ -24,9 +24,13 @@ const useStyles = makeStyles(() => ({
     '& > :first-child': {
       marginRight: 5,
     },
+    cardHeader: {
+      color: 'grey',
+      paddingLeft: '15px',
+    },
   },
 }));
-const SignUp = ({ values, touched, errors, isSubmitting, handleChange, handleBlur, handleSubmit, handleReset }) => {
+const SignUp = ({ values, touched, errors, handleChange, handleBlur, handleReset, handleSubmit, isValid, dirty }) => {
   const classes = useStyles();
 
   return (
@@ -34,6 +38,7 @@ const SignUp = ({ values, touched, errors, isSubmitting, handleChange, handleBlu
       <form onSubmit={handleSubmit}>
         <Card className={classes.card}>
           <CardContent>
+            <p className={classes.cardHeader}>Setting up an admin account</p>
             <div className={classes.nameContainer}>
               <TextField
                 id="firstName"
@@ -111,7 +116,7 @@ const SignUp = ({ values, touched, errors, isSubmitting, handleChange, handleBlu
             />
           </CardContent>
           <CardActions className={classes.actions}>
-            <Button type="submit" color="primary" disabled={isSubmitting}>
+            <Button type="submit" color="primary" disabled={!(isValid && dirty)}>
               SUBMIT
             </Button>
             <Button color="secondary" onClick={handleReset}>
@@ -128,11 +133,12 @@ SignUp.propTypes = {
   values: PropTypes.object,
   touched: PropTypes.object,
   errors: PropTypes.object,
-  isSubmitting: PropTypes.func,
   handleChange: PropTypes.func,
   handleBlur: PropTypes.func,
   handleSubmit: PropTypes.func,
   handleReset: PropTypes.func,
+  isValid: PropTypes.bool,
+  dirty: PropTypes.bool,
 };
 
 export default SignUp;

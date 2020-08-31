@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { Grid, Snackbar } from '@material-ui/core';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 import Alert from '@material-ui/lab/Alert';
 
@@ -22,26 +23,26 @@ import {
   getVisualizationComponent,
   getVisualizationSettings,
   getVisualizationIcon,
+  getSelectVisualizationSidebar,
   checkIsVisualizationNew,
   createInitVisualization,
   createNewVisualization,
   createUpdatedVisualization,
+  checkIsVisualizationTypeChangedDuringCreation,
 } from './helpers';
 import './ViewVisualizationContainer.css';
-import { getRightSidebarComponent } from './helpers/rightSidebarHelper';
+import FilterBar from '../../components/FilterBar/FilterBar';
+import SummarizeBar from '../../components/SummarizeBar/SummarizeBar';
 
 const ViewVisualizationContainer = (props) => {
   const {
     id: visualizationId,
     currentVisualization,
-    // visualizations,
     userId,
     setVisualization,
     updateVisualizationConfig,
     updateVisualizationName,
-    location,
-    history,
-    // location: { tableId },
+    location: { tableId, prevPath },
     fetchVisualization,
     fetchDataAndSchema,
     data,
@@ -49,15 +50,15 @@ const ViewVisualizationContainer = (props) => {
   } = props;
 
   const [currentView, setCurrentView] = useState('table');
-  const [isSideBarOpen, setIsSideBarOpen] = useState(false);
+  const [isLeftSideBarOpen, setIsLeftSideBarOpen] = useState(false);
   const [isRightSideBarOpen, setIsRightSideBarOpen] = useState(false);
-  const [rightSideBarType, setRightSideBarType] = useState('');
   const [isVisualizationExist, setIsVisualizationExist] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isNotificationVisible, setIsNotificationVisible] = useState(false);
   const [notificationMessage, setNotificationMessage] = useState('');
+  const [leftSideBarPage, setLeftSideBarPage] = useState(0);
+  const [rightSideBarPage, setRightSideBarPage] = useState(0);
   const [notificationType, setNotificationType] = useState('success');
-  // const [tableId, setTableId] = useState(null);
 
   const userNotificationError = (notification) => {
     setIsNotificationVisible(true);
@@ -66,23 +67,29 @@ const ViewVisualizationContainer = (props) => {
   };
 
   useEffect(() => {
+    const isRedirectedFromNewVisualization = checkIsVisualizationTypeChangedDuringCreation(prevPath);
     const isNewVisualization = checkIsVisualizationNew(visualizationId);
-
-    if (!isNewVisualization) {
-      fetchVisualization(visualizationId);
-    } else if (isNewVisualization && location.tableId) {
-      fetchDataAndSchema(currentVisualization.tableId);
-    } else if (isNewVisualization && !location.tableId) {
-      history.push('/data-sources');
+    if (!tableId && isNewVisualization) {
+      props.history.push('/data-sources');
     }
-  }, [schema, data, currentVisualization]);
+    if (isNewVisualization && isRedirectedFromNewVisualization) {
+      const visualization = createInitVisualization(visualizationId, userId, schema, tableId);
+      setVisualization(visualization);
+    } else if (isNewVisualization) {
+      fetchDataAndSchema(tableId);
+    }
+    if (!isNewVisualization) {
+      // visualization fetches with data and schema
+      fetchVisualization(visualizationId);
+      setIsVisualizationExist(true);
+    }
+  }, [visualizationId]);
 
   useEffect(() => {
     if ('data' in currentVisualization) {
       if (currentVisualization.created !== true) {
         setIsVisualizationExist(false);
         const visualization = createInitVisualization(visualizationId, userId, schema);
-        visualization.tableId = location.tableId;
         setVisualization(visualization);
       }
     }
@@ -107,19 +114,27 @@ const ViewVisualizationContainer = (props) => {
 
   const onSwitchContentView = (viewType) => setCurrentView(viewType);
 
-  const onToggleSideBar = () => setIsSideBarOpen(!isSideBarOpen);
-
-  const onToggleRightSideBar = (type) => () => {
-    if (rightSideBarType === type) {
-      setIsRightSideBarOpen(false);
-      setRightSideBarType('');
+  const onToggleLeftSideBar = (newLeftSideBarPage) => {
+    if (newLeftSideBarPage !== leftSideBarPage && isLeftSideBarOpen) {
+      setLeftSideBarPage(newLeftSideBarPage);
+    } else if (newLeftSideBarPage === leftSideBarPage && isLeftSideBarOpen) {
+      setIsLeftSideBarOpen(false);
     } else {
-      setRightSideBarType(type);
-      setIsRightSideBarOpen(true);
+      setIsLeftSideBarOpen(true);
+      setLeftSideBarPage(newLeftSideBarPage);
     }
   };
 
-  const selectComponentForRightSidebar = getRightSidebarComponent(rightSideBarType, currentVisualization);
+  const onToggleRightSideBar = (newRightSideBarPage) => () => {
+    if (newRightSideBarPage !== rightSideBarPage && isRightSideBarOpen) {
+      setRightSideBarPage(newRightSideBarPage);
+    } else if (newRightSideBarPage === rightSideBarPage && isRightSideBarOpen) {
+      setIsRightSideBarOpen(false);
+    } else {
+      setIsRightSideBarOpen(true);
+      setRightSideBarPage(newRightSideBarPage);
+    }
+  };
 
   const openModal = () => setIsModalOpen(true);
 
@@ -131,12 +146,7 @@ const ViewVisualizationContainer = (props) => {
 
   const createVisualization = ({ name, description }) => {
     updateVisualizationName({ name, description });
-    const newVisualization = createNewVisualization(
-      currentVisualization,
-      name,
-      description,
-      currentVisualization.tableId
-    );
+    const newVisualization = createNewVisualization(currentVisualization, name, description, tableId);
     visualizationsAPIService.createVisualization(newVisualization);
     closeModal();
     setIsVisualizationExist(true);
@@ -168,11 +178,13 @@ const ViewVisualizationContainer = (props) => {
     closeModal();
   };
 
-  if (currentVisualization.loading) {
-    return <p>loading</p>;
-  }
+  const selectVisualizationSidebar = getSelectVisualizationSidebar(tableId);
 
-  return (
+  return currentVisualization.loading || !schema || !data ? (
+    <div style={{ position: 'relative' }}>
+      <CircularProgress size={40} left={-20} top={10} style={{ marginLeft: '50%' }} />
+    </div>
+  ) : (
     <>
       <ViewVisualizationHeader
         onVisualizationSave={onVisualizationSave}
@@ -202,15 +214,29 @@ const ViewVisualizationContainer = (props) => {
             {notificationMessage}
           </Alert>
         </Snackbar>
-        {isSideBarOpen && <ViewVisualizationSidebar component={visualizationSettings} />}
+        {isLeftSideBarOpen && (
+          <ViewVisualizationSidebar
+            components={[visualizationSettings, selectVisualizationSidebar]}
+            sideBarPage={leftSideBarPage}
+          />
+        )}
         <ViewVisualizationMain
           contentViewComponent={contentViewComponent}
           currentContentView={currentView}
           visualizationIcon={visualizationIcon}
-          onToggleSideBar={onToggleSideBar}
+          onToggleSideBar={onToggleLeftSideBar}
           onSwitchContentView={onSwitchContentView}
+          isVisualizationExist={isVisualizationExist}
         />
-        {isRightSideBarOpen && <ViewVisualizationSidebar component={selectComponentForRightSidebar} />}
+        {isRightSideBarOpen && (
+          <ViewVisualizationSidebar
+            components={[
+              <FilterBar currentVisualization={currentVisualization} />,
+              <SummarizeBar currentVisualization={currentVisualization} />,
+            ]}
+            sideBarPage={rightSideBarPage}
+          />
+        )}
       </Grid>
     </>
   );
@@ -219,7 +245,6 @@ const ViewVisualizationContainer = (props) => {
 const mapStateToProps = (state) => {
   return {
     currentVisualization: state.currentVisualization,
-    // visualizations: state.analytics.visualizations,
     userId: state.currentUser.user.id,
     data: state.currentVisualization.data,
     schema: state.currentVisualization.schema,
@@ -245,6 +270,7 @@ ViewVisualizationContainer.propTypes = {
   history: PropTypes.object,
   location: PropTypes.shape({
     tableId: PropTypes.string,
+    prevPath: PropTypes.string,
   }),
 };
 

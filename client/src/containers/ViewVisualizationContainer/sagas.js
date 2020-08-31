@@ -5,7 +5,7 @@ import {
   SET_VISUALIZATION,
   SET_VISUALIZATION_IN_PROGRESS,
   SET_VISUALIZATION_SUCCESS,
-  VISUALIZATIONS_WITH_DATA_FETCHING,
+  FETCH_VISUALIZATION_WITH_DATA_AND_SCHEMA_START,
   FETCH_DATA_AND_SCHEMA,
   FETCH_DATA_AND_SCHEMA_IN_PROGRESS,
   FETCH_DATA_AND_SCHEMA_SUCCESS,
@@ -13,18 +13,20 @@ import {
 import { visualizationsAPIService } from '../../services/api/visualizationsAPI.service';
 import { dbTableAPIService } from '../../services/api/dbTableAPI.service';
 
-export function* fetchVisualizationWithDataSaga(action) {
-  yield put({ type: VISUALIZATIONS_WITH_DATA_FETCHING });
-  const visualization = yield call(visualizationsAPIService.getVisualization, action.id);
-  const visualizationData = yield call(dbTableAPIService.getTable, visualization.tableId);
+export function* fetchVisualizationWithDataAndSchemaSaga({ id }) {
+  yield put({ type: FETCH_VISUALIZATION_WITH_DATA_AND_SCHEMA_START });
+  const visualization = yield call(visualizationsAPIService.getVisualization, id);
+  const datasetSettings = visualization.datasetSettings || [];
+  const data = yield call(dbTableAPIService.getTableData, visualization.tableId, { settings: datasetSettings });
+  const schema = yield call(dbTableAPIService.getTableSchema, visualization.tableId);
   yield put({
     type: FETCH_VISUALIZATION_WITH_DATA_AND_SCHEMA_SUCCESS,
-    payload: { visualization: { ...visualization, data: visualizationData } },
+    payload: { visualization: { ...visualization, data, schema } },
   });
 }
 
-export function* watchFetchVisualizationWithDataSaga() {
-  yield takeEvery(FETCH_VISUALIZATION_WITH_DATA_AND_SCHEMA, fetchVisualizationWithDataSaga);
+export function* watchFetchVisualizationWithDataAndSchemaSaga() {
+  yield takeEvery(FETCH_VISUALIZATION_WITH_DATA_AND_SCHEMA, fetchVisualizationWithDataAndSchemaSaga);
 }
 
 export function* setVisualizationSaga({ payload }) {
@@ -41,13 +43,12 @@ export function* watchSetVisualizationSaga() {
 }
 
 export function* fetchDataAndSchemaSaga({ tableId, settings }) {
-  // console.log(tableId);
   yield put({ type: FETCH_DATA_AND_SCHEMA_IN_PROGRESS });
-  const visualizationData = yield call(dbTableAPIService.getTableData, tableId, { settings });
+  const data = yield call(dbTableAPIService.getTableData, tableId, { settings });
   const schema = yield call(dbTableAPIService.getTableSchema, tableId);
   yield put({
     type: FETCH_DATA_AND_SCHEMA_SUCCESS,
-    payload: { visualization: { data: visualizationData, schema } },
+    payload: { visualization: { data, schema } },
   });
 }
 
@@ -56,5 +57,9 @@ export function* watchFetchDataAndSchemaSaga() {
 }
 
 export default function* currentVisualizationSaga() {
-  yield all([watchFetchVisualizationWithDataSaga(), watchSetVisualizationSaga(), watchFetchDataAndSchemaSaga()]);
+  yield all([
+    watchFetchVisualizationWithDataAndSchemaSaga(),
+    watchSetVisualizationSaga(),
+    watchFetchDataAndSchemaSaga(),
+  ]);
 }

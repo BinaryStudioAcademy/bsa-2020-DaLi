@@ -8,7 +8,7 @@ class DbTableAPIService extends baseAPIService {
     super(API_URL);
   }
 
-  getTableData = (id, settings = {}) => this.postData(`/${id}/data`, settings);
+  getTableData = (id, settings) => this.postData(`/${id}/data`, settings);
 
   getTableSchema = (id) => this.getDataById(`/${id}/schema`);
 }

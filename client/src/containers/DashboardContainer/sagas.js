@@ -14,7 +14,10 @@ export function* getDashboard(payload) {
   try {
     const dashboard = yield call(dashboardsAPIService.getDashboard, payload.id);
     const arrayOfDataForVisualizations = yield all(
-      dashboard.Visualizations.map((visualization) => call(dbTableAPIService.getTable, visualization.tableId))
+      dashboard.Visualizations.map((visualization) => {
+        const datasetSettings = visualization.datasetSettings || [];
+        return call(dbTableAPIService.getTableData, visualization.tableId, { settings: datasetSettings });
+      })
     );
     arrayOfDataForVisualizations.forEach((data, index) => {
       dashboard.Visualizations[index].data = data;
@@ -42,7 +45,10 @@ export function* updateDashboard({
       updatedDashboardData,
     });
     const arrayOfDataForVisualizations = yield all(
-      dashboard.Visualizations.map((visualization) => call(dbTableAPIService.getTable, visualization.tableId))
+      dashboard.Visualizations.map((visualization) => {
+        const datasetSettings = visualization.datasetSettings || [];
+        return call(dbTableAPIService.getTableData, visualization.tableId, { settings: datasetSettings });
+      })
     );
     arrayOfDataForVisualizations.forEach((data, index) => {
       dashboard.Visualizations[index].data = data;

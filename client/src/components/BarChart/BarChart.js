@@ -114,7 +114,6 @@ function BarChart(props) {
       .on('mouseout', tip.hide);
 
       if (showDataPointsValues) {
-        debugger
         barsInfo
           .append('text')
           .attr('class', 'bar__value')
@@ -125,7 +124,6 @@ function BarChart(props) {
           .attr('text-anchor', 'middle')
           .text((a) => `${a[YKey]}`);
       }
-  debugger;
       if (yDataRange.min < 0) {
         chart
           .append('line')

@@ -92,7 +92,15 @@ export const useStyles = makeStyles((theme) => ({
   },
   addSeriesBtn: {
     textTransform: 'none',
-    color: '#86BBEB',
+    color: '#519ee3',
+    backgroundColor: '#eeeeee',
+  },
+  ySelectItem: {
+    display: 'flex',
+    alignItems: 'center',
+  },
+  ySelectControl: {
+    margin: '5px',
   },
 }));
 

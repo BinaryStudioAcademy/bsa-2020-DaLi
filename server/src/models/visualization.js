@@ -1,7 +1,23 @@
 import { Model } from 'sequelize';
 
 export default (sequelize, DataTypes) => {
-  class Visualization extends Model {}
+  class Visualization extends Model {
+    static associate(models) {
+      Visualization.belongsTo(models.DBTable, {
+        foreignKey: 'tableId',
+        sourceKey: models.DBTable.id,
+        onDelete: 'cascade',
+        hooks: true,
+      });
+      Visualization.belongsToMany(models.Dashboard, {
+        through: models.DashboardVisualizations,
+        foreignKey: 'dashboards_id',
+        otherKey: 'visualizations_id',
+        onDelete: 'cascade',
+        hooks: true,
+      });
+    }
+  }
   Visualization.init(
     {
       id: {
@@ -11,7 +27,7 @@ export default (sequelize, DataTypes) => {
         defaultValue: DataTypes.UUIDV4,
       },
       type: {
-        type: DataTypes.ENUM(['LINE_CHART', 'BAR_CHART', 'TABLE']),
+        type: DataTypes.ENUM(['LINE_CHART', 'BAR_CHART', 'TABLE', 'MAP']),
         allowNull: false,
       },
       name: {
@@ -27,7 +43,7 @@ export default (sequelize, DataTypes) => {
         allowNull: false,
       },
       tableId: {
-        type: DataTypes.STRING,
+        type: DataTypes.UUID,
         allowNull: false,
       },
       createdAt: DataTypes.DATE,

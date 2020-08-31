@@ -8,7 +8,7 @@ import Button from '@material-ui/core/Button';
 import { useStyles } from './styles';
 
 const ValidationSchema = Yup.object({
-  name: Yup.string().required('Name is required'),
+  name: Yup.string().required('Name is required').max(30, 'Name must be at most 30 characters'),
 });
 
 const UserGroupForm = ({ initialName, submit, closeForm, submitTitle }) => {
@@ -28,25 +28,36 @@ const UserGroupForm = ({ initialName, submit, closeForm, submitTitle }) => {
   );
 };
 
-const CreateUserGroupForm = ({ handleSubmit, resetForm, isValid, dirty, cancel, submitTitle }) => {
+const CreateUserGroupForm = ({ handleSubmit, resetForm, isValid, dirty, cancel, submitTitle, errors, touched }) => {
   const classes = useStyles();
   return (
-    <Form className={classes.form} onSubmit={handleSubmit}>
-      <Field name="name" as="input" placeholder='Something like "Marketing"' />
-      <div>
-        <Button onClick={cancel(resetForm)} style={{ textTransform: 'none', fontSize: 12, color: '#3ca1de' }}>
-          Cancel
-        </Button>
-        <Button
-          type="submit"
-          variant="outlined"
-          disabled={!(isValid && dirty)}
-          style={{ textTransform: 'none', fontSize: 12 }}
-        >
-          {submitTitle}
-        </Button>
-      </div>
-    </Form>
+    <>
+      <span style={{ color: 'red' }}>{touched.name && errors.name}</span>
+      <Form
+        className={touched.name && errors.name ? `${classes.form} ${classes.formError}` : classes.form}
+        onSubmit={handleSubmit}
+      >
+        <Field
+          name="name"
+          as="input"
+          placeholder='Something like "Marketing"'
+          style={touched.name && errors.name ? { borderColor: 'red' } : {}}
+        />
+        <div>
+          <Button onClick={cancel(resetForm)} style={{ textTransform: 'none', fontSize: 12, color: '#3ca1de' }}>
+            Cancel
+          </Button>
+          <Button
+            type="submit"
+            variant="outlined"
+            disabled={!(isValid && dirty)}
+            style={{ textTransform: 'none', fontSize: 12 }}
+          >
+            {submitTitle}
+          </Button>
+        </div>
+      </Form>
+    </>
   );
 };
 
@@ -64,6 +75,8 @@ CreateUserGroupForm.propTypes = {
   dirty: PropTypes.bool,
   cancel: PropTypes.func,
   submitTitle: PropTypes.string,
+  touched: PropTypes.object,
+  errors: PropTypes.object,
 };
 
 export default UserGroupForm;

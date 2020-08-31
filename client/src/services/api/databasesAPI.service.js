@@ -8,7 +8,11 @@ class DatabasesAPIService extends baseAPIService {
     super(API_URL);
   }
 
+  syncDatabaseTables = (id) => this.patchData(`/${id}/tables/update`);
+
   getDatabases = () => this.getData('');
+
+  getDatabase = (id) => this.getDataById(`/${id}`);
 
   deleteDatabase = (id) => this.deleteData(`${id}`);
 

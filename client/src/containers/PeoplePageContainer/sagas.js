@@ -20,6 +20,7 @@ import {
   GET_MEMBERSHIPS_SUCCESS,
   GET_MEMBERSHIPS_ERROR,
 } from './actionTypes';
+import { FETCH_USER } from '../LoginPageContainer/actionTypes';
 import { usersAPIService } from '../../services/api/usersAPI.service';
 import { SetIsLoading, setTemporaryPassword } from './actions';
 import { userGroupsAPIService } from '../../services/api/userGroupsAPI.service';
@@ -31,7 +32,7 @@ export function* getUsersSaga() {
     yield put({ type: GET_USERS_SUCCESS, payload: res });
     yield put(SetIsLoading(false));
   } catch (error) {
-    yield put({ type: GET_USERS_ERROR, error });
+    yield put({ type: GET_USERS_ERROR, payload: error });
     yield put(SetIsLoading(false));
   }
 }
@@ -47,7 +48,7 @@ export function* getUsersMembershipSaga() {
     yield put({ type: GET_MEMBERSHIPS_SUCCESS, payload: response });
     yield put(SetIsLoading(false));
   } catch (error) {
-    yield put({ type: GET_MEMBERSHIPS_ERROR, error });
+    yield put({ type: GET_MEMBERSHIPS_ERROR, payload: error });
     yield put(SetIsLoading(false));
   }
 }
@@ -64,7 +65,7 @@ export function* addUserSaga(payload) {
     yield put(setTemporaryPassword(response.password));
     yield put({ type: GET_USERS });
   } catch (error) {
-    yield put({ type: ADD_USER_ERROR, error });
+    yield put({ type: ADD_USER_ERROR, payload: error });
     yield put(SetIsLoading(false));
   }
 }
@@ -80,7 +81,7 @@ export function* deleteUserSaga(payload) {
     yield put({ type: DELETE_USER_SUCCESS });
     yield put({ type: GET_USERS });
   } catch (error) {
-    yield put({ type: DELETE_USER_ERROR, error });
+    yield put({ type: DELETE_USER_ERROR, payload: error });
     yield put(SetIsLoading(false));
   }
 }
@@ -110,6 +111,7 @@ export function* updateUser({ payload }) {
     const res = yield call(usersAPIService.updateUser, payload.id, payload.data);
     yield put({ type: UPDATE_USER_FROM_LIST_SUCCESS, payload: res });
     yield put({ type: GET_USERS });
+    yield put({ type: FETCH_USER });
   } catch (error) {
     yield put({ type: UPDATE_USER_FROM_LIST_ERROR, payload: error });
   }

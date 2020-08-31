@@ -118,9 +118,9 @@ const EditItem = ({ closeEditColumn, currentColumnId, columns, updateColumnConfi
               }}
             >
               <MenuItem value="">100000.00</MenuItem>
-              <MenuItem value={1}>100 000,00</MenuItem>
-              <MenuItem value={2}>100,000.00</MenuItem>
-              <MenuItem value={3}>100.000,00</MenuItem>
+              <MenuItem value="ru">100 000,00</MenuItem>
+              <MenuItem value="en">100,000.00</MenuItem>
+              <MenuItem value="de">100.000,00</MenuItem>
             </Select>
           </FormControl>
           <div className="edit-menu-title">Minimum number of decimal places</div>
@@ -175,27 +175,27 @@ const EditItem = ({ closeEditColumn, currentColumnId, columns, updateColumnConfi
               }}
             >
               <MenuItem value="">August 31, 2020</MenuItem>
-              <MenuItem value={1}>31 August, 2020</MenuItem>
-              <MenuItem value={2}>Monday, August 31, 2020</MenuItem>
-              <MenuItem value={3}>8/31/2020 (month, day, year)</MenuItem>
-              <MenuItem value={4}>31/8/2020 (day, month, year)</MenuItem>
-              <MenuItem value={5}>2020/8/31 (year, month, day)</MenuItem>
+              <MenuItem value="DD MM YYYY">31 August, 2020</MenuItem>
+              <MenuItem value="dd MM DD YYYY">Monday, August 31, 2020</MenuItem>
+              <MenuItem value="MM/DD/YYYY">8/31/2020 (month, day, year)</MenuItem>
+              <MenuItem value="DD/MM/YYYY">31/8/2020 (day, month, year)</MenuItem>
+              <MenuItem value="YYYY/MM/DD">2020/8/31 (year, month, day)</MenuItem>
             </Select>
           </FormControl>
           <div className="edit-menu-title">Show the time</div>
           <FormControl component="fieldset">
             <RadioGroup value={displayTime} onChange={handleChangeTime}>
               <FormControlLabel value="" control={<Radio color="primary" />} label="Off" />
-              <FormControlLabel value="1" control={<Radio color="primary" />} label="HH:MM" />
-              <FormControlLabel value="2" control={<Radio color="primary" />} label="HH:MM:SS" />
-              <FormControlLabel value="3" control={<Radio color="primary" />} label="HH:MM:SS:MS" />
+              <FormControlLabel value="HH:MM" control={<Radio color="primary" />} label="HH:MM" />
+              <FormControlLabel value="HH:MM:SS" control={<Radio color="primary" />} label="HH:MM:SS" />
+              <FormControlLabel value="HH:MM:SS:MS" control={<Radio color="primary" />} label="HH:MM:SS:MS" />
             </RadioGroup>
           </FormControl>
           <div className="edit-menu-title">Time style</div>
           <FormControl component="fieldset">
             <RadioGroup value={timeStyle} onChange={handleChangeTimeStyle}>
               <FormControlLabel value="" control={<Radio color="primary" />} label="5:24 PM (12-hour clock)" />
-              <FormControlLabel value="1" control={<Radio color="primary" />} label="17:24 (24-hour clock)" />
+              <FormControlLabel value="24h" control={<Radio color="primary" />} label="17:24 (24-hour clock)" />
             </RadioGroup>
           </FormControl>
         </>

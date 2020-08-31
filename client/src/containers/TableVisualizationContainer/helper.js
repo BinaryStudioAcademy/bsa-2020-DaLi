@@ -76,19 +76,19 @@ const formatNumbers = (columnConfig, data) => {
     const currentDecimalPlaces = decimalPlaces || 0;
 
     switch (separatorType) {
-      case 1: {
+      case 'ru': {
         formattedData = Number(formattedData).toLocaleString('ru', {
           minimumFractionDigits: currentDecimalPlaces,
         });
         break;
       }
-      case 2: {
+      case 'en': {
         formattedData = Number(formattedData).toLocaleString('en', {
           minimumFractionDigits: currentDecimalPlaces,
         });
         break;
       }
-      case 3: {
+      case 'de': {
         formattedData = Number(formattedData).toLocaleString('de', {
           minimumFractionDigits: currentDecimalPlaces,
         });
@@ -114,23 +114,23 @@ const formatDate = (columnConfig, data) => {
   const { displayTime, timeStyle, timeType } = columnConfig;
 
   switch (timeType) {
-    case 1: {
+    case 'DD MM YYYY': {
       formattedDate = moment(data).format('DD MMMM, YYYY');
       break;
     }
-    case 2: {
+    case 'dd MM DD YYYY': {
       formattedDate = moment(data).format('dddd, MMMM DD, YYYY');
       break;
     }
-    case 3: {
+    case 'MM/DD/YYYY': {
       formattedDate = moment(data).format('MM/DD/YYYY');
       break;
     }
-    case 4: {
+    case 'DD/MM/YYYY': {
       formattedDate = moment(data).format('DD/MM/YYYY');
       break;
     }
-    case 5: {
+    case 'YYYY/MM/DD': {
       formattedDate = moment(data).format('YYYY/MM/DD');
       break;
     }
@@ -140,15 +140,15 @@ const formatDate = (columnConfig, data) => {
   }
 
   switch (displayTime) {
-    case '1': {
+    case 'HH:MM': {
       formatterTime = moment(data).format('hh:mm A');
       break;
     }
-    case '2': {
+    case 'HH:MM:SS': {
       formatterTime = moment(data).format('hh:mm:ss A');
       break;
     }
-    case '3': {
+    case 'HH:MM:SS:MS': {
       formatterTime = moment(data).format('hh:mm:ss:SSS A');
       break;
     }
@@ -159,15 +159,15 @@ const formatDate = (columnConfig, data) => {
 
   if (displayTime && timeStyle) {
     switch (displayTime) {
-      case '1': {
+      case 'HH:MM': {
         formatterTime = moment(data).format('HH:mm');
         break;
       }
-      case '2': {
+      case 'HH:MM:SS': {
         formatterTime = moment(data).format('HH:mm:ss');
         break;
       }
-      case '3': {
+      case 'HH:MM:SS:MS': {
         formatterTime = moment(data).format('HH:mm:ss:SSS');
         break;
       }
@@ -183,7 +183,7 @@ const formatDate = (columnConfig, data) => {
 const formatRowsData = (data, columns) => {
   return data.map((item) => {
     const updatedItem = {};
-    Object.keys(item).map((key) => {
+    Object.keys(item).forEach((key) => {
       const currentColumn = columns.find((column) => column.id === key);
       if (currentColumn.type === 'number') {
         updatedItem[key] = formatNumbers(currentColumn, item[key]);

@@ -1,10 +1,13 @@
 /* eslint-disable camelcase */
 import { VISUALIZATIONS_TYPES_TO_CREATE } from '../constants';
-import { createInitBarChartConfig, createInitLineChartConfig, createInitTableConfig } from './initConfigsHelper';
+import {
+  createInitBarChartConfig,
+  createInitLineChartConfig,
+  createInitTableConfig,
+  createInitMapConfig,
+} from './initConfigsHelper';
 
 export const checkIsVisualizationNew = (id) => VISUALIZATIONS_TYPES_TO_CREATE.includes(id);
-
-export const createDataSample = (data) => data[0];
 
 export const getYKeys = (schema) => {
   const availableKeys = schema.filter(({ data_type }) => {
@@ -28,7 +31,7 @@ export const getXKeys = (schema) => {
   return availableKeys.map((obj) => obj.column_name);
 };
 
-export const createInitVisualization = (visualizationType, dataSample, userId, schema) => {
+export const createInitVisualization = (visualizationType, userId, schema) => {
   const newVisualization = {
     name: '',
     description: '',
@@ -38,16 +41,20 @@ export const createInitVisualization = (visualizationType, dataSample, userId, s
   };
   switch (visualizationType) {
     case 'bar-chart':
-      newVisualization.config = createInitBarChartConfig(dataSample, schema, getYKeys, getXKeys);
+      newVisualization.config = createInitBarChartConfig(schema, getYKeys, getXKeys);
       newVisualization.type = 'BAR_CHART';
       break;
     case 'line-chart':
-      newVisualization.config = createInitLineChartConfig(dataSample, schema, getYKeys, getXKeys);
+      newVisualization.config = createInitLineChartConfig(schema, getYKeys, getXKeys);
       newVisualization.type = 'LINE_CHART';
       break;
     case 'table':
-      newVisualization.config = createInitTableConfig(dataSample, schema, getYKeys, getXKeys);
+      newVisualization.config = createInitTableConfig(schema);
       newVisualization.type = 'TABLE';
+      break;
+    case 'map':
+      newVisualization.config = createInitMapConfig(schema);
+      newVisualization.type = 'MAP';
       break;
     default:
       return null;

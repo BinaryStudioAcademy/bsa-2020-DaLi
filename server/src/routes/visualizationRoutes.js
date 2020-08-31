@@ -70,7 +70,7 @@ router.delete(
       id: req.params.id,
     });
     if (result) {
-      res.status(200).json(result);
+      res.status(200).json();
       next();
     } else {
       const err = createError(404, `Visualization with id of ${req.params.id} not found`);

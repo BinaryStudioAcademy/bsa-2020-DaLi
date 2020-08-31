@@ -1,10 +1,15 @@
+import createError from 'http-errors';
 import UserRepository from '../repositories/userRepository';
 import { createToken } from '../helpers/tokenHelper';
-import { encrypt } from '../helpers/cryptoHelper';
+import { encryptSync } from '../helpers/cryptoHelper';
 
 export const login = async (data) => {
   const currentUser = await UserRepository.getUserById(data.id);
+  if (!currentUser.isActive) {
+    throw createError(403, 'User account deactivated');
+  }
   const { id, email, firstName, lastName } = currentUser;
+  await UserRepository.updateById({ id }, { lastLogin: new Date(Date.now()) });
   return {
     token: createToken({ id }),
     user: { id, email, firstName, lastName },
@@ -16,7 +21,7 @@ export const register = async (user) => {
   if (!candidate) {
     await UserRepository.createUsersWithDefaultGroups({
       ...user,
-      password: await encrypt(user.password),
+      password: encryptSync(user.password),
     });
     return {
       status: 'Register success',

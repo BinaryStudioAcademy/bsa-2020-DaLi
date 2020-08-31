@@ -13,7 +13,6 @@ class UserRepository extends BaseRepository {
   }
 
   getUserById(id) {
-    console.log(id);
     return this.model.findOne({ where: { id } });
   }
 

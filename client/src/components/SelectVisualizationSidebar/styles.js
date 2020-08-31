@@ -1,6 +1,6 @@
 import { makeStyles } from '@material-ui/core/styles';
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles((theme) => ({
   iconStyles: {
     fontSize: '40px',
   },
@@ -9,6 +9,8 @@ const useStyles = makeStyles(() => ({
     borderRadius: '15%',
     color: '#33A1DE',
     backgroundColor: '#D1E8F7',
+    margin: theme.spacing(0.5),
+    marginBottom: '30px',
     '&:hover': {
       cursor: 'pointer',
       color: '#fff',

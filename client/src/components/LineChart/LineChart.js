@@ -24,7 +24,6 @@ function LineChart({ settings, data, chart: chartSize }) {
 
   const draw = () => {
     setConfig(settings);
-    console.log(config);
 
     chart.selectAll('*').remove();
 

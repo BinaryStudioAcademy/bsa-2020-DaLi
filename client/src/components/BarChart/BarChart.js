@@ -21,7 +21,6 @@ function BarChart(props) {
     const YAxis = props.settings.axisData.YAxis;
 
     chart.selectAll('*').remove();
-    console.log(props.settings);
 
     const drawLine = (YKey, index) => {
     const { data } = props;
@@ -67,7 +66,7 @@ function BarChart(props) {
 
     let barsInfo = null;
     if (showDataPointsValues) {
-      barsInfo = chart.selectAll().data(data).join('g');
+      barsInfo = chart.selectAll(`.value-${YKey}`).data(data).join('g');
     }
 
     chart.append('g').attr('class', 'x-axis axis').call(xAxis);
@@ -115,15 +114,18 @@ function BarChart(props) {
       .on('mouseout', tip.hide);
 
       if (showDataPointsValues) {
+        debugger
         barsInfo
           .append('text')
           .attr('class', 'bar__value')
-          .attr('x', (a) => xScale(a[XAxis.key]) + xScale.bandwidth() / 2*YAxis.key.length)
+          .attr('x', (a) => {
+            console.log(`band ${xScale.bandwidth()}`);
+            return xScale(a[XAxis.key]) + (2*index+1)*xScale.bandwidth()/(2*YAxis.key.length)})
           .attr('y', (a) => yScale(a[YKey]) - 20)
           .attr('text-anchor', 'middle')
           .text((a) => `${a[YKey]}`);
       }
-  
+  debugger;
       if (yDataRange.min < 0) {
         chart
           .append('line')

@@ -41,6 +41,7 @@ const PeopleListModal = ({
             addUser={addUser}
             closeModal={closeModal}
             updateUser={updateUser}
+            openModal={openModal}
             formData={formData}
             user={modal.user}
             setFormData={setFormData}

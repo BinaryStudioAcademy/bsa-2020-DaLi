@@ -59,7 +59,6 @@ export function* addUserSaga(payload) {
   try {
     const response = yield call(usersAPIService.createUser, payload.user);
     yield put({ type: ADD_USER_SUCCESS });
-    yield put({ type: CLOSE_MODAL });
     yield put(setTemporaryPassword(response.password));
     yield put({ type: GET_USERS });
   } catch (error) {

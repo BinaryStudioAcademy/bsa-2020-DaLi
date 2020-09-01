@@ -6,7 +6,7 @@ import * as PermissionService from '../services/permissionService';
 const router = Router();
 
 router.get(
-  '/',
+  '/tables',
   asyncHandler(async (req, res, next) => {
     const result = await PermissionService.getPermissions();
     res.status(200).json(result);
@@ -15,7 +15,7 @@ router.get(
 );
 
 router.get(
-  '/:id',
+  '/:id/tables',
   asyncHandler(async (req, res, next) => {
     const result = await PermissionService.getDBPermissions(req.params.id);
     if (result) {
@@ -29,9 +29,9 @@ router.get(
 );
 
 router.patch(
-  '/:id',
+  '/:id/tables',
   asyncHandler(async (req, res, next) => {
-    const result = await PermissionService.updateDBPermissions(req.body);
+    const result = await PermissionService.updateDBTablesPermissions(req.body);
     if (result) {
       res.status(204).json(result);
       next();
@@ -43,9 +43,9 @@ router.patch(
 );
 
 router.patch(
-  '/',
+  '/tables',
   asyncHandler(async (req, res, next) => {
-    const result = await PermissionService.updatePermissions(req.body);
+    const result = await PermissionService.updateTablesPermissions(req.body);
     if (result) {
       res.status(204).json(result);
       next();

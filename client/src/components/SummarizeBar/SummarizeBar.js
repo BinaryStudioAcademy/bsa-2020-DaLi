@@ -12,8 +12,7 @@ const summarizes = [
   { id: 2, name: 'Average of', query: '' },
 ];
 
-/* eslint-disable-next-line */
-const SummarizeBar = ({currentVisualization}) => {
+const SummarizeBar = ({ currentVisualization }) => {
   const classes = useStyles();
   const [currentSummarize, setCurrentSummarize] = useState(null);
   const [isSummarize, setIsSummarize] = useState(false);
@@ -62,6 +61,13 @@ const SummarizeBar = ({currentVisualization}) => {
       {isSummarize && (
         <div>
           <h3>Group by</h3>
+          {currentVisualization.schema.map((column) => {
+            return (
+              <Button className={classes.summarizeByButton} key={column.column_name} variant="contained" fullWidth>
+                {column.column_name}
+              </Button>
+            );
+          })}
           <Button className={classes.summarizeByButton} variant="contained" fullWidth>
             Created At by month
           </Button>

@@ -1,36 +1,41 @@
 import createError from 'http-errors';
-import VisualisationRepository from '../repositories/visualizationRepository';
+import VisualizationRepository from '../repositories/visualizationRepository';
+import CollectionRepository from '../repositories/collectionRepository';
 
 export const getVisualizations = async () => {
-  const result = await VisualisationRepository.getAll();
+  const result = await VisualizationRepository.getAll();
   return result;
 };
 
 export const createVisualization = async (data) => {
-  const result = await VisualisationRepository.create(data);
+  const allCollections = await CollectionRepository.getAll();
+  const ourAnalyticsCollectionId = allCollections.filter((collections) => collections.name === 'Our analytics')[0].id;
+  const result = await VisualizationRepository.create({ ...data, collections_id: ourAnalyticsCollectionId });
   return result;
 };
 
 export const deleteVisualization = async (id) => {
-  const item = await VisualisationRepository.getById(id);
+  const item = await VisualizationRepository.getById(id);
   if (!item) {
     throw createError(404, `Visualization with id of ${id.id} not found`);
   }
-  const result = await VisualisationRepository.deleteById(id);
+  const result = await VisualizationRepository.deleteById(id);
   return result;
 };
 
-export const updateVisualization = async (id, dataToUpdate) => {
-  const item = await VisualisationRepository.getById(id);
+export const updateVisualization = async (visualizationId, dataToUpdate) => {
+  console.log(visualizationId);
+  const item = await VisualizationRepository.getById({ id: visualizationId });
   if (!item) {
-    throw createError(404, `Visualization with id of ${id.id} not found`);
+    throw createError(404, `Visualization with id of ${visualizationId} not found`);
   }
-  const result = await VisualisationRepository.updateById(id, dataToUpdate);
+
+  const result = await VisualizationRepository.updateById({ id: visualizationId }, dataToUpdate);
   return result;
 };
 
-export const getVisualisation = async (id) => {
-  const item = await VisualisationRepository.getById(id);
+export const getVisualization = async (id) => {
+  const item = await VisualizationRepository.getById(id);
   if (!item) {
     throw createError(404, `Visualization with id of ${id.id} not found`);
   }

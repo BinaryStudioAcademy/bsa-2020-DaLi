@@ -1,7 +1,7 @@
 import createError from 'http-errors';
-import DashboardRepository from '../repositories/dashboardRepository';
-import CollectionDashboardsVisualizationsRepository from '../repositories/collectionDashboardsRepository';
 import CollectionRepository from '../repositories/collectionRepository';
+import VisualizationRepository from '../repositories/visualizationRepository';
+import DashboardRepository from '../repositories/dashboardRepository';
 
 export const getCollections = async () => {
   const result = await CollectionRepository.getAllWithDashboardsAndVisualizations();
@@ -14,11 +14,45 @@ export const createCollection = async (data) => {
 };
 
 export const deleteCollection = async (id) => {
-  const item = await CollectionRepository.getById(id);
+  const item = await CollectionRepository.getById({ id });
   if (!item) {
-    throw createError(404, `Collection with id of ${id.id} not found`);
+    throw createError(404, `Collection with id of ${id} not found`);
   }
-  const result = await CollectionRepository.deleteById(id);
+
+  await CollectionRepository.deleteById({ id });
+  const visualizations = await VisualizationRepository.getAllVisualizationsWithoutCollections();
+  const dashboards = await DashboardRepository.getAllDashboardsWithoutCollections();
+  const initialCollectionId = await CollectionRepository.getInitialCollectionId();
+
+  visualizations.forEach(async ({ id, ...rest }) => {
+    await VisualizationRepository.updateById(
+      { id },
+      {
+        ...rest,
+        collections_id: initialCollectionId,
+      }
+    );
+  });
+
+  dashboards.forEach(async ({ id, ...rest }) => {
+    await DashboardRepository.updateById(
+      { id },
+      {
+        ...rest,
+        collections_id: initialCollectionId,
+      }
+    );
+  });
+  return { status: 'Collection deleted success' };
+};
+
+export const updateCollections = async (collectionId, dataToUpdate) => {
+  const item = await CollectionRepository.getById({ id: collectionId });
+  if (!item) {
+    throw createError(404, `Visualization with id of ${collectionId} not found`);
+  }
+
+  const result = await CollectionRepository.updateById({ id: collectionId }, dataToUpdate);
   return result;
 };
 
@@ -29,50 +63,3 @@ export const getCollection = async (id) => {
   }
   return item[0];
 };
-
-export const addToCollection = async (data) => {
-  console.log(data);
-  const result = await CollectionDashboardsVisualizationsRepository.create(data);
-  console.log(result);
-  if (!result) {
-    return null;
-  }
-  const updatedCollections = await getCollection({ id: data.collections_id });
-  return updatedCollections;
-};
-
-export const deleteFromCollection = async (id) => {
-  console.log(id);
-  const item = await CollectionDashboardsVisualizationsRepository.getById(id);
-  console.log(item);
-  if (!item) {
-    throw createError(404, `Dashboard-visualization link with id of ${id.id} not found`);
-  }
-  // const result = await CollectionDashboardsVisualizationsRepository.deleteById(id);
-  // return result;
-};
-
-// export const updateDashboard = async (dashboardId, dataToUpdate) => {
-//   const currentDashboard = await DashboardRepository.getById({ id: dashboardId });
-//   if (!currentDashboard) {
-//     throw createError(404, `Dashboard with id of ${dashboardId} not found`);
-//   }
-//   const { newVisualizationsId, deletedDashboardVisualizationsId, updatedDashboardData } = dataToUpdate;
-
-//   await Promise.all(
-//     newVisualizationsId.map((newVisualizationId) => {
-//       const newDashboardVisualization = { visualizations_id: newVisualizationId, dashboards_id: dashboardId };
-//       return DashboardVisualizationsRepository.create(newDashboardVisualization);
-//     })
-//   );
-//   await Promise.all(
-//     deletedDashboardVisualizationsId.map((deletedDashboardVisualizationId) => {
-//       return deleteVisualization({ id: deletedDashboardVisualizationId });
-//     })
-//   );
-
-//   await DashboardRepository.updateById({ id: dashboardId }, updatedDashboardData);
-
-//   const [updatedDashboard] = await DashboardRepository.getWithVisualizations(dashboardId);
-//   return updatedDashboard;
-// };

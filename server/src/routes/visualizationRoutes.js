@@ -57,6 +57,7 @@ router.patch(
     }
 
     if (result) {
+      result = req.query.collection ? { status: 'Visualization added to collection success' } : result;
       res.status(200).json(result);
       next();
     } else {

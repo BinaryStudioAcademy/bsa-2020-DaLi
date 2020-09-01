@@ -24,7 +24,6 @@ export const deleteVisualization = async (id) => {
 };
 
 export const updateVisualization = async (visualizationId, dataToUpdate) => {
-  console.log(visualizationId);
   const item = await VisualizationRepository.getById({ id: visualizationId });
   if (!item) {
     throw createError(404, `Visualization with id of ${visualizationId} not found`);

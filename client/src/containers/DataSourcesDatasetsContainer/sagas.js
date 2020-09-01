@@ -7,7 +7,7 @@ import {
   GET_TABLES_ERROR,
   GET_TABLES_SUCCESS,
   GET_DATASET_NAME,
-  SET_CUREENT_DB_NAME,
+  SET_CURRENT_DB_NAME,
   SYNC_DB_TABLES,
   SYNC_DB_TABLES_ERROR,
   SYNC_DB_TABLES_SUCCESS,
@@ -18,8 +18,8 @@ import { setIsLoading } from './actions';
 export function* getDatasetsSaga() {
   try {
     yield put(setIsLoading(true));
-    const response = yield call(databasesAPIService.getDatabases);
-    yield put({ type: GET_DATASETS_SUCCESS, payload: response });
+    const datasets = yield call(databasesAPIService.getDatabases);
+    yield put({ type: GET_DATASETS_SUCCESS, payload: datasets });
   } catch (error) {
     yield put({ type: GET_DATASETS_ERROR, error });
     yield put(setIsLoading(false));
@@ -49,7 +49,7 @@ export function* getDatabaseNameById(payload) {
   try {
     yield put(setIsLoading(true));
     const response = yield call(databasesAPIService.getDatabase, payload.id);
-    yield put({ type: SET_CUREENT_DB_NAME, payload: response.dbNickname });
+    yield put({ type: SET_CURRENT_DB_NAME, payload: response.dbNickname });
   } catch (error) {
     yield put({ type: GET_DATASETS_ERROR, error });
     yield put(setIsLoading(false));

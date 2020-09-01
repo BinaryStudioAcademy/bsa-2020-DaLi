@@ -48,6 +48,7 @@ export const createInitVisualization = (visualizationType, userId, schema, table
     type: '',
     UserId: userId,
     tableId,
+    datasetSettings: [],
   };
   switch (visualizationType) {
     case 'bar-chart':

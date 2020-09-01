@@ -33,8 +33,6 @@ import {
   checkIsVisualizationTypeChangedDuringCreation,
 } from './helpers';
 import './ViewVisualizationContainer.css';
-// import FilterBar from '../../components/FilterBar/FilterBar';
-// import SummarizeBar from '../../components/SummarizeBar/SummarizeBar';
 
 const ViewVisualizationContainer = (props) => {
   const {
@@ -87,6 +85,12 @@ const ViewVisualizationContainer = (props) => {
     }
   }, [visualizationId]);
 
+  // useEffect(() => {
+  //   console.log('start');
+  //   console.log(currentVisualization);
+  //   console.log('finish');
+  // }, [currentVisualization.datasetSettings]);
+
   useEffect(() => {
     if ('data' in currentVisualization) {
       if (currentVisualization.created !== true) {
@@ -112,7 +116,15 @@ const ViewVisualizationContainer = (props) => {
   );
   const visualizationIcon = getVisualizationIcon(currentVisualization.type);
 
-  const contentViewComponent = currentView === 'table' ? <InitialTable data={data} /> : visualizationComponent;
+  const contentViewComponent =
+    // eslint-disable-next-line no-nested-ternary
+    schema && data ? (
+      currentView === 'table' ? (
+        <InitialTable schema={schema} data={data} />
+      ) : (
+        visualizationComponent
+      )
+    ) : null;
 
   const onSwitchContentView = (viewType) => setCurrentView(viewType);
 
@@ -156,8 +168,6 @@ const ViewVisualizationContainer = (props) => {
   };
 
   const updateVisualization = () => {
-    // currentVisualization.
-    console.log(currentVisualization);
     const updatedVisualization = createUpdatedVisualization(currentVisualization);
     visualizationsAPIService.updateVisualization(visualizationId, updatedVisualization);
     setNotificationMessage('Visualization has been successfully updated');

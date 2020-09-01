@@ -17,7 +17,7 @@ router.get(
 router.get(
   '/:id',
   asyncHandler(async (req, res, next) => {
-    const result = await VisualizationService.getVisualisation({
+    const result = await VisualizationService.getVisualization({
       id: req.params.id,
     });
     if (result) {
@@ -47,12 +47,15 @@ router.post(
 router.patch(
   '/:id',
   asyncHandler(async (req, res, next) => {
-    const result = await VisualizationService.updateVisualization(
-      {
-        id: req.params.id,
-      },
-      req.body
-    );
+    let result = null;
+    if (req.query.collection) {
+      result = await VisualizationService.updateVisualization(req.params.id, {
+        collections_id: req.query.collection,
+      });
+    } else {
+      result = await VisualizationService.updateVisualization(req.params.id, req.body);
+    }
+
     if (result) {
       res.status(200).json(result);
       next();

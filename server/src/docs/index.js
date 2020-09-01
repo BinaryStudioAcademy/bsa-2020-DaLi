@@ -1041,7 +1041,7 @@ module.exports = {
         },
       },
     },
-    '/permissions': {
+    '/permissions/tables': {
       get: {
         security: [
           {
@@ -1049,7 +1049,7 @@ module.exports = {
           },
         ],
         tags: ['Permissions'],
-        summary: 'Get permissions for databases',
+        summary: 'Get permissions for tables for all databases',
         responses: {
           200: {
             description: 'Successful operation',
@@ -1063,7 +1063,7 @@ module.exports = {
           },
         ],
         tags: ['Permissions'],
-        summary: 'Update permissions',
+        summary: 'Update permissions for tables',
         requestBody: {
           content: {
             'application/json': {
@@ -1084,7 +1084,7 @@ module.exports = {
         },
       },
     },
-    '/permissions/{id}': {
+    '/permissions/{id}/tables': {
       get: {
         security: [
           {

@@ -4,7 +4,7 @@ import UserGroupsRepository from '../repositories/userGroupsRepository';
 import UserRepository from '../repositories/userRepository';
 import DatabaseRepository from '../repositories/databaseRepository';
 import DBTable from '../repositories/dbTableRepository';
-import { ACCESS_GRANTED, ACCESS_DENIED, ACCESS_LIMITED, ADMIN_GROUP } from '../config/types';
+import { ACCESS_GRANTED, ACCESS_DENIED, ACCESS_LIMITED, ADMIN_GROUP, TABLE } from '../config/types';
 
 const getAccessLevel = (groupId, dbTables, permissions) => {
   const total = dbTables.length;
@@ -23,7 +23,7 @@ const getAccessLevel = (groupId, dbTables, permissions) => {
 };
 
 export const getPermissions = async () => {
-  const permissions = await PermissionRepository.getAll();
+  const permissions = await PermissionRepository.getTablesPermissions();
   const groups = await UserGroupsRepository.getAll();
   const databases = await DatabaseRepository.getAll();
 
@@ -53,7 +53,7 @@ export const getPermissions = async () => {
   };
 };
 
-export const setInitialDBPermissions = async (tableid) => {
+export const setInitialTablesPermissions = async (tableid) => {
   const groups = await UserGroupsRepository.getAll();
   groups.forEach(async (group) => {
     const permission = group.name === ADMIN_GROUP ? ACCESS_GRANTED : ACCESS_DENIED;
@@ -61,11 +61,12 @@ export const setInitialDBPermissions = async (tableid) => {
       userGroups_id: group.id,
       permissionGranted: permission,
       dbtable_id: tableid,
+      type: TABLE,
     });
   });
 };
 
-export const setInitialDBPermissionsOnGroupAdd = async (groupId) => {
+export const setInitialTablesPermissionsOnGroupAdd = async (groupId) => {
   const dbTables = await DBTable.getAll();
   dbTables.forEach(async (table) => {
     const permission = ACCESS_DENIED;
@@ -73,6 +74,7 @@ export const setInitialDBPermissionsOnGroupAdd = async (groupId) => {
       userGroups_id: groupId,
       permissionGranted: permission,
       dbtable_id: table.id,
+      type: TABLE,
     });
   });
 };
@@ -82,7 +84,7 @@ export const getDBPermissions = async (databaseId) => {
   if (!db) {
     throw createError(404, `Database with id of ${databaseId} not found`);
   }
-  const permissions = await PermissionRepository.getAll();
+  const permissions = await PermissionRepository.getTablesPermissions();
   const groups = await UserGroupsRepository.getAll();
   const tables = await DBTable.getAllByDatabaseId(databaseId);
 
@@ -114,28 +116,7 @@ export const getDBPermissions = async (databaseId) => {
   };
 };
 
-// const mapGroups = (data) => {
-//   return data.map((item) => {
-//     const { groupId, access, UserGroup } = item;
-//     return {
-//       groupId,
-//       access,
-//       groupName: UserGroup.groupName,
-//     };
-//   });
-// };
-
-// export const getDBPermissions = async (databaseId) => {
-//   const data = await DBTable.getPermissionsByDatabaseId(databaseId);
-//   return data;
-// };
-
-// export const getPermissions = async () => DatabaseRepository.getPermissions();
-// export const getPermissions = async () =>
-//   DatabaseRepository.getAllowedDatabasesByUserId('c26b8b14-9161-45b2-9c90-4d528476a08c');
-// UserRepository.getAllowedDatabases('b1f9a0bb-da49-4788-87bc-f584ed56e8b3');
-
-export const updateDBPermissions = async (permissions) => {
+export const updateDBTablesPermissions = async (permissions) => {
   const result = await Promise.all(
     permissions.map(async (permission) => {
       const result = await PermissionRepository.updateById({ id: permission.id }, permission);
@@ -145,7 +126,7 @@ export const updateDBPermissions = async (permissions) => {
   return result;
 };
 
-export const updatePermissions = async ({ permissions }) => {
+export const updateTablesPermissions = async ({ permissions }) => {
   await Promise.all(
     permissions.map(async (permission) => {
       const { databaseId, groups } = permission;

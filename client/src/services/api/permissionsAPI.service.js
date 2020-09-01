@@ -8,11 +8,11 @@ class PermissionsAPIService extends baseAPIService {
     super(API_URL);
   }
 
-  getDatabasesPermissions = () => this.getData('');
+  getDatabasesPermissions = () => this.getData('/tables');
 
-  getTablesPermissions = (id) => this.getDataById(`/${id}`);
+  getTablesPermissions = (id) => this.getDataById(`/${id}/tables`);
 
-  updatePermissions = (updatedPermissions) => this.patchData('', updatedPermissions);
+  updatePermissions = (updatedPermissions) => this.patchData('/tables', updatedPermissions);
 }
 
 export const permissionsAPIService = new PermissionsAPIService();

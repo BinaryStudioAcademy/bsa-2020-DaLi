@@ -5,7 +5,7 @@ import createError from 'http-errors';
 import DatabaseRepository from '../repositories/databaseRepository';
 import DBManager from './DBManager/DBManagerService';
 import { createDBTable, getAllByDatabaseId, deleteDBTable } from './dbTableService';
-import { setInitialDBPermissions } from './permissionService';
+import { setInitialTablesPermissions } from './permissionService';
 
 export const getDatabases = async () => {
   const result = await DatabaseRepository.getAll();
@@ -64,7 +64,7 @@ export const updateDatabaseTables = async (id) => {
 
     newTableNames.forEach(async (name) => {
       const table = await createDBTable({ DatabaseId: database.id, name });
-      await setInitialDBPermissions(table.id);
+      await setInitialTablesPermissions(table.id);
     });
 
     return {
@@ -92,7 +92,7 @@ export const createDatabase = async (database) => {
     database = await DatabaseRepository.create(database);
     tablenames.forEach(async (name) => {
       const result = await createDBTable({ DatabaseId: database.id, name });
-      await setInitialDBPermissions(result.id);
+      await setInitialTablesPermissions(result.id);
     });
   } catch (error) {
     database = null;

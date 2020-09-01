@@ -72,7 +72,7 @@ const ViewVisualizationContainer = (props) => {
     if (isNewVisualization && isRedirectedFromNewVisualization) {
       const visualization = createInitVisualization(id, userId, schema);
       setVisualization(visualization);
-    } else if (isNewVisualization) {
+    } else if (isNewVisualization && tableId) {
       fetchDataAndSchema(tableId);
     }
     if (!isNewVisualization) {

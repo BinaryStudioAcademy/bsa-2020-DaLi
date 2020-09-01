@@ -44,7 +44,7 @@ const AddUserBody = ({ currentUserId, closeModal, user, addUser, updateUser, set
     },
   });
   return (
-    <div className={classes.modalContainer}>
+    <div className={classes.modalContainer} id={`${user?.id ? 'edit' : 'create'}UserModal`}>
       <div className={classes.modalHeader}>
         <h2 className={classes.modalTitle}>{user?.id ? 'Edit user' : 'Create user'}</h2>
         <CloseIcon className={classes.closeIcon} onClick={closeModal} />
@@ -55,7 +55,7 @@ const AddUserBody = ({ currentUserId, closeModal, user, addUser, updateUser, set
           <div className="errorMessage">{formik.touched.firstName && formik.errors.firstName}</div>
         </div>
         <input
-          id="firstName"
+          id={`${user?.id ? 'edit' : 'create'}User-firstName`}
           name="firstName"
           type="text"
           className={classes.modalInput}
@@ -68,7 +68,7 @@ const AddUserBody = ({ currentUserId, closeModal, user, addUser, updateUser, set
           <div className="errorMessage">{formik.touched.lastName && formik.errors.lastName}</div>
         </div>
         <input
-          id="lastName"
+          id={`${user?.id ? 'edit' : 'create'}User-lastName`}
           name="lastName"
           type="text"
           className={classes.modalInput}
@@ -80,7 +80,7 @@ const AddUserBody = ({ currentUserId, closeModal, user, addUser, updateUser, set
           <div className="errorMessage">{formik.touched.email && formik.errors.email}</div>
         </div>
         <input
-          id="email"
+          id={`${user?.id ? 'edit' : 'create'}User-email`}
           name="email"
           type="text"
           className={classes.modalInput}
@@ -88,7 +88,12 @@ const AddUserBody = ({ currentUserId, closeModal, user, addUser, updateUser, set
           value={formik.values.email}
         />
         <div className={classes.buttonContainer}>
-          <Button onClick={closeModal} variant="outlined" style={{ textTransform: 'none', fontSize: 12 }}>
+          <Button
+            onClick={closeModal}
+            variant="outlined"
+            style={{ textTransform: 'none', fontSize: 12 }}
+            id={`${user?.id ? 'edit' : 'create'}User-cancel`}
+          >
             Cancel
           </Button>
           <Button
@@ -96,6 +101,7 @@ const AddUserBody = ({ currentUserId, closeModal, user, addUser, updateUser, set
             variant="outlined"
             disabled={formik.isValid && !formik.dirty}
             style={{ textTransform: 'none', fontSize: 12, marginLeft: 5 }}
+            id={`${user?.id ? 'edit' : 'create'}User-${user?.id ? 'update' : 'create'}`}
           >
             {user?.id ? 'Update' : 'Create'}
           </Button>

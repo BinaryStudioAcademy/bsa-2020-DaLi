@@ -25,7 +25,7 @@ const TemporaryPasswordBody = ({ closeModal, user, password }) => {
   };
 
   return (
-    <div className={classes.modalContainer}>
+    <div className={classes.modalContainer} id="newPasswordModal">
       <div className={classes.modalHeader}>
         <h2 className={classes.modalTitle}>{`New password for ${user.firstName} ${user.lastName}`}</h2>
         <CloseIcon className={classes.closeIcon} onClick={closeModal} />
@@ -35,15 +35,15 @@ const TemporaryPasswordBody = ({ closeModal, user, password }) => {
         <div className={classes.passwordContainerTitle}>
           <span>TEMPORARY PASSWORD</span>
         </div>
-        <input ref={inputRef} type="password" value={password} readOnly />
+        <input ref={inputRef} type="password" value={password} readOnly id="newPassword-pass" />
         <div className={classes.passwordIcons}>
-          <button type="button" onClick={handleShowPassword}>
+          <button type="button" onClick={handleShowPassword} id="newPassword-showToggle">
             Show
           </button>
-          <EventNoteIcon className={classes.passwordIcon} onClick={copyPassword} />
+          <EventNoteIcon className={classes.passwordIcon} onClick={copyPassword} id="newPassword-copy" />
         </div>
       </div>
-      <Button className={classes.doneButton} onClick={closeModal}>
+      <Button className={classes.doneButton} onClick={closeModal} id="newPassword-done">
         Done
       </Button>
     </div>

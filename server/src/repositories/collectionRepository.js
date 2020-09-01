@@ -28,6 +28,14 @@ class CollectionRepository extends BaseRepository {
       ],
     });
   }
-}
 
+  getInitialCollectionId() {
+    return this.model
+      .findAll({
+        where: { name: 'Our analytics' },
+        attributes: ['id'],
+      })
+      .then((result) => result[0].id);
+  }
+}
 export default new CollectionRepository(models.Collection);

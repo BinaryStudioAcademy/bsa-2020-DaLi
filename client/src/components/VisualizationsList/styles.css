@@ -1,4 +1,4 @@
-.visualization-list-container {
+/* .visualization-list-container {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(500px, 1fr));
     padding: 0 25px;
@@ -23,4 +23,4 @@
 
 .visualization-item:hover {
     color: #33a1de;
-}
+} */

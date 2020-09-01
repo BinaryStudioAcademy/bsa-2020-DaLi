@@ -8,17 +8,17 @@ import AnalyticsTabsPanel from './AnalyticsTabsPanel/AnalyticsTabsPanel';
 import DeleteVisualizationWarning from '../DeleteVisualizationWarning/DeleteVisualizationWarning';
 
 const useStyles = makeStyles(() => ({
-  tabsButtons: {
-    color: '#000000',
-    fontWeight: 900,
-    maxWidth: `${100 / 3}%`,
-    width: '100%',
-    borderBottom: '1px solid #f0f0f0',
-    '&$selected': {
-      color: '#509ee3',
-    },
-  },
-  selected: {},
+  //   tabsButtons: {
+  //     color: '#000000',
+  //     fontWeight: 900,
+  //     maxWidth: `${100 / 3}%`,
+  //     width: '100%',
+  //     borderBottom: '1px solid #f0f0f0',
+  //     '&$selected': {
+  //       color: '#509ee3',
+  //     },
+  //   },
+  //   selected: {},
 }));
 
 const AnalyticsTabs = ({ visualizations, dashboards, deleteVisualization, deleteDashboard, isLoading }) => {

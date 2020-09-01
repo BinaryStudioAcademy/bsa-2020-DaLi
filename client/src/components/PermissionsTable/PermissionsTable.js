@@ -28,7 +28,7 @@ const PermissionsTable = (props) => {
         <NavLink className={linkClassName} to="/admin/permissions">
           Permissions
         </NavLink>
-        {dataType === 'tables' && <Typography color="textPrimary">{currentDatabaseName}</Typography>}
+        {dataType === 'tables' && <Typography>{currentDatabaseName}</Typography>}
       </Breadcrumbs>
       <Grid className={classes.permissionsTableContainer} container>
         <Table style={{ width: '100%', tableLayout: 'fixed' }} aria-label="permissions table">

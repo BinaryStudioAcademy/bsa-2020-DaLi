@@ -1,4 +1,4 @@
-.select-visualization-container {
+/* .select-visualization-container {
     display: flex;
     flex-direction: row;
     justify-content: space-around;
@@ -19,4 +19,4 @@
 .visualization-container:hover {
     border: 2px solid #33a1de;
     color: #33a1de;
-}
+} */

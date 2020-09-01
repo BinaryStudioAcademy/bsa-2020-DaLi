@@ -12,34 +12,34 @@ import TableItem from './TableItem';
 import './styles.css';
 
 const useStyles = makeStyles(() => ({
-  header: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    width: '100%',
-    boxSizing: 'border-box',
-    paddingBottom: '20px',
-  },
-  breadcrumbsItem: {
-    textDecoration: 'none',
-    textTransform: 'uppercase',
-    fontSize: '13px',
-    lineHeight: '13px',
-    color: 'rgba(0, 0, 0, 0.54)',
-    'li a&:hover': {
-      textDecoration: 'underline',
-    },
-  },
-  separator: {
-    fontSize: '1.75rem',
-    marginBottom: '3px',
-  },
-  itemList: {
-    display: 'grid',
-    gridTemplateColumns: 'repeat(auto-fill, minmax(350px, 1fr))',
-    alignItems: 'center',
-    gridGap: '20px',
-  },
+  // header: {
+  //   display: 'flex',
+  //   alignItems: 'center',
+  //   justifyContent: 'space-between',
+  //   width: '100%',
+  //   boxSizing: 'border-box',
+  //   paddingBottom: '20px',
+  // },
+  // breadcrumbsItem: {
+  //   textDecoration: 'none',
+  //   textTransform: 'uppercase',
+  //   fontSize: '13px',
+  //   lineHeight: '13px',
+  //   color: 'rgba(0, 0, 0, 0.54)',
+  //   'li a&:hover': {
+  //     textDecoration: 'underline',
+  //   },
+  // },
+  // separator: {
+  //   fontSize: '1.75rem',
+  //   marginBottom: '3px',
+  // },
+  // itemList: {
+  //   display: 'grid',
+  //   gridTemplateColumns: 'repeat(auto-fill, minmax(350px, 1fr))',
+  //   alignItems: 'center',
+  //   gridGap: '20px',
+  // },
 }));
 
 const DataSourcesTablesView = ({ tables, currentDbName, databaseId, syncDatabaseTables }) => {
@@ -58,9 +58,7 @@ const DataSourcesTablesView = ({ tables, currentDbName, databaseId, syncDatabase
           >
             Our data
           </NavLink>
-          <Typography className={classes.breadcrumbsItem} color="textPrimary">
-            {currentDbName}
-          </Typography>
+          <Typography className={classes.breadcrumbsItem}>{currentDbName}</Typography>
         </Breadcrumbs>
         <Button variant="contained" startIcon={<SyncIcon />} onClick={() => syncDatabaseTables(databaseId)}>
           sync tables

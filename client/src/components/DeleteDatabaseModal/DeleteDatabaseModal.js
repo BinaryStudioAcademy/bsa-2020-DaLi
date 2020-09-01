@@ -18,16 +18,16 @@ const ValidationSchema = Yup.object({
 });
 
 const useStyles = makeStyles({
-  deleteButton: {
-    color: 'white',
-    textTransform: 'none',
-    background: 'red',
-    '&:hover': {
-      background: 'red',
-    },
-    borderRadius: '5px',
-    marginRight: '20px',
-  },
+  // deleteButton: {
+  //   color: 'white',
+  //   textTransform: 'none',
+  //   background: 'red',
+  //   '&:hover': {
+  //     background: 'red',
+  //   },
+  //   borderRadius: '5px',
+  //   marginRight: '20px',
+  // },
 });
 
 const DeleteDatabaseModal = ({ isVisible, closeModal, deleteDatabase, databaseId }) => {

@@ -9,21 +9,21 @@ import DatasetItem from './DatasetItem';
 import './styles.css';
 
 const useStyles = makeStyles(() => ({
-  breadcrumbs: {
-    marginBottom: '15px',
-  },
-  breadcrumbsItem: {
-    textTransform: 'uppercase',
-    fontSize: '13px',
-    lineHeight: '13px',
-    color: 'rgba(0, 0, 0, 0.54)',
-  },
-  itemList: {
-    display: 'grid',
-    gridTemplateColumns: 'repeat(auto-fill, minmax(350px, 1fr))',
-    alignItems: 'center',
-    gridGap: '20px',
-  },
+  // breadcrumbs: {
+  //   marginBottom: '15px',
+  // },
+  // breadcrumbsItem: {
+  //   textTransform: 'uppercase',
+  //   fontSize: '13px',
+  //   lineHeight: '13px',
+  //   color: 'rgba(0, 0, 0, 0.54)',
+  // },
+  // itemList: {
+  //   display: 'grid',
+  //   gridTemplateColumns: 'repeat(auto-fill, minmax(350px, 1fr))',
+  //   alignItems: 'center',
+  //   gridGap: '20px',
+  // },
 }));
 
 const DataSourcesDatasetsView = ({ datasets }) => {

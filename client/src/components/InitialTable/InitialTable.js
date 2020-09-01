@@ -9,15 +9,15 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 
 const useStyles = makeStyles({
-  initialTable: {
-    height: '100%',
-    width: '100%',
-  },
-  tableHead: {
-    '&:hover': {
-      cursor: 'pointer',
-    },
-  },
+  // initialTable: {
+  //   height: '100%',
+  //   width: '100%',
+  // },
+  // tableHead: {
+  //   '&:hover': {
+  //     cursor: 'pointer',
+  //   },
+  // },
 });
 
 const getTableHead = (data) => {

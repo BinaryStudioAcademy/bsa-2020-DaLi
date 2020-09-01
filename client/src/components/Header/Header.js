@@ -17,24 +17,24 @@ import { addDashboard } from '../../containers/AnalyticsTabsContainer/actions';
 import './styles.css';
 
 const useStyles = makeStyles({
-  typography: {
-    fontSize: '15px',
-    marginRight: '25px',
-  },
-  link: {
-    color: 'white',
-    padding: '0 20px',
-    minHeight: '26px',
-    fontWeight: '300',
-    textDecoration: 'none',
-    opacity: '0.7',
-  },
-  settingBtn: {
-    marginLeft: 'auto',
-  },
-  tabs: {
-    minHeight: '35px',
-  },
+  // typography: {
+  //   fontSize: '15px',
+  //   marginRight: '25px',
+  // },
+  // link: {
+  //   color: 'white',
+  //   padding: '0 20px',
+  //   minHeight: '26px',
+  //   fontWeight: '300',
+  //   textDecoration: 'none',
+  //   opacity: '0.7',
+  // },
+  // settingBtn: {
+  //   marginLeft: 'auto',
+  // },
+  // tabs: {
+  //   minHeight: '35px',
+  // },
 });
 
 const Header = ({ logout, addDashboard }) => {

@@ -8,12 +8,12 @@ import Grid from '@material-ui/core/Grid';
 import { useHistory } from 'react-router-dom';
 
 const useStyles = makeStyles(() => ({
-  infoIcon: {
-    marginLeft: 'auto',
-  },
-  description: {
-    color: '#808080',
-  },
+  // infoIcon: {
+  //   marginLeft: 'auto',
+  // },
+  // description: {
+  //   color: '#808080',
+  // },
 }));
 
 const TableItem = ({ table }) => {

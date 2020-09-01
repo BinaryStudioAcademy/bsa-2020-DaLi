@@ -8,23 +8,23 @@ import Button from '@material-ui/core/Button';
 import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles(() => ({
-  card: {
-    maxWidth: 420,
-    marginTop: 50,
-  },
-  container: {
-    display: 'Flex',
-    justifyContent: 'center',
-  },
-  actions: {
-    float: 'right',
-  },
-  nameContainer: {
-    display: 'flex',
-    '& > :first-child': {
-      marginRight: 5,
-    },
-  },
+  // card: {
+  //   maxWidth: 420,
+  //   marginTop: 50,
+  // },
+  // container: {
+  //   display: 'Flex',
+  //   justifyContent: 'center',
+  // },
+  // actions: {
+  //   float: 'right',
+  // },
+  // nameContainer: {
+  //   display: 'flex',
+  //   '& > :first-child': {
+  //     marginRight: 5,
+  //   },
+  // },
 }));
 const SignUp = ({ values, touched, errors, isSubmitting, handleChange, handleBlur, handleSubmit, handleReset }) => {
   const classes = useStyles();
@@ -111,7 +111,7 @@ const SignUp = ({ values, touched, errors, isSubmitting, handleChange, handleBlu
             />
           </CardContent>
           <CardActions className={classes.actions}>
-            <Button type="submit" color="primary" disabled={isSubmitting}>
+            <Button type="submit" disabled={isSubmitting}>
               SUBMIT
             </Button>
             <Button color="secondary" onClick={handleReset}>

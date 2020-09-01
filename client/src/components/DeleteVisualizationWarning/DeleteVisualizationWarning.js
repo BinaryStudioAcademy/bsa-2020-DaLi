@@ -28,10 +28,8 @@ const DeleteVisualizationWarning = (props) => {
         </DialogContentText>
       </DialogContent>
       <DialogActions>
-        <Button onClick={onClose} color="primary">
-          Cancel
-        </Button>
-        <Button onClick={onDelete} color="primary" autoFocus>
+        <Button onClick={onClose}>Cancel</Button>
+        <Button onClick={onDelete} autoFocus>
           Delete
         </Button>
       </DialogActions>

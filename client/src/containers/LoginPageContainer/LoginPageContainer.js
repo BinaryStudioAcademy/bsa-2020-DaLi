@@ -1,14 +1,18 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { connect, useDispatch } from 'react-redux';
 import Snackbar from '@material-ui/core/Snackbar';
 import MuiAlert from '@material-ui/lab/Alert';
 import { LoginForm, Modal } from '../../components';
-import { login } from './actions';
+
+import { registerAdmin, login } from './actions';
+import SignUpContainer from '../SingUp/SignUp';
+import { authAPIService } from '../../services/api/AuthAPI.service';
 
 const LoginPageContainer = ({ error }) => {
-  const [isModalVisible, setIsModalVisible] = React.useState(false);
-  const [open, setOpen] = React.useState(true);
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [open, setOpen] = useState(true);
+  const [register, setRegister] = useState(false);
 
   const dispatch = useDispatch();
 
@@ -20,6 +24,22 @@ const LoginPageContainer = ({ error }) => {
     dispatch(login(data));
     setOpen(true);
   };
+
+  const handleSubmitRegister = (data) => {
+    dispatch(registerAdmin(data));
+  };
+
+  useEffect(() => {
+    authAPIService.isFirstLogIn().then((res) => {
+      if (res) {
+        setRegister(true);
+      }
+    });
+  }, []);
+
+  if (register) {
+    return <SignUpContainer handleSubmitRegister={handleSubmitRegister} />;
+  }
 
   return (
     <div className="container">
@@ -52,6 +72,6 @@ const mapStateToProps = ({ currentUser }) => ({
   error: currentUser.error,
 });
 
-const mapDispatchToProps = { login };
+const mapDispatchToProps = { login, registerAdmin };
 
 export default connect(mapStateToProps, mapDispatchToProps)(LoginPageContainer);

@@ -9,7 +9,6 @@ import InfoIcon from '@material-ui/icons/Info';
 import EditIcon from '@material-ui/icons/Edit';
 
 import useStyles from './styles';
-import { FILTER, SUMMARIZE } from '../../containers/ViewVisualizationContainer/componentTypes';
 
 const ViewVisualizationHeader = (props) => {
   const {
@@ -62,7 +61,7 @@ const ViewVisualizationHeader = (props) => {
           className={classes.viewVisualizationFilterButton}
           variant="contained"
           startIcon={<FilterListIcon />}
-          onClick={onToggleRightSideBar(FILTER)}
+          onClick={onToggleRightSideBar(0)}
         >
           Filter
         </Button>
@@ -70,7 +69,7 @@ const ViewVisualizationHeader = (props) => {
           className={classes.viewVisualizationSummarizeButton}
           variant="contained"
           startIcon={<GamesOutlinedIcon />}
-          onClick={onToggleRightSideBar(SUMMARIZE)}
+          onClick={onToggleRightSideBar(1)}
         >
           Summarize
         </Button>

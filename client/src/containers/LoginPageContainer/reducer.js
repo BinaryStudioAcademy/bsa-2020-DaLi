@@ -9,6 +9,7 @@ import {
   FETCH_USER_ERROR,
   FETCH_USER,
   LOGOUT_USER,
+  REGISTER_ADMIN_ERROR,
 } from './actionTypes';
 
 const initialState = {
@@ -60,7 +61,8 @@ const loginReducer = (state = initialState, { type, payload }) => {
     }
     case LOGIN_USER_ERROR:
     case LOGOUT_USER_ERROR:
-    case FETCH_USER_ERROR: {
+    case FETCH_USER_ERROR:
+    case REGISTER_ADMIN_ERROR: {
       return {
         ...state,
         error: payload.message,

@@ -1,3 +1,4 @@
+/* eslint-disable class-methods-use-this */
 import Sequelize from 'sequelize';
 import schemaNormalizer from '../helpers/postgresDataTypeNormalizer';
 
@@ -43,12 +44,37 @@ export default class DBPostgresManager {
       });
   }
 
-  getTableDataByName(name) {
+  formQueryFromSettings(settings) {
+    let query = settings.length ? ' WHERE ' : '';
+    let isFirstOption = true;
+    settings.forEach((setting) => {
+      const { columnName, columnType } = setting;
+      if (columnType === 'date') {
+        const greaterThan = setting.greaterThan ? new Date(setting.greaterThan).toISOString() : '-infinity';
+        const lessThan = setting.lessThan ? new Date(setting.lessThan).toISOString() : 'infinity';
+        if (greaterThan) {
+          query += ` ${isFirstOption ? '' : 'AND'} "${columnName}" >= '${greaterThan}' `;
+          isFirstOption = false;
+        }
+        if (lessThan) {
+          query += ` ${isFirstOption ? '' : 'AND'} "${columnName}" <= '${lessThan}' `;
+          isFirstOption = false;
+        }
+      }
+    });
+    return query;
+  }
+
+  getTableDataByName(name, settings) {
+    settings = settings.map((s) => JSON.parse(s));
+    console.log(settings);
+    const filterQuery = this.formQueryFromSettings(settings);
     return this.sequelize
       .query(
         `
         SELECT *
         FROM "${name}"
+        ${filterQuery}
         `
       )
       .then((data) => {

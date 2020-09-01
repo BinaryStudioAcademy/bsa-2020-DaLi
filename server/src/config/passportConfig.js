@@ -16,7 +16,7 @@ passport.use(
     try {
       const user = await userRepository.getByEmail(email);
       if (!user) {
-        return done({ status: 401, message: 'Incorrect email.' }, false);
+        return done({ status: 401, message: 'User with such email was not found.' }, false);
       }
       return (await compare(password, user.password))
         ? done(null, user)

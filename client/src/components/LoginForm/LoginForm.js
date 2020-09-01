@@ -24,11 +24,11 @@ const LoginForm = ({ setIsModalVisible, login }) => {
       {({ errors, touched, isValid, dirty }) => (
         <Form>
           <div className="email-wrapper">
-            <label htmlFor="email">Email address</label>
+            <label htmlFor="login-email">Email address</label>
             <Field
               type="email"
               name="email"
-              id="email"
+              id="login-email"
               className="textInput"
               placeholder="youlooknicetoday@email.com"
               style={getStyles(errors, touched, 'email')}
@@ -36,10 +36,11 @@ const LoginForm = ({ setIsModalVisible, login }) => {
             <ErrorMessage name="email" component="div" className="error" />
           </div>
           <div className="password-wrapper">
-            <label htmlFor="password">Password</label>
+            <label htmlFor="login-password">Password</label>
             <Field
               type="password"
               name="password"
+              id="login-password"
               className="textInput"
               placeholder="Shhh..."
               style={getStyles(errors, touched, 'password')}
@@ -48,13 +49,18 @@ const LoginForm = ({ setIsModalVisible, login }) => {
           </div>
           <div className="checkbox-wrapper">
             <label htmlFor="rememberMe">Remember me</label>
-            <Field type="checkbox" name="rememberMe" className="checkbox" />
+            <Field type="checkbox" name="rememberMe" className="checkbox" id="login-rememberMe" />
           </div>
           <div className="btn-wrapper">
-            <button type="submit" className="btn btn-submit" disabled={!(isValid && dirty)}>
+            <button type="submit" className="btn btn-submit" disabled={!(isValid && dirty)} id="login-signIn">
               Sign in
             </button>
-            <button type="button" className="forgot-pswd" onClick={() => setIsModalVisible(true)}>
+            <button
+              type="button"
+              className="forgot-pswd"
+              onClick={() => setIsModalVisible(true)}
+              id="login-forgot-pswd"
+            >
               I seem to have forgotten my password
             </button>
           </div>

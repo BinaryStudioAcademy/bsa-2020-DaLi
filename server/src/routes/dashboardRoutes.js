@@ -47,12 +47,7 @@ router.post(
 router.patch(
   '/:id',
   asyncHandler(async (req, res, next) => {
-    const result = await DashboardService.updateDashboard(
-      {
-        id: req.params.id,
-      },
-      req.body
-    );
+    const result = await DashboardService.updateDashboard(req.params.id, req.body);
     if (result) {
       res.status(200).json(result);
       next();

@@ -61,7 +61,7 @@ const AnalyticsTabs = ({ visualizations, dashboards, deleteVisualization, delete
 
   const sortData = (data) => {
     return data.sort((elem, nextElem) => {
-      return new Date(elem.updatedAt) - new Date(nextElem.updatedAt);
+      return new Date(nextElem.updatedAt) - new Date(elem.updatedAt);
     });
   };
 

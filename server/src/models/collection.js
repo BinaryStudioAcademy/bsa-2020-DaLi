@@ -3,15 +3,17 @@ import { Model } from 'sequelize';
 export default (sequelize, DataTypes) => {
   class Collection extends Model {
     static associate(models) {
-      Collection.belongsToMany(models.Visualization, {
-        through: models.CollectionVisualizations,
+      Collection.hasMany(models.Visualization, {
         foreignKey: 'collections_id',
-        otherKey: 'visualizations_id',
+        sourceKey: models.Collection.id,
+        onDelete: 'cascade',
+        hooks: true,
       });
-      Collection.belongsToMany(models.Dashboard, {
-        through: models.CollectionDashboards,
+      Collection.hasMany(models.Dashboard, {
         foreignKey: 'collections_id',
-        otherKey: 'dashboards_id',
+        sourceKey: models.Collection.id,
+        onDelete: 'cascade',
+        hooks: true,
       });
     }
   }
@@ -27,13 +29,13 @@ export default (sequelize, DataTypes) => {
       name: {
         type: DataTypes.STRING,
         allowNull: false,
+        unique: true,
       },
       description: {
         type: DataTypes.STRING,
         allowNull: true,
+        unique: false,
       },
-      createdAt: DataTypes.DATE,
-      updatedAt: DataTypes.DATE,
     },
     {
       sequelize,

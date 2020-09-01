@@ -8,6 +8,10 @@ export default (sequelize, DataTypes) => {
         foreignKey: 'dashboards_id',
         otherKey: 'visualizations_id',
       });
+      Dashboard.belongsTo(models.Collection, {
+        foreignKey: 'collections_id',
+        sourceKey: models.Collection.id,
+      });
     }
   }
   Dashboard.init(

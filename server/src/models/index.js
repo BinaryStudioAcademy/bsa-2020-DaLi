@@ -11,8 +11,6 @@ import Database from './database';
 import DBTable from './dbTable';
 import Permission from './permission';
 import Collection from './collection';
-import CollectionDashboards from './collectionDashboards';
-import CollectionVisualizations from './collectionVisualizations';
 
 export const sequelize = new Sequelize(DATABASE_URL, {
   dialect: 'postgres',
@@ -28,8 +26,6 @@ Database(sequelize, Sequelize.DataTypes);
 DBTable(sequelize, Sequelize.DataTypes);
 Permission(sequelize, Sequelize.DataTypes);
 Collection(sequelize, Sequelize.DataTypes);
-CollectionDashboards(sequelize, Sequelize.DataTypes);
-CollectionVisualizations(sequelize, Sequelize.DataTypes);
 
 const models = sequelize.models;
 
@@ -46,6 +42,11 @@ setTimeout(async () => {
     if (groups.length < 2) {
       await models.UserGroups.create({ name: 'Administrators' });
       await models.UserGroups.create({ name: 'All Users' });
+    }
+
+    const collection = await models.Collection.findAll();
+    if (!collection.length) {
+      await models.Collection.create({ name: 'Our analytics' });
     }
   } catch (error) {
     console.log(error);

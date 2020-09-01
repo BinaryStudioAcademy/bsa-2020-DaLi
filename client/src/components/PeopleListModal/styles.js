@@ -116,4 +116,64 @@ export const useStyles = makeStyles(() => ({
       background: '#ed6e6e',
     },
   },
+  addUserModalForm: {
+    display: 'flex',
+    flexDirection: 'column',
+    position: 'relative',
+  },
+
+  modalInput: {
+    border: '1px solid #dadada',
+    padding: 10,
+    borderRadius: 5,
+    marginBottom: 15,
+    fontSize: 15,
+    fontFamily: 'Roboto',
+    width: '100%',
+    boxSizing: 'border-box',
+
+    '&::placeholder': {
+      color: '#c6cfd4',
+      fontSize: 15,
+      fontFamily: 'Roboto',
+      fontWeight: 'bold',
+    },
+    '&:focus': {
+      outline: 'none',
+      border: '1px solid #33a1de',
+    },
+  },
+
+  labelsContainer: {
+    display: 'flex',
+    flexDirection: '',
+    justifyContent: 'space-between',
+    alignItems: 'flex-end',
+    marginBottom: 5,
+    fontWeight: 'bold',
+    fontSize: 12,
+
+    '& span': {
+      color: ' #718391',
+    },
+    '& input': {
+      width: '100%',
+    },
+  },
+  errorMessage: {
+    color: 'red',
+  },
+
+  invalid: {
+    '& input,& textarea': {
+      borderColor: 'red !important',
+    },
+  },
+
+  buttonContainer: {
+    flex: '0 0 auto',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'flex-end',
+  },
 }));

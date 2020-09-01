@@ -18,13 +18,13 @@ export const updateDashboard = ({
   dashboardId,
   newVisualizationsId,
   deletedDashboardVisualizationsId,
-  updatedDashboard,
+  updatedDashboardData,
 }) => {
   return {
     type: UPDATE_DASHBOARD,
     dashboardId,
     newVisualizationsId,
     deletedDashboardVisualizationsId,
-    updatedDashboard,
+    updatedDashboardData,
   };
 };

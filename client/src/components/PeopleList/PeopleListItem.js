@@ -24,15 +24,13 @@ const getInitials = (person) => {
 
 const PeopleListItem = ({
   person,
-  showAddUserModal,
-  showDeactivateUserModal,
   active,
   toggleUserStatus,
-  showResetPasswordModal,
   membership,
   addUserToGroup,
   deleteUserFromGroup,
   currentUserId,
+  openModal,
 }) => {
   const classes = useStyles();
   const colors = colorStyles();
@@ -48,12 +46,12 @@ const PeopleListItem = ({
   };
 
   const onEditUser = () => {
-    showAddUserModal(person);
+    openModal({ user: person, type: 'Edit user' });
     handleClose();
   };
 
   const onDeactivateUser = () => {
-    showDeactivateUserModal(person);
+    openModal({ user: person, type: 'Deactivate user' });
     handleClose();
   };
 
@@ -63,7 +61,8 @@ const PeopleListItem = ({
   };
 
   const handleResetPassword = () => {
-    showResetPasswordModal({ id: person.id, firstName: person.firstName, lastName: person.lastName });
+    openModal({ user: person, type: 'Reset password' });
+    handleClose();
   };
 
   const addValue = (e) => {
@@ -171,15 +170,13 @@ const PeopleListItem = ({
 };
 
 PeopleListItem.propTypes = {
-  showAddUserModal: PropTypes.func,
-  showDeactivateUserModal: PropTypes.func,
   person: PropTypes.object,
   toggleUserStatus: PropTypes.func,
-  showResetPasswordModal: PropTypes.func,
   membership: PropTypes.array,
   addUserToGroup: PropTypes.func,
   deleteUserFromGroup: PropTypes.func,
   active: PropTypes.bool,
+  openModal: PropTypes.func,
   currentUserId: PropTypes.string,
 };
 

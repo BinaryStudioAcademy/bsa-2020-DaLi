@@ -77,8 +77,7 @@ export const setInitialDBPermissionsOnGroupAdd = async (groupId) => {
 };
 
 export const getDBPermissions = async (databaseId) => {
-  const db = await DatabaseRepository.getById({ databaseId });
-
+  const db = await DatabaseRepository.getById({ id: databaseId });
   if (!db) {
     throw createError(404, `Database with id of ${databaseId} not found`);
   }

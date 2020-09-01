@@ -6,6 +6,7 @@ import { GrPowerReset } from 'react-icons/gr';
 
 import PropertyItem from './PropertyItem';
 import './styles.css';
+import EditItem from './EditItem';
 
 const testConfig = {
   columns: [
@@ -27,6 +28,8 @@ const TableSettingsSidebar = ({ config, updateConfig, userNotificationError }) =
   config = config || testConfig;
 
   const [tableConfig, setTableConfig] = useState(config);
+  const [isEditColumn, setIsEditColumn] = useState(false);
+  const [currentColumnId, setCurrentColumnId] = useState('');
 
   const updateOrder = (list) => {
     return list.map((item, i) => {
@@ -93,37 +96,61 @@ const TableSettingsSidebar = ({ config, updateConfig, userNotificationError }) =
     paddingBottom: isDraggingOver ? '50px' : '0px',
   });
 
+  const editColumn = (id) => {
+    setIsEditColumn(true);
+    setCurrentColumnId(id);
+  };
+  const closeEditColumn = () => {
+    setIsEditColumn(false);
+    setCurrentColumnId('');
+  };
+
   return (
     <div className="table-settings-sidebar-container">
-      <h3>
-        Visible columns <GrPowerReset className="columns-restore-icon" onClick={onColumnsRestore} />
-      </h3>
-      <p>Click and drag to change their order</p>
-      <DragDropContext onDragEnd={onDragEnd}>
-        <Droppable droppableId="droppable">
-          {(provided, snapshot) => (
-            <div
-              ref={provided.innerRef}
-              {...provided.droppableProps}
-              className="property-item-container"
-              style={getListStyle(snapshot.isDraggingOver)}
-            >
-              {tableConfig.columns.map(
-                (column, index) =>
-                  column.visible && (
-                    <PropertyItem
-                      name={column.title}
-                      id={column.id}
-                      key={column.id}
-                      index={index}
-                      deleteColumn={deleteColumn}
-                    />
-                  )
-              )}
-            </div>
-          )}
-        </Droppable>
-      </DragDropContext>
+      <div className="table-settings-sidebar-content">
+        {isEditColumn ? (
+          <EditItem
+            closeEditColumn={closeEditColumn}
+            columns={config.columns}
+            currentColumnId={currentColumnId}
+            updateColumnConfig={updateColumnConfig}
+          />
+        ) : (
+          <>
+            <h3>
+              Visible columns <GrPowerReset className="columns-restore-icon" onClick={onColumnsRestore} />
+            </h3>
+            <p>Click and drag to change their order</p>
+            <DragDropContext onDragEnd={onDragEnd}>
+              <Droppable droppableId="droppable">
+                {(provided, snapshot) => (
+                  <div
+                    ref={provided.innerRef}
+                    {...provided.droppableProps}
+                    className="property-item-container"
+                    style={getListStyle(snapshot.isDraggingOver)}
+                  >
+                    {tableConfig.columns.map(
+                      (column, index) =>
+                        column.visible && (
+                          <PropertyItem
+                            name={column.title}
+                            id={column.id}
+                            key={column.id}
+                            index={index}
+                            deleteColumn={deleteColumn}
+                            editColumn={editColumn}
+                          />
+                        )
+                    )}
+                  </div>
+                )}
+              </Droppable>
+            </DragDropContext>
+          </>
+        )}
+      </div>
+
       <div className="table-settings-sidebar-footer">
         <Button onClick={saveConfig} className="view-visualization__setting-button" variant="contained">
           Done

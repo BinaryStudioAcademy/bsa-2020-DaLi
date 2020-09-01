@@ -1,5 +1,9 @@
 export const createNewVisualization = (currentVisualization, name, description, tableId) => {
   const { type, config, datasetSettings } = currentVisualization;
+<<<<<<< HEAD
+=======
+
+>>>>>>> updated summarize bar
   const createdVisualization = {
     name,
     description,

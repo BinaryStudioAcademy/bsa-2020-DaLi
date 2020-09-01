@@ -66,10 +66,9 @@ export default class DBPostgresManager {
   }
 
   getTableDataByName(name, settings) {
+    settings = settings.map((s) => JSON.parse(s));
+    console.log(settings);
     const filterQuery = this.formQueryFromSettings(settings);
-    console.log();
-    console.log(filterQuery);
-    console.log();
     return this.sequelize
       .query(
         `

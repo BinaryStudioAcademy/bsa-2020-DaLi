@@ -33,7 +33,10 @@ import {
   checkIsVisualizationTypeChangedDuringCreation,
 } from './helpers';
 import './ViewVisualizationContainer.css';
+<<<<<<< HEAD
 import { getRightSidebarComponent } from './helpers/rightSidebarHelper';
+=======
+>>>>>>> I forgot what I have added -__-
 
 const ViewVisualizationContainer = (props) => {
   const {
@@ -84,6 +87,12 @@ const ViewVisualizationContainer = (props) => {
     }
   }, [visualizationId, visualizations, userId, visualizationType]);
 
+  // useEffect(() => {
+  //   console.log('start');
+  //   console.log(currentVisualization);
+  //   console.log('finish');
+  // }, [currentVisualization.datasetSettings]);
+
   useEffect(() => {
     if (isNewVisualization && 'data' in currentVisualization && (!currentVisualization.created || isSameData)) {
       const visualization = createInitVisualization(visualizationType, userId, schema);
@@ -106,7 +115,15 @@ const ViewVisualizationContainer = (props) => {
   );
   const visualizationIcon = getVisualizationIcon(currentVisualization.type);
 
-  const contentViewComponent = currentView === 'table' ? <InitialTable data={data} /> : visualizationComponent;
+  const contentViewComponent =
+    // eslint-disable-next-line no-nested-ternary
+    schema && data ? (
+      currentView === 'table' ? (
+        <InitialTable schema={schema} data={data} />
+      ) : (
+        visualizationComponent
+      )
+    ) : null;
 
   const onSwitchContentView = (viewType) => setCurrentView(viewType);
 

@@ -14,7 +14,7 @@ export const createVisualization = async (data) => {
 export const deleteVisualization = async (id) => {
   const item = await VisualisationRepository.getById(id);
   if (!item) {
-    throw createError(404, `Visualization with id of ${id} not found`);
+    throw createError(404, `Visualization with id of ${id.id} not found`);
   }
   const result = await VisualisationRepository.deleteById(id);
   return result;
@@ -23,7 +23,7 @@ export const deleteVisualization = async (id) => {
 export const updateVisualization = async (id, dataToUpdate) => {
   const item = await VisualisationRepository.getById(id);
   if (!item) {
-    throw createError(404, `Visualization with id of ${id} not found`);
+    throw createError(404, `Visualization with id of ${id.id} not found`);
   }
   const result = await VisualisationRepository.updateById(id, dataToUpdate);
   return result;
@@ -32,7 +32,7 @@ export const updateVisualization = async (id, dataToUpdate) => {
 export const getVisualisation = async (id) => {
   const item = await VisualisationRepository.getById(id);
   if (!item) {
-    throw createError(404, `Visualization with id of ${id} not found`);
+    throw createError(404, `Visualization with id of ${id.id} not found`);
   }
   return item;
 };

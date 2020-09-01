@@ -23,7 +23,7 @@ export const getTableData = async (id) => {
       // console.log(error);
       // console.log('///////////////////// ON GET TABLE DATA FAILED');
       data = null;
-      throw createError(500, 'Get table data failed');
+      throw createError(400, 'Get table data failed');
     }
 
     manager.destroy();
@@ -46,7 +46,7 @@ export const getTableSchema = async (id) => {
       // console.log(error);
       // console.log('///////////////////// ON GET TABLE SCHEMA FAILED');
       schema = null;
-      throw createError(500, 'Get table schema failed');
+      throw createError(400, 'Get table schema failed');
     }
 
     manager.destroy();

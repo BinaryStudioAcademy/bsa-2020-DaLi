@@ -9,6 +9,12 @@ export default (sequelize, DataTypes) => {
         onDelete: 'cascade',
         hooks: true,
       });
+      DBTable.hasMany(models.Visualization, {
+        foreignKey: { name: 'tableId', allowNull: false },
+        otherKey: 'visualization_id',
+        onDelete: 'cascade',
+        hooks: true,
+      });
     }
   }
   DBTable.init(

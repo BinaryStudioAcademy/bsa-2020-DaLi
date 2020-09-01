@@ -13,13 +13,13 @@ const DeactivateUserBody = ({ closeModal, user, deactivateUser }) => {
   };
 
   return (
-    <div className={classes.modalContainer}>
+    <div className={classes.modalContainer} id="deactivateUserModal">
       <div className={classes.modalHeader}>
         <h2 className={classes.modalTitle}>{`Do you want to deactivate ${user.firstName} ${user.lastName}?`}</h2>
         <CloseIcon className={classes.closeIcon} onClick={closeModal} />
       </div>
       <div>Are you sure you want to do this?</div>
-      <Button className={classes.resetButton} onClick={handleDeactivateUser}>
+      <Button className={classes.resetButton} onClick={handleDeactivateUser} id="deactivateUser-deactivate">
         Deactivate user
       </Button>
     </div>

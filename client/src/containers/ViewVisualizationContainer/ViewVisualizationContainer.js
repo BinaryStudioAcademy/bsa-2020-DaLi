@@ -59,7 +59,6 @@ const ViewVisualizationContainer = (props) => {
   const [sideBarPage, setSideBarPage] = useState(0);
   const [notificationType, setNotificationType] = useState('success');
   const [isVisualizationExist] = useState(() => {
-    console.log('check');
     return !!visualizationId;
   });
 
@@ -74,7 +73,6 @@ const ViewVisualizationContainer = (props) => {
 
   useEffect(() => {
     if (isNewVisualization && tableId && !isSameData) {
-      console.log(2);
       fetchDataAndSchema(tableId);
     }
     if (!isNewVisualization) {
@@ -84,7 +82,6 @@ const ViewVisualizationContainer = (props) => {
 
   useEffect(() => {
     if (isNewVisualization && 'data' in currentVisualization && (!currentVisualization.created || isSameData)) {
-      console.log(1);
       const visualization = createInitVisualization(visualizationType, userId, schema);
       setVisualization(visualization);
     }

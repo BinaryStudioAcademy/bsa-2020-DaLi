@@ -13,126 +13,140 @@ function LineChart({ settings, data, chart: chartSize }) {
   const { goal, trendline, showDataPointsValues, lineType = 'curveNatural', color } = settings.display;
   const XAxis = settings.axisData.XAxis;
   const YAxis = settings.axisData.YAxis;
-  data.forEach(item => item[YAxis.key] = Number(item[YAxis.key]))
+
   const [config, setConfig] = useState({});
   const svgRef = useRef();
   const [width, setWidth] = useState(chartSize.width);
   const [height, setHeight] = useState(chartSize.height);
 
+  const chart = d3.select(svgRef.current);
+  const { margin } = chartSize;
+
   const draw = () => {
     setConfig(settings);
-    const { margin } = chartSize;
-
-    const chart = d3.select(svgRef.current);
 
     chart.selectAll('*').remove();
 
-    const yDataRange = {
-      min: calcMinYDataValue(
-        d3.min(data, (d) => d[YAxis.key]),
-        goal
-      ),
-      max: calcMaxYDataValue(
-        d3.max(data, (d) => d[YAxis.key]),
-        goal
-      ),
-    };
+    const drawLine = (YKey, index) => {
+      data.forEach((item) => (item[YKey] = Number(item[YKey])));
 
-    const xScale = d3
-      .scaleBand()
-      .domain(data.map((d) => d[XAxis.key]))
-      .range([margin.left, width - margin.right]);
+      const yDataRange = {
+        min: calcMinYDataValue(
+          d3.min(data, (d) => d[YKey]),
+          goal
+        ),
+        max: calcMaxYDataValue(
+          d3.max(data, (d) => d[YKey]),
+          goal
+        ),
+      };
 
-    const yScale = d3
-      .scaleLinear()
-      .domain([yDataRange.min, yDataRange.max])
-      .range([height - margin.bottom, margin.top]);
+      const xScale = d3
+        .scaleBand()
+        .domain(data.map((d) => d[XAxis.key]))
+        .range([margin.left, width - margin.right]);
 
-    chart.select('.d3-tip').remove();
-    const tip = d3Tip()
-      .attr('class', 'd3-tip')
-      .offset([-10, 0])
-      .html(
-        (d) => `
+      const yScale = d3
+        .scaleLinear()
+        .domain([yDataRange.min, yDataRange.max])
+        .range([height - margin.bottom, margin.top]);
+
+      chart.select(`.d3-tip`).remove();
+      const tip = d3Tip()
+        .attr('class', 'd3-tip')
+        .offset([-10, 0])
+        .html(
+          (d) => `
     <div><span>${XAxis.label}:</span> <span style='color:white'>${d[XAxis.key]}</span></div>
-    <div><span>${YAxis.label}:</span> <span style='color:white'>${d[YAxis.key]}</span></div>
+    <div><span>${YKey}:</span> <span style='color:white'>${d[YKey]}</span></div>
   `
-      );
+        );
 
-    chart.call(tip).attr('height', '100%').attr('width', '100%');
+      chart.call(tip).attr('height', '100%').attr('width', '100%');
 
-    const line = d3
-      .line()
-      .curve(d3[lineType])
-      .x((d) => xScale(d[XAxis.key]) + xScale.bandwidth() / 2)
-      .y((d) => yScale(d[YAxis.key]));
-
-    chart
-      .append('path')
-      .datum(data.sort((a, b) => a[XAxis.key] - b[XAxis.key]))
-      .attr('class', 'line')
-      .attr('d', line)
-      .style('stroke', color);
-
-    chart
-      .selectAll('.dot')
-      .data(data)
-      .enter()
-      .append('circle')
-      .attr('class', 'dot')
-      .attr('cx', (d) => xScale(d[XAxis.key]) + xScale.bandwidth() / 2)
-      .attr('cy', (d) => yScale(d[YAxis.key]))
-      .attr('r', 5)
-      .style('stroke', color)
-      .on('mouseover', tip.show)
-      .on('mouseout', tip.hide);
-
-    if (showDataPointsValues) {
+      const line = d3
+        .line()
+        .curve(d3[lineType[index]])
+        .x((d) => xScale(d[XAxis.key]) + xScale.bandwidth() / 2)
+        .y((d) => yScale(d[YKey]));
       chart
-        .selectAll('.dot__value')
+        .append('path')
+        .datum(data.sort((a, b) => a[XAxis.key] - b[XAxis.key]))
+        .attr('class', 'line')
+        .attr('d', line)
+        .style('stroke', color[index]);
+      chart
+        .selectAll(`.dot-${YKey}`)
         .data(data)
         .enter()
-        .append('text')
-        .attr('class', 'dot__value')
-        .attr('x', (d) => xScale(d[XAxis.key]) + xScale.bandwidth() / 2)
-        .attr('y', (d) => yScale(d[YAxis.key]) - 20)
-        .attr('text-anchor', 'middle')
-        .text((d) => d[YAxis.key]);
-    }
+        .append('circle')
+        .attr('class', 'dot')
+        .attr('cx', (d) => xScale(d[XAxis.key]) + xScale.bandwidth() / 2)
+        .attr('cy', (d) => yScale(d[YKey]))
+        .attr('r', 5)
+        .style('stroke', color[index])
+        .on('mouseover', tip.show)
+        .on('mouseout', tip.hide);
+      if (showDataPointsValues) {
+        chart
+          .selectAll(`.dot__value-${YKey}`)
+          .data(data)
+          .enter()
+          .append('text')
+          .attr('class', 'dot__value')
+          .attr('x', (d) => xScale(d[XAxis.key]) + xScale.bandwidth() / 2)
+          .attr('y', (d) => yScale(d[YKey]) - 20)
+          .attr('text-anchor', 'middle')
+          .text((d) => d[YKey]);
+      }
+      const xAxis = (g) => {
+        return g.attr('transform', `translate(0,${height - margin.bottom})`).call(d3.axisBottom(xScale).tickSize(0));
+      };
+      const yAxis = (g) => g.attr('transform', `translate(${margin.left},0)`).call(d3.axisLeft(yScale).tickSize(0));
+      chart.append('g').attr('class', 'x-axis axis').call(xAxis);
+      chart.append('g').attr('class', 'y-axis axis').call(yAxis);
 
-    const xAxis = (g) => {
-      return g.attr('transform', `translate(0,${height - margin.bottom})`).call(d3.axisBottom(xScale).tickSize(0));
+      if (yDataRange.min < 0) {
+        chart
+          .append('line')
+          .style('stroke', '#EE8625')
+          .style('stroke-width', 3)
+          .attr('x1', 0)
+          .attr('y1', yScale(0))
+          .attr('x2', width)
+          .attr('y2', yScale(0));
+
+        const y = yScale(0);
+
+        chart
+          .append('text')
+          .attr('y', y - 10)
+          .attr('x', 70)
+          .attr('text-anchor', 'middle')
+          .attr('class', 'line__label')
+          .text('0');
+      }
+
+      if (goal.display && index === 1) {
+        const y = yScale(goal.value);
+        chart.append('line').attr('id', 'goal').attr('x1', 0).attr('y1', y).attr('x2', width).attr('y2', y);
+  
+        chart
+          .append('text')
+          .attr('y', y - 10)
+          .attr('x', width - 50)
+          .attr('text-anchor', 'middle')
+          .attr('class', 'line__label')
+          .text(goal.label);
+      }
     };
-    const yAxis = (g) => g.attr('transform', `translate(${margin.left},0)`).call(d3.axisLeft(yScale).tickSize(0));
 
-    chart.append('g').attr('class', 'x-axis axis').call(xAxis);
-    chart.append('g').attr('class', 'y-axis axis').call(yAxis);
-
-    if (yDataRange.min < 0) {
-      chart
-        .append('line')
-        .style('stroke', '#EE8625')
-        .style('stroke-width', 3)
-        .attr('x1', 0)
-        .attr('y1', yScale(0))
-        .attr('x2', width)
-        .attr('y2', yScale(0));
-
-      const y = yScale(0);
-
-      chart
-        .append('text')
-        .attr('y', y - 10)
-        .attr('x', 70)
-        .attr('text-anchor', 'middle')
-        .attr('class', 'line__label')
-        .text('0');
-    }
+    YAxis.key.forEach((YKey, index) => drawLine(YKey, index));
 
     // delete axis values
     chart.selectAll('.axis').selectAll('text').remove();
 
-    if (trendline.display && data.length) {
+    if (trendline.display && data.length && YAxis.key.length === 1) {
       const xDataRange = {
         min: data[0][XAxis.key],
         max: data[data.length - 1][XAxis.key],
@@ -143,7 +157,7 @@ function LineChart({ settings, data, chart: chartSize }) {
         .range([margin.left, width - margin.right]);
       const { polynomial, trendlineType } = trendline;
 
-      const trendlineData = data.map((item) => [item[XAxis.key], item[YAxis.key]]);
+      const trendlineData = data.map((item) => [item[XAxis.key], item[YAxis.key[0]]]);
       const barUnitWidth = (xDataRange.max - xDataRange.min) / data.length;
       const domain = [xDataRange.min, xDataRange.max - barUnitWidth];
       const config = {
@@ -176,17 +190,39 @@ function LineChart({ settings, data, chart: chartSize }) {
         .text(XAxis.label);
     }
 
-    if (goal.display) {
-      const y = yScale(goal.value);
-      chart.append('line').attr('id', 'goal').attr('x1', 0).attr('y1', y).attr('x2', width).attr('y2', y);
+    const legendContainer = chart.append('g').attr('transform', 'translate(' + (margin.left + 50) + ',0)');
 
-      chart
-        .append('text')
-        .attr('y', y - 10)
-        .attr('x', width - 50)
-        .attr('text-anchor', 'middle')
-        .attr('class', 'line__label')
-        .text(goal.label);
+    const legendRectSize = 18;
+    const legendSpacing = 4;
+
+    if(YAxis.key.length>1){
+    const legend = legendContainer
+      .selectAll('.legend')
+      .data(YAxis.key)
+      .enter()
+      .append('g')
+      .attr('class', 'legend')
+      .attr('transform', function (d, i) {
+        const width = legendRectSize + legendSpacing + 40;
+        // const offset = (width * color.length) / 2;
+        const offset = (width * 3) / 2;
+        const horz = i*offset;
+        const vert = 0;
+        return 'translate(' + horz + ',' + vert + ')';
+      });
+
+    legend
+      .append('rect')
+      .attr('width', legendRectSize)
+      .attr('height', legendRectSize)
+      .style('fill', (d, i) => color[i])
+      .style('stroke', (d, i) => color[i]);
+
+    legend
+      .append('text')
+      .attr('x', legendRectSize + legendSpacing)
+      .attr('y', legendRectSize - legendSpacing)
+      .text((d) => d);
     }
   };
 
@@ -217,7 +253,7 @@ LineChart.propTypes = {
         displayLabel: PropTypes.bool,
       }),
       YAxis: PropTypes.shape({
-        key: PropTypes.string,
+        key: PropTypes.array,
         label: PropTypes.string,
         displayLabel: PropTypes.bool,
       }),
@@ -238,7 +274,7 @@ LineChart.propTypes = {
         value: PropTypes.number,
         label: PropTypes.string,
       }),
-      lineType: PropTypes.string,
+      lineType: PropTypes.array,
       trendline: PropTypes.shape({
         display: PropTypes.bool,
         trendlineType: PropTypes.string,

@@ -177,6 +177,7 @@ const ViewVisualizationContainer = (props) => {
         isVisualizationExist={isVisualizationExist}
         name={currentVisualization.name}
         description={currentVisualization.description}
+        tableId={tableId}
         visualizationType={id}
       />
       <Grid container className="view-visualization-container">

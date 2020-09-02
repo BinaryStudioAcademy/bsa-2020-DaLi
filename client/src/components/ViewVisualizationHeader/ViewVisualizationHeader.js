@@ -16,6 +16,7 @@ const ViewVisualizationHeader = (props) => {
     name,
     description,
     visualizationType,
+    tableId,
   } = props;
   const classes = useStyles();
 
@@ -26,7 +27,7 @@ const ViewVisualizationHeader = (props) => {
           <span className={classes.viewVisualizationTitleSection}>
             {isVisualizationExist ? 'Visualizations / ' : 'Create Visualization / '}
           </span>
-          {isVisualizationExist ? name : `New ${visualizationType}`}
+          {isVisualizationExist ? name : `${tableId} / ${visualizationType}`}
         </Typography>
         {isVisualizationExist && (
           <>
@@ -67,6 +68,7 @@ ViewVisualizationHeader.propTypes = {
   name: PropTypes.string,
   description: PropTypes.string,
   visualizationType: PropTypes.string,
+  tableId: PropTypes.string,
 };
 
 export default ViewVisualizationHeader;

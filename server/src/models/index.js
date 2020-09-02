@@ -51,8 +51,6 @@ sequelize.sync().then(async () => {
     name: ALL_USERS_GROUP,
   }).then((group) => defaultGroupsId.push(group.id));
 
-  console.log(defaultGroupsId);
-
   await models.Collection.create({ name: DEFAULT_COLLECTIONS }).then((collection) => {
     defaultCollectionId = collection.id;
     return defaultGroupsId;

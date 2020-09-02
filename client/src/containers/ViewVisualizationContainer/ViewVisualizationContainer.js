@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable no-console */
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
@@ -34,28 +35,33 @@ import './ViewVisualizationContainer.css';
 
 const ViewVisualizationContainer = (props) => {
   const {
-    id,
+    visualizationId,
     visualizations,
     userId,
     currentVisualization,
     setVisualization,
     updateVisualizationConfig,
     updateVisualizationName,
-    location: { tableId, prevPath },
+    location: { prevPath },
     fetchVisualization,
     fetchDataAndSchema,
     data,
     schema,
+    tableId,
+    visualizationType,
   } = props;
 
   const [currentView, setCurrentView] = useState('table');
   const [isSideBarOpen, setIsSideBarOpen] = useState(false);
-  const [isVisualizationExist, setIsVisualizationExist] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isNotificationVisible, setIsNotificationVisible] = useState(false);
   const [notificationMessage, setNotificationMessage] = useState('');
   const [sideBarPage, setSideBarPage] = useState(0);
   const [notificationType, setNotificationType] = useState('success');
+  const [isVisualizationExist] = useState(() => {
+    console.log('check');
+    return !!visualizationId;
+  });
 
   const userNotificationError = (notification) => {
     setIsNotificationVisible(true);
@@ -63,33 +69,26 @@ const ViewVisualizationContainer = (props) => {
     setNotificationType('error');
   };
 
+  const isNewVisualization = checkIsVisualizationNew(visualizationType);
+  const isSameData = checkIsVisualizationTypeChangedDuringCreation(prevPath, tableId);
+
   useEffect(() => {
-    const isRedirectedFromNewVisualization = checkIsVisualizationTypeChangedDuringCreation(prevPath);
-    const isNewVisualization = checkIsVisualizationNew(id);
-    if (!tableId && isNewVisualization) {
-      props.history.push('/data-sources');
-    }
-    if (isNewVisualization && isRedirectedFromNewVisualization) {
-      const visualization = createInitVisualization(id, userId, schema);
-      setVisualization(visualization);
-    } else if (isNewVisualization && tableId) {
+    if (isNewVisualization && tableId && !isSameData) {
+      console.log(2);
       fetchDataAndSchema(tableId);
     }
     if (!isNewVisualization) {
-      fetchVisualization(id);
-      setIsVisualizationExist(true);
+      fetchVisualization(visualizationId);
     }
-  }, [id, visualizations, userId, setVisualization, fetchVisualization]);
+  }, [visualizationId, visualizations, userId, visualizationType]);
 
   useEffect(() => {
-    if ('data' in currentVisualization) {
-      if (currentVisualization.created !== true) {
-        setIsVisualizationExist(false);
-        const visualization = createInitVisualization(id, userId, schema);
-        setVisualization(visualization);
-      }
+    if (isNewVisualization && 'data' in currentVisualization && (!currentVisualization.created || isSameData)) {
+      console.log(1);
+      const visualization = createInitVisualization(visualizationType, userId, schema);
+      setVisualization(visualization);
     }
-  }, [data]);
+  }, [data, visualizationType]);
 
   const visualizationComponent = getVisualizationComponent(
     currentVisualization.type,
@@ -134,13 +133,12 @@ const ViewVisualizationContainer = (props) => {
     const newVisualization = createNewVisualization(currentVisualization, name, description, tableId);
     visualizationsAPIService.createVisualization(newVisualization);
     closeModal();
-    setIsVisualizationExist(true);
     props.history.push('/');
   };
 
   const updateVisualization = () => {
     const updatedVisualization = createUpdatedVisualization(currentVisualization);
-    visualizationsAPIService.updateVisualization(id, updatedVisualization);
+    visualizationsAPIService.updateVisualization(visualizationId, updatedVisualization);
     setNotificationMessage('Visualization has been successfully updated');
     setNotificationType('success');
     displayNotification(true);
@@ -165,7 +163,7 @@ const ViewVisualizationContainer = (props) => {
 
   const selectVisualizationSidebar = getSelectVisualizationSidebar(tableId);
 
-  return currentVisualization.loading ? (
+  return !currentVisualization.created ? (
     <div style={{ position: 'relative' }}>
       <CircularProgress size={40} left={-20} top={10} style={{ marginLeft: '50%' }} />
     </div>
@@ -178,7 +176,7 @@ const ViewVisualizationContainer = (props) => {
         name={currentVisualization.name}
         description={currentVisualization.description}
         tableId={tableId}
-        visualizationType={id}
+        visualizationType={visualizationType}
       />
       <Grid container className="view-visualization-container">
         <SaveVisualizationModal
@@ -233,7 +231,7 @@ const mapDispatchToProps = {
 };
 
 ViewVisualizationContainer.propTypes = {
-  id: PropTypes.string,
+  visualizationId: PropTypes.string,
   visualizations: PropTypes.array,
   userId: PropTypes.string,
   currentVisualization: PropTypes.object,
@@ -246,9 +244,10 @@ ViewVisualizationContainer.propTypes = {
   schema: PropTypes.array,
   history: PropTypes.object,
   location: PropTypes.shape({
-    tableId: PropTypes.string,
     prevPath: PropTypes.string,
   }),
+  tableId: PropTypes.string,
+  visualizationType: PropTypes.string,
 };
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(ViewVisualizationContainer));

@@ -216,7 +216,7 @@ function BarChart(props) {
     return ()=>window.removeEventListener('resize', onResize);
   }, [JSON.stringify(props), props.chart, props.data,width, height]);
   
-  return <svg ref={svgRef} />;
+  return <svg ref={svgRef} id="barChartVisualization" />;
 }
 
 BarChart.propTypes = {

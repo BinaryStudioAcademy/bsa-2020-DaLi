@@ -6,7 +6,6 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import { ProtectedRoute, PublicRoute, DataSourcesDatasetsContainer, DataSourcesTablesContainer } from '../containers';
 import {
   LoginPage,
-  SelectVisualizationPage,
   ViewVisualizationPage,
   AccountSettingsPage,
   DashboardPage,
@@ -32,7 +31,6 @@ const Routes = ({ fetchUser, isAuthorized, isLoading }) => {
       <PublicRoute exact path="/login" component={LoginPage} />
       <ProtectedRoute exact path="/" component={AnalyticsPage} />
       <ProtectedRoute path="/visualizations/:id" component={ViewVisualizationPage} />
-      <ProtectedRoute exact path="/select-visualization" component={SelectVisualizationPage} />
       <ProtectedRoute exact path="/select-visualization/:id" component={ViewVisualizationPage} />
       <ProtectedRoute exact path="/account-settings" component={AccountSettingsPage} />
       <ProtectedRoute path="/admin" component={AdminPage} />

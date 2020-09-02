@@ -16,11 +16,12 @@ function BarChartContainer({ data, config }) {
   };
 
   return (
-    <div
+    <div 
       style={{
         width: '100%',
         height: '100%',
       }}
+      id="barChartVisualizationContainer"
     >
       <BarChart data={data} settings={config} chart={chart} />
     </div>

@@ -204,7 +204,7 @@ function LineChart({ settings, data, chart: chartSize }) {
     return () => window.removeEventListener('resize', onResize);
   }, [JSON.stringify(settings), data, chartSize, width, height]);
 
-  return <svg ref={svgRef} />;
+  return <svg id="lineChartVisualization" ref={svgRef} />;
 }
 
 LineChart.propTypes = {

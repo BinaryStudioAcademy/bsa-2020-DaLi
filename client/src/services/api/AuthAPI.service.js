@@ -15,6 +15,14 @@ class AuthAPIService extends baseAPIService {
   getCurrentUser = () => {
     return this.getData('/user', '');
   };
+
+  registerUser = (data) => {
+    return this.postData('/register', data);
+  };
+
+  isFirstLogIn = () => {
+    return this.getData('/isFirstLogIn', '');
+  };
 }
 
 export const authAPIService = new AuthAPIService();

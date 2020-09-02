@@ -17,7 +17,10 @@ export function* fetchVisualizationWithDataAndSchemaSaga({ id }) {
   yield put({ type: FETCH_VISUALIZATION_WITH_DATA_AND_SCHEMA_START });
   const visualization = yield call(visualizationsAPIService.getVisualization, id);
   const datasetSettings = visualization.datasetSettings || [];
-  const data = yield call(dbTableAPIService.getTableData, visualization.tableId, { settings: datasetSettings });
+  const data = yield call(dbTableAPIService.getTableData, visualization.tableId, {
+    settings: datasetSettings,
+    config: visualization.config,
+  });
   const schema = yield call(dbTableAPIService.getTableSchema, visualization.tableId);
   yield put({
     type: FETCH_VISUALIZATION_WITH_DATA_AND_SCHEMA_SUCCESS,

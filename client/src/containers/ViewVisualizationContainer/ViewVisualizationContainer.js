@@ -167,8 +167,8 @@ const ViewVisualizationContainer = (props) => {
     props.history.push('/');
   };
 
-  const updateVisualization = () => {
-    const updatedVisualization = createUpdatedVisualization(currentVisualization);
+  const updateVisualization = (newConfig) => {
+    const updatedVisualization = createUpdatedVisualization(currentVisualization, newConfig);
     visualizationsAPIService.updateVisualization(visualizationId, updatedVisualization);
     setNotificationMessage('Visualization has been successfully updated');
     setNotificationType('success');
@@ -246,7 +246,7 @@ const ViewVisualizationContainer = (props) => {
           <ViewVisualizationSidebar
             components={[
               <FilterBar currentVisualization={currentVisualization} />,
-              <SummarizeBar currentVisualization={currentVisualization} />,
+              <SummarizeBar currentVisualization={currentVisualization} updateVisualization={updateVisualization} />,
             ]}
             sideBarPage={rightSideBarPage}
           />

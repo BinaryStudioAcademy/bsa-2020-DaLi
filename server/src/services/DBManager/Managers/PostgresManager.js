@@ -65,15 +65,19 @@ export default class DBPostgresManager {
     return query;
   }
 
-  getTableDataByName(name, settings) {
+  getTableDataByName(name, settings, isSummarize, summarize) {
     settings = settings.map((s) => JSON.parse(s));
     const filterQuery = this.formQueryFromSettings(settings);
+    console.log(summarize)
+    const select = isSummarize ? 'SELECT '+ summarize.select.operation+'('+summarize.select.column+')'+' as '+summarize.select.as +', '+summarize.groupBy : 'SELECT *';
+    console.log(select)
     return this.sequelize
       .query(
         `
-        SELECT *
+        ${select}
         FROM "${name}"
         ${filterQuery}
+        ${isSummarize && 'GROUP BY ' + summarize.groupBy}
         `
       )
       .then((data) => {

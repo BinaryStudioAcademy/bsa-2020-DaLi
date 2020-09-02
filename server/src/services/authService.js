@@ -1,7 +1,9 @@
 import createError from 'http-errors';
 import UserRepository from '../repositories/userRepository';
+import CollectionRepository from '../repositories/collectionRepository';
 import { createToken } from '../helpers/tokenHelper';
 import { encryptSync } from '../helpers/cryptoHelper';
+import { PRIVATE_COLLECTIONS } from '../config/types';
 
 export const login = async (data) => {
   const currentUser = await UserRepository.getUserById(data.id);
@@ -19,10 +21,16 @@ export const login = async (data) => {
 export const register = async (user) => {
   const candidate = await UserRepository.getByEmail(user.email);
   if (!candidate) {
-    await UserRepository.createUsersWithDefaultGroups({
+    const result = await UserRepository.createUsersWithDefaultGroups({
       ...user,
       password: encryptSync(user.password),
     });
+
+    await CollectionRepository.create({
+      name: PRIVATE_COLLECTIONS,
+      users_id: result.id,
+    });
+
     return {
       status: 'Register success',
     };

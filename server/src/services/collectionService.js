@@ -2,6 +2,7 @@ import createError from 'http-errors';
 import CollectionRepository from '../repositories/collectionRepository';
 import VisualizationRepository from '../repositories/visualizationRepository';
 import DashboardRepository from '../repositories/dashboardRepository';
+import { setInitialCollectionsPermissions } from './permissionCollectionsService';
 
 export const getCollections = async () => {
   const result = await CollectionRepository.getAllWithDashboardsAndVisualizations();
@@ -10,6 +11,7 @@ export const getCollections = async () => {
 
 export const createCollection = async (data) => {
   const result = await CollectionRepository.create(data);
+  await setInitialCollectionsPermissions(result.id);
   return result;
 };
 

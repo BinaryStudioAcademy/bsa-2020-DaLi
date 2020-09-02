@@ -1,4 +1,6 @@
 export const createNewVisualization = (currentVisualization, name, description, tableId) => {
+  delete currentVisualization.data;
+  delete currentVisualization.schema;
   const createdVisualization = {
     ...currentVisualization,
     name,

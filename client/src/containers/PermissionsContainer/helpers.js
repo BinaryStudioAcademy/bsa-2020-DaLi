@@ -22,7 +22,9 @@ const updateTablesPermissionsAccess = (currentTablesPermissions, databaseId, gro
   const currentDatabase = currentTablesPermissions[currentDatabaseIndex];
   const updatedDatabaseTables = currentDatabase.tables.map((item) => ({
     ...item,
-    groups: item.groups.map((item) => (item.groupId === groupId ? { ...item, access: accessType } : item)),
+    groups: item[item.groups ? 'groups' : 'Permissions'].map((item) =>
+      (item.groupId === groupId ? { ...item, access: accessType } : item)
+    ),
   }));
 
   return [

@@ -1,7 +1,7 @@
 import createError from 'http-errors';
 import PermissionRepository from '../repositories/permissionRepository';
 import UserGroupsRepository from '../repositories/userGroupsRepository';
-import UserRepository from '../repositories/userRepository';
+// import UserRepository from '../repositories/userRepository';
 import DatabaseRepository from '../repositories/databaseRepository';
 import DBTable from '../repositories/dbTableRepository';
 import { ACCESS_GRANTED, ACCESS_DENIED, ACCESS_LIMITED, ADMIN_GROUP, TABLE } from '../config/types';
@@ -53,6 +53,8 @@ export const getPermissions = async () => {
   };
 };
 
+// export const getPermissions = async () => DatabaseRepository.getPermissions();
+
 export const setInitialTablesPermissions = async (tableid) => {
   const groups = await UserGroupsRepository.getAll();
   groups.forEach(async (group) => {
@@ -80,41 +82,49 @@ export const setInitialTablesPermissionsOnGroupAdd = async (groupId) => {
 };
 
 export const getDBPermissions = async (databaseId) => {
-  const db = await DatabaseRepository.getById({ id: databaseId });
-  if (!db) {
+  const data = await DBTable.getPermissionsByDatabaseId(databaseId);
+  if (!data) {
     throw createError(404, `Database with id of ${databaseId} not found`);
   }
-  const permissions = await PermissionRepository.getTablesPermissions();
-  const groups = await UserGroupsRepository.getAll();
-  const tables = await DBTable.getAllByDatabaseId(databaseId);
-
-  const result = await Promise.all(
-    tables.map(async (table) => {
-      const groupsAccess = await Promise.all(
-        groups.map(async (group) => {
-          const permission = permissions.find(
-            (permission) => permission.dbtable_id === table.id && permission.userGroups_id === group.id
-          );
-          return {
-            groupId: group.id,
-            groupName: group.name,
-            access: permission.permissionGranted,
-          };
-        })
-      );
-
-      return {
-        tableId: table.id,
-        tableName: table.name,
-        groups: groupsAccess,
-      };
-    })
-  );
-
-  return {
-    permissions: result,
-  };
+  return data;
 };
+
+// export const getDBPermissions = async (databaseId) => {
+//   const db = await DatabaseRepository.getById({ id: databaseId });
+//   if (!db) {
+//     throw createError(404, `Database with id of ${databaseId} not found`);
+//   }
+//   const permissions = await PermissionRepository.getTablesPermissions();
+//   const groups = await UserGroupsRepository.getAll();
+//   const tables = await DBTable.getAllByDatabaseId(databaseId);
+
+//   const result = await Promise.all(
+//     tables.map(async (table) => {
+//       const groupsAccess = await Promise.all(
+//         groups.map(async (group) => {
+//           const permission = permissions.find(
+//             (permission) => permission.dbtable_id === table.id && permission.userGroups_id === group.id
+//           );
+//           return {
+//             groupId: group.id,
+//             groupName: group.name,
+//             access: permission.permissionGranted,
+//           };
+//         })
+//       );
+
+//       return {
+//         tableId: table.id,
+//         tableName: table.name,
+//         groups: groupsAccess,
+//       };
+//     })
+//   );
+
+//   return {
+//     permissions: result,
+//   };
+// };
 
 export const updateDBTablesPermissions = async (permissions) => {
   const result = await Promise.all(

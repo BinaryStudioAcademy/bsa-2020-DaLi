@@ -4,6 +4,7 @@ export const ACCESS_LIMITED = 'limited';
 export const ACCESS_VIEW = 'view';
 
 export const ADMIN_GROUP = 'Administrators';
+export const ALL_USERS_GROUP = 'All Users';
 
 export const DEFAULT_COLLECTIONS = 'Our analytics';
 export const PRIVATE_COLLECTIONS = 'My personal collection';

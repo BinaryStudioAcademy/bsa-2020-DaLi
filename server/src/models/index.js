@@ -1,6 +1,6 @@
 import Sequelize from 'sequelize';
 import DATABASE_URL from '../config/dbConfig';
-import { DEFAULT_COLLECTIONS } from '../config/types';
+import { DEFAULT_COLLECTIONS, ADMIN_GROUP, ALL_USERS_GROUP } from '../config/types';
 
 import User from './user';
 import Visualization from './visualization';
@@ -38,22 +38,32 @@ Object.keys(models).forEach((key) => {
   }
 });
 
-// временная заглушка для создания двух обязательных групп
-setTimeout(async () => {
-  try {
-    const groups = await models.UserGroups.findAll();
-    if (groups.length < 2) {
-      await models.UserGroups.create({ name: 'Administrators' });
-      await models.UserGroups.create({ name: 'All Users' });
-    }
+sequelize.sync().then(async () => {
+  const groups = await models.UserGroups.findAll();
+  if (groups.length >= 2) return;
 
-    const collection = await models.Collection.findAll();
-    if (!collection.length) {
-      await models.Collection.create({ name: DEFAULT_COLLECTIONS });
-    }
-  } catch (error) {
-    console.log(error);
-  }
-}, 5000);
+  const defaultGroupsId = [];
+  let defaultCollectionId = '';
+  await models.UserGroups.create({
+    name: ADMIN_GROUP,
+  }).then((group) => defaultGroupsId.push(group.id));
+  await models.UserGroups.create({
+    name: ALL_USERS_GROUP,
+  }).then((group) => defaultGroupsId.push(group.id));
+
+  console.log(defaultGroupsId);
+
+  await models.Collection.create({ name: DEFAULT_COLLECTIONS }).then((collection) => {
+    defaultCollectionId = collection.id;
+    return defaultGroupsId;
+  });
+  defaultGroupsId.forEach(async (groupId) => {
+    await models.PermissionCollections.create({
+      permissionGranted: 'granted',
+      userGroups_id: groupId,
+      collections_id: defaultCollectionId,
+    });
+  });
+});
 
 export default models;

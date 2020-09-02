@@ -13,10 +13,15 @@ import {
 import { visualizationsAPIService } from '../../services/api/visualizationsAPI.service';
 import { dbTableAPIService } from '../../services/api/dbTableAPI.service';
 
-export function* fetchVisualizationWithDataSaga(action) {
-  yield put({ type: VISUALIZATIONS_WITH_DATA_FETCHING });
-  const visualization = yield call(visualizationsAPIService.getVisualization, action.id);
-  const visualizationData = yield call(dbTableAPIService.getTable, visualization.tableId);
+export function* fetchVisualizationWithDataAndSchemaSaga({ id }) {
+  yield put({ type: FETCH_VISUALIZATION_WITH_DATA_AND_SCHEMA_START });
+  const visualization = yield call(visualizationsAPIService.getVisualization, id);
+  const datasetSettings = visualization.datasetSettings || [];
+  const data = yield call(dbTableAPIService.getTableData, visualization.tableId, {
+    settings: datasetSettings,
+    config: visualization.config,
+  });
+  const schema = yield call(dbTableAPIService.getTableSchema, visualization.tableId);
   yield put({
     type: FETCH_VISUALIZATION_WITH_DATA_AND_SCHEMA_SUCCESS,
     payload: { visualization: { ...visualization, data: visualizationData } },

@@ -1,9 +1,5 @@
 export const createNewVisualization = (currentVisualization, name, description, tableId) => {
   const { type, config, datasetSettings } = currentVisualization;
-<<<<<<< HEAD
-=======
-
->>>>>>> updated summarize bar
   const createdVisualization = {
     name,
     description,
@@ -15,7 +11,7 @@ export const createNewVisualization = (currentVisualization, name, description, 
   return createdVisualization;
 };
 
-export const createUpdatedVisualization = (currentVisualization) => {
+export const createUpdatedVisualization = (currentVisualization, newConfig) => {
   const { type, name, description, config, datasetSettings, tableId } = currentVisualization;
   const updatedVisualization = {
     type,
@@ -23,7 +19,7 @@ export const createUpdatedVisualization = (currentVisualization) => {
     description,
     tableId,
     datasetSettings: datasetSettings.map((s) => JSON.stringify(s)),
-    config: JSON.stringify(config),
+    config: JSON.stringify(newConfig || config),
   };
   return updatedVisualization;
 };

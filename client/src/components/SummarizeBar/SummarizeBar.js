@@ -2,25 +2,46 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { Button } from '@material-ui/core';
 import MenuItem from '@material-ui/core/MenuItem';
-
 import Menu from '@material-ui/core/Menu';
 import useStyles from './styles';
+import GroupByList from './GroupByList';
 
 const summarizes = [
-  { id: 0, name: 'Count of rows', query: '' },
-  { id: 1, name: 'Sum of', query: '' },
-  { id: 2, name: 'Average of', query: '' },
+  { id: 0, name: 'count', operation: 'COUNT' },
+  { id: 1, name: 'Sum of', operation: 'SUM' },
+  { id: 2, name: 'Average of', operation: 'AVG' },
 ];
 
-const SummarizeBar = ({ currentVisualization }) => {
+const SummarizeBar = ({ currentVisualization, updateVisualization }) => {
   const classes = useStyles();
   const [currentSummarize, setCurrentSummarize] = useState(null);
+  const [currentGroupBy, setCurrentGroupBy] = useState(null);
   const [isSummarize, setIsSummarize] = useState(false);
 
   const [menuAnchorEl, setMenuAnchorEl] = useState(null);
   const handleMenuClick = (event) => {
     setMenuAnchorEl(event.currentTarget);
   };
+
+  const updateConfig = () => {
+    const newConfig = { ...currentVisualization.config };
+    newConfig.axisData.XAxis.key = currentGroupBy;
+    newConfig.axisData.XAxis.label = currentGroupBy;
+    newConfig.axisData.YAxis.key = currentSummarize.name;
+    newConfig.axisData.YAxis.label = currentSummarize.name;
+    newConfig.isSummarize = true;
+    const summarize = {
+      select: {
+        operation: currentSummarize.operation,
+        column: '*',
+        as: currentSummarize.name,
+      },
+      groupBy: currentGroupBy,
+    };
+    newConfig.summarize = summarize;
+    updateVisualization(newConfig);
+  };
+
   const selectSummarize = (summarize) => () => {
     setCurrentSummarize(summarize);
     setIsSummarize(true);
@@ -61,15 +82,17 @@ const SummarizeBar = ({ currentVisualization }) => {
       {isSummarize && (
         <div>
           <h3>Group by</h3>
-          {currentVisualization.schema.map((column) => {
-            return (
-              <Button className={classes.summarizeByButton} key={column.column_name} variant="contained" fullWidth>
-                {column.column_name}
-              </Button>
-            );
-          })}
-          <Button className={classes.summarizeByButton} variant="contained" fullWidth>
-            Created At by month
+          {currentVisualization.schema.map((column) => (
+            <GroupByList
+              key={column.column_name}
+              type={column.data_type}
+              name={column.column_name}
+              isActive={column.column_name === currentGroupBy}
+              setCurrentGroupBy={setCurrentGroupBy}
+            />
+          ))}
+          <Button className={classes.summarizeByButton} variant="contained" fullWidth onClick={updateConfig}>
+            DONE
           </Button>
         </div>
       )}
@@ -79,6 +102,7 @@ const SummarizeBar = ({ currentVisualization }) => {
 
 SummarizeBar.propTypes = {
   currentVisualization: PropTypes.object,
+  updateVisualization: PropTypes.func,
 };
 
 export default SummarizeBar;

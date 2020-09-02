@@ -35,6 +35,11 @@ function createInitLineChartConfig(schema, getYKeys, getXKeys) {
       showDataPointsValues: false,
       lineType: ['curveNatural'],
     },
+    isSummarize: false,
+    summarize: {
+      select: '',
+      groupBy: '',
+    },
   };
 }
 

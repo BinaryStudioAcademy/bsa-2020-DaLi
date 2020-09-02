@@ -13,7 +13,6 @@ import LineChartSettings from './LineChartSettings';
 import MapSettingsSidebar from './MapSettingsSidebar/MapSettingsSidebar';
 import EnhancedTable from './EnhancedTable/EnhancedTable';
 import InitialTable from './InitialTable/InitialTable';
-import SelectVisualization from './SelectVisualization/SelectVisualization';
 import ViewVisualizationSidebar from './ViewVisualizationSidebar';
 import ViewVisualizationMain from './ViewVisualizationMain';
 import ViewVisualizationHeader from './ViewVisualizationHeader/ViewVisualizationHeader';
@@ -34,6 +33,7 @@ import DeleteVisualizationWarning from './DeleteVisualizationWarning/DeleteVisua
 import PermissionsHeader from './PermissionsHeader/PermissionsHeader';
 import PermissionsTable from './PermissionsTable/PermissionsTable';
 import PermissionsModal from './PermissionsModal/PermissionsModal';
+import SelectVisualizationSidebar from './SelectVisualizationSidebar/SelectVisualizationSidebar';
 
 export {
   BarChart,
@@ -46,7 +46,6 @@ export {
   SignUp,
   EnhancedTable,
   InitialTable,
-  SelectVisualization,
   ViewVisualizationSidebar,
   ViewVisualizationMain,
   ViewVisualizationHeader,
@@ -72,4 +71,5 @@ export {
   PermissionsHeader,
   PermissionsTable,
   PermissionsModal,
+  SelectVisualizationSidebar,
 };

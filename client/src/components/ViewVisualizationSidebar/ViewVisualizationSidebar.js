@@ -4,16 +4,17 @@ import Grid from '@material-ui/core/Grid';
 
 import './ViewVisualizationSidebar.css';
 
-const ViewVisualizationSidebar = ({ component }) => {
+const ViewVisualizationSidebar = ({ components, sideBarPage }) => {
   return (
     <Grid item className="view-visualization-sidebar">
-      {component}
+      {components[sideBarPage]}
     </Grid>
   );
 };
 
 ViewVisualizationSidebar.propTypes = {
-  component: PropTypes.object,
+  components: PropTypes.array,
+  sideBarPage: PropTypes.number,
 };
 
 export default ViewVisualizationSidebar;

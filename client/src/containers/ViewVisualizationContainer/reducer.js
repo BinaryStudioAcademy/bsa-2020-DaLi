@@ -1,16 +1,23 @@
 import {
-  SET_VISUALIZATION,
+  SET_VISUALIZATION_IN_PROGRESS,
+  SET_VISUALIZATION_SUCCESS,
   UPDATE_VISUALIZATION_CONFIG,
   UPDATE_VISUALIZATION_NAME,
   FETCH_VISUALIZATION_SUCCESS,
+  VISUALIZATIONS_FETCHING,
+  FETCH_DATA_AND_SCHEMA_IN_PROGRESS,
+  FETCH_DATA_AND_SCHEMA_SUCCESS,
 } from './actionTypes';
 
-const viewVisualizationReducer = (state = {}, { type, payload }) => {
+const viewVisualizationReducer = (state = { loading: true, created: false }, { type, payload }) => {
   switch (type) {
-    case SET_VISUALIZATION: {
+    case SET_VISUALIZATION_SUCCESS: {
       const { visualization } = payload;
       return {
+        ...state,
         ...visualization,
+        loading: false,
+        created: true,
       };
     }
 
@@ -18,7 +25,10 @@ const viewVisualizationReducer = (state = {}, { type, payload }) => {
       const { visualization } = payload;
       visualization.config = JSON.parse(visualization.config);
       return {
+        ...state,
         ...visualization,
+        loading: false,
+        created: true,
       };
     }
 
@@ -36,6 +46,30 @@ const viewVisualizationReducer = (state = {}, { type, payload }) => {
         ...state,
         name,
         description,
+      };
+    }
+
+    case VISUALIZATIONS_FETCHING: {
+      return {
+        ...state,
+        loading: true,
+      };
+    }
+
+    case FETCH_DATA_AND_SCHEMA_SUCCESS: {
+      const { visualization } = payload;
+      return {
+        ...state,
+        ...visualization,
+      };
+    }
+
+    case FETCH_DATA_AND_SCHEMA_IN_PROGRESS:
+    case SET_VISUALIZATION_IN_PROGRESS: {
+      return {
+        ...state,
+        created: false,
+        loading: true,
       };
     }
 

@@ -26,7 +26,6 @@ export const register = async (user) => {
       password: encryptSync(user.password),
     });
 
-    console.log(result);
     await CollectionRepository.create({
       name: PRIVATE_COLLECTIONS,
       users_id: result.id,

@@ -9,6 +9,15 @@ import {
 
 export const checkIsVisualizationNew = (id) => VISUALIZATIONS_TYPES_TO_CREATE.includes(id);
 
+export const checkIsVisualizationTypeChangedDuringCreation = (prevPath) => {
+  if (typeof prevPath === 'string') {
+    return VISUALIZATIONS_TYPES_TO_CREATE.includes(prevPath.slice(22));
+  }
+  return false;
+};
+
+export const createDataSample = (data) => data[0];
+
 export const getYKeys = (schema) => {
   const availableKeys = schema.filter(({ data_type }) => {
     const isNum = data_type === 'number';

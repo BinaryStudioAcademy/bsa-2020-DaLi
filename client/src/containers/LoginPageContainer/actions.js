@@ -1,9 +1,16 @@
-import { LOGIN_USER, LOGOUT_USER, FETCH_USER } from './actionTypes';
+import { LOGIN_USER, LOGOUT_USER, FETCH_USER, REGISTER_ADMIN } from './actionTypes';
 
 export const login = (request) => {
   return {
     type: LOGIN_USER,
     request,
+  };
+};
+
+export const registerAdmin = (data) => {
+  return {
+    type: REGISTER_ADMIN,
+    payload: data,
   };
 };
 

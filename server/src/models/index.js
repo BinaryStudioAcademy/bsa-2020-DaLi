@@ -1,5 +1,6 @@
 import Sequelize from 'sequelize';
 import DATABASE_URL from '../config/dbConfig';
+import { DEFAULT_COLLECTIONS } from '../config/types';
 
 import User from './user';
 import Visualization from './visualization';
@@ -11,6 +12,7 @@ import Database from './database';
 import DBTable from './dbTable';
 import Permission from './permission';
 import Collection from './collection';
+import PermissionCollections from './permissionCollections';
 
 export const sequelize = new Sequelize(DATABASE_URL, {
   dialect: 'postgres',
@@ -26,6 +28,7 @@ Database(sequelize, Sequelize.DataTypes);
 DBTable(sequelize, Sequelize.DataTypes);
 Permission(sequelize, Sequelize.DataTypes);
 Collection(sequelize, Sequelize.DataTypes);
+PermissionCollections(sequelize, Sequelize.DataTypes);
 
 const models = sequelize.models;
 
@@ -46,7 +49,7 @@ setTimeout(async () => {
 
     const collection = await models.Collection.findAll();
     if (!collection.length) {
-      await models.Collection.create({ name: 'Our analytics' });
+      await models.Collection.create({ name: DEFAULT_COLLECTIONS });
     }
   } catch (error) {
     console.log(error);

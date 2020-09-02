@@ -14,6 +14,12 @@ export default (sequelize, DataTypes) => {
         onDelete: 'cascade',
         hooks: true,
       });
+      UserGroups.hasMany(models.PermissionCollections, {
+        foreignKey: 'userGroups_id',
+        sourceKey: models.User.id,
+        onDelete: 'cascade',
+        hooks: true,
+      });
     }
   }
   UserGroups.init(

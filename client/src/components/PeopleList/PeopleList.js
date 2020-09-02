@@ -48,16 +48,22 @@ const PeopleList = ({
   resetNotification,
   currentUserId,
   openModal,
+  activeTabIndex,
+  setActiveTabIndex,
 }) => {
   const classes = useStyles();
   const [isInactiveUsers, setIsInactiveUsers] = useState(false);
   const [inactiveUsers, setInactiveUsers] = useState([]);
   const [activeUsers, setActiveUsers] = useState([]);
 
-  const [value, setValue] = useState(0);
+  // const [value, setValue] = useState(0);
 
   const handleChange = (event, newValue) => {
-    setValue(newValue);
+    // debugger;
+    setActiveTabIndex(newValue);
+
+    // setValue(newValue);
+    // activeTabIndexRef.current = newValue;
   };
 
   const hideNotification = () => {
@@ -107,7 +113,12 @@ const PeopleList = ({
         ) : (
           <div className={classes.panel}>
             <div className={classes.appbar}>
-              <Tabs value={value} onChange={handleChange} aria-label="simple tabs example" className={classes.tabs}>
+              <Tabs
+                value={activeTabIndex}
+                onChange={handleChange}
+                aria-label="simple tabs example"
+                className={classes.tabs}
+              >
                 <Tab label="Active" className={classes.tab} />
                 <Tab label="Deactivated" className={classes.tab} />
               </Tabs>
@@ -119,7 +130,7 @@ const PeopleList = ({
                 Add someone
               </Button>
             </div>
-            <TabPanel value={value} index={0}>
+            <TabPanel value={activeTabIndex} index={0}>
               <PeopleTable
                 active
                 people={activeUsers}
@@ -130,7 +141,7 @@ const PeopleList = ({
                 openModal={openModal}
               />
             </TabPanel>
-            <TabPanel value={value} index={1}>
+            <TabPanel value={activeTabIndex} index={1}>
               <PeopleTable
                 active={false}
                 people={inactiveUsers}
@@ -152,7 +163,7 @@ const PeopleList = ({
           transitionDuration={0}
           onClose={hideNotification}
         >
-          <Alert elevation={6} variant="filled" severity={status} onClose={hideNotification}>
+          <Alert elevation={6} variant="filled" severity={status} onClick={hideNotification}>
             {message}
           </Alert>
         </Snackbar>
@@ -174,6 +185,8 @@ PeopleList.propTypes = {
   resetNotification: PropTypes.func,
   openModal: PropTypes.func,
   currentUserId: PropTypes.string,
+  activeTabIndex: PropTypes.number,
+  setActiveTabIndex: PropTypes.func,
 };
 
 export default PeopleList;

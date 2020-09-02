@@ -56,14 +56,8 @@ const PeopleList = ({
   const [inactiveUsers, setInactiveUsers] = useState([]);
   const [activeUsers, setActiveUsers] = useState([]);
 
-  // const [value, setValue] = useState(0);
-
   const handleChange = (event, newValue) => {
-    // debugger;
     setActiveTabIndex(newValue);
-
-    // setValue(newValue);
-    // activeTabIndexRef.current = newValue;
   };
 
   const hideNotification = () => {

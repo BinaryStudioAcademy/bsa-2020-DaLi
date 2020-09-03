@@ -20,10 +20,11 @@ export const getAnalytics = () => {
   };
 };
 
-export const deleteVisualization = (id) => {
+export const deleteVisualization = ({ id, collectionId }) => {
   return {
     type: DELETE_VISUALIZATION,
     id,
+    collectionId,
   };
 };
 

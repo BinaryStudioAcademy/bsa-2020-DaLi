@@ -67,7 +67,11 @@ export function* watchFetchVisualizationsSaga() {
 
 export function* deleteVisualizationSaga(payload) {
   yield call(visualizationsAPIService.deleteVisualization, payload.id);
-  yield put({ type: GET_COLLECTIONS });
+  if (payload.collectionId) {
+    yield put({ type: GET_CURRENT_COLLECTION, id: payload.collectionId });
+  } else {
+    yield put({ type: GET_COLLECTIONS });
+  }
 }
 
 export function* watchDeleteVisualizationSaga() {

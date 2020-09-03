@@ -94,7 +94,7 @@ const AnalyticsTabsPanel = ({ value, index, data, deleteVisualization, deleteDas
                   <DeleteIcon
                     className={classes.menuIcon}
                     id={item.id}
-                    onClick={deleteVisualization(item.id, collectionId)}
+                    onClick={deleteVisualization({ id: item.id, collectionId })}
                   />
                 </>
               )}

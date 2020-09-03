@@ -13,9 +13,7 @@ import {
   resetNotification,
   moveToCollection,
 } from './actions';
-import AnalyticsTabs from '../../components/AnalyticsTabs/AnalyticsTabs';
-import CollectionList from '../../components/CollectionList/CollectionList';
-import CollectionModal from '../../components/CollectionModal/CollectionModal';
+import { AnalyticsTabs, CollectionList, CollectionModal } from '../../components';
 
 const AnalyticsTabsContainer = ({
   message,

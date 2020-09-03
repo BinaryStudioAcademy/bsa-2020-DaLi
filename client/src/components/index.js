@@ -34,6 +34,8 @@ import PermissionsHeader from './PermissionsHeader/PermissionsHeader';
 import PermissionsTable from './PermissionsTable/PermissionsTable';
 import PermissionsModal from './PermissionsModal/PermissionsModal';
 import SelectVisualizationSidebar from './SelectVisualizationSidebar/SelectVisualizationSidebar';
+import CollectionList from './CollectionList/CollectionList';
+import CollectionModal from './CollectionModal/CollectionModal';
 
 export {
   BarChart,
@@ -72,4 +74,6 @@ export {
   PermissionsTable,
   PermissionsModal,
   SelectVisualizationSidebar,
+  CollectionList,
+  CollectionModal,
 };

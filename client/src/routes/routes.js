@@ -14,6 +14,7 @@ import {
 } from '../pages';
 import { getToken } from '../helpers/jwtToken';
 import { fetchUser } from '../containers/LoginPageContainer/actions';
+import CollectionContainer from '../containers/CollectionContainer/CollectionContainer';
 
 const Routes = ({ fetchUser, isAuthorized, isLoading }) => {
   const hasToken = !!getToken();
@@ -37,6 +38,7 @@ const Routes = ({ fetchUser, isAuthorized, isLoading }) => {
       <ProtectedRoute exact path="/dashboards/:id" component={DashboardPage} />
       <ProtectedRoute exact path="/data-sources" component={DataSourcesDatasetsContainer} />
       <ProtectedRoute exact path="/data-sources/:id" component={DataSourcesTablesContainer} />
+      <ProtectedRoute exact path="/collections/:id" component={CollectionContainer} />
       <Redirect to="/" />
     </Switch>
   );

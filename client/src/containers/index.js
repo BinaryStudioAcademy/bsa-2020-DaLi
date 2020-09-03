@@ -15,6 +15,7 @@ import AnalyticsTabsContainer from './AnalyticsTabsContainer/AnalyticsTabsContai
 import DataSourcesDatasetsContainer from './DataSourcesDatasetsContainer/DataSourcesDatasetsContainer';
 import DataSourcesTablesContainer from './DataSourcesTablesContainer/DataSourcesTablesContainer';
 import ConnectionDatabaseContainer from './ConnectionDatabaseContainer/ConnectionDatabaseContainer';
+import CollectionContainer from './CollectionContainer/CollectionContainer';
 
 export {
   LoginPageContainer,
@@ -34,4 +35,5 @@ export {
   DataSourcesDatasetsContainer,
   DataSourcesTablesContainer,
   ConnectionDatabaseContainer,
+  CollectionContainer,
 };

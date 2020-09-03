@@ -21,5 +21,5 @@ export default (app) => {
   app.use('/api/permissions/collections', permissionCollectionsRoutes);
   app.use('/api/permissions', permissionRoutes);
   app.use('/api/tables', dbTableRoutes);
-  app.use('/api/collection', collectionRoutes);
+  app.use('/api/collections', collectionRoutes);
 };

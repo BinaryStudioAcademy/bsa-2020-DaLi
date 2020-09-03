@@ -8,7 +8,7 @@ const router = Router();
 router.get(
   '/',
   asyncHandler(async (req, res, next) => {
-    const result = await CollectionService.getCollections();
+    const result = await CollectionService.getCollections(req.user.id);
     res.status(200).json(result);
     next();
   })
@@ -19,6 +19,7 @@ router.get(
   asyncHandler(async (req, res, next) => {
     const result = await CollectionService.getCollection({
       id: req.params.id,
+      userId: req.user.id,
     });
     if (result) {
       res.status(200).json(result);

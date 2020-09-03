@@ -4,9 +4,10 @@ import VisualizationRepository from '../repositories/visualizationRepository';
 import DashboardRepository from '../repositories/dashboardRepository';
 import { setInitialCollectionsPermissions } from './permissionCollectionsService';
 
-export const getCollections = async () => {
-  const result = await CollectionRepository.getAllWithDashboardsAndVisualizations();
-  return result;
+export const getCollections = async (id) => {
+  const collections = await CollectionRepository.getAllCollections(id);
+  const defaultCollection = await CollectionRepository.getDefaultCollections();
+  return { collections, defaultCollection };
 };
 
 export const createCollection = async (data) => {
@@ -59,9 +60,9 @@ export const updateCollections = async (collectionId, dataToUpdate) => {
 };
 
 export const getCollection = async (id) => {
-  const item = await CollectionRepository.getWithDashboardsAndVisualizations(id.id);
+  const item = await CollectionRepository.getCollection(id.id);
   if (!item) {
     throw createError(404, `Collection with id of ${id.id} not found`);
   }
-  return item[0];
+  return item;
 };

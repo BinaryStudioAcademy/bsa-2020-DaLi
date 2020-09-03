@@ -38,14 +38,13 @@ const formatResult = (data) => {
         groups: [{ id: el.userGroups.id, name: el.userGroups.name, access: el.permissionGranted }],
       };
     })
-    .reduce((acc, item) => {
-      const id = item.id;
+    .reduce((acc, collection) => {
+      const id = collection.id;
       const index = acc.findIndex((el) => el.id === id);
-      console.log(acc);
       if (index !== -1) {
-        acc[index].groups.push(item.groups[0]);
+        acc[index].groups.push(collection.groups[0]);
       } else {
-        acc.push(item);
+        acc.push(collection);
       }
       return acc;
     }, []);

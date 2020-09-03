@@ -21,7 +21,7 @@ const useStyles = makeStyles({
 });
 
 const getTableHead = (schema) => {
-  return schema.map((s) => s.column_name);
+  return Object.keys(schema[0]);
 };
 
 const sortByProperty = (arrOfObjects, property, sortedBy) => {
@@ -33,12 +33,12 @@ const sortByProperty = (arrOfObjects, property, sortedBy) => {
   return arrOfObjects;
 };
 const InitialTable = (props) => {
-  const { data: Data, schema } = props;
+  const { data: Data } = props;
   const [data, setData] = useState(Data);
   const [sortedBy, setSortedBy] = useState('id');
   const classes = useStyles();
 
-  const tableProperties = getTableHead(schema);
+  const tableProperties = getTableHead(data);
   const tableHeadRows = tableProperties.map((property) => (
     <TableCell
       key={property}

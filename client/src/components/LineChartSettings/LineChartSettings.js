@@ -97,6 +97,18 @@ function LineChartSettings({ updateConfig, config: oldConfig }) {
   const [lineType, setLineType] = useState(oldLineType);
   const [polynomialOrder, setPolynomialOrder] = useState(trendline.polynomial.order);
   const [config, setConfig] = useState(oldConfig);
+  const [errors, setErrors] = useState({
+    labelXAxis: false,
+    labelYAxis: false,
+  });
+
+  const validateField = (name, value) => {
+    if (name === 'labelXAxis' || name === 'labelYAxis') {
+      setErrors({ ...errors, [name]: value.length > 20 });
+    }
+  };
+
+  const isError = () => Object.values(errors).includes(true);
 
   useEffect(() => {
     updateConfig(config);
@@ -439,7 +451,10 @@ function LineChartSettings({ updateConfig, config: oldConfig }) {
             value={labelXAxis}
             onChange={(event) => {
               setLabelXAxis(event.target.value);
+              validateField('labelXAxis', event.target.value);
             }}
+            helperText={errors.labelXAxis ? '20 characters is max' : null}
+            error={errors.labelXAxis}
           />
         ) : null}
         <FormControlLabel
@@ -457,7 +472,10 @@ function LineChartSettings({ updateConfig, config: oldConfig }) {
             value={labelYAxis}
             onChange={(event) => {
               setLabelYAxis(event.target.value);
+              validateField('labelYAxis', event.target.value);
             }}
+            helperText={errors.labelYAxis ? '20 characters is max' : null}
+            error={errors.labelYAxis}
           />
         ) : null}
       </TabPanel>
@@ -467,6 +485,7 @@ function LineChartSettings({ updateConfig, config: oldConfig }) {
           onClick={() => {
             onDoneButton();
           }}
+          disabled={isError()}
         >
           Done
         </Button>

@@ -24,9 +24,9 @@ const iconForType = (type) => {
   }
 };
 
-const GroupByList = ({ type, name, isActive, setCurrentGroupBy }) => {
+const GroupByList = ({ type, name, isActive, setCurrentGroupBy, deleteGroupBy }) => {
   const classes = useStyles();
-  const rightIcon = isActive ? <CloseIcon /> : <AddIcon />;
+  const rightIcon = isActive ? <CloseIcon onClick={deleteGroupBy} /> : <AddIcon />;
   const changeGroupBy = () => {
     setCurrentGroupBy(name);
   };
@@ -49,6 +49,7 @@ GroupByList.propTypes = {
   name: PropTypes.string,
   isActive: PropTypes.bool,
   setCurrentGroupBy: PropTypes.func,
+  deleteGroupBy: PropTypes.func,
 };
 
 export default GroupByList;

@@ -37,7 +37,7 @@ function createInitLineChartConfig(schema, getYKeys, getXKeys) {
     },
     isSummarize: false,
     summarize: {
-      select: '',
+      select: {},
       groupBy: '',
     },
   };

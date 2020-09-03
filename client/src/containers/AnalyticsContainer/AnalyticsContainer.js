@@ -15,7 +15,7 @@ import {
 } from './actions';
 import { AnalyticsTabs, CollectionList, CollectionModal } from '../../components';
 
-const AnalyticsTabsContainer = ({
+const AnalyticsContainer = ({
   message,
   getAnalytics,
   deleteVisualization,
@@ -79,7 +79,7 @@ const AnalyticsTabsContainer = ({
   );
 };
 
-AnalyticsTabsContainer.propTypes = {
+AnalyticsContainer.propTypes = {
   visualizations: PropTypes.array,
   dashboards: PropTypes.array,
   isLoading: PropTypes.bool,
@@ -117,4 +117,4 @@ const mapDispatchToProps = {
   moveToCollection,
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(AnalyticsTabsContainer);
+export default connect(mapStateToProps, mapDispatchToProps)(AnalyticsContainer);

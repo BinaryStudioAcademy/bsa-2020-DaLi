@@ -18,7 +18,7 @@ import {
   deleteDashboard,
   resetNotification,
   deleteCollection,
-} from '../AnalyticsTabsContainer/actions';
+} from '../AnalyticsContainer/actions';
 
 const CollectionContainer = ({
   message,

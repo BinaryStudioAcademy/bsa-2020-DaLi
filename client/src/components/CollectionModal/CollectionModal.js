@@ -12,7 +12,7 @@ import {
   moveToCollection,
   setFormData,
   updateCollection,
-} from '../../containers/AnalyticsTabsContainer/actions';
+} from '../../containers/AnalyticsContainer/actions';
 
 const CollectionModal = ({
   isOpen,

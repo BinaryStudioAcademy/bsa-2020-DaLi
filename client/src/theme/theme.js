@@ -34,6 +34,12 @@ export const theme = createMuiTheme({
       fontSize: '16px',
       lineHeight: '24px',
     },
+    h3: {
+      fontFamily: 'Poppins, Arial, sans-serif',
+      fontWeight: 'bold',
+      fontSize: '18px',
+      lineHeight: '27px',
+    },
     body1: {
       fontFamily: 'Poppins, Arial, sans-serif',
       fontWeight: 'normal',
@@ -193,6 +199,140 @@ export const theme = createMuiTheme({
             },
           },
         },
+      },
+    },
+    MuiPaper: {
+      root: {
+        backgroundColor: '#FFFFFF',
+        borderRadius: '10px',
+        width: '315px',
+        height: '170px',
+        display: 'grid',
+        alignItems: 'center',
+        padding: '0 30px 0',
+        boxSizing: 'border-box',
+        gridTemplateColumns: '35% 65%',
+        '& .paper-analitics-icon': {
+          border: '10px solid #FAA9C6',
+          boxSizing: 'border-box',
+          borderRadius: '100%',
+          width: '80px',
+          height: '80px',
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          transform: 'rotate(45deg)',
+          borderLeftColor: '#1CD1A1',
+          '& .MuiSvgIcon-root': {
+            width: '20px',
+            height: '20px',
+            transform: 'rotate(-45deg)',
+            color: '#1CD1A1',
+          },
+        },
+        '& .paper-analitics-text': {
+          marginLeft: '15px',
+        },
+        '& .paper-data-icon': {
+          boxSizing: 'border-box',
+          border: '1px solid #1CD1A1',
+          borderRadius: '100%',
+          width: '64px',
+          height: '64px',
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          '& .MuiSvgIcon-root': {
+            width: '25px',
+            height: '25px',
+            color: '#1CD1A1',
+          },
+        },
+        '&.paper-collection-outlined': {
+          gridTemplateColumns: '6% 94%',
+        },
+        '& .paper-collection-icon': {
+          boxSizing: 'border-box',
+          border: '1px solid #1CD1A1',
+          borderRadius: '100%',
+          width: '40px',
+          height: '40px',
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          '& .MuiSvgIcon-root': {
+            width: '15px',
+            height: '15px',
+            color: '#1CD1A1',
+          },
+        },
+        '&.MuiPaper-outlined:hover': {
+          cursor: 'pointer',
+          backgroundColor: '#1CD1A1',
+          border: 'none',
+          boxShadow: '0 2px 3px rgba(0,0,0,0.3)',
+          color: '#FFFFFF',
+          '& .paper-analitics-icon': {
+            borderLeftColor: '#FFFFFF',
+            '& .MuiSvgIcon-root': {
+              color: '#FFFFFF',
+            },
+          },
+          '& .paper-analitics-text p': {
+            color: '#FFFFFF',
+          },
+          '& .paper-analitics-text a': {
+            textDecorationColor: '#FFFFFF',
+          },
+          '& .paper-data-icon, & .paper-collection-icon': {
+            borderColor: '#FFFFFF',
+            '& .MuiSvgIcon-root': {
+              color: '#FFFFFF',
+            },
+          },
+          '&::before': {
+            backgroundColor: '#1CD1A1',
+          },
+        },
+      },
+      rounded: {
+        backgroundColor: '#FFFFFF',
+        borderRadius: '10px',
+        width: '975px',
+        height: '63px',
+        boxSizing: 'border-box',
+        position: 'relative',
+        marginLeft: '5px',
+        '&::before': {
+          display: 'block',
+          borderRadius: '7px',
+          width: '25px',
+          backgroundColor: '#FAA9C6',
+          position: 'absolute',
+          left: '-6px',
+          height: '63px',
+          zIndex: '-1',
+        },
+        '&.MuiPaper-outlined:hover': {
+          boxShadow: 'none',
+        },
+      },
+      outlined: {
+        border: '2px solid #F0F0F0',
+      },
+    },
+    MuiMenu: {
+      paper: {
+        height: 'auto',
+        width: 'auto',
+        border: 'none',
+        padding: '0',
+        gridTemplateColumns: '100%',
+      },
+    },
+    MuiDialog: {
+      paper: {
+        height: 'auto',
       },
     },
   },

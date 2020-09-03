@@ -1,7 +1,11 @@
 import React, { useState } from 'react';
-import { Button, Tabs, Tab, IconButton, Typography, Popper } from '@material-ui/core';
+import { Button, Tabs, Tab, IconButton, Typography, Popper, Paper } from '@material-ui/core';
 import DeleteIcon from '@material-ui/icons/Delete';
 import AddCircleOutlineOutlinedIcon from '@material-ui/icons/AddCircleOutlineOutlined';
+import { NavLink } from 'react-router-dom';
+import CheckBoxOutlineBlankIcon from '@material-ui/icons/CheckBoxOutlineBlank';
+import FolderOpenOutlinedIcon from '@material-ui/icons/FolderOpenOutlined';
+import StyledNavLink from './StyledNavLink';
 
 const ComponentsExample = () => {
   const [anchorEl, setAnchorEl] = useState(null);
@@ -21,8 +25,9 @@ const ComponentsExample = () => {
     <>
       <Typography variant="h1">h1. Heading</Typography>
       <Typography variant="h2">h2. Heading</Typography>
+      <Typography variant="h3">h3. Heading</Typography>
       <Typography variant="body1">body1. Lorem ipsum dolor sit amet.</Typography>
-      <Typography variant="body2">body1. Lorem ipsum dolor sit amet.</Typography>
+      <Typography variant="body2">body2. Lorem ipsum dolor sit amet.</Typography>
       <Typography variant="body2" color="primary">
         Primary body1. Lorem ipsum dolor sit amet.
       </Typography>
@@ -90,8 +95,69 @@ const ComponentsExample = () => {
       </Popper>
       <br />
       <br />
+      NavLink:
+      <StyledNavLink>
+        <NavLink
+          activeStyle={{
+            opacity: '1',
+          }}
+          to={{
+            pathname: '/admin/permissions',
+          }}
+          key="permissions"
+        >
+          <AddCircleOutlineOutlinedIcon />
+          Data Source
+        </NavLink>
+      </StyledNavLink>
       <br />
       <br />
+      <Paper variant="outlined" square>
+        <div className="paper-analitics-icon">
+          <CheckBoxOutlineBlankIcon />
+        </div>
+        <div className="paper-analitics-text">
+          <Typography variant="h3">Emory</Typography>
+          <Typography variant="body2" color="textSecondary">
+            Lorem ispum
+          </Typography>
+          <StyledNavLink>
+            <NavLink
+              activeStyle={{
+                opacity: '1',
+              }}
+              to={{
+                pathname: '/admin',
+              }}
+              key="admin"
+            >
+              <Typography variant="body2" color="primary">
+                More Details {'>'}
+              </Typography>
+            </NavLink>
+          </StyledNavLink>
+        </div>
+      </Paper>
+      <br />
+      <br />
+      <Paper variant="outlined" square>
+        <div className="paper-data-icon">
+          <FolderOpenOutlinedIcon />
+        </div>
+        <div className="paper-data-text">
+          <Typography variant="h3">Sample Dataset</Typography>
+        </div>
+      </Paper>
+      <br />
+      <br />
+      <Paper variant="outlined" className="paper-collection-outlined">
+        <div className="paper-collection-icon">
+          <FolderOpenOutlinedIcon />
+        </div>
+        <div className="paper-collection-text">
+          <Typography variant="h3">Dev</Typography>
+        </div>
+      </Paper>
       <br />
       <br />
       <br />

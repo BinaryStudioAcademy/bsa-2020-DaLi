@@ -52,7 +52,7 @@ const AddVisualizationToDashboardModal = ({closeModal, addVisualization, isVisib
         {(props) => <SearchVisualizationForm {...props}/>}
       </Formik>
       {visibleVisualizations && (
-        <div className="visualizationToDashboardModalFooter">
+        <div>
           {visibleVisualizations.map((visualization) => {
             return (
               <button
@@ -72,9 +72,9 @@ const AddVisualizationToDashboardModal = ({closeModal, addVisualization, isVisib
 };
 
 const SearchVisualizationForm = ({ handleSubmit }) => (
-  <Form className="visualizationToDashboardModalForm" onSubmit={handleSubmit}>
-    <DialogContent className="MyFieldContainer">
-      <div className="search-field">
+  <Form onSubmit={handleSubmit}>
+    <DialogContent>
+      <div>
         <Field name="search" as="input" placeholder="Search..." />
         <SearchIcon style={{ color: '#c6cfd4', cursor: 'pointer' }} onClick={handleSubmit} />
       </div>

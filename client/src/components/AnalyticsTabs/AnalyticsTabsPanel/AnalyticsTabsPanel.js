@@ -13,10 +13,7 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import { Link, useHistory } from 'react-router-dom';
 import { dbTableAPIService } from '../../../services/api/dbTableAPI.service';
 
-import { useStyles } from './styles';
-
 const AnalyticsTabsPanel = ({ value, index, data, deleteVisualization, deleteDashboard }) => {
-  const classes = useStyles();
   const history = useHistory();
 
   const onVisualizationsClick = (id, tableId) => {
@@ -31,53 +28,49 @@ const AnalyticsTabsPanel = ({ value, index, data, deleteVisualization, deleteDas
   const chooseIcon = (type) => {
     switch (type) {
       case 'LINE_CHART': {
-        return <TimelineOutlinedIcon className={classes.icon} />;
+        return <TimelineOutlinedIcon />;
       }
       case 'BAR_CHART': {
-        return <EqualizerOutlinedIcon className={classes.icon} />;
+        return <EqualizerOutlinedIcon />;
       }
       case 'TABLE': {
-        return <TableChartOutlinedIcon className={classes.icon} />;
+        return <TableChartOutlinedIcon />;
       }
       case 'MAP': {
-        return <MapOutlinedIcon className={classes.icon} />;
+        return <MapOutlinedIcon />;
       }
       default: {
-        return <DashboardIcon className={classes.icon} />;
+        return <DashboardIcon />;
       }
     }
   };
 
   return (
     <Typography component="div" hidden={value !== index}>
-      <Box className={classes.root}>
+      <Box>
         {data.map((item, dataIndex) => {
           return (
-            <div className={classes.itemContainer} key={dataIndex}>
+            <div key={dataIndex}>
               {!item.type ? (
                 <>
-                  <Link to={`/dashboards/${item.id}`} className={classes.item}>
+                  <Link to={`/dashboards/${item.id}`}>
                     {chooseIcon(item.type)}
                     <span>{item.name}</span>
                   </Link>
                   {item.description.length ? (
-                    <Tooltip title={item.description} placement="left" className={classes.description}>
+                    <Tooltip title={item.description} placement="left">
                       <InfoIcon />
                     </Tooltip>
                   ) : null}
-                  <DeleteIcon className={classes.menuIcon} id={item.id} onClick={deleteDashboard(item.id)} />
+                  <DeleteIcon id={item.id} onClick={deleteDashboard(item.id)} />
                 </>
               ) : (
                 <>
-                  <div
-                    className={classes.item}
-                    onClick={() => onVisualizationsClick(item.id, item.tableId)}
-                    aria-hidden="true"
-                  >
+                  <div onClick={() => onVisualizationsClick(item.id, item.tableId)} aria-hidden="true">
                     {chooseIcon(item.type)}
                     <span>{item.name}</span>
                   </div>
-                  <DeleteIcon className={classes.menuIcon} id={item.id} onClick={deleteVisualization(item.id)} />
+                  <DeleteIcon id={item.id} onClick={deleteVisualization(item.id)} />
                 </>
               )}
             </div>

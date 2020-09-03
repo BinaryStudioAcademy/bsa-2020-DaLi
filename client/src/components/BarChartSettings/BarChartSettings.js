@@ -148,9 +148,8 @@ const BarChartSettings = ({ updateConfig, config: oldConfig }) => {
   ));
 
   return (
-    <div className={classes.root}>
+    <div>
       <Tabs
-        className={classes.tabs}
         value={value}
         onChange={handleChange}
         aria-label="simple tabs example"
@@ -159,17 +158,16 @@ const BarChartSettings = ({ updateConfig, config: oldConfig }) => {
           indicator: classes.indicator,
         }}
       >
-        <Tab className={classes.tab} label="Data" {...a11yProps(0)} />
-        <Tab className={classes.tab} label="Display" {...a11yProps(1)} />
-        <Tab className={classes.tab} label="Labels" {...a11yProps(2)} />
+        <Tab label="Data" {...a11yProps(0)} />
+        <Tab label="Display" {...a11yProps(1)} />
+        <Tab label="Labels" {...a11yProps(2)} />
       </Tabs>
       <TabPanel value={value} index={0}>
-        <FormControl className={classes.formControl}>
-          <InputLabel className={classes.label} shrink id="xAxis-native-helper">
+        <FormControl>
+          <InputLabel shrink id="xAxis-native-helper">
             X-Axis
           </InputLabel>
           <NativeSelect
-            className={classes.select}
             value={xAxis}
             onChange={(event) => {
               setXAxis(event.target.value);
@@ -183,12 +181,11 @@ const BarChartSettings = ({ updateConfig, config: oldConfig }) => {
             {valuesX}
           </NativeSelect>
         </FormControl>
-        <FormControl className={classes.formControl}>
-          <InputLabel className={classes.label} shrink htmlFor="yAxis-native-helper">
+        <FormControl>
+          <InputLabel shrink htmlFor="yAxis-native-helper">
             Y-Axis
           </InputLabel>
           <NativeSelect
-            className={classes.select}
             value={yAxis}
             onChange={(event) => {
               setYAxis(event.target.value);
@@ -212,7 +209,6 @@ const BarChartSettings = ({ updateConfig, config: oldConfig }) => {
           <TextField
             id="standard-basic"
             label="Goal line"
-            className={classes.input}
             type="number"
             InputLabelProps={{
               shrink: true,
@@ -247,11 +243,8 @@ const BarChartSettings = ({ updateConfig, config: oldConfig }) => {
         />
         {showTrendline ? (
           <FormControl component="fieldset">
-            <FormLabel component="legend" className={classes.legend}>
-              Trendline type
-            </FormLabel>
+            <FormLabel component="legend">Trendline type</FormLabel>
             <ToggleButtonGroup
-              className={classes.btnGroup}
               value={trendlineType}
               exclusive
               onChange={(event, newTrendLineType) => {
@@ -292,11 +285,8 @@ const BarChartSettings = ({ updateConfig, config: oldConfig }) => {
         ) : null}
         {showTrendline && trendlineType === 'polynomial' ? (
           <FormControl component="fieldset">
-            <FormLabel component="legend" className={classes.legend}>
-              Order
-            </FormLabel>
+            <FormLabel component="legend">Order</FormLabel>
             <ToggleButtonGroup
-              className={classes.btnGroup}
               value={polynomialOrder.toString()}
               exclusive
               onChange={(event, order) => {
@@ -320,7 +310,6 @@ const BarChartSettings = ({ updateConfig, config: oldConfig }) => {
           </FormControl>
         ) : null}
         <ColorPicker
-          className={classes.colorPicker}
           name="color"
           defaultValue="Сhoose your color"
           value={color}
@@ -336,7 +325,6 @@ const BarChartSettings = ({ updateConfig, config: oldConfig }) => {
           <TextField
             id="XAxis"
             label="X-axis label"
-            className={classes.input}
             InputLabelProps={{
               shrink: true,
             }}
@@ -354,7 +342,6 @@ const BarChartSettings = ({ updateConfig, config: oldConfig }) => {
           <TextField
             id="YAxis"
             label="Y-axis label"
-            className={classes.input}
             InputLabelProps={{
               shrink: true,
             }}
@@ -365,9 +352,8 @@ const BarChartSettings = ({ updateConfig, config: oldConfig }) => {
           />
         ) : null}
       </TabPanel>
-      <div className={classes.btnWrapper}>
+      <div>
         <Button
-          className={classes.btn}
           onClick={() => {
             onDoneButton();
           }}

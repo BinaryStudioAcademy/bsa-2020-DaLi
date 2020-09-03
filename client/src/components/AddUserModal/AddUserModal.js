@@ -81,9 +81,9 @@ const AddUserModal = ({ closeModal, submitHandler, isVisible, user }) => {
 
 const MyForm = ({ resetForm, isValid, dirty, cancel, errors, touched, editMode }) => {
   return (
-    <Form className="addUserModalForm">
-      <DialogContent className="MyFieldContainer">
-        <div className="labelsContainer">
+    <Form>
+      <DialogContent>
+        <div>
           <span>First name</span>
           <p>{touched.firstName && errors.firstName}</p>
         </div>
@@ -93,7 +93,7 @@ const MyForm = ({ resetForm, isValid, dirty, cancel, errors, touched, editMode }
           placeholder="Johnny"
           style={touched.firstName && errors.firstName ? { borderColor: 'red' } : {}}
         />
-        <div className="labelsContainer">
+        <div>
           <span>Last name</span>
           <p>{touched.lastName && errors.lastName}</p>
         </div>
@@ -103,7 +103,7 @@ const MyForm = ({ resetForm, isValid, dirty, cancel, errors, touched, editMode }
           placeholder="Appleseed"
           style={touched.name && errors.name ? { borderColor: 'red' } : {}}
         />
-        <div className="labelsContainer">
+        <div>
           <span>Email</span>
           <p>{touched.email && errors.email}</p>
         </div>
@@ -114,7 +114,7 @@ const MyForm = ({ resetForm, isValid, dirty, cancel, errors, touched, editMode }
           style={touched.name && errors.name ? { borderColor: 'red' } : {}}
         />
       </DialogContent>
-      <MuiDialogActions className="addUserModalFooter">
+      <MuiDialogActions>
         <Button onClick={cancel(resetForm)} variant="outlined" style={{ textTransform: 'none', fontSize: 12 }}>
           Cancel
         </Button>

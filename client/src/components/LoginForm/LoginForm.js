@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import * as Yup from 'yup';
 import { Formik, Form, Field, ErrorMessage, getIn } from 'formik';
+import Button from '@material-ui/core/Button';
 
 import './styles.css';
 
@@ -29,7 +30,7 @@ const LoginForm = ({ setIsModalVisible, login }) => {
               type="email"
               name="email"
               id="email"
-              className="textInput"
+              className="MuiInput-root"
               placeholder="youlooknicetoday@email.com"
               style={getStyles(errors, touched, 'email')}
             />
@@ -51,9 +52,9 @@ const LoginForm = ({ setIsModalVisible, login }) => {
             <Field type="checkbox" name="rememberMe" className="checkbox" />
           </div>
           <div className="btn-wrapper">
-            <button type="submit" className="btn btn-submit" disabled={!(isValid && dirty)}>
+            <Button type="submit" variant="contained" color="primary" disabled={!(isValid && dirty)}>
               Sign in
-            </button>
+            </Button>
             <button type="button" className="forgot-pswd" onClick={() => setIsModalVisible(true)}>
               I seem to have forgotten my password
             </button>

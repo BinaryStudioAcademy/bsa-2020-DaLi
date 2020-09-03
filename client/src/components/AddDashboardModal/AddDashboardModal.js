@@ -9,6 +9,7 @@ import IconButton from '@material-ui/core/IconButton';
 import * as Yup from 'yup';
 import { Formik, Form, Field } from 'formik';
 import PropTypes from 'prop-types';
+import { TextField, Typography } from '@material-ui/core';
 
 import './styles.css';
 
@@ -16,8 +17,7 @@ const ValidationSchema = Yup.object({
   name: Yup.string().required('Name is required'),
 });
 // eslint-disable-next-line
-const AddDashboardModal = ({closeModal, addDashboard, isVisible}) => {
-
+const AddDashboardModal = ({ closeModal, addDashboard, isVisible }) => {
   const cancel = (resetForm) => () => {
     resetForm();
     closeModal();
@@ -30,7 +30,7 @@ const AddDashboardModal = ({closeModal, addDashboard, isVisible}) => {
   return (
     <Dialog open={isVisible || false} maxWidth="sm" fullWidth>
       <DialogTitle>
-        New Dashboard
+        <Typography variant="h3">New Dashboard</Typography>
         <IconButton
           aria-label="close"
           size="small"
@@ -47,40 +47,41 @@ const AddDashboardModal = ({closeModal, addDashboard, isVisible}) => {
         onSubmit={(values) => createDashboard(values)}
       >
         {/* eslint-disable-next-line */}
-        {(props) => <MyForm cancel={cancel} {...props}/>}
+        {(props) => <MyForm cancel={cancel} {...props} />}
       </Formik>
     </Dialog>
   );
 };
 
 const MyForm = ({ handleSubmit, resetForm, isValid, dirty, cancel, errors, touched }) => (
-  <Form className="visualizationModalForm" onSubmit={handleSubmit}>
-    <DialogContent className="MyFieldContainer">
-      <div className="labelsContainer">
-        <span>Name</span>
-        <p>{touched.name && errors.name}</p>
-      </div>
+  <Form onSubmit={handleSubmit}>
+    <DialogContent>
+      <Typography variant="subtitle2">Name</Typography>
       <Field
         name="name"
-        as="input"
+        as={TextField}
+        required
+        id="outlined-required"
+        variant="outlined"
         placeholder="What is the name of your dashboard?"
         style={touched.name && errors.name ? { borderColor: 'red' } : {}}
       />
-      <div className="labelsContainer">
-        <span>Description</span>
-      </div>
-      <Field name="description" as="textarea" placeholder="It`s optional but oh, so helpful" />
+      <Typography variant="subtitle2">Description</Typography>
+      <Field
+        name="description"
+        as={TextField}
+        id="outlined-multiline-static"
+        multiline
+        rows={6}
+        variant="outlined"
+        placeholder="It`s optional but oh, so helpful"
+      />
     </DialogContent>
-    <MuiDialogActions className="visualizationModalFooter">
-      <Button onClick={cancel(resetForm)} variant="outlined" style={{ textTransform: 'none', fontSize: 12 }}>
+    <MuiDialogActions>
+      <Button onClick={cancel(resetForm)} size="small" variant="outlined">
         Cancel
       </Button>
-      <Button
-        type="submit"
-        variant="outlined"
-        disabled={!(isValid && dirty)}
-        style={{ textTransform: 'none', fontSize: 12 }}
-      >
+      <Button type="submit" size="small" variant="contained" color="primary" disabled={!(isValid && dirty)}>
         Create
       </Button>
     </MuiDialogActions>

@@ -11,9 +11,9 @@ const DashboardHeaderStatic = (props) => {
   const { name, description, onSetEdit, onSetFullScreenViewMode } = props;
   const classes = useStyles();
   return (
-    <Grid className={classes.dashboardStaticHeader}>
-      <Grid className={classes.dashboardStaticTitle} item container>
-        <Typography className={classes.dashboardStaticName}>{name}</Typography>
+    <Grid>
+      <Grid item container>
+        <Typography>{name}</Typography>
         {description?.length ? (
           <Tooltip
             classes={{
@@ -21,16 +21,13 @@ const DashboardHeaderStatic = (props) => {
             }}
             title={description}
           >
-            <InfoIcon className={classes.dashboardStaticDescriptionIcon} />
+            <InfoIcon />
           </Tooltip>
         ) : null}
       </Grid>
-      <Grid className={classes.dashboardStaticControls} item container>
-        <EditIcon
-          className={`${classes.dashboardStaticControlsItem} ${classes.dashboardStaticControlsItemEdit}`}
-          onClick={onSetEdit}
-        />
-        <FullscreenIcon className={classes.dashboardStaticControlsItem} onClick={onSetFullScreenViewMode} />
+      <Grid item container>
+        <EditIcon onClick={onSetEdit} />
+        <FullscreenIcon onClick={onSetFullScreenViewMode} />
       </Grid>
     </Grid>
   );

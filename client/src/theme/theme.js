@@ -333,6 +333,33 @@ export const theme = createMuiTheme({
     MuiDialog: {
       paper: {
         height: 'auto',
+        padding: '20px',
+        '& form': {
+          width: '100%',
+        },
+      },
+    },
+    MuiDialogContent: {
+      root: {
+        width: '100%',
+        boxSizing: 'border-box',
+        '& .MuiTypography-root': {
+          padding: '10px 0',
+        },
+      },
+    },
+    MuiFormControl: {
+      root: {
+        width: '100%',
+      },
+    },
+    MuiInputBase: {
+      root: {
+        height: '50px',
+        width: '100%',
+      },
+      multiline: {
+        height: 'auto',
       },
     },
   },

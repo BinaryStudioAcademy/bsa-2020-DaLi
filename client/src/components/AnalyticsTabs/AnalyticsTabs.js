@@ -1,28 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { makeStyles } from '@material-ui/core/styles';
 import Tab from '@material-ui/core/Tab';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import AnalyticsTabsHeader from './AnalyticsTabsHeader/AnalyticsTabsHeader';
 import AnalyticsTabsPanel from './AnalyticsTabsPanel/AnalyticsTabsPanel';
 import DeleteVisualizationWarning from '../DeleteVisualizationWarning/DeleteVisualizationWarning';
 
-const useStyles = makeStyles(() => ({
-  //   tabsButtons: {
-  //     color: '#000000',
-  //     fontWeight: 900,
-  //     maxWidth: `${100 / 3}%`,
-  //     width: '100%',
-  //     borderBottom: '1px solid #f0f0f0',
-  //     '&$selected': {
-  //       color: '#509ee3',
-  //     },
-  //   },
-  //   selected: {},
-}));
-
 const AnalyticsTabs = ({ visualizations, dashboards, deleteVisualization, deleteDashboard, isLoading }) => {
-  const classes = useStyles();
   const [value, setValue] = React.useState(0);
   const [isWarningVisible, setIsWarningVisible] = React.useState(false);
   const [visualizationIdToDelete, setVisualizationIdToDelete] = React.useState(null);
@@ -74,9 +58,9 @@ const AnalyticsTabs = ({ visualizations, dashboards, deleteVisualization, delete
         visualizationId={visualizationIdToDelete}
       />
       <AnalyticsTabsHeader value={value} onChange={handleChange}>
-        <Tab classes={{ root: classes.tabsButtons, selected: classes.selected }} label="Everything" />
-        <Tab classes={{ root: classes.tabsButtons, selected: classes.selected }} label="Dashboards" />
-        <Tab classes={{ root: classes.tabsButtons, selected: classes.selected }} label="Visualizations" />
+        <Tab label="Everything" />
+        <Tab label="Dashboards" />
+        <Tab label="Visualizations" />
       </AnalyticsTabsHeader>
       {isLoading ? (
         <CircularProgress size={40} left={-20} top={-40} style={{ marginLeft: '50%', marginTop: '50%' }} />

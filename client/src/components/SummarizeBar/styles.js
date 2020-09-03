@@ -17,6 +17,7 @@ const useStyles = makeStyles(() => ({
   groupByButtonContainer: {
     display: 'flex',
     color: 'gray',
+    cursor: 'pointer',
     textTransform: 'none',
     borderRadius: '5px',
     margin: '5px 0',

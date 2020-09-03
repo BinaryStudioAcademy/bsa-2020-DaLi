@@ -7,6 +7,7 @@ import TableCell from '@material-ui/core/TableCell';
 import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
+import { formatDate } from './helper';
 
 const useStyles = makeStyles({
   initialTable: {
@@ -33,11 +34,10 @@ const sortByProperty = (arrOfObjects, property, sortedBy) => {
   return arrOfObjects;
 };
 const InitialTable = (props) => {
-  const { data: Data } = props;
-  const [data, setData] = useState(Data);
+  const { data: Data, config } = props;
+  const [data, setData] = useState(formatDate(Data, config));
   const [sortedBy, setSortedBy] = useState('id');
   const classes = useStyles();
-
   const tableProperties = getTableHead(data);
   const tableHeadRows = tableProperties.map((property) => (
     <TableCell
@@ -76,7 +76,7 @@ const InitialTable = (props) => {
 
 InitialTable.propTypes = {
   data: PropTypes.array,
-  schema: PropTypes.array,
+  config: PropTypes.object,
 };
 
 export default InitialTable;

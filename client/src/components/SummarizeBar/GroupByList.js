@@ -26,7 +26,7 @@ const iconForType = (type) => {
   }
 };
 
-const periods = ['day', 'week', 'month', 'year'];
+const periods = ['day', 'week', 'month', 'quarter', 'year'];
 
 const GroupByList = ({ type, name, isActive, setCurrentGroupBy, deleteGroupBy }) => {
   const classes = useStyles();

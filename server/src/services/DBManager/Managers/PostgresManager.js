@@ -67,6 +67,14 @@ export default class DBPostgresManager {
 
   getTableDataByName(name, settings, isSummarize, summarize) {
     settings = settings.map((s) => JSON.parse(s));
+    let groupBy;
+    if (isSummarize) {
+      if (summarize.groupBy.type === 'date') {
+        groupBy = `date_trunc('${summarize.groupBy.period}',${summarize.groupBy.name}) as ${summarize.groupBy.as}`;
+      } else {
+        groupBy = summarize.groupBy.name;
+      }
+    }
     const filterQuery = this.formQueryFromSettings(settings);
     const select = isSummarize
       ? `SELECT ${summarize.select.operation}(${summarize.select.column})` +

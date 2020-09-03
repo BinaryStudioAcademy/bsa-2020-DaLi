@@ -16,7 +16,7 @@ const summarizes = [
 const SummarizeBar = ({ currentVisualization, updateVisualization }) => {
   const classes = useStyles();
   const [currentSummarize, setCurrentSummarize] = useState(null);
-  const [currentGroupBy, setCurrentGroupBy] = useState(null);
+  const [currentGroupBy, setCurrentGroupBy] = useState({ name: null, type: null, period: null, as: null });
   const [isSummarize, setIsSummarize] = useState(false);
   const [isInitializeSummarize, setIsInitializeSummarize] = useState(true);
 
@@ -25,17 +25,21 @@ const SummarizeBar = ({ currentVisualization, updateVisualization }) => {
     setMenuAnchorEl(event.currentTarget);
   };
 
+  const nullGroupBy = () => {
+    setCurrentGroupBy({ name: null, type: null, period: null, as: null });
+  };
+
   const deleteSummarize = (e) => {
     e.stopPropagation();
     setIsSummarize(false);
-    setCurrentGroupBy(null);
+    nullGroupBy();
     setCurrentSummarize(null);
     setIsInitializeSummarize(false);
   };
 
   const deleteGroupBy = (e) => {
     e.stopPropagation();
-    setCurrentGroupBy(null);
+    nullGroupBy();
   };
 
   // initial summarize
@@ -51,8 +55,11 @@ const SummarizeBar = ({ currentVisualization, updateVisualization }) => {
   const updateConfig = () => {
     const newConfig = { ...currentVisualization.config };
     if (isSummarize) {
-      newConfig.axisData.XAxis.key = currentGroupBy;
-      newConfig.axisData.XAxis.label = currentGroupBy;
+      const groupByName = currentGroupBy.period
+        ? `${currentGroupBy.name}_by_${currentGroupBy.period}`
+        : currentGroupBy.name;
+      newConfig.axisData.XAxis.key = groupByName;
+      newConfig.axisData.XAxis.label = groupByName;
       newConfig.axisData.YAxis.key = currentSummarize.name;
       newConfig.axisData.YAxis.label = currentSummarize.name;
       newConfig.isSummarize = true;
@@ -62,7 +69,12 @@ const SummarizeBar = ({ currentVisualization, updateVisualization }) => {
           column: '*',
           as: currentSummarize.name,
         },
-        groupBy: currentGroupBy,
+        groupBy: {
+          name: currentGroupBy.name,
+          type: currentGroupBy.type,
+          period: currentGroupBy.period,
+          as: groupByName,
+        },
       };
       newConfig.summarize = summarize;
     } else {
@@ -100,7 +112,7 @@ const SummarizeBar = ({ currentVisualization, updateVisualization }) => {
           </>
         )}
         <Menu
-          id="add-menu"
+          id="add-summarize"
           anchorEl={menuAnchorEl}
           keepMounted
           open={Boolean(menuAnchorEl)}
@@ -121,7 +133,7 @@ const SummarizeBar = ({ currentVisualization, updateVisualization }) => {
               key={column.column_name}
               type={column.data_type}
               name={column.column_name}
-              isActive={column.column_name === currentGroupBy}
+              isActive={column.column_name === currentGroupBy.name}
               setCurrentGroupBy={setCurrentGroupBy}
               deleteGroupBy={deleteGroupBy}
             />
@@ -130,7 +142,7 @@ const SummarizeBar = ({ currentVisualization, updateVisualization }) => {
       )}
       <Button
         className={classes.summarizeDoneButton}
-        disabled={isSummarize && !currentGroupBy}
+        disabled={isSummarize && !currentGroupBy.name}
         variant="contained"
         onClick={updateConfig}
       >

@@ -9,6 +9,7 @@ import {
   FETCH_DATA_AND_SCHEMA,
   FETCH_DATA_AND_SCHEMA_IN_PROGRESS,
   FETCH_DATA_AND_SCHEMA_SUCCESS,
+  UPDATE_VISUALIZATION,
 } from './actionTypes';
 import { visualizationsAPIService } from '../../services/api/visualizationsAPI.service';
 import { dbTableAPIService } from '../../services/api/dbTableAPI.service';
@@ -59,10 +60,20 @@ export function* watchFetchDataAndSchemaSaga() {
   yield takeEvery(FETCH_DATA_AND_SCHEMA, fetchDataAndSchemaSaga);
 }
 
+export function* updateVisualizationSaga({ visualizationId, updatedVisualization }) {
+  yield call(visualizationsAPIService.updateVisualization, visualizationId, updatedVisualization);
+  yield put({ type: FETCH_VISUALIZATION_WITH_DATA_AND_SCHEMA, id: visualizationId });
+}
+
+export function* watchUpdateVisualizationSaga() {
+  yield takeEvery(UPDATE_VISUALIZATION, updateVisualizationSaga);
+}
+
 export default function* currentVisualizationSaga() {
   yield all([
     watchFetchVisualizationWithDataAndSchemaSaga(),
     watchSetVisualizationSaga(),
     watchFetchDataAndSchemaSaga(),
+    watchUpdateVisualizationSaga(),
   ]);
 }

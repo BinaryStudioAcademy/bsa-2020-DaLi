@@ -47,6 +47,7 @@ const ViewVisualizationContainer = (props) => {
     fetchDataAndSchema,
     data,
     schema,
+    updateVisualizationData,
   } = props;
 
   const [currentView, setCurrentView] = useState('table');
@@ -163,7 +164,7 @@ const ViewVisualizationContainer = (props) => {
 
   const updateVisualization = (newConfig) => {
     const updatedVisualization = createUpdatedVisualization(currentVisualization, newConfig);
-    visualizationsAPIService.updateVisualization(visualizationId, updatedVisualization);
+    updateVisualizationData(visualizationId, updatedVisualization);
     setNotificationMessage('Visualization has been successfully updated');
     setNotificationType('success');
     displayNotification(true);
@@ -280,6 +281,7 @@ ViewVisualizationContainer.propTypes = {
     tableId: PropTypes.string,
     prevPath: PropTypes.string,
   }),
+  updateVisualizationData: PropTypes.func,
 };
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(ViewVisualizationContainer));

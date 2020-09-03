@@ -114,7 +114,13 @@ const ViewVisualizationContainer = (props) => {
 
   const contentViewComponent =
     // eslint-disable-next-line no-nested-ternary
-    schema && data ? currentView === 'table' ? <InitialTable data={data} /> : visualizationComponent : null;
+    schema && data ? (
+      currentView === 'table' ? (
+        <InitialTable data={data} config={currentVisualization.config} />
+      ) : (
+        visualizationComponent
+      )
+    ) : null;
 
   const onSwitchContentView = (viewType) => setCurrentView(viewType);
 

@@ -13,17 +13,17 @@ function BarChart(props) {
   const [width, setWidth] = useState(props.chart.width);
   const [height, setHeight] = useState(props.chart.height);
   const { margin } = props.chart;
-  const chart = d3.select(svgRef.current);
-
+  const { data } = props;
+  const { goal, trendline, showDataPointsValues, color } = props.settings.display;
+  const XAxis = props.settings.axisData.XAxis;
+  const YAxis = props.settings.axisData.YAxis;
+  
   const draw = () => {
-    const { goal, trendline, showDataPointsValues, color } = props.settings.display;
-    const XAxis = props.settings.axisData.XAxis;
-    const YAxis = props.settings.axisData.YAxis;
-
+    const chart = d3.select(svgRef.current);
+    
     chart.selectAll('*').remove();
 
     const drawLine = (YKey, index) => {
-    const { data } = props;
     data.forEach(item => item[YKey] = Number(item[YKey]));
     const yDataRange = {
       min: calcMinYDataValue(
@@ -158,7 +158,69 @@ function BarChart(props) {
       }
     }
 
-    YAxis.key.forEach((YKey,index) => drawLine(YKey, index));
+    // YAxis.key.forEach((YKey,index) => drawLine(YKey, index));
+
+    const drawStacked = () => {
+      const chart = d3.select(svgRef.current)
+      .attr('width', '100%')
+      .attr('height', '100%')
+      // stacks / layers
+    const stackGenerator = d3.stack()
+    .keys(YAxis.key)
+    .order(d3.stackOrderAscending);
+  const layers = stackGenerator(data);
+  const extent = [
+    0,
+    d3.max(layers, layer => d3.max(layer, sequence => sequence[1]))
+  ];
+  console.log(data);
+  console.log(layers);
+  console.log(extent);
+
+  // chart.call(tip).attr('height', '100%').attr('width', '100%');
+
+  // scales
+  const xScale = d3
+      .scaleBand()
+      .domain(data.map((d) => d[XAxis.key]))
+      .range([margin.left, width - margin.right])
+      .padding(0.1);
+
+  // const yScale = d3
+  //     .scaleLinear()
+  //     .domain([yDataRange.min, yDataRange.max])
+  //     .range([height - margin.bottom, margin.top]);
+
+  const yScale = d3.scaleLinear()
+    .domain(extent)
+    .range([height - margin.bottom, margin.top]);
+
+    const xAxis = (g) =>
+    g.attr('transform', `translate(0,${height - margin.bottom})`).call(d3.axisBottom(xScale).tickSize(0));
+  const yAxis = (g) => g.attr('transform', `translate(${margin.left},0)`).call(d3.axisLeft(yScale).tickSize(0));
+
+  chart.append('g').attr('class', 'x-axis axis').call(xAxis);
+  chart.append('g').attr('class', 'y-axis axis').call(yAxis);
+
+  // rendering
+  chart
+    .selectAll(".layer")
+    .data(layers)
+    .join("g")
+    .attr("class", "layer")
+    .attr("fill", layer => {
+      
+      console.log(layer);
+      return color[layer.index]})
+    .selectAll("rect")
+    .data(layer => layer)
+    .join("rect")
+    .attr("x", sequence => xScale(sequence.data[XAxis.key]))
+    .attr("width", xScale.bandwidth())
+    .attr("y", sequence => yScale(sequence[1]))
+    .attr("height", sequence => yScale(sequence[0]) - yScale(sequence[1]));
+    }
+    drawStacked();
 
     if (trendline.display && data.length && YAxis.key.length === 1) {
       const { polynomial, trendlineType } = trendline;

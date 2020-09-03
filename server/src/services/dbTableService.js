@@ -10,7 +10,7 @@ export const getAllByDatabaseId = async (id) => {
 
 export const getTableData = async (id, { settings, config }) => {
   let data = null;
-  const {isSummarize, summarize} = JSON.parse(config);
+  const {isSummarize, summarize} = config ? JSON.parse(config) : {isSummarize: false, summarize: {}};
   const table = await DBTable.getById(id);
   if (table) {
     let manager = new DBManager(table.DatabaseId);
@@ -19,7 +19,6 @@ export const getTableData = async (id, { settings, config }) => {
       await manager.init();
       data = await manager.getTableDataByName(table.name, settings, isSummarize, summarize);
     } catch (error) {
-      console.log(error.message);
       data = null;
       throw createError(400, 'Get table data failed');
     }

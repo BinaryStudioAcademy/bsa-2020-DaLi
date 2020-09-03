@@ -23,6 +23,16 @@ const SummarizeBar = ({ currentVisualization, updateVisualization }) => {
     setMenuAnchorEl(event.currentTarget);
   };
 
+  // initial summarize
+  if (currentVisualization.config.isSummarize && !isSummarize) {
+    setIsSummarize(true);
+    setCurrentGroupBy(currentVisualization.config.summarize.groupBy);
+    const summarizeIndex = summarizes.findIndex(
+      (item) => item.name === currentVisualization.config.summarize.select.as
+    );
+    setCurrentSummarize(summarizes[summarizeIndex]);
+  }
+
   const updateConfig = () => {
     const newConfig = { ...currentVisualization.config };
     newConfig.axisData.XAxis.key = currentGroupBy;

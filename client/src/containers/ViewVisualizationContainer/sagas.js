@@ -9,6 +9,7 @@ import {
   FETCH_DATA_AND_SCHEMA,
   FETCH_DATA_AND_SCHEMA_IN_PROGRESS,
   FETCH_DATA_AND_SCHEMA_SUCCESS,
+  UPDATE_VISUALIZATION,
 } from './actionTypes';
 import { visualizationsAPIService } from '../../services/api/visualizationsAPI.service';
 import { dbTableAPIService } from '../../services/api/dbTableAPI.service';
@@ -28,7 +29,7 @@ export function* fetchVisualizationWithDataAndSchemaSaga({ id }) {
   });
 }
 
-export function* watchFetchVisualizationWithDataSaga() {
+export function* watchFetchVisualizationWithDataAndSchemaSaga() {
   yield takeEvery(FETCH_VISUALIZATION_WITH_DATA_AND_SCHEMA, fetchVisualizationWithDataSaga);
 }
 
@@ -46,7 +47,6 @@ export function* watchSetVisualizationSaga() {
 }
 
 export function* fetchDataAndSchemaSaga({ tableId, settings }) {
-  // console.log(tableId);
   yield put({ type: FETCH_DATA_AND_SCHEMA_IN_PROGRESS });
   const visualizationData = yield call(dbTableAPIService.getTableData, tableId, { settings });
   const schema = yield call(dbTableAPIService.getTableSchema, tableId);
@@ -60,6 +60,20 @@ export function* watchFetchDataAndSchemaSaga() {
   yield takeEvery(FETCH_DATA_AND_SCHEMA, fetchDataAndSchemaSaga);
 }
 
+export function* updateVisualizationSaga({ visualizationId, updatedVisualization }) {
+  yield call(visualizationsAPIService.updateVisualization, visualizationId, updatedVisualization);
+  yield put({ type: FETCH_VISUALIZATION_WITH_DATA_AND_SCHEMA, id: visualizationId });
+}
+
+export function* watchUpdateVisualizationSaga() {
+  yield takeEvery(UPDATE_VISUALIZATION, updateVisualizationSaga);
+}
+
 export default function* currentVisualizationSaga() {
-  yield all([watchFetchVisualizationWithDataSaga(), watchSetVisualizationSaga(), watchFetchDataAndSchemaSaga()]);
+  yield all([
+    watchFetchVisualizationWithDataAndSchemaSaga(),
+    watchSetVisualizationSaga(),
+    watchFetchDataAndSchemaSaga(),
+    watchUpdateVisualizationSaga(),
+  ]);
 }

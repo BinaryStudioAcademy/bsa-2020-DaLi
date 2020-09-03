@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { Button } from '@material-ui/core';
 import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
+import CloseIcon from '@material-ui/icons/Close';
 import useStyles from './styles';
 import GroupByList from './GroupByList';
 
@@ -17,14 +18,28 @@ const SummarizeBar = ({ currentVisualization, updateVisualization }) => {
   const [currentSummarize, setCurrentSummarize] = useState(null);
   const [currentGroupBy, setCurrentGroupBy] = useState(null);
   const [isSummarize, setIsSummarize] = useState(false);
+  const [isInitializeSummarize, setIsInitializeSummarize] = useState(true);
 
   const [menuAnchorEl, setMenuAnchorEl] = useState(null);
   const handleMenuClick = (event) => {
     setMenuAnchorEl(event.currentTarget);
   };
 
+  const deleteSummarize = (e) => {
+    e.stopPropagation();
+    setIsSummarize(false);
+    setCurrentGroupBy(null);
+    setCurrentSummarize(null);
+    setIsInitializeSummarize(false);
+  };
+
+  const deleteGroupBy = (e) => {
+    e.stopPropagation();
+    setCurrentGroupBy(null);
+  };
+
   // initial summarize
-  if (currentVisualization.config.isSummarize && !isSummarize) {
+  if (currentVisualization.config.isSummarize && isInitializeSummarize && !isSummarize) {
     setIsSummarize(true);
     setCurrentGroupBy(currentVisualization.config.summarize.groupBy);
     const summarizeIndex = summarizes.findIndex(
@@ -35,20 +50,28 @@ const SummarizeBar = ({ currentVisualization, updateVisualization }) => {
 
   const updateConfig = () => {
     const newConfig = { ...currentVisualization.config };
-    newConfig.axisData.XAxis.key = currentGroupBy;
-    newConfig.axisData.XAxis.label = currentGroupBy;
-    newConfig.axisData.YAxis.key = currentSummarize.name;
-    newConfig.axisData.YAxis.label = currentSummarize.name;
-    newConfig.isSummarize = true;
-    const summarize = {
-      select: {
-        operation: currentSummarize.operation,
-        column: '*',
-        as: currentSummarize.name,
-      },
-      groupBy: currentGroupBy,
-    };
-    newConfig.summarize = summarize;
+    if (isSummarize) {
+      newConfig.axisData.XAxis.key = currentGroupBy;
+      newConfig.axisData.XAxis.label = currentGroupBy;
+      newConfig.axisData.YAxis.key = currentSummarize.name;
+      newConfig.axisData.YAxis.label = currentSummarize.name;
+      newConfig.isSummarize = true;
+      const summarize = {
+        select: {
+          operation: currentSummarize.operation,
+          column: '*',
+          as: currentSummarize.name,
+        },
+        groupBy: currentGroupBy,
+      };
+      newConfig.summarize = summarize;
+    } else {
+      newConfig.summarize = {
+        select: {},
+        groupBy: '',
+      };
+      newConfig.isSummarize = false;
+    }
     updateVisualization(newConfig);
   };
 
@@ -58,13 +81,14 @@ const SummarizeBar = ({ currentVisualization, updateVisualization }) => {
     setMenuAnchorEl(null);
   };
   return (
-    <div style={{ width: '100%' }}>
+    <div style={{ width: '100%', display: 'flex', flexDirection: 'column' }}>
       <div>
         <h3>Summarize by</h3>
         {isSummarize && (
           <>
             <Button className={classes.summarizeByButton} variant="contained" fullWidth onClick={handleMenuClick}>
               {currentSummarize.name}
+              <CloseIcon onClick={deleteSummarize} />
             </Button>
           </>
         )}
@@ -99,13 +123,19 @@ const SummarizeBar = ({ currentVisualization, updateVisualization }) => {
               name={column.column_name}
               isActive={column.column_name === currentGroupBy}
               setCurrentGroupBy={setCurrentGroupBy}
+              deleteGroupBy={deleteGroupBy}
             />
           ))}
-          <Button className={classes.summarizeByButton} variant="contained" fullWidth onClick={updateConfig}>
-            DONE
-          </Button>
         </div>
       )}
+      <Button
+        className={classes.summarizeDoneButton}
+        disabled={isSummarize && !currentGroupBy}
+        variant="contained"
+        onClick={updateConfig}
+      >
+        DONE
+      </Button>
     </div>
   );
 };

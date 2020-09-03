@@ -5,8 +5,12 @@ const useStyles = makeStyles(() => ({
     color: 'white',
     backgroundColor: 'rgba(136, 191, 77, 0.8)',
     textTransform: 'none',
+    justifyContent: 'space-between',
     '&:hover': {
       backgroundColor: 'rgba(136, 191, 77, 1)',
+    },
+    '& svg:hover': {
+      color: 'gray',
     },
     borderRadius: '5px',
   },
@@ -18,7 +22,7 @@ const useStyles = makeStyles(() => ({
     margin: '5px 0',
     alignSelf: 'center',
     fontSize: '18px',
-    padding: '10px 0',
+    padding: '10px 18px 10px 5px',
     '&.active': {
       color: '#FFF',
       backgroundColor: 'rgba(136, 191, 77, 0.8)',
@@ -37,6 +41,7 @@ const useStyles = makeStyles(() => ({
     },
     '& span': {
       display: 'none',
+      cursor: 'pointer',
     },
     '&:hover': {
       color: '#FFF',
@@ -47,6 +52,9 @@ const useStyles = makeStyles(() => ({
       '& span': {
         display: 'contents',
       },
+    },
+    '& svg:hover': {
+      color: 'gray',
     },
   },
   groupByButton: {
@@ -64,6 +72,20 @@ const useStyles = makeStyles(() => ({
     textTransform: 'none',
     '&:hover': {
       backgroundColor: '#e9fbfc',
+    },
+    borderRadius: '5px',
+  },
+  summarizeDoneButton: {
+    marginTop: '30px',
+    color: 'white',
+    alignSelf: 'center',
+    backgroundColor: 'rgba(136, 191, 77, 0.8)',
+    textTransform: 'none',
+    '&:hover': {
+      backgroundColor: 'rgba(136, 191, 77, 1)',
+    },
+    '& span': {
+      padding: '5px 20px',
     },
     borderRadius: '5px',
   },

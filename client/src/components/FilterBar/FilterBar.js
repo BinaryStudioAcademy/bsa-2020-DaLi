@@ -1,16 +1,30 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import * as actions from '../../containers/ViewVisualizationContainer/actions';
 
 import './styles.css';
 
 /* eslint-disable-next-line */
-const FilterBar = ({currentVisualization}) => {
-
+const FilterBar = () => {
   return <div>Filter</div>;
 };
 
-FilterBar.propTypes = {
-  currentVisualization: PropTypes.object,
+const mapStateToProps = (state) => {
+  return {
+    schema: state.currentVisualization.schema,
+    datasetSettings: state.currentVisualization.datasetSettings,
+  };
 };
 
-export default FilterBar;
+// dispatch to ViewVisualizationContainer reducer
+const mapDispatchToProps = {
+  ...actions,
+};
+
+FilterBar.propTypes = {
+  schema: PropTypes.object,
+  datasetSettings: PropTypes.array,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(FilterBar);

@@ -33,10 +33,6 @@ import {
   checkIsVisualizationTypeChangedDuringCreation,
 } from './helpers';
 import './ViewVisualizationContainer.css';
-<<<<<<< HEAD
-import { getRightSidebarComponent } from './helpers/rightSidebarHelper';
-=======
->>>>>>> I forgot what I have added -__-
 
 const ViewVisualizationContainer = (props) => {
   const {
@@ -247,7 +243,12 @@ const ViewVisualizationContainer = (props) => {
           onSwitchContentView={onSwitchContentView}
           isVisualizationExist={isVisualizationExist}
         />
-        {isRightSideBarOpen && <ViewVisualizationSidebar component={selectComponentForRightSidebar} />}
+        {isRightSideBarOpen && (
+          <ViewVisualizationSidebar
+            components={[<FilterBar />, <SummarizeBar currentVisualization={currentVisualization} />]}
+            sideBarPage={rightSideBarPage}
+          />
+        )}
       </Grid>
     </>
   );

@@ -22,7 +22,7 @@ const ViewVisualizationMain = (props) => {
   } = props;
   return (
     <Grid className="view-visualization-main" container item xs direction="column" justify="center" alignItems="center">
-      <Grid className="view-visualization-content" item xs id="visualizationContent">
+      <Grid className="view-visualization-content" item xs>
         {contentViewComponent}
       </Grid>
       <Grid item className="view-visualization-footer">
@@ -34,7 +34,6 @@ const ViewVisualizationMain = (props) => {
           style={!isVisualizationExist ? {} : { display: 'none' }}
           variant="contained"
           startIcon={<AppsIcon />}
-          id="toggleVisualizationSideBar"
         >
           Visualization
         </Button>
@@ -45,7 +44,6 @@ const ViewVisualizationMain = (props) => {
           className="view-visualization__setting-button"
           variant="contained"
           startIcon={<SettingsIcon />}
-          id="toggleConfigSettingsSideBar"
         >
           Settings
         </Button>
@@ -54,14 +52,12 @@ const ViewVisualizationMain = (props) => {
           <Button
             className={getButtonClasses('table', currentContentView)}
             onClick={() => onSwitchContentView('table')}
-            id="toggleInitialTable"
           >
             <ViewListOutlinedIcon />
           </Button>
           <Button
             className={getButtonClasses('chart', currentContentView)}
             onClick={() => onSwitchContentView('chart')}
-            id="toggleChart"
           >
             {visualizationIcon}
           </Button>

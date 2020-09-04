@@ -13,7 +13,6 @@ import {
   OPEN_MODAL,
   SET_FORM_DATA,
   CLOSE_MODAL,
-  SET_ACTIVE_TAB_INDEX,
 } from './actionTypes';
 
 export const getUsers = () => {
@@ -106,12 +105,5 @@ export const setFormData = (payload) => {
   return {
     type: SET_FORM_DATA,
     payload,
-  };
-};
-
-export const setActiveTabIndex = (id) => {
-  return {
-    type: SET_ACTIVE_TAB_INDEX,
-    payload: id,
   };
 };

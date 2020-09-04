@@ -14,7 +14,6 @@ import TextField from '@material-ui/core/TextField';
 import ColorPicker from 'material-ui-color-picker';
 import ToggleButton from '@material-ui/lab/ToggleButton';
 import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup';
-import CloseIcon from '@material-ui/icons/Close';
 import { useStyles, switchStyles } from './styles';
 
 const PrettySwitch = (props) => {
@@ -83,7 +82,7 @@ function LineChartSettings({ updateConfig, config: oldConfig }) {
 
   const [value, setValue] = useState(0);
   const [xAxis, setXAxis] = useState(XAxis.key || XAxis.availableKeys[0]);
-  const [yAxis, setYAxis] = useState(YAxis.key || [YAxis.availableKeys[0]]);
+  const [yAxis, setYAxis] = useState(YAxis.key || YAxis.availableKeys[0]);
   const [isGoalLine, setIsGoalLine] = useState(goal.display);
   const [goalLine, setGoalLine] = useState(goal.value);
   const [color, setColor] = useState(barColor);
@@ -97,18 +96,6 @@ function LineChartSettings({ updateConfig, config: oldConfig }) {
   const [lineType, setLineType] = useState(oldLineType);
   const [polynomialOrder, setPolynomialOrder] = useState(trendline.polynomial.order);
   const [config, setConfig] = useState(oldConfig);
-  const [errors, setErrors] = useState({
-    labelXAxis: false,
-    labelYAxis: false,
-  });
-
-  const validateField = (name, value) => {
-    if (name === 'labelXAxis' || name === 'labelYAxis') {
-      setErrors({ ...errors, [name]: value.length > 20 });
-    }
-  };
-
-  const isError = () => Object.values(errors).includes(true);
 
   useEffect(() => {
     updateConfig(config);
@@ -154,29 +141,6 @@ function LineChartSettings({ updateConfig, config: oldConfig }) {
         showDataPointsValues,
       },
     });
-  };
-
-  const colorList = ['blue', 'red', 'green', 'orange', 'purple', 'indigo', 'cyan', 'teal', 'lime', 'yellow'];
-
-  const addLine = () => {
-    if (yAxis.length < YAxis.availableKeys.length) {
-      const availableKeys = [...YAxis.availableKeys].filter((item) => !yAxis.includes(item));
-      setYAxis([...yAxis, availableKeys[0]]);
-      setColor([...color, colorList[yAxis.length % 10]]);
-      setLineType([...lineType, 'curveNatural']);
-    }
-  };
-
-  const deleteLine = (id) => {
-    const newYAxes = [...yAxis];
-    newYAxes.splice(id, 1);
-    setYAxis(newYAxes);
-    const newColors = [...color];
-    newColors.splice(id, 1);
-    setColor(newColors);
-    const newLineTypes = [...lineType];
-    newLineTypes.splice(id, 1);
-    setLineType(newLineTypes);
   };
 
   const valuesX = XAxis.availableKeys.map((value) => (
@@ -226,39 +190,25 @@ function LineChartSettings({ updateConfig, config: oldConfig }) {
             {valuesX}
           </NativeSelect>
         </FormControl>
-
-        <InputLabel className={classes.label} shrink htmlFor="yAxis-native-helper">
-          Y-Axis
-        </InputLabel>
-        {yAxis.map((value, index) => (
-          <FormControl className={classes.ySelectControl}>
-            <div className={classes.ySelectItem}>
-              <NativeSelect
-                key={`line${index}`}
-                className={classes.select}
-                value={value}
-                onChange={(event) => {
-                  const newYAxes = [...yAxis];
-                  newYAxes[index] = event.target.value;
-                  setYAxis(newYAxes);
-                  if (yAxis.length === 1) {
-                    setLabelYAxis(event.target.value);
-                  }
-                }}
-                inputProps={{
-                  id: 'yAxis-native-helper',
-                  name: 'yAxis',
-                }}
-              >
-                {valuesY}
-              </NativeSelect>
-              {yAxis.length > 1 ? <CloseIcon fontSize="default" onClick={() => deleteLine(index)} /> : null}
-            </div>
-          </FormControl>
-        ))}
-        <Button variant="contained" className={classes.addSeriesBtn} onClick={addLine}>
-          Add another series
-        </Button>
+        <FormControl className={classes.formControl}>
+          <InputLabel className={classes.label} shrink htmlFor="yAxis-native-helper">
+            Y-Axis
+          </InputLabel>
+          <NativeSelect
+            className={classes.select}
+            value={yAxis}
+            onChange={(event) => {
+              setYAxis(event.target.value);
+              setLabelYAxis(event.target.value);
+            }}
+            inputProps={{
+              id: 'yAxis-native-helper',
+              name: 'yAxis',
+            }}
+          >
+            {valuesY}
+          </NativeSelect>
+        </FormControl>
       </TabPanel>
       <TabPanel value={value} index={1}>
         <FormControlLabel
@@ -291,20 +241,18 @@ function LineChartSettings({ updateConfig, config: oldConfig }) {
           ))()}
           label="Show values on data points"
         />
-        {yAxis.length < 2 ? (
-          <FormControlLabel
-            control={(() => (
-              <PrettySwitch
-                checked={showTrendline}
-                onChange={(event) => {
-                  setShowTrendline(event.target.checked);
-                }}
-              />
-            ))()}
-            label="Show trendline"
-          />
-        ) : null}
-        {showTrendline && yAxis.length < 2 ? (
+        <FormControlLabel
+          control={(() => (
+            <PrettySwitch
+              checked={showTrendline}
+              onChange={(event) => {
+                setShowTrendline(event.target.checked);
+              }}
+            />
+          ))()}
+          label="Show trendline"
+        />
+        {showTrendline ? (
           <FormControl component="fieldset">
             <FormLabel component="legend" className={classes.legend}>
               Trendline type
@@ -378,62 +326,49 @@ function LineChartSettings({ updateConfig, config: oldConfig }) {
             </ToggleButtonGroup>
           </FormControl>
         ) : null}
-        {yAxis.map((value, index) => (
-          <React.Fragment key={`color-line-${index}`}>
-            <ColorPicker
-              className={classes.colorPicker}
-              key={`color-${index}`}
-              name="color"
-              defaultValue={`${value} color`}
-              value={color[index]}
-              onChange={(newColor) => {
-                const newColors = [...color];
-                newColors[index] = newColor;
-                setColor(newColors);
-              }}
-            />
-
-            <FormControl component="fieldset">
-              <FormLabel component="legend" className={classes.legend}>
-                Line style
-              </FormLabel>
-              <ToggleButtonGroup
-                key={`lineType-${index}`}
-                className={classes.btnGroup}
-                value={lineType[index]}
-                exclusive
-                onChange={(event, newLineType) => {
-                  const newLineTypes = [...lineType];
-                  newLineTypes[index] = newLineType;
-                  setLineType(newLineTypes);
-                }}
-                aria-label="lineType"
-              >
-                <ToggleButton
-                  classes={{ root: classes.btnItem, selected: classes.selected }}
-                  value="curveNatural"
-                  aria-label="natural"
-                >
-                  Natural
-                </ToggleButton>
-                <ToggleButton
-                  classes={{ root: classes.btnItem, selected: classes.selected }}
-                  value="curveLinear"
-                  aria-label="linear"
-                >
-                  Linear
-                </ToggleButton>
-                <ToggleButton
-                  classes={{ root: classes.btnItem, selected: classes.selected }}
-                  value="curveStep"
-                  aria-label="step"
-                >
-                  Step
-                </ToggleButton>
-              </ToggleButtonGroup>
-            </FormControl>
-          </React.Fragment>
-        ))}
+        <ColorPicker
+          className={classes.colorPicker}
+          name="color"
+          defaultValue="Сhoose your color"
+          value={color}
+          onChange={(color) => setColor(color)}
+        />
+        <FormControl component="fieldset">
+          <FormLabel component="legend" className={classes.legend}>
+            Line style
+          </FormLabel>
+          <ToggleButtonGroup
+            className={classes.btnGroup}
+            value={lineType}
+            exclusive
+            onChange={(event, newLineType) => {
+              setLineType(newLineType);
+            }}
+            aria-label="lineType"
+          >
+            <ToggleButton
+              classes={{ root: classes.btnItem, selected: classes.selected }}
+              value="curveNatural"
+              aria-label="natural"
+            >
+              Natural
+            </ToggleButton>
+            <ToggleButton
+              classes={{ root: classes.btnItem, selected: classes.selected }}
+              value="curveLinear"
+              aria-label="linear"
+            >
+              Linear
+            </ToggleButton>
+            <ToggleButton
+              classes={{ root: classes.btnItem, selected: classes.selected }}
+              value="curveStep"
+              aria-label="step"
+            >
+              Step
+            </ToggleButton>
+          </ToggleButtonGroup>
+        </FormControl>
       </TabPanel>
       <TabPanel value={value} index={2}>
         <FormControlLabel
@@ -451,10 +386,7 @@ function LineChartSettings({ updateConfig, config: oldConfig }) {
             value={labelXAxis}
             onChange={(event) => {
               setLabelXAxis(event.target.value);
-              validateField('labelXAxis', event.target.value);
             }}
-            helperText={errors.labelXAxis ? '20 characters is max' : null}
-            error={errors.labelXAxis}
           />
         ) : null}
         <FormControlLabel
@@ -472,10 +404,7 @@ function LineChartSettings({ updateConfig, config: oldConfig }) {
             value={labelYAxis}
             onChange={(event) => {
               setLabelYAxis(event.target.value);
-              validateField('labelYAxis', event.target.value);
             }}
-            helperText={errors.labelYAxis ? '20 characters is max' : null}
-            error={errors.labelYAxis}
           />
         ) : null}
       </TabPanel>
@@ -485,7 +414,6 @@ function LineChartSettings({ updateConfig, config: oldConfig }) {
           onClick={() => {
             onDoneButton();
           }}
-          disabled={isError()}
         >
           Done
         </Button>

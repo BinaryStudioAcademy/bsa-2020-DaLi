@@ -27,7 +27,7 @@ const EnhancedTable = (props) => {
   });
 
   return (
-    <TableContainer className="enhanced-table" id="tableVisualization">
+    <TableContainer className="enhanced-table">
       <Table>
         <EnhancedTableHead
           columns={columns}

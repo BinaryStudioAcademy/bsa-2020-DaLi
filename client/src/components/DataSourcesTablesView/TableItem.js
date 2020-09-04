@@ -22,18 +22,13 @@ const TableItem = ({ table }) => {
 
   const onTableClick = () => {
     history.push({
-      pathname: `/create-visualization/${table.id}/table`,
+      pathname: '/select-visualization/table',
       tableId: table.id,
     });
   };
 
   return (
-    <Grid
-      item
-      className="data-source-item table-item"
-      onClick={() => onTableClick()}
-      id={`dataset-table-${table.name}`}
-    >
+    <Grid item className="data-source-item table-item" onClick={() => onTableClick()}>
       <div className="data-source-table-item-icon">
         <AppsIcon style={{ color: '#7073a9', fontSize: 30 }} />
       </div>

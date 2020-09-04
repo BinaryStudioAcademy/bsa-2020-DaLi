@@ -135,6 +135,7 @@ const SummarizeBar = ({ currentVisualization, updateVisualization }) => {
               name={column.column_name}
               isActive={column.column_name === currentGroupBy.name}
               setCurrentGroupBy={setCurrentGroupBy}
+              currentGroupBy={currentGroupBy}
               deleteGroupBy={deleteGroupBy}
             />
           ))}

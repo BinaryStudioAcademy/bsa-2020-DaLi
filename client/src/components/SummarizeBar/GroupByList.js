@@ -28,11 +28,11 @@ const iconForType = (type) => {
 
 const periods = ['day', 'week', 'month', 'quarter', 'year'];
 
-const GroupByList = ({ type, name, isActive, setCurrentGroupBy, deleteGroupBy }) => {
+const GroupByList = ({ type, name, isActive, currentGroupBy, setCurrentGroupBy, deleteGroupBy }) => {
   const classes = useStyles();
   const isDate = type === 'date';
   const [menuAnchorEl, setMenuAnchorEl] = useState(null);
-  const [period, setPeriod] = useState(isDate ? 'month' : null);
+  const [period, setPeriod] = useState(isDate ? currentGroupBy.period || 'month' : null);
   const handleMenuClick = (event) => {
     event.stopPropagation();
     setMenuAnchorEl(event.currentTarget);
@@ -88,6 +88,7 @@ GroupByList.propTypes = {
   isActive: PropTypes.bool,
   setCurrentGroupBy: PropTypes.func,
   deleteGroupBy: PropTypes.func,
+  currentGroupBy: PropTypes.object,
 };
 
 export default GroupByList;

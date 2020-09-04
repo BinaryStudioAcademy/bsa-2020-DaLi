@@ -2,7 +2,7 @@ import moment from 'moment';
 
 const getDate = (date, period) => {
   let formattedDate = moment(date).format('MMMM DD, YYYY');
-  if (formattedDate === 'Invalid date') return '';
+  if (formattedDate === 'Invalid date') return date;
 
   switch (period) {
     case 'month': {
@@ -10,19 +10,19 @@ const getDate = (date, period) => {
       break;
     }
     case 'year': {
-      formattedDate = moment(date).format('YYYY');
+      formattedDate = moment(date).format('YYYY [year]');
       break;
     }
     case 'week': {
-      formattedDate = moment(date).format('WW, YYYY');
+      formattedDate = moment(date).format('W [week], YYYY');
       break;
     }
     case 'day': {
-      formattedDate = moment(date).format('DD MMMM,YYYY');
+      formattedDate = moment(date).format('DD MMMM, YYYY');
       break;
     }
     case 'quarter': {
-      formattedDate = moment(date).format('Q, YYYY');
+      formattedDate = moment(date).format('Q [quarter], YYYY');
       break;
     }
     default: {
@@ -37,6 +37,7 @@ export const formatDate = (data, config) => {
   if (config.isSummarize && config.summarize.groupBy.type === 'date') {
     const dateColumn = config.summarize.groupBy.as;
     return data.map((row) => {
+      /*let newRow = {...row}*/
       row[dateColumn] = getDate(row[dateColumn], config.summarize.groupBy.period);
       return row;
     });

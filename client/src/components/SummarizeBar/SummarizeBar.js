@@ -19,8 +19,9 @@ const SummarizeBar = ({ currentVisualization, updateVisualization }) => {
   const [currentGroupBy, setCurrentGroupBy] = useState({ name: null, type: null, period: null, as: null });
   const [isSummarize, setIsSummarize] = useState(false);
   const [isInitializeSummarize, setIsInitializeSummarize] = useState(true);
-
   const [menuAnchorEl, setMenuAnchorEl] = useState(null);
+  const isTableVisual = currentVisualization.type === 'TABLE';
+
   const handleMenuClick = (event) => {
     setMenuAnchorEl(event.currentTarget);
   };
@@ -58,11 +59,29 @@ const SummarizeBar = ({ currentVisualization, updateVisualization }) => {
       const groupByName = currentGroupBy.period
         ? `${currentGroupBy.name}_by_${currentGroupBy.period}`
         : currentGroupBy.name;
-      newConfig.axisData.XAxis.key = groupByName;
-      newConfig.axisData.XAxis.label = groupByName;
-      newConfig.axisData.YAxis.key = currentSummarize.name;
-      newConfig.axisData.YAxis.label = currentSummarize.name;
       newConfig.isSummarize = true;
+      if (isTableVisual) {
+        const summarizeColumns = [
+          {
+            id: currentSummarize.name,
+            title: currentSummarize.name,
+            type: 'number',
+            visible: true,
+          },
+          {
+            id: groupByName,
+            title: groupByName,
+            type: currentGroupBy.type,
+            visible: true,
+          },
+        ];
+        newConfig.summarizeColumns = summarizeColumns;
+      } else {
+        newConfig.axisData.XAxis.key = groupByName;
+        newConfig.axisData.XAxis.label = groupByName;
+        newConfig.axisData.YAxis.key = currentSummarize.name;
+        newConfig.axisData.YAxis.label = currentSummarize.name;
+      }
       const summarize = {
         select: {
           operation: currentSummarize.operation,
@@ -78,10 +97,14 @@ const SummarizeBar = ({ currentVisualization, updateVisualization }) => {
       };
       newConfig.summarize = summarize;
     } else {
-      newConfig.axisData.XAxis.key = newConfig.axisData.XAxis.availableKeys[0];
-      newConfig.axisData.XAxis.label = newConfig.axisData.XAxis.availableKeys[0];
-      newConfig.axisData.YAxis.key = newConfig.axisData.YAxis.availableKeys[0];
-      newConfig.axisData.YAxis.label = newConfig.axisData.YAxis.availableKeys[0];
+      if (isTableVisual) {
+        delete newConfig.summarizeColumns;
+      } else {
+        newConfig.axisData.XAxis.key = newConfig.axisData.XAxis.availableKeys[0];
+        newConfig.axisData.XAxis.label = newConfig.axisData.XAxis.availableKeys[0];
+        newConfig.axisData.YAxis.key = newConfig.axisData.YAxis.availableKeys[0];
+        newConfig.axisData.YAxis.label = newConfig.axisData.YAxis.availableKeys[0];
+      }
       newConfig.summarize = {
         select: {},
         groupBy: '',

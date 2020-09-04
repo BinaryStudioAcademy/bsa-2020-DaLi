@@ -1,7 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { MapVisualizationGoogle, MapVisualizationSchematic, MapVisualizationGoogleHeat } from '../../components';
-import schematicMap from './newYork.json';
+import schematicMapNewYork from './newYork.json';
+import schematicMapWorld from './world.json';
 
 const MapVisualizationContainer = ({ data, config }) => {
   const chooseMapView = () => {
@@ -11,10 +12,17 @@ const MapVisualizationContainer = ({ data, config }) => {
         mapView = <MapVisualizationGoogle data={data} settings={config} />;
         break;
       case 'D3 bubble map':
-        mapView = <MapVisualizationSchematic schematicMap={schematicMap} data={data} settings={config} />;
+        mapView = (
+          <MapVisualizationSchematic schematicMap={schematicMapNewYork} data={data} radius={5} settings={config} />
+        );
         break;
       case 'Google heat map':
         mapView = <MapVisualizationGoogleHeat data={data} settings={config} />;
+        break;
+      case 'D3 world bubble map':
+        mapView = (
+          <MapVisualizationSchematic schematicMap={schematicMapWorld} data={data} radius={2} settings={config} />
+        );
         break;
       default:
         break;

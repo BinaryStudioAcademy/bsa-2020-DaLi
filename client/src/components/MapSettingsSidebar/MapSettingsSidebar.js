@@ -182,6 +182,9 @@ const MapSettingsSidebar = ({ updateConfig, config: oldConfig }) => {
             <option value="D3 bubble map" key="d3-bubble">
               D3 bubble map
             </option>
+            <option value="D3 world bubble map" key="d3 world bubble map">
+              D3 world bubble map
+            </option>
           </NativeSelect>
         </FormControl>
         {viewName !== 'D3 bubble map' ? (

@@ -14,35 +14,16 @@ const SelectVisualizationSidebar = ({ tableId }) => {
   const classes = useStyles();
 
   const myVisualizations = [
-    {
-      id: 'selectVisualization-lineChart',
-      name: 'Line',
-      icon: <TimelineOutlinedIcon className={classes.iconStyles} />,
-      type: 'line-chart',
-    },
-    {
-      id: 'selectVisualization-barChart',
-      name: 'Bar',
-      icon: <EqualizerOutlinedIcon className={classes.iconStyles} />,
-      type: 'bar-chart',
-    },
-    {
-      id: 'selectVisualization-table',
-      name: 'Table',
-      icon: <AppsIcon className={classes.iconStyles} />,
-      type: 'table',
-    },
-    {
-      id: 'selectVisualization-map',
-      name: 'Map',
-      icon: <MapOutlinedIcon className={classes.iconStyles} />,
-      type: 'map',
-    },
+    { id: 1, name: 'Line', icon: <TimelineOutlinedIcon className={classes.iconStyles} />, type: 'line-chart' },
+    { id: 2, name: 'Bar', icon: <EqualizerOutlinedIcon className={classes.iconStyles} />, type: 'bar-chart' },
+    { id: 3, name: 'Table', icon: <AppsIcon className={classes.iconStyles} />, type: 'table' },
+    { id: 4, name: 'Map', icon: <MapOutlinedIcon className={classes.iconStyles} />, type: 'map' },
   ];
 
   const onButtonClick = (type) => {
     history.push({
-      pathname: `/create-visualization/${tableId}/${type}`,
+      pathname: `/select-visualization/${type}`,
+      tableId,
       prevPath: history.location.pathname,
     });
   };
@@ -51,7 +32,7 @@ const SelectVisualizationSidebar = ({ tableId }) => {
     <div className={classes.basicContainer}>
       {myVisualizations.map((item, index) => {
         return (
-          <Button key={index} onClick={() => onButtonClick(item.type)} className={classes.buttonStyle} id={item.id}>
+          <Button key={index} onClick={() => onButtonClick(item.type)} className={classes.buttonStyle}>
             {item.icon}
             <span className={classes.visName}>{item.name}</span>
           </Button>

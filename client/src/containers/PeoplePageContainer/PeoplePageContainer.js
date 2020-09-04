@@ -15,7 +15,6 @@ import {
   getMembership,
   resetNotification,
   openModal,
-  setActiveTabIndex,
 } from './actions';
 import { addUserToGroup, getUserGroups, getUserGroup, deleteUserFromGroup } from '../UserGroupsPageContainer/actions';
 import UserGroupsPageContainer from '../UserGroupsPageContainer/UserGroupsPageContainer';
@@ -44,8 +43,6 @@ const PeoplePageContainer = ({
   deleteUserFromGroup,
   currentUserId,
   openModal,
-  activeTabIndex,
-  setActiveTabIndex,
 }) => {
   const classes = useStyles();
 
@@ -66,6 +63,7 @@ const PeoplePageContainer = ({
       resetNotification();
     };
   }, [getUsers, getMembership, resetNotification, getUserGroups, getUserGroup, location.pathname, match.isExact]);
+
   return (
     <Grid container className={classes.root}>
       <PeoplePageMenu />
@@ -91,8 +89,6 @@ const PeoplePageContainer = ({
               resetNotification={resetNotification}
               currentUserId={currentUserId}
               openModal={openModal}
-              setActiveTabIndex={setActiveTabIndex}
-              activeTabIndex={activeTabIndex}
             />
           )}
         />
@@ -130,8 +126,6 @@ PeoplePageContainer.propTypes = {
   deleteUserFromGroup: PropTypes.func,
   openModal: PropTypes.func,
   currentUserId: PropTypes.string,
-  activeTabIndex: PropTypes.number,
-  setActiveTabIndex: PropTypes.func,
 };
 
 const mapStateToProps = ({ currentUser, admin: { people, groups } }) => {
@@ -142,7 +136,6 @@ const mapStateToProps = ({ currentUser, admin: { people, groups } }) => {
     isLoading: people.isLoading,
     message: people.message,
     status: people.status,
-    activeTabIndex: people.activeTabIndex,
     temporaryPassword: people.temporaryPassword,
     groups: groups.groups,
   };
@@ -162,7 +155,6 @@ const mapDispatchToProps = {
   deleteUserFromGroup,
   resetNotification,
   openModal,
-  setActiveTabIndex,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(PeoplePageContainer);

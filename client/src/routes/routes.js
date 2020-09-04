@@ -37,7 +37,7 @@ const Routes = ({ fetchUser, isAuthorized, isLoading }) => {
       <PublicRoute exact path="/login" component={LoginPage} />
       <ProtectedRoute exact path="/" component={AnalyticsPage} />
       <ProtectedRoute path="/visualizations/:id" component={ViewVisualizationPage} />
-      <ProtectedRoute exact path="/create-visualization/:tableId/:type" component={ViewVisualizationPage} />
+      <ProtectedRoute exact path="/select-visualization/:id" component={ViewVisualizationPage} />
       <ProtectedRoute exact path="/account-settings" component={AccountSettingsPage} />
       <AdminRoute path="/admin" component={AdminPage} />
       <ProtectedRoute exact path="/dashboards/:id" component={DashboardPage} />

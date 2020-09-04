@@ -3,8 +3,8 @@ import {
   SET_VISUALIZATION_SUCCESS,
   UPDATE_VISUALIZATION_CONFIG,
   UPDATE_VISUALIZATION_NAME,
-  FETCH_VISUALIZATION_SUCCESS,
-  VISUALIZATIONS_FETCHING,
+  FETCH_VISUALIZATION_WITH_DATA_AND_SCHEMA_SUCCESS,
+  FETCH_VISUALIZATION_WITH_DATA_AND_SCHEMA_START,
   FETCH_DATA_AND_SCHEMA_IN_PROGRESS,
   FETCH_DATA_AND_SCHEMA_SUCCESS,
 } from './actionTypes';
@@ -21,9 +21,10 @@ const viewVisualizationReducer = (state = { loading: true, created: false }, { t
       };
     }
 
-    case FETCH_VISUALIZATION_SUCCESS: {
+    case FETCH_VISUALIZATION_WITH_DATA_AND_SCHEMA_SUCCESS: {
       const { visualization } = payload;
       visualization.config = JSON.parse(visualization.config);
+      visualization.datasetSettings = visualization.datasetSettings.map((s) => JSON.parse(s));
       return {
         ...state,
         ...visualization,
@@ -49,7 +50,7 @@ const viewVisualizationReducer = (state = { loading: true, created: false }, { t
       };
     }
 
-    case VISUALIZATIONS_FETCHING: {
+    case FETCH_VISUALIZATION_WITH_DATA_AND_SCHEMA_START: {
       return {
         ...state,
         loading: true,

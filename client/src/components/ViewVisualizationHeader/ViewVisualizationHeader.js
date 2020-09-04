@@ -2,6 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Grid, Button, Typography } from '@material-ui/core';
 import SaveIcon from '@material-ui/icons/Save';
+import FilterListIcon from '@material-ui/icons/FilterList';
+import GamesOutlinedIcon from '@material-ui/icons/GamesOutlined';
 import Tooltip from '@material-ui/core/Tooltip';
 import InfoIcon from '@material-ui/icons/Info';
 import EditIcon from '@material-ui/icons/Edit';
@@ -16,7 +18,7 @@ const ViewVisualizationHeader = (props) => {
     name,
     description,
     visualizationType,
-    tableId,
+    onToggleRightSideBar,
   } = props;
   const classes = useStyles();
 
@@ -27,7 +29,7 @@ const ViewVisualizationHeader = (props) => {
           <span className={classes.viewVisualizationTitleSection}>
             {isVisualizationExist ? 'Visualizations / ' : 'Create Visualization / '}
           </span>
-          {isVisualizationExist ? name : `${tableId} / ${visualizationType}`}
+          {isVisualizationExist ? name : `New ${visualizationType}`}
         </Typography>
         {isVisualizationExist && (
           <>
@@ -52,9 +54,24 @@ const ViewVisualizationHeader = (props) => {
           variant="contained"
           startIcon={<SaveIcon />}
           onClick={onVisualizationSave}
-          id="saveVisualization"
         >
           Save
+        </Button>
+        <Button
+          className={classes.viewVisualizationFilterButton}
+          variant="contained"
+          startIcon={<FilterListIcon />}
+          onClick={onToggleRightSideBar(0)}
+        >
+          Filter
+        </Button>
+        <Button
+          className={classes.viewVisualizationSummarizeButton}
+          variant="contained"
+          startIcon={<GamesOutlinedIcon />}
+          onClick={onToggleRightSideBar(1)}
+        >
+          Summarize
         </Button>
       </Grid>
     </Grid>
@@ -68,7 +85,7 @@ ViewVisualizationHeader.propTypes = {
   name: PropTypes.string,
   description: PropTypes.string,
   visualizationType: PropTypes.string,
-  tableId: PropTypes.string,
+  onToggleRightSideBar: PropTypes.func,
 };
 
 export default ViewVisualizationHeader;

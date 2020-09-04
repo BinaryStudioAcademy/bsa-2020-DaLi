@@ -90,8 +90,18 @@ const useStyles = makeStyles((theme) => ({
   },
   save: {
     marginTop: 10,
+    backgroundColor: '#5BA4CF',
+    color: '#fff',
+    border: 'none',
+    borderRadius: 5,
+    outline: 'none',
     '&:hover:enabled': {
       cursor: 'pointer',
+    },
+    '&:disabled': {
+      color: '#999',
+      border: '2px solid #dcdcdc',
+      backgroundColor: 'inherit',
     },
   },
   error: {

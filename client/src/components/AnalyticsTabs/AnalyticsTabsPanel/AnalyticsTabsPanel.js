@@ -55,14 +55,18 @@ const AnalyticsTabsPanel = ({ value, index, data, deleteVisualization, deleteDas
                 <>
                   <Link to={`/dashboards/${item.id}`} className={classes.item}>
                     {chooseIcon(item.type)}
-                    <span>{item.name}</span>
+                    <span id={`analytics-${item.id}-name`}>{item.name}</span>
                   </Link>
                   {item.description.length ? (
                     <Tooltip title={item.description} placement="left" className={classes.description}>
-                      <InfoIcon />
+                      <InfoIcon id={`analytics-${item.id}-info`} />
                     </Tooltip>
                   ) : null}
-                  <DeleteIcon className={classes.menuIcon} id={item.id} onClick={deleteDashboard(item.id)} />
+                  <DeleteIcon
+                    className={classes.menuIcon}
+                    id={`analytics-${item.id}-delete`}
+                    onClick={deleteDashboard(item.id)}
+                  />
                 </>
               ) : (
                 <>

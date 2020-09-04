@@ -18,12 +18,11 @@ function BarChartContainer({ data, config }) {
   };
 
   return (
-    <div 
+    <div
       style={{
         width: '100%',
         height: '100%',
       }}
-      id="barChartVisualizationContainer"
     >
       <BarChart data={dataWithFormatDateForSummarize} settings={config} chart={chart} />
     </div>

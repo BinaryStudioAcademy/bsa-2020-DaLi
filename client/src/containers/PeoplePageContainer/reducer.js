@@ -18,7 +18,6 @@ import {
   OPEN_MODAL,
   SET_FORM_DATA,
   CLOSE_MODAL,
-  SET_ACTIVE_TAB_INDEX,
 } from './actionTypes';
 
 const initialState = {
@@ -29,7 +28,6 @@ const initialState = {
   error: null,
   message: '',
   status: '',
-  activeTabIndex: 0,
   modal: {},
   formData: {
     firstName: '',
@@ -162,12 +160,6 @@ const usersListReducer = (state = initialState, { type, payload }) => {
       return {
         ...state,
         formData: payload,
-      };
-    }
-    case SET_ACTIVE_TAB_INDEX: {
-      return {
-        ...state,
-        activeTabIndex: payload,
       };
     }
     default:

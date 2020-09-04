@@ -7,7 +7,7 @@ import TableCell from '@material-ui/core/TableCell';
 import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
-import { formatDate } from './helper';
+import { formatDateForSummarize } from '../../helpers/formatDateForSummarize';
 
 const useStyles = makeStyles({
   initialTable: {
@@ -35,7 +35,7 @@ const sortByProperty = (arrOfObjects, property, sortedBy) => {
 };
 const InitialTable = (props) => {
   const { data: Data, config } = props;
-  const [data, setData] = useState(formatDate(Data, config));
+  const [data, setData] = useState(formatDateForSummarize(Data, config));
   const [sortedBy, setSortedBy] = useState('id');
   const classes = useStyles();
   const tableProperties = getTableHead(data);

@@ -14,6 +14,7 @@ import {
   resetPassword,
   getMembership,
   resetNotification,
+  openModal,
 } from './actions';
 import { addUserToGroup, getUserGroups, getUserGroup, deleteUserFromGroup } from '../UserGroupsPageContainer/actions';
 import UserGroupsPageContainer from '../UserGroupsPageContainer/UserGroupsPageContainer';
@@ -41,6 +42,7 @@ const PeoplePageContainer = ({
   addUserToGroup,
   deleteUserFromGroup,
   currentUserId,
+  openModal,
 }) => {
   const classes = useStyles();
 
@@ -86,6 +88,7 @@ const PeoplePageContainer = ({
               deleteUserFromGroup={deleteUserFromGroup}
               resetNotification={resetNotification}
               currentUserId={currentUserId}
+              openModal={openModal}
             />
           )}
         />
@@ -121,6 +124,7 @@ PeoplePageContainer.propTypes = {
   membership: PropTypes.array,
   addUserToGroup: PropTypes.func,
   deleteUserFromGroup: PropTypes.func,
+  openModal: PropTypes.func,
   currentUserId: PropTypes.string,
 };
 
@@ -150,6 +154,7 @@ const mapDispatchToProps = {
   addUserToGroup,
   deleteUserFromGroup,
   resetNotification,
+  openModal,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(PeoplePageContainer);

@@ -47,6 +47,7 @@ const ViewVisualizationContainer = (props) => {
     fetchDataAndSchema,
     data,
     schema,
+    updateVisualizationData,
   } = props;
 
   const [currentView, setCurrentView] = useState('table');
@@ -120,7 +121,7 @@ const ViewVisualizationContainer = (props) => {
     // eslint-disable-next-line no-nested-ternary
     schema && data ? (
       currentView === 'table' ? (
-        <InitialTable schema={schema} data={data} />
+        <InitialTable data={data} config={currentVisualization.config} />
       ) : (
         visualizationComponent
       )
@@ -167,9 +168,9 @@ const ViewVisualizationContainer = (props) => {
     props.history.push('/');
   };
 
-  const updateVisualization = () => {
-    const updatedVisualization = createUpdatedVisualization(currentVisualization);
-    visualizationsAPIService.updateVisualization(visualizationId, updatedVisualization);
+  const updateVisualization = (newConfig) => {
+    const updatedVisualization = createUpdatedVisualization(currentVisualization, newConfig);
+    updateVisualizationData(visualizationId, updatedVisualization);
     setNotificationMessage('Visualization has been successfully updated');
     setNotificationType('success');
     displayNotification(true);
@@ -244,7 +245,10 @@ const ViewVisualizationContainer = (props) => {
         />
         {isRightSideBarOpen && (
           <ViewVisualizationSidebar
-            components={[<FilterBar />, <SummarizeBar currentVisualization={currentVisualization} />]}
+            components={[
+              <FilterBar />,
+              <SummarizeBar currentVisualization={currentVisualization} updateVisualization={updateVisualization} />,
+            ]}
             sideBarPage={rightSideBarPage}
           />
         )}
@@ -283,6 +287,7 @@ ViewVisualizationContainer.propTypes = {
     tableId: PropTypes.string,
     prevPath: PropTypes.string,
   }),
+  updateVisualizationData: PropTypes.func,
 };
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(ViewVisualizationContainer));

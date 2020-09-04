@@ -5,7 +5,6 @@ import * as actions from '../../containers/ViewVisualizationContainer/actions';
 
 import './styles.css';
 
-/* eslint-disable-next-line */
 const FilterBar = () => {
   return <div>Filter</div>;
 };

@@ -4,6 +4,7 @@ import {
   UPDATE_VISUALIZATION_NAME,
   FETCH_VISUALIZATION_WITH_DATA_AND_SCHEMA,
   FETCH_DATA_AND_SCHEMA,
+  UPDATE_VISUALIZATION,
 } from './actionTypes';
 
 export const setVisualization = (visualization) => {
@@ -39,5 +40,13 @@ export const fetchDataAndSchema = (tableId, settings = []) => {
     type: FETCH_DATA_AND_SCHEMA,
     tableId,
     settings,
+  };
+};
+
+export const updateVisualizationData = (visualizationId, updatedVisualization) => {
+  return {
+    type: UPDATE_VISUALIZATION,
+    visualizationId,
+    updatedVisualization,
   };
 };

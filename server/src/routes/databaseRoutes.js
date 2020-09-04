@@ -22,8 +22,7 @@ router.patch(
     const result = await DatabaseService.updateDatabaseTables(req.params.id);
     res.json(result);
     next();
-  }),
-  permissionsMiddleware
+  })
 );
 
 router.get(

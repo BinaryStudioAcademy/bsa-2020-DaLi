@@ -1,5 +1,5 @@
 import { Model } from 'sequelize';
-import { ACCESS_GRANTED, ACCESS_DENIED, ACCESS_VIEW } from '../config/types';
+import { ACCESS_GRANTED, ACCESS_DENIED, ACCESS_LIMITED } from '../config/types';
 
 export default (sequelize, DataTypes) => {
   class PermissionCollections extends Model {
@@ -26,7 +26,7 @@ export default (sequelize, DataTypes) => {
         defaultValue: DataTypes.UUIDV4,
       },
       permissionGranted: {
-        type: DataTypes.ENUM([ACCESS_GRANTED, ACCESS_DENIED, ACCESS_VIEW]),
+        type: DataTypes.ENUM([ACCESS_GRANTED, ACCESS_DENIED, ACCESS_LIMITED]),
         allowNull: false,
         defaultValue: ACCESS_DENIED,
       },

@@ -1,3 +1,4 @@
+import { Op } from 'sequelize';
 import models from '../models/index';
 import BaseRepository from './baseRepository';
 import UserGroupsRepository from './userGroupsRepository';
@@ -15,6 +16,43 @@ class UserRepository extends BaseRepository {
 
   getUserById(id) {
     return this.model.findOne({ where: { id } });
+  }
+
+  getAllowedCollection(id) {
+    return this.model
+      .findAll({
+        where: { id },
+        attributes: [],
+        raw: true,
+        nest: true,
+        include: [
+          {
+            model: models.UserGroups,
+            attributes: [],
+            through: { attributes: [] },
+            raw: true,
+            nest: true,
+            include: [
+              {
+                model: models.PermissionCollections,
+                attributes: [],
+                where: {
+                  [Op.or]: [{ permissionGranted: 'granted' }, { permissionGranted: 'limited' }],
+                },
+                include: [
+                  {
+                    model: models.Collection,
+                    as: 'collections',
+                    attributes: ['id'],
+                  },
+                ],
+              },
+            ],
+          },
+        ],
+      })
+      .then((result) => result.map((el) => el.UserGroups.PermissionCollections.collections.id))
+      .then((result) => [...new Set(result)]);
   }
 
   async createUsersWithDefaultGroups(user) {

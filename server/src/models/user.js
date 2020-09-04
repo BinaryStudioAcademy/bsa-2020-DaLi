@@ -4,6 +4,11 @@ export default (sequelize, DataTypes) => {
   class User extends Model {
     static associate(models) {
       User.hasMany(models.Visualization);
+      User.belongsToMany(models.UserGroups, {
+        through: models.UsersUserGroups,
+        foreignKey: 'users_id',
+        otherKey: 'userGroups_id',
+      });
       User.hasOne(models.Collection, {
         foreignKey: 'users_id',
         sourceKey: models.User.id,

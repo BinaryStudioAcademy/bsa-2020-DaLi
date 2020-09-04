@@ -2,6 +2,7 @@ import { Router } from 'express';
 import asyncHandler from 'express-async-handler';
 import createError from 'http-errors';
 import * as CollectionService from '../services/collectionService';
+import { collectionPermissionsMiddleware } from '../middlewares/collectionPermissionsMiddleware';
 
 const router = Router();
 
@@ -9,9 +10,10 @@ router.get(
   '/',
   asyncHandler(async (req, res, next) => {
     const result = await CollectionService.getCollections(req.user.id);
-    res.status(200).json(result);
+    res.data = result;
     next();
-  })
+  }),
+  collectionPermissionsMiddleware
 );
 
 router.get(
@@ -22,13 +24,14 @@ router.get(
       userId: req.user.id,
     });
     if (result) {
-      res.status(200).json(result);
+      res.data = result;
       next();
     } else {
       const err = createError(404, `Collection with id of ${req.params.id} not found`);
       next(err);
     }
-  })
+  }),
+  collectionPermissionsMiddleware
 );
 
 router.post(

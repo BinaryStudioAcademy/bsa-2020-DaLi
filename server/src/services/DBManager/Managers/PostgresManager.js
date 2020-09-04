@@ -86,6 +86,7 @@ export default class DBPostgresManager {
         FROM "${name}"
         ${filterQuery}
         ${isSummarize ? 'GROUP BY ' + summarize.groupBy.as : ''}
+        ${isSummarize ?'ORDER BY '+summarize.groupBy.as+' ASC' : ''} 
         `
       )
       .then((data) => {
@@ -97,12 +98,12 @@ export default class DBPostgresManager {
     return this.sequelize
       .query(
         `
-      SELECT 
+      SELECT
         data_type,
-        column_name 
-      FROM 
+        column_name
+      FROM
         information_schema.columns
-      WHERE 
+      WHERE
         table_name = '${name}';`
       )
       .then((data) => {

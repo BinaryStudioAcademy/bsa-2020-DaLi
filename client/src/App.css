@@ -65,3 +65,9 @@
 .paper-collection-outlined::before {
   content: "";
 }
+
+.error {
+  color: red;
+  position: absolute;
+  font-size: 12px;
+}

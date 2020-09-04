@@ -1,99 +1,63 @@
-/* .container {
-  width: 100%;
+.login-container {
+  display: grid;
+  grid-template-columns: 60% 40%;
   height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
 }
 
-.title {
-  margin: 0 0 1rem 0;
+.login-hero-container {
+  background-color: #1cd1a1;
+}
+
+.hero-dali {
+  object-fit: contain;
+  object-position: right;
+  width: 100%;
+  height: 100%;
 }
 
 .form-wrapper {
-  width: 700px;
-  height: 430px;
-  border: 1px solid #efefef;
-  padding: 2rem;
-  border-radius: 5px;
-  box-shadow: 0 2px 5px #bbb;
+  height: max-content;
+  width: 80%;
+  box-sizing: border-box;
+  align-self: center;
+  justify-self: center;
 }
 
-.form-wrapper Form {
+.form-wrapper .MuiTypography-subtitle2 {
+  margin: 25px 0 10px;
+}
+
+.password-label-wrapper {
   display: flex;
-  flex-direction: column;
+  align-items: baseline;
+  justify-content: space-between;
 }
 
-.form-wrapper Label {
-  font-weight: bold;
-  margin-bottom: 0.6rem;
-  color: #7c8590;
-}
-
-.email-wrapper,
-.password-wrapper {
-  display: flex;
-  flex-direction: column;
-  position: relative;
-}
-
-.textInput {
-  height: 3rem;
-  border-radius: 5px;
-  border-color: #dcdcdc;
-  border-style: solid;
-  margin-bottom: 1.6rem;
-  padding: 0 1rem;
-  font-size: 1rem;
-}
-
-.textInput::placeholder {
-  color: #c8ced2;
-}
-
-.btn {
-  height: 3rem;
-  width: 5rem;
-  color: #999;
-  font-weight: bold;
-  border-radius: 5px;
-  border-color: #dcdcdc;
-  border-style: solid;
-  background-color: transparent;
+.forgot-pswd:hover {
+  cursor: pointer;
+  text-decoration: underline;
+  text-decoration-color: #1cd1a1;
 }
 
 .checkbox-wrapper {
+  margin: 15px 0;
   display: flex;
-  justify-content: space-between;
-  margin-bottom: 1.6rem;
-}
-
-.checkbox {
-  height: 1rem;
-  width: 1rem;
-  border-radius: 5px;
-  border-color: #dcdcdc;
-}
-
-.btn-wrapper {
-  display: flex;
-  justify-content: space-between;
+  justify-content: flex-end;
   align-items: center;
 }
 
-.forgot-pswd {
-  cursor: pointer;
-  text-decoration: none;
-  color: #5e91d8;
-  background-color: transparent;
-  outline:none;
-  border:none;
+.login-checkbox-label {
+  line-height: 34px;
+  margin-right: 5px;
 }
 
-.error {
-  position: absolute;
-  font-weight: bold;
-  font-style: italic;
-  color: red;
-  bottom: 0.2rem;
-} */
+@media (max-width: 800px) {
+  .login-container {
+    grid-template-columns: 100%;
+    grid-template-rows: 220px 1fr;
+  }
+  .hero-dali {
+    object-fit: cover;
+    object-position: center;
+  }
+}

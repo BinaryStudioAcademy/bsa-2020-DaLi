@@ -362,5 +362,16 @@ export const theme = createMuiTheme({
         height: 'auto',
       },
     },
+    MuiCheckbox: {
+      root: {
+        border: 'none',
+      },
+    },
+    MuiAlert: {
+      root: {
+        width: 'max-content',
+        height: 'max-content',
+      },
+    },
   },
 });

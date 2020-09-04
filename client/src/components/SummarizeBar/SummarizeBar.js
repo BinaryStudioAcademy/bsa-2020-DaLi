@@ -78,6 +78,10 @@ const SummarizeBar = ({ currentVisualization, updateVisualization }) => {
       };
       newConfig.summarize = summarize;
     } else {
+      newConfig.axisData.XAxis.key = newConfig.axisData.XAxis.availableKeys[0];
+      newConfig.axisData.XAxis.label = newConfig.axisData.XAxis.availableKeys[0];
+      newConfig.axisData.YAxis.key = newConfig.axisData.YAxis.availableKeys[0];
+      newConfig.axisData.YAxis.label = newConfig.axisData.YAxis.availableKeys[0];
       newConfig.summarize = {
         select: {},
         groupBy: '',

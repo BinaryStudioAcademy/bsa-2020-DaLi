@@ -2,8 +2,10 @@
 import React from 'react';
 import { BarChart } from '../../components';
 import PropTypes from 'prop-types';
+import {formatDateForSummarize} from "../../helpers/formatDateForSummarize";
 
 function BarChartContainer({ data, config }) {
+  const dataWithFormatDateForSummarize = formatDateForSummarize(data, config)
   const chart = {
     margin: {
       top: 40,
@@ -23,7 +25,7 @@ function BarChartContainer({ data, config }) {
       }}
       id="barChartVisualizationContainer"
     >
-      <BarChart data={data} settings={config} chart={chart} />
+      <BarChart data={dataWithFormatDateForSummarize} settings={config} chart={chart} />
     </div>
   );
 }

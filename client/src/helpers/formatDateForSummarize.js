@@ -1,8 +1,8 @@
 import moment from 'moment';
 
 const getDate = (date, period) => {
-  let formattedDate = moment(date).format('MMMM DD, YYYY');
-  if (formattedDate === 'Invalid date') return date;
+  if (!moment(date).isValid()) return date;
+  let formattedDate;
 
   switch (period) {
     case 'month': {
@@ -33,13 +33,13 @@ const getDate = (date, period) => {
   return formattedDate;
 };
 
-export const formatDate = (data, config) => {
+export const formatDateForSummarize = (data, config) => {
   if (config.isSummarize && config.summarize.groupBy.type === 'date') {
     const dateColumn = config.summarize.groupBy.as;
     return data.map((row) => {
-      /*let newRow = {...row}*/
-      row[dateColumn] = getDate(row[dateColumn], config.summarize.groupBy.period);
-      return row;
+      const newRow = { ...row };
+      newRow[dateColumn] = getDate(newRow[dateColumn], config.summarize.groupBy.period);
+      return newRow;
     });
   }
   return data;

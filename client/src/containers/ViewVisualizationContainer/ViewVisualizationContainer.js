@@ -244,10 +244,7 @@ const ViewVisualizationContainer = (props) => {
         />
         {isRightSideBarOpen && (
           <ViewVisualizationSidebar
-            components={[
-              <FilterBar currentVisualization={currentVisualization} />,
-              <SummarizeBar currentVisualization={currentVisualization} />,
-            ]}
+            components={[<FilterBar />, <SummarizeBar currentVisualization={currentVisualization} />]}
             sideBarPage={rightSideBarPage}
           />
         )}

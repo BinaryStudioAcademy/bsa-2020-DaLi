@@ -79,6 +79,7 @@ export default class DBPostgresManager {
     const select = isSummarize ? 'SELECT ' + summarize.select.operation + '('
                    + summarize.select.column + ')' + ' as ' + summarize.select.as + ', '
                    + groupBy : 'SELECT *';
+    console.log(select);
     return this.sequelize
       .query(
         `

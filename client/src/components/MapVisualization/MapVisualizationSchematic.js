@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import useResizeObserver from './useResizeObserver';
 import './styles.css';
 
-const MapVisualizationSchematic = ({ schematicMap, data, settings }) => {
+const MapVisualizationSchematic = ({ schematicMap, data, radius, settings }) => {
   const svgRef = useRef();
   const wrapperRef = useRef();
   const dimensions = useResizeObserver(wrapperRef);
@@ -59,7 +59,7 @@ const MapVisualizationSchematic = ({ schematicMap, data, settings }) => {
         .attr('cy', (d) => {
           return projection([d.long, d.lat])[1];
         })
-        .attr('r', 5)
+        .attr('r', radius)
         .attr('class', 'circle')
         .style('fill', settings.color)
         .attr('stroke', settings.color)
@@ -81,6 +81,7 @@ const MapVisualizationSchematic = ({ schematicMap, data, settings }) => {
 MapVisualizationSchematic.propTypes = {
   schematicMap: PropTypes.object,
   data: PropTypes.array,
+  radius: PropTypes.number,
   settings: PropTypes.object,
 };
 

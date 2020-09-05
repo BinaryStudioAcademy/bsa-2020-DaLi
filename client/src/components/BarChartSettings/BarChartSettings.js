@@ -16,7 +16,6 @@ import ColorPicker from 'material-ui-color-picker';
 import ToggleButton from '@material-ui/lab/ToggleButton';
 import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup';
 import FormLabel from '@material-ui/core/FormLabel';
-import CloseIcon from '@material-ui/icons/Close';
 import { useStyles, switchStyles } from './styles';
 
 const PrettySwitch = (props) => {
@@ -78,7 +77,7 @@ const BarChartSettings = ({ updateConfig, config: oldConfig }) => {
 
   const [value, setValue] = useState(0);
   const [xAxis, setXAxis] = useState(XAxis.key || XAxis.availableKeys[0]);
-  const [yAxis, setYAxis] = useState(YAxis.key || [YAxis.availableKeys[0]]);
+  const [yAxis, setYAxis] = useState(YAxis.key || YAxis.availableKeys[0]);
   const [isGoalLine, setIsGoalLine] = useState(goal.display);
   const [goalLine, setGoalLine] = useState(goal.value);
   const [color, setColor] = useState(barColor);
@@ -137,22 +136,6 @@ const BarChartSettings = ({ updateConfig, config: oldConfig }) => {
     });
   };
 
-  const colorList = ['blue', 'red', 'green', 'orange', 'purple', 'indigo', 'cyan', 'teal', 'lime', 'yellow'];
-
-  const addChart = () => {
-    if (yAxis.length < YAxis.availableKeys.length) {
-      const availableKeys = [...YAxis.availableKeys].filter((item) => !yAxis.includes(item));
-      setYAxis([...yAxis, availableKeys[0]]);
-      setColor([...color, colorList[yAxis.length % 10]]);
-    }
-  };
-
-  const deleteChart = (id) => {
-    const newYAxes = [...yAxis];
-    newYAxes.splice(id, 1);
-    setYAxis(newYAxes);
-  };
-
   const valuesX = XAxis.availableKeys.map((value) => (
     <option value={value} key={value}>
       {value}
@@ -200,38 +183,25 @@ const BarChartSettings = ({ updateConfig, config: oldConfig }) => {
             {valuesX}
           </NativeSelect>
         </FormControl>
-        <InputLabel className={classes.label} shrink htmlFor="yAxis-native-helper">
-          Y-Axis
-        </InputLabel>
-        {yAxis.map((value, index) => (
-          <FormControl className={classes.ySelectControl}>
-            <div className={classes.ySelectItem}>
-              <NativeSelect
-                key={`line${index}`}
-                className={classes.select}
-                value={value}
-                onChange={(event) => {
-                  const newYAxes = [...yAxis];
-                  newYAxes[index] = event.target.value;
-                  setYAxis(newYAxes);
-                  if (yAxis.length === 1) {
-                    setLabelYAxis(event.target.value);
-                  }
-                }}
-                inputProps={{
-                  id: 'yAxis-native-helper',
-                  name: 'yAxis',
-                }}
-              >
-                {valuesY}
-              </NativeSelect>
-              {yAxis.length > 1 ? <CloseIcon fontSize="default" onClick={() => deleteChart(index)} /> : null}
-            </div>
-          </FormControl>
-        ))}
-        <Button variant="contained" className={classes.addSeriesBtn} onClick={addChart}>
-          Add another series
-        </Button>
+        <FormControl className={classes.formControl}>
+          <InputLabel className={classes.label} shrink htmlFor="yAxis-native-helper">
+            Y-Axis
+          </InputLabel>
+          <NativeSelect
+            className={classes.select}
+            value={yAxis}
+            onChange={(event) => {
+              setYAxis(event.target.value);
+              setLabelYAxis(event.target.value);
+            }}
+            inputProps={{
+              id: 'yAxis-native-helper',
+              name: 'yAxis',
+            }}
+          >
+            {valuesY}
+          </NativeSelect>
+        </FormControl>
       </TabPanel>
       <TabPanel value={value} index={1}>
         <FormControlLabel
@@ -264,20 +234,18 @@ const BarChartSettings = ({ updateConfig, config: oldConfig }) => {
           ))()}
           label="Show values on data points"
         />
-        {yAxis.length < 2 ? (
-          <FormControlLabel
-            control={(() => (
-              <PrettySwitch
-                checked={showTrendline}
-                onChange={(event) => {
-                  setShowTrendline(event.target.checked);
-                }}
-              />
-            ))()}
-            label="Show trendline"
-          />
-        ) : null}
-        {showTrendline && yAxis.length < 2 ? (
+        <FormControlLabel
+          control={(() => (
+            <PrettySwitch
+              checked={showTrendline}
+              onChange={(event) => {
+                setShowTrendline(event.target.checked);
+              }}
+            />
+          ))()}
+          label="Show trendline"
+        />
+        {showTrendline ? (
           <FormControl component="fieldset">
             <FormLabel component="legend" className={classes.legend}>
               Trendline type
@@ -351,20 +319,13 @@ const BarChartSettings = ({ updateConfig, config: oldConfig }) => {
             </ToggleButtonGroup>
           </FormControl>
         ) : null}
-        {yAxis.map((value, index) => (
-          <ColorPicker
-            key={`color-${index}`}
-            className={classes.colorPicker}
-            name="color"
-            defaultValue={`${value} color`}
-            value={color[index]}
-            onChange={(newColor) => {
-              const newColors = [...color];
-              newColors[index] = newColor;
-              setColor(newColors);
-            }}
-          />
-        ))}
+        <ColorPicker
+          className={classes.colorPicker}
+          name="color"
+          defaultValue="Сhoose your color"
+          value={color}
+          onChange={(color) => setColor(color)}
+        />
       </TabPanel>
       <TabPanel value={value} index={2}>
         <FormControlLabel

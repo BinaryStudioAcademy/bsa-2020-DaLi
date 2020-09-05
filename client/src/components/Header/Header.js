@@ -1,18 +1,22 @@
+/* eslint-disable jsx-a11y/control-has-associated-label */
+/* eslint-disable no-unused-vars */
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { useHistory, NavLink, useLocation } from 'react-router-dom';
-import AddIcon from '@material-ui/icons/Add';
 import SettingsIcon from '@material-ui/icons/Settings';
 import Typography from '@material-ui/core/Typography';
-import DashboardIcon from '@material-ui/icons/Dashboard';
 import AppsIcon from '@material-ui/icons/Apps';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
+import { IconButton } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
+import EventIcon from '@material-ui/icons/Event';
+import ControlPointIcon from '@material-ui/icons/ControlPoint';
 import { logout } from '../../containers/LoginPageContainer/actions';
 import AddDashboardModal from '../AddDashboardModal/AddDashboardModal';
 import { addDashboard } from '../../containers/AnalyticsTabsContainer/actions';
+import StyledNavLink from '../../theme/StyledNavLink';
 
 import './styles.css';
 
@@ -149,33 +153,39 @@ const Header = ({ logout, addDashboard }) => {
         </>
       ) : (
         <>
-          <div role="button" tabIndex="0" className="header-logo" onClick={onHomePage} aria-hidden="true">
-            Home page
+          <div className="header-logo-container">
+            <div role="button" tabIndex="0" className="header-logo" onClick={onHomePage} aria-hidden="true" />
+            <span className="header-logo-text">DaLi</span>
           </div>
-          <div className="header-controls">
-            <div
-              className="data-sources-btn"
-              onClick={handleDataSourcesClick}
-              onKeyDown={handleDataSourcesClick}
-              aria-hidden="true"
-            >
-              <AppsIcon className="header-icons" fontSize="large" />
-              Browse Data
+          <div className="header-right">
+            <div className="header-controls">
+              <StyledNavLink style={{ height: 'max-content' }}>
+                <NavLink
+                  activeStyle={{
+                    opacity: '1',
+                  }}
+                  to={{
+                    pathname: '/data-sources',
+                  }}
+                  key="permissions"
+                  aria-hidden="true"
+                >
+                  <AppsIcon fontSize="small" />
+                  Browse Data
+                </NavLink>
+              </StyledNavLink>
             </div>
-            <AddIcon className="header-icons" fontSize="large" onClick={handleAddMenuClick} />
-            <Menu
-              id="add-menu"
-              anchorEl={addMenuAnchorEl}
-              keepMounted
-              open={Boolean(addMenuAnchorEl)}
-              onClose={() => setAddMenuAnchorEl(null)}
-            >
-              <MenuItem onClick={showAddDashboardModal}>
-                <DashboardIcon />
-                Add Dashboard
-              </MenuItem>
-            </Menu>
-            <SettingsIcon className="header-icons" fontSize="large" onClick={handleClick} />
+            <div className="header-icons">
+              <IconButton size="small" aria-label="dashboard" onClick={handleDataSourcesClick}>
+                <ControlPointIcon fontSize="large" />
+              </IconButton>
+              <IconButton size="small" aria-label="dashboard" onClick={handleDataSourcesClick}>
+                <EventIcon fontSize="large" />
+              </IconButton>
+              <IconButton size="small" aria-label="settings" onClick={handleClick}>
+                <SettingsIcon fontSize="large" />
+              </IconButton>
+            </div>
           </div>
         </>
       )}

@@ -110,7 +110,7 @@ export const theme = createMuiTheme({
         fontSize: '18px',
       },
       fontSizeLarge: {
-        fontSize: '22px',
+        fontSize: '28px',
       },
     },
     MuiAppBar: {

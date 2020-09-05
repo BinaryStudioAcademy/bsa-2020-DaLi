@@ -1,69 +1,71 @@
-/* header {
-  background-color: #519ee3;
+header {
+  height: 83px;
+  background: #FFFFFF;
+  border: 2px solid #F7F7F7;
   display: flex;
-  justify-content: space-between;
-  padding: 0px 35px;
-  align-items: center;
-  box-sizing: border-box;
-  height: 55px;
+  position: relative;
 }
 
-.admin-header {
-  background-color: #7073a9;
-  justify-content: flex-start;
-  align-items: center;
-  padding-left: 20px;
-  color: #fff;
+.header-logo-container{
+  background: #1CD1A1;
+  width: 48px;
+  height: 48px;
+  margin: 15px 0 20px 15%;
+  border-radius: 60%;
 }
 
-.admin-header-icon {
-  margin-right: 10px;
+.header-logo-container:before {
+  content: url(logo.svg);
+  display: block;
+  width: 80px;
+  height: 26px;
+  position: relative;
+  right: 30px;
+  top: 3px;
 }
 
-.admin-header-nav {
+.header-logo-container:focus{
+  outline: none;
+}
+
+.header-logo-text{
+  font-family: Poppins;
+  font-weight: bold;
+  font-size: 24px;
+  line-height: 36px;
+  color:#4E4E4E;
+  position: relative;
+  left: 60px;
+  top: -20px;
+}
+
+.header-controls{
+  position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    right: 170px;
+    height: inherit;
+}
+
+.header-icons{
   display: flex;
-  margin-left: 25px;
+    align-items: center;
+    justify-content: space-between;
+    width: 120px;
+    position: absolute;
+    right: 10px;
+    height: inherit;
 }
 
-.admin-header-nav .MuiTabs-indicator {
-  display: none;
-}
-
-.header-logo {
-  background-image: url("./logo.png");
-  background-position: center;
-  background-color: #fff;
-  width: 35px;
-  height: 35px;
-  background-repeat: no-repeat;
-  background-size: cover;
-  font-size: 0;
-}
-
-.header-logo:hover {
-  cursor: pointer;
-}
-
-.header-controls {
+.header-right{
+  position: absolute;
+  right: 15%;
   display: flex;
+  flex-direction: row-reverse;
+  width: 50%;
+  height: inherit;
 }
 
-.data-sources-btn {
-  display: flex;
-  align-items: center;
-  color: white;
-}
 
-.data-sources-btn:hover {
-  cursor: pointer;
-}
 
-.header-icons {
-  color: #fff;
-  margin-left: 35px;
-  cursor: pointer;
-}
-
-.MuiListItem-root.MuiMenuItem-root svg {
-  margin-right: 10px;
-} */

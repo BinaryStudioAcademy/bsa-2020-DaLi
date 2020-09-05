@@ -21,7 +21,16 @@ const useStyles = makeStyles(() => ({
   selected: {},
 }));
 
-const AnalyticsTabs = ({ visualizations, dashboards, deleteVisualization, deleteDashboard, isLoading }) => {
+const AnalyticsTabs = ({
+  visualizations,
+  dashboards,
+  deleteVisualization,
+  deleteDashboard,
+  isLoading,
+  openModal,
+  moveToCollection,
+  collectionId,
+}) => {
   const classes = useStyles();
   const [value, setValue] = React.useState(0);
   const [isWarningVisible, setIsWarningVisible] = React.useState(false);
@@ -101,6 +110,9 @@ const AnalyticsTabs = ({ visualizations, dashboards, deleteVisualization, delete
             deleteVisualization={removeVisualization}
             deleteDashboard={removeDashboard}
             data={sortData([...visualizations, ...dashboards])}
+            openModal={openModal}
+            moveToCollection={moveToCollection}
+            collectionId={collectionId}
           />
           <AnalyticsTabsPanel
             value={value}
@@ -108,6 +120,9 @@ const AnalyticsTabs = ({ visualizations, dashboards, deleteVisualization, delete
             deleteVisualization={removeVisualization}
             deleteDashboard={removeDashboard}
             data={sortData(dashboards)}
+            openModal={openModal}
+            moveToCollection={moveToCollection}
+            collectionId={collectionId}
           />
           <AnalyticsTabsPanel
             value={value}
@@ -115,6 +130,9 @@ const AnalyticsTabs = ({ visualizations, dashboards, deleteVisualization, delete
             deleteVisualization={removeVisualization}
             deleteDashboard={removeDashboard}
             data={sortData(visualizations)}
+            openModal={openModal}
+            moveToCollection={moveToCollection}
+            collectionId={collectionId}
           />
         </>
       )}
@@ -128,6 +146,9 @@ AnalyticsTabs.propTypes = {
   isLoading: PropTypes.bool,
   deleteVisualization: PropTypes.func,
   deleteDashboard: PropTypes.func,
+  openModal: PropTypes.func,
+  moveToCollection: PropTypes.func,
+  collectionId: PropTypes.string,
 };
 
 export default AnalyticsTabs;

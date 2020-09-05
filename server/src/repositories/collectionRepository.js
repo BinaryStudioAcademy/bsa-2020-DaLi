@@ -1,31 +1,58 @@
+import { Op } from 'sequelize';
 import models from '../models/index';
 import BaseRepository from './baseRepository';
+import { DEFAULT_COLLECTIONS } from '../config/types';
 
 class CollectionRepository extends BaseRepository {
-  getWithDashboardsAndVisualizations(id) {
-    return this.model.findAll({
-      where: { id },
-      include: [
-        {
-          model: models.Visualization,
-        },
-        {
-          model: models.Dashboard,
-        },
-      ],
-    });
+  getCollection(id) {
+    return this.model
+      .findAll({
+        where: { id },
+        include: [
+          {
+            model: models.Visualization,
+            as: 'visualizations',
+          },
+          {
+            model: models.Dashboard,
+            as: 'dashboards',
+            include: [
+              {
+                model: models.Visualization,
+              },
+            ],
+          },
+        ],
+      })
+      .then((result) => result[0]);
   }
 
-  getAllWithDashboardsAndVisualizations() {
+  getDefaultCollections() {
+    return this.model
+      .findAll({
+        where: { name: DEFAULT_COLLECTIONS },
+        include: [
+          {
+            model: models.Visualization,
+            as: 'visualizations',
+          },
+          {
+            model: models.Dashboard,
+            as: 'dashboards',
+            include: [
+              {
+                model: models.Visualization,
+              },
+            ],
+          },
+        ],
+      })
+      .then((result) => result[0]);
+  }
+
+  getAllCollections(id) {
     return this.model.findAll({
-      include: [
-        {
-          model: models.Visualization,
-        },
-        {
-          model: models.Dashboard,
-        },
-      ],
+      where: { [Op.or]: [{ users_id: null }, { users_id: id }] },
     });
   }
 

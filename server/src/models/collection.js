@@ -4,12 +4,14 @@ export default (sequelize, DataTypes) => {
   class Collection extends Model {
     static associate(models) {
       Collection.hasMany(models.Visualization, {
+        as: 'visualizations',
         foreignKey: 'collections_id',
         sourceKey: models.Collection.id,
         onDelete: 'cascade',
         hooks: true,
       });
       Collection.hasMany(models.Dashboard, {
+        as: 'dashboards',
         foreignKey: 'collections_id',
         sourceKey: models.Collection.id,
         onDelete: 'cascade',

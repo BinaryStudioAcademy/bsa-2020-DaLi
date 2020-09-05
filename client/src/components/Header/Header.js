@@ -13,7 +13,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import { makeStyles } from '@material-ui/core/styles';
 import { logout } from '../../containers/LoginPageContainer/actions';
 import AddDashboardModal from '../AddDashboardModal/AddDashboardModal';
-import { addDashboard } from '../../containers/AnalyticsTabsContainer/actions';
+import { addDashboard } from '../../containers/AnalyticsContainer/actions';
 
 import './styles.css';
 

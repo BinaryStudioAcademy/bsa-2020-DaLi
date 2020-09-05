@@ -1,6 +1,6 @@
 import React from 'react';
-import { AnalyticsTabsContainer } from '../../containers';
+import { AnalyticsContainer } from '../../containers';
 
-const AnalyticsPage = () => <AnalyticsTabsContainer />;
+const AnalyticsPage = () => <AnalyticsContainer />;
 
 export default AnalyticsPage;

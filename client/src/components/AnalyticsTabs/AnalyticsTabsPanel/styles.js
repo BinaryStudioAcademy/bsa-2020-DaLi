@@ -29,6 +29,9 @@ export const useStyles = makeStyles(() => ({
       '& $menuIcon': {
         opacity: 1,
       },
+      '& $moveIcon': {
+        opacity: 1,
+      },
       '& $icon': {
         opacity: 1,
         color: 'rgb(80, 158, 227)',
@@ -55,6 +58,16 @@ export const useStyles = makeStyles(() => ({
     '&:hover': {
       backgroundColor: 'rgb(237, 242, 245)',
       color: '#ff5252',
+    },
+  },
+  moveIcon: {
+    opacity: 0,
+    width: 20,
+    height: 20,
+    padding: 10,
+    borderRadius: 50,
+    '&:hover': {
+      backgroundColor: 'rgb(237, 242, 245)',
     },
   },
   icon: {

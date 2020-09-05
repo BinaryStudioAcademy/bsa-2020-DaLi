@@ -5,7 +5,6 @@ import { ACCESS_GRANTED, ACCESS_DENIED, ADMIN_GROUP } from '../config/types';
 
 export const setInitialCollectionsPermissions = async (collectionId) => {
   const groups = await UserGroupsRepository.getAll();
-  console.log(groups);
   groups.forEach(async (group) => {
     const permission = group.name === ADMIN_GROUP ? ACCESS_GRANTED : ACCESS_DENIED;
     await PermissionCollectionsRepository.create({
@@ -17,7 +16,7 @@ export const setInitialCollectionsPermissions = async (collectionId) => {
 };
 
 export const setInitialCollectionPermissionsOnGroupAdd = async (groupId) => {
-  const collections = await CollectionRepository.getAll();
+  const collections = await CollectionRepository.getAllCollections();
   collections.forEach(async (collection) => {
     const permission = ACCESS_DENIED;
     await PermissionCollectionsRepository.create({

@@ -16,8 +16,12 @@ import useStyles from './styles';
 const PermissionsTable = (props) => {
   const { data, onAccessChange, dataType, currentDatabaseName, accessTypes } = props;
   const classes = useStyles();
+  console.log('data');
+  console.log(data);
 
-  const userGroups = data[0].groups;
+  const userGroups = data[0].groups ? data[0].groups : data[0].Permissions;
+  console.log('userGroups');
+  console.log(userGroups);
   const dataNameProperty = dataType === 'tables' ? 'tableName' : 'dbNickname';
   const dataIdProperty = dataType === 'tables' ? 'tableId' : 'databaseId';
   const linkClassName = dataType === 'tables' ? classes.permissionsTableLink : classes.permissionsTableLinkActive;
@@ -51,7 +55,7 @@ const PermissionsTable = (props) => {
                   id={permission[dataIdProperty]}
                   dataType={dataType}
                 />
-                {permission.groups.map((userGroup) => (
+                {permission[permission.groups ? 'groups' : 'Permissions'].map((userGroup) => (
                   <PermissionTableAccessCell
                     key={`${permission[dataIdProperty]} - ${userGroup.groupId}`}
                     access={userGroup.access}

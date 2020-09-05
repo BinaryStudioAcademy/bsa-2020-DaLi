@@ -12,8 +12,85 @@ class UserRepository extends BaseRepository {
     return this.model.findOne({ where: { email } });
   }
 
-  getUserById(id) {
-    return this.model.findOne({ where: { id } });
+  getAllowedDatabases(userId) {
+    const result = this.model
+      .findAll({
+        where: { id: userId },
+        attributes: [],
+        raw: true,
+        nest: true,
+        include: [
+          {
+            model: models.UserGroups,
+            attributes: [],
+            through: { attributes: [] },
+            raw: true,
+            nest: true,
+            include: [
+              {
+                model: models.Permission,
+                attributes: [],
+                where: {
+                  permissionGranted: 'granted',
+                },
+                include: [
+                  {
+                    model: models.DBTable,
+                    attributes: [],
+                    include: [
+                      {
+                        model: models.Database,
+                        attributes: ['id'],
+                        group: ['id'],
+                      },
+                    ],
+                  },
+                ],
+              },
+            ],
+          },
+        ],
+      })
+      .then((result) => result.map((el) => el.UserGroups.Permissions.DBTable.Database.id))
+      .then((result) => [...new Set(result)]);
+    return result;
+  }
+
+  getAllowedTables(userId) {
+    const result = this.model
+      .findAll({
+        where: { id: userId },
+        attributes: [],
+        raw: true,
+        nest: true,
+        include: [
+          {
+            model: models.UserGroups,
+            attributes: [],
+            through: { attributes: [] },
+            raw: true,
+            nest: true,
+            include: [
+              {
+                model: models.Permission,
+                attributes: [],
+                where: {
+                  permissionGranted: 'granted',
+                },
+                include: [
+                  {
+                    model: models.DBTable,
+                    attributes: ['id'],
+                  },
+                ],
+              },
+            ],
+          },
+        ],
+      })
+      .then((result) => result.map((el) => el.UserGroups.Permissions.DBTable.id))
+      .then((result) => [...new Set(result)]);
+    return result;
   }
 
   async createUsersWithDefaultGroups(user) {
@@ -28,6 +105,10 @@ class UserRepository extends BaseRepository {
       await UsersUserGroupsRepository.create({ users_id: result.id, userGroups_id: AdminGroupID });
     }
     return result;
+  }
+
+  getUserById(id) {
+    return this.model.findOne({ where: { id } });
   }
 }
 

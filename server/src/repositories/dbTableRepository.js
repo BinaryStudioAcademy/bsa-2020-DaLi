@@ -23,6 +23,26 @@ class DBTableRepository extends BaseRepository {
   getAllByDatabaseId(DatabaseId) {
     return this.model.findAll({ where: { DatabaseId } });
   }
+
+  getPermissionsByDatabaseId(DatabaseId) {
+    return this.model.findAll({
+      attributes: [
+        ['id', 'tableId'],
+        ['name', 'tableName'],
+      ],
+      where: { DatabaseId },
+      include: [
+        {
+          model: models.Permission,
+          attributes: [
+            ['userGroups_id', 'groupId'],
+            ['permissionGranted', 'access'],
+          ],
+          include: { model: models.UserGroups, attributes: [['name', 'groupName']] },
+        },
+      ],
+    });
+  }
 }
 
 export default new DBTableRepository(models.DBTable);

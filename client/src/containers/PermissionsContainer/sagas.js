@@ -28,7 +28,7 @@ export function* watchGetDatabasesPermissions() {
 function* getTablesPermissions(payload) {
   try {
     const { databaseId } = payload;
-    const { permissions } = yield call(permissionsAPIService.getTablesPermissions, databaseId);
+    const permissions = yield call(permissionsAPIService.getTablesPermissions, databaseId);
     yield put({
       type: GET_TABLES_PERMISSIONS_SUCCESS,
       payload: { databaseId, tables: permissions },

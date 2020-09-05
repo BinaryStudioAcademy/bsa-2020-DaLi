@@ -46,11 +46,7 @@ function DateFilterForm({ filter, openFiltersList, setActiveFilter }) {
   };
 
   useEffect(() => {
-    setActiveFilter((filter) => {
-      filter.greaterThan = greaterThan;
-      filter.lessThan = lessThan;
-      return filter;
-    });
+    setActiveFilter((filter) => ({ ...filter, lessThan, greaterThan }));
   }, [greaterThan, lessThan, setActiveFilter]);
 
   const handleSelectDatePickerFormat = (event) => {

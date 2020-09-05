@@ -1,7 +1,7 @@
 header {
   height: 83px;
   background: #FFFFFF;
-  border: 2px solid #F7F7F7;
+  border-bottom: 2px solid #F7F7F7;
   display: flex;
   position: relative;
 }
@@ -67,5 +67,33 @@ header {
   height: inherit;
 }
 
+.admin-header {
+  background-color: #0d7a16;
+  justify-content: flex-start;
+  align-items: center;
+  padding-left: 20px;
+  color: #fff;
+}
 
+.admin-header-icon {
+  margin-right: 10px;
+}
 
+.admin-header-nav {
+  display: flex;
+  margin-left: 25px;
+}
+
+.link {
+  margin-left: 3%;
+  color: #fff;
+  padding: 0 20px;
+  min-height: 26px;
+  font-weight: 500;
+  text-decoration : none;
+  opacity: 0.7;
+}
+
+.admin-settings{
+  margin-right: 5%;
+}

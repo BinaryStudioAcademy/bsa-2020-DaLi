@@ -20,31 +20,9 @@ import StyledNavLink from '../../theme/StyledNavLink';
 
 import './styles.css';
 
-const useStyles = makeStyles({
-  // typography: {
-  //   fontSize: '15px',
-  //   marginRight: '25px',
-  // },
-  // link: {
-  //   color: 'white',
-  //   padding: '0 20px',
-  //   minHeight: '26px',
-  //   fontWeight: '300',
-  //   textDecoration: 'none',
-  //   opacity: '0.7',
-  // },
-  // settingBtn: {
-  //   marginLeft: 'auto',
-  // },
-  // tabs: {
-  //   minHeight: '35px',
-  // },
-});
-
 const Header = ({ logout, addDashboard }) => {
   const history = useHistory();
   const location = useLocation();
-  const classes = useStyles();
   const [anchorEl, setAnchorEl] = useState(null);
   const [addMenuAnchorEl, setAddMenuAnchorEl] = useState(null);
   const [addDashboardModalVisible, setAddDashboardModalVisible] = useState(false);
@@ -110,46 +88,46 @@ const Header = ({ logout, addDashboard }) => {
       {isAdminPage ? (
         <>
           <SettingsIcon className="admin-header-icon" fontSize="large" />
-          <Typography variant="h6" className={classes.typography}>
-            DaLi Admin
-          </Typography>
-          <NavLink
-            activeStyle={{
-              opacity: '1',
-            }}
-            className={classes.link}
-            to={{
-              pathname: '/admin/people',
-            }}
-            key="people"
-          >
-            People
-          </NavLink>
-          <NavLink
-            activeStyle={{
-              opacity: '1',
-            }}
-            className={classes.link}
-            to={{
-              pathname: '/admin/databases',
-            }}
-            key="databases"
-          >
-            Databases
-          </NavLink>
-          <NavLink
-            activeStyle={{
-              opacity: '1',
-            }}
-            className={classes.link}
-            to={{
-              pathname: '/admin/permissions',
-            }}
-            key="permissions"
-          >
-            Permissions
-          </NavLink>
-          <SettingsIcon className={`${classes.settingBtn} header-icons`} fontSize="large" onClick={handleClick} />
+          <Typography variant="h3">DaLi Admin</Typography>
+          <div className="admin-header-links">
+            <NavLink
+              activeStyle={{
+                opacity: '1',
+              }}
+              className="link"
+              to={{
+                pathname: '/admin/people',
+              }}
+              key="people"
+            >
+              People
+            </NavLink>
+            <NavLink
+              activeStyle={{
+                opacity: '1',
+              }}
+              className="link"
+              to={{
+                pathname: '/admin/databases',
+              }}
+              key="databases"
+            >
+              Databases
+            </NavLink>
+            <NavLink
+              activeStyle={{
+                opacity: '1',
+              }}
+              className="link"
+              to={{
+                pathname: '/admin/permissions',
+              }}
+              key="permissions"
+            >
+              Permissions
+            </NavLink>
+          </div>
+          <SettingsIcon className="admin-settings header-icons" fontSize="large" onClick={handleClick} />
         </>
       ) : (
         <>

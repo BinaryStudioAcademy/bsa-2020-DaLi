@@ -56,6 +56,10 @@ router.get(
 router.post(
   '/',
   asyncHandler(async (req, res, next) => {
+    if (!req.user.isAdmin) {
+      const err = createError(403, 'Only admins can create a database');
+      next(err);
+    }
     const result = await DatabaseService.createDatabase(req.body);
     if (result) {
       res.status(201).json(result);
@@ -70,6 +74,10 @@ router.post(
 router.patch(
   '/:id',
   asyncHandler(async (req, res, next) => {
+    if (!req.user.isAdmin) {
+      const err = createError(403, 'Only admins can update a database');
+      next(err);
+    }
     const result = await DatabaseService.updateDatabase(
       {
         id: req.params.id,
@@ -89,6 +97,10 @@ router.patch(
 router.delete(
   '/:id',
   asyncHandler(async (req, res, next) => {
+    if (!req.user.isAdmin) {
+      const err = createError(403, 'Only admins can delete a database');
+      next(err);
+    }
     const result = await DatabaseService.deleteDatabase({
       id: req.params.id,
     });

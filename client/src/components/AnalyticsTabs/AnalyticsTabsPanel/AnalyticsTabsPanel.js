@@ -11,7 +11,6 @@ import Tooltip from '@material-ui/core/Tooltip';
 import InfoIcon from '@material-ui/icons/Info';
 import DeleteIcon from '@material-ui/icons/Delete';
 import { Link, useHistory } from 'react-router-dom';
-import { dbTableAPIService } from '../../../services/api/dbTableAPI.service';
 
 import { useStyles } from './styles';
 
@@ -19,13 +18,11 @@ const AnalyticsTabsPanel = ({ value, index, data, deleteVisualization, deleteDas
   const classes = useStyles();
   const history = useHistory();
 
-  const onVisualizationsClick = (id, tableId) => {
-    dbTableAPIService.getTable(tableId).then((data) =>
-      history.push({
-        pathname: `/visualizations/${id}`,
-        data,
-      })
-    );
+  const onVisualizationsClick = (id) => {
+    history.push({
+      pathname: `/visualizations/${id}`,
+      data,
+    });
   };
 
   const chooseIcon = (type) => {
@@ -58,18 +55,14 @@ const AnalyticsTabsPanel = ({ value, index, data, deleteVisualization, deleteDas
                 <>
                   <Link to={`/dashboards/${item.id}`} className={classes.item}>
                     {chooseIcon(item.type)}
-                    <span id={`analytics-${item.id}-name`}>{item.name}</span>
+                    <span>{item.name}</span>
                   </Link>
                   {item.description.length ? (
                     <Tooltip title={item.description} placement="left" className={classes.description}>
-                      <InfoIcon id={`analytics-${item.id}-info`} />
+                      <InfoIcon />
                     </Tooltip>
                   ) : null}
-                  <DeleteIcon
-                    className={classes.menuIcon}
-                    id={`analytics-${item.id}-delete`}
-                    onClick={deleteDashboard(item.id)}
-                  />
+                  <DeleteIcon className={classes.menuIcon} id={item.id} onClick={deleteDashboard(item.id)} />
                 </>
               ) : (
                 <>

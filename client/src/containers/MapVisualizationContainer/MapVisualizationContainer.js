@@ -1,20 +1,29 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { MapVisualizationGoogle, MapVisualizationSchematic, MapVisualizationGoogleHeat } from '../../components';
-import schematicMap from './newYork.json';
+import schematicMapNewYork from './newYork.json';
+import schematicMapWorld from './world.json';
 
-const MapVisualizationContainer = ({ data, config }) => {
+const MapVisualizationContainer = ({ updateConfig, data, config }) => {
+  const viewList = config.viewList;
   const chooseMapView = () => {
     let mapView;
     switch (config.view) {
-      case 'Google bubble map':
-        mapView = <MapVisualizationGoogle data={data} settings={config} />;
+      case viewList[1]:
+        mapView = <MapVisualizationGoogleHeat updateConfig={updateConfig} data={data} settings={config} />;
         break;
-      case 'D3 bubble map':
-        mapView = <MapVisualizationSchematic schematicMap={schematicMap} data={data} settings={config} />;
+      case viewList[2]:
+        mapView = <MapVisualizationGoogle updateConfig={updateConfig} data={data} settings={config} />;
         break;
-      case 'Google heat map':
-        mapView = <MapVisualizationGoogleHeat data={data} settings={config} />;
+      case viewList[3]:
+        mapView = (
+          <MapVisualizationSchematic schematicMap={schematicMapNewYork} data={data} radius={5} settings={config} />
+        );
+        break;
+      case viewList[4]:
+        mapView = (
+          <MapVisualizationSchematic schematicMap={schematicMapWorld} data={data} radius={2} settings={config} />
+        );
         break;
       default:
         break;
@@ -28,7 +37,6 @@ const MapVisualizationContainer = ({ data, config }) => {
         width: '100%',
         height: '100%',
       }}
-      id="mapVisualization"
     >
       {chooseMapView()}
     </div>
@@ -36,6 +44,7 @@ const MapVisualizationContainer = ({ data, config }) => {
 };
 
 MapVisualizationContainer.propTypes = {
+  updateConfig: PropTypes.func,
   data: PropTypes.array,
   config: PropTypes.object,
 };

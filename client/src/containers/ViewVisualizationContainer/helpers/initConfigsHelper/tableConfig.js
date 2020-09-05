@@ -24,6 +24,11 @@ function createInitTableConfig(schema) {
   const initTableConfig = {
     columns,
     sort,
+    isSummarize: false,
+    summarize: {
+      select: {},
+      groupBy: {},
+    },
   };
   return initTableConfig;
 }

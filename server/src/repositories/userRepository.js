@@ -2,6 +2,7 @@ import models from '../models/index';
 import BaseRepository from './baseRepository';
 import UserGroupsRepository from './userGroupsRepository';
 import UsersUserGroupsRepository from './usersUserGroupsRepository';
+import { ALL_USERS_GROUP, ADMIN_GROUP } from '../config/types';
 
 class UserRepository extends BaseRepository {
   addUser(user) {
@@ -18,13 +19,13 @@ class UserRepository extends BaseRepository {
 
   async createUsersWithDefaultGroups(user) {
     const allGroups = await UserGroupsRepository.getAll();
-    const allUsersGroupID = allGroups.filter((group) => group.name === 'All Users')[0].id;
+    const allUsersGroupID = allGroups.filter((group) => group.name === ALL_USERS_GROUP)[0].id;
     const allUserGroup = await UserGroupsRepository.getWithUsers(allUsersGroupID);
     const userCount = allUserGroup[0].Users.length;
     const result = await this.model.create(user);
     await UsersUserGroupsRepository.create({ users_id: result.id, userGroups_id: allUsersGroupID });
     if (!userCount) {
-      const AdminGroupID = allGroups.filter((group) => group.name === 'Administrators')[0].id;
+      const AdminGroupID = allGroups.filter((group) => group.name === ADMIN_GROUP)[0].id;
       await UsersUserGroupsRepository.create({ users_id: result.id, userGroups_id: AdminGroupID });
     }
     return result;

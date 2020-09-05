@@ -22,6 +22,12 @@ class DashboardRepository extends BaseRepository {
       ],
     });
   }
+
+  getAllDashboardsWithoutCollections() {
+    return this.model.findAll({
+      where: { collections_id: null },
+    });
+  }
 }
 
 export default new DashboardRepository(models.Dashboard);

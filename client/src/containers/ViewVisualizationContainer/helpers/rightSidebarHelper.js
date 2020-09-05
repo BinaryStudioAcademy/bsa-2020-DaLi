@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React from 'react';
 import { FILTER, SUMMARIZE } from '../componentTypes';
 import SummarizeBar from '../../../components/SummarizeBar/SummarizeBar';

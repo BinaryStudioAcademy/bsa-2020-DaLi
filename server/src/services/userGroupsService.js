@@ -2,6 +2,7 @@ import createError from 'http-errors';
 import UserGroupsRepository from '../repositories/userGroupsRepository';
 import UsersUserGroupsRepository from '../repositories/usersUserGroupsRepository';
 import { setInitialDBPermissionsOnGroupAdd } from './permissionService';
+import { setInitialCollectionPermissionsOnGroupAdd } from './permissionCollectionsService';
 
 export const getUserGroups = async () => {
   const result = await UserGroupsRepository.getAllWithUsers();
@@ -12,6 +13,7 @@ export const createUserGroup = async (data) => {
   try {
     const result = await UserGroupsRepository.create(data);
     await setInitialDBPermissionsOnGroupAdd(result.id);
+    await setInitialCollectionPermissionsOnGroupAdd(result.id);
     return result;
   } catch (err) {
     throw createError(400, err.message);

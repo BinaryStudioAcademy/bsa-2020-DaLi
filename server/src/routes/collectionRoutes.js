@@ -37,7 +37,7 @@ router.get(
 router.post(
   '/',
   asyncHandler(async (req, res, next) => {
-    const result = await CollectionService.createCollection(req.body);
+    const result = await CollectionService.createCollection(req.body, req.user.id);
     if (result) {
       res.status(201).json(result);
       next();

@@ -1,17 +1,15 @@
 import { Router } from 'express';
 import asyncHandler from 'express-async-handler';
 import createError from 'http-errors';
-import * as PermissionService from '../services/permissionService';
 import * as PermissionCollectionsService from '../services/permissionCollectionsService';
 
 const router = Router();
 
 router.get(
   '/',
-  asyncHandler(async (req, res, next) => {
+  asyncHandler(async (req, res) => {
     const result = await PermissionCollectionsService.getPermissions();
     res.status(200).json(result);
-    next();
   })
 );
 
@@ -21,7 +19,6 @@ router.get(
     const result = await PermissionCollectionsService.getCollectionPermissions(req.params.id);
     if (result) {
       res.status(200).json(result);
-      next();
     } else {
       const err = createError(404, `Collection with id of ${req.params.id} not found`);
       next(err);
@@ -32,11 +29,9 @@ router.get(
 router.patch(
   '/',
   asyncHandler(async (req, res, next) => {
-    console.log(req.body);
-    const result = await PermissionService.updateCollectionPermissions(req.body);
+    const result = await PermissionCollectionsService.updateCollectionPermissions(req.body);
     if (result) {
       res.status(204).json(result);
-      next();
     } else {
       const err = createError(500, 'Operation unsuccessful');
       next(err);

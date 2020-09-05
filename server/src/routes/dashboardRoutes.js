@@ -48,8 +48,6 @@ router.patch(
   '/:id',
   asyncHandler(async (req, res, next) => {
     let result = null;
-    console.log(req.query);
-
     if (req.query.collection) {
       result = await DashboardService.updateDashboard(req.params.id, {
         collections_id: req.query.collection,

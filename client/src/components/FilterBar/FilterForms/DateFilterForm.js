@@ -47,9 +47,8 @@ function DateFilterForm({ filter, openFiltersList, setActiveFilter }) {
 
   useEffect(() => {
     setActiveFilter((filter) => {
-      filter.greaterThan = new Date(greaterThan).toISOString();
-      filter.lessThan = new Date(lessThan).toISOString();
-      // console.log(filter);
+      filter.greaterThan = greaterThan;
+      filter.lessThan = lessThan;
       return filter;
     });
   }, [greaterThan, lessThan, setActiveFilter]);

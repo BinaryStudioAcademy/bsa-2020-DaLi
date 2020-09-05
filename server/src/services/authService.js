@@ -14,7 +14,7 @@ export const login = async (data) => {
   const isAdmin = userGroups.some((group) => group.UserGroup.name === 'Administrators');
   await UserRepository.updateById({ id }, { lastLogin: new Date(Date.now()) });
   return {
-    token: createToken({ id }),
+    token: createToken({ id, isAdmin }),
     user: { id, email, firstName, lastName },
     isAdmin,
   };

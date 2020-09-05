@@ -44,15 +44,13 @@ const FilterBar = ({ currentVisualization, closeSidebar, updateVisualization }) 
   };
 
   const setNewFilters = () => {
-    let newDatasetSettings = [];
-    if (activeFilter.isNew) {
-      delete activeFilter.isNew;
-      newDatasetSettings = [...datasetSettings, activeFilter];
-    } else {
-      delete activeFilter.isNew;
-      const index = datasetSettings.findIndex(({ columnName }) => columnName === activeFilter.columnName);
-      newDatasetSettings[index] = activeFilter;
+    const { isNew, ...filter } = activeFilter;
+    let newDatasetSettings = [...datasetSettings];
+    if (!isNew) {
+      const index = newDatasetSettings.findIndex(({ columnName }) => columnName === activeFilter.columnName);
+      newDatasetSettings.splice(index, 1);
     }
+    newDatasetSettings = [...newDatasetSettings, filter];
     updateVisualization(null, newDatasetSettings);
   };
 

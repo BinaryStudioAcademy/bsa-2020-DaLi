@@ -25,7 +25,9 @@ const MapVisualizationGoogleHeat = ({ updateConfig, data, settings }) => {
   const options = settings.isSatellite ? { mapTypeId: 'satellite' } : { mapTypeId: 'roadmap' };
 
   const onChange = ({ center, zoom }) => {
-    updateConfig({ ...settings, mapCenter: center, zoom });
+    if (updateConfig) {
+      updateConfig({ ...settings, mapCenter: center, zoom });
+    }
   };
 
   return (

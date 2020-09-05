@@ -27,7 +27,7 @@ export const getVisualizationComponent = (visualizationType, config, data) => {
     case 'TABLE':
       return <TableVisualization config={config} updateConfig={() => {}} data={data} />;
     case 'MAP':
-      return <MapVisualization config={config} updateConfig={() => {}} data={data} />;
+      return <MapVisualization config={config} data={data} />;
     default:
       return null;
   }

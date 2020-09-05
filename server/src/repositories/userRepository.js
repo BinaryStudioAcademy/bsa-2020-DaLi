@@ -3,7 +3,7 @@ import models from '../models/index';
 import BaseRepository from './baseRepository';
 import UserGroupsRepository from './userGroupsRepository';
 import UsersUserGroupsRepository from './usersUserGroupsRepository';
-import { ALL_USERS_GROUP, ADMIN_GROUP } from '../config/types';
+import { ALL_USERS_GROUP, ADMIN_GROUP, ACCESS_GRANTED, ACCESS_LIMITED } from '../config/types';
 
 class UserRepository extends BaseRepository {
   addUser(user) {
@@ -37,7 +37,7 @@ class UserRepository extends BaseRepository {
                 model: models.PermissionCollections,
                 attributes: [],
                 where: {
-                  [Op.or]: [{ permissionGranted: 'granted' }, { permissionGranted: 'limited' }],
+                  [Op.or]: [{ permissionGranted: ACCESS_GRANTED }, { permissionGranted: ACCESS_LIMITED }],
                 },
                 include: [
                   {

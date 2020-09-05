@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 
 import { makeStyles } from '@material-ui/core/styles';
@@ -6,7 +6,9 @@ import { Button } from '@material-ui/core';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
-// import { DateTimePicker } from '@material-ui/pickers';
+
+import { MuiPickersUtilsProvider, DateTimePicker } from '@material-ui/pickers';
+import MomentUtils from '@date-io/moment';
 
 const useStyles = makeStyles(() => ({
   formControl: {
@@ -19,26 +21,38 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-const chooseDatePickerForm = (datePickerFormat) => {
-  switch (datePickerFormat) {
-    case 'between':
-      return (
-        <div>xdxdxd</div>
-        // <DateTimePicker clearable value={clearedDate} onChange={handleClearedDateChange} helperText="FROM" />
-      );
-
-    case 'after':
-      return <div>axaxxa</div>;
-    case 'before':
-    default:
-      return null;
-  }
-};
-
-function DateFilterForm({ openFiltersList }) {
-  // console.log(filter);
+function DateFilterForm({ filter, openFiltersList, setActiveFilter }) {
   const classes = useStyles();
+
   const [datePickerFormat, setDatePickerFormat] = useState('between');
+  const [greaterThan, setGreaterThen] = useState(filter.greaterThan ? new Date(filter.greaterThan) : null);
+  const [lessThan, setLessThan] = useState(filter.lessThan ? new Date(filter.lessThan) : null);
+
+  const chooseDatePickerForm = (datePickerFormat) => {
+    switch (datePickerFormat) {
+      case 'between':
+        return (
+          <MuiPickersUtilsProvider utils={MomentUtils}>
+            <DateTimePicker clearable value={greaterThan} onChange={setGreaterThen} helperText="FROM" />
+            <DateTimePicker clearable value={lessThan} onChange={setLessThan} helperText="TO" />
+          </MuiPickersUtilsProvider>
+        );
+
+      case 'after':
+      case 'before':
+      default:
+        return null;
+    }
+  };
+
+  useEffect(() => {
+    setActiveFilter((filter) => {
+      filter.greaterThan = new Date(greaterThan).toISOString();
+      filter.lessThan = new Date(lessThan).toISOString();
+      // console.log(filter);
+      return filter;
+    });
+  }, [greaterThan, lessThan, setActiveFilter]);
 
   const handleSelectDatePickerFormat = (event) => {
     setDatePickerFormat(event.target.value);
@@ -52,8 +66,12 @@ function DateFilterForm({ openFiltersList }) {
       <FormControl variant="outlined" className={classes.formControl}>
         <Select value={datePickerFormat} onChange={handleSelectDatePickerFormat}>
           <MenuItem value="between">between</MenuItem>
-          <MenuItem value="before">before</MenuItem>
-          <MenuItem value="after">after</MenuItem>
+          <MenuItem disabled value="before">
+            before
+          </MenuItem>
+          <MenuItem disabled value="after">
+            after
+          </MenuItem>
         </Select>
       </FormControl>
       {chooseDatePickerForm(datePickerFormat)}
@@ -62,8 +80,9 @@ function DateFilterForm({ openFiltersList }) {
 }
 
 DateFilterForm.propTypes = {
-  // filter: PropTypes.object,
+  filter: PropTypes.object,
   openFiltersList: PropTypes.func,
+  setActiveFilter: PropTypes.func,
 };
 
 export default DateFilterForm;

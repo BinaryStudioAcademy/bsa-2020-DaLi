@@ -1,12 +1,12 @@
 import UserGroupsRepository from '../repositories/userGroupsRepository';
 import CollectionRepository from '../repositories/collectionRepository';
 import PermissionCollectionsRepository from '../repositories/permissionCollectionsRepository';
-import { ACCESS_GRANTED, ACCESS_DENIED, ADMIN_GROUP } from '../config/types';
+import { ACCESS_GRANTED, ACCESS_DENIED, DEFAULT_COLLECTIONS } from '../config/types';
 
-export const setInitialCollectionsPermissions = async (collectionId) => {
+export const setInitialCollectionsPermissions = async (collectionId, usersGroupsId) => {
   const groups = await UserGroupsRepository.getAll();
   groups.forEach(async (group) => {
-    const permission = group.name === ADMIN_GROUP ? ACCESS_GRANTED : ACCESS_DENIED;
+    const permission = usersGroupsId.includes(group.id) ? ACCESS_GRANTED : ACCESS_DENIED;
     await PermissionCollectionsRepository.create({
       userGroups_id: group.id,
       permissionGranted: permission,
@@ -18,7 +18,7 @@ export const setInitialCollectionsPermissions = async (collectionId) => {
 export const setInitialCollectionPermissionsOnGroupAdd = async (groupId) => {
   const collections = await CollectionRepository.getAllCollections();
   collections.forEach(async (collection) => {
-    const permission = ACCESS_DENIED;
+    const permission = collection.name === DEFAULT_COLLECTIONS ? ACCESS_GRANTED : ACCESS_DENIED;
     await PermissionCollectionsRepository.create({
       userGroups_id: groupId,
       permissionGranted: permission,
@@ -34,7 +34,7 @@ const formatResult = (data) => {
         id: el.collections.id,
         name: el.collections.name,
         description: el.collections.description,
-        groups: [{ id: el.userGroups.id, name: el.userGroups.name, access: el.permissionGranted }],
+        groups: [{ groupId: el.userGroups.id, groupName: el.userGroups.name, access: el.permissionGranted }],
       };
     })
     .reduce((acc, item) => {
@@ -60,12 +60,16 @@ export const getCollectionPermissions = async (collectionsId) => {
   return formatResult(result).filter((collection) => collection.id === collectionsId)[0];
 };
 
-export const updateCollectionPermissions = async (permissions) => {
-  const result = await Promise.all(
-    permissions.map(async (permission) => {
-      const result = await PermissionCollectionsRepository.updateById({ id: permission.id }, permission);
-      return result;
-    })
-  );
+export const updateCollectionPermissions = async ({ permissions }) => {
+  const result = await permissions.map(async (permission) => {
+    const { collectionId, groups } = permission;
+    groups.map(async (group) => {
+      const { groupId, access } = group;
+      await PermissionCollectionsRepository.updatePermissionByGroupIdAndCollectionId(collectionId, groupId, {
+        permissionGranted: access,
+      });
+    });
+  });
+
   return result;
 };

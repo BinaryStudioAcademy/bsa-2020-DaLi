@@ -3,6 +3,7 @@ import CollectionRepository from '../repositories/collectionRepository';
 import VisualizationRepository from '../repositories/visualizationRepository';
 import DashboardRepository from '../repositories/dashboardRepository';
 import { setInitialCollectionsPermissions } from './permissionCollectionsService';
+import * as UserGroupsService from './userGroupsService';
 
 export const getCollections = async (id) => {
   const collections = await CollectionRepository.getAllCollections(id);
@@ -10,9 +11,12 @@ export const getCollections = async (id) => {
   return { collections, defaultCollection };
 };
 
-export const createCollection = async (data) => {
+export const createCollection = async (data, userId) => {
   const result = await CollectionRepository.create(data);
-  await setInitialCollectionsPermissions(result.id);
+  const userGroups = await UserGroupsService.getGroupsByUser(userId);
+  const userGroupsId = userGroups.map((group) => group.UserGroup.id);
+
+  await setInitialCollectionsPermissions(result.id, userGroupsId);
   return result;
 };
 

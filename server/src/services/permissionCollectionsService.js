@@ -28,36 +28,14 @@ export const setInitialCollectionPermissionsOnGroupAdd = async (groupId) => {
   });
 };
 
-const formatResult = (data) => {
-  return data
-    .map((el) => {
-      return {
-        id: el.collections.id,
-        name: el.collections.name,
-        description: el.collections.description,
-        groups: [{ id: el.userGroups.id, name: el.userGroups.name, access: el.permissionGranted }],
-      };
-    })
-    .reduce((acc, collection) => {
-      const id = collection.id;
-      const index = acc.findIndex((el) => el.id === id);
-      if (index !== -1) {
-        acc[index].groups.push(collection.groups[0]);
-      } else {
-        acc.push(collection);
-      }
-      return acc;
-    }, []);
-};
-
 export const getPermissions = async () => {
-  const result = await PermissionCollectionsRepository.getAllWithGroupsAndCollections();
-  return formatResult(result);
+  const result = await CollectionRepository.getAllWithGroupsPermission();
+  return result;
 };
 
 export const getCollectionPermissions = async (collectionsId) => {
-  const result = await PermissionCollectionsRepository.getAllWithGroupsAndCollections();
-  return formatResult(result).filter((collection) => collection.id === collectionsId)[0];
+  const result = await CollectionRepository.getCollectionWithGroupsPermission(collectionsId);
+  return result;
 };
 
 export const updateCollectionPermissions = async (permissions) => {

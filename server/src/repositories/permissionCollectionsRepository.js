@@ -18,25 +18,6 @@ class PermissionCollectionsRepository extends BaseRepository {
       },
     });
   }
-
-  getAllWithGroupsAndCollections() {
-    return this.model.findAll({
-      attributes: ['id', 'permissionGranted'],
-
-      include: [
-        {
-          model: models.Collection,
-          as: 'collections',
-          attributes: ['id', 'name', 'description'],
-        },
-        {
-          model: models.UserGroups,
-          as: 'userGroups',
-          attributes: ['id', 'name'],
-        },
-      ],
-    });
-  }
 }
 
 export default new PermissionCollectionsRepository(models.PermissionCollections);

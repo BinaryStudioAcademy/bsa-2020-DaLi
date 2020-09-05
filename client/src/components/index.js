@@ -36,6 +36,8 @@ import PermissionsModal from './PermissionsModal/PermissionsModal';
 import SelectVisualizationSidebar from './SelectVisualizationSidebar/SelectVisualizationSidebar';
 import CollectionList from './CollectionList/CollectionList';
 import CollectionModal from './CollectionModal/CollectionModal';
+import FilterBar from './FilterBar/FilterBar';
+import SummarizeBar from './SummarizeBar/SummarizeBar';
 
 export {
   BarChart,
@@ -76,4 +78,6 @@ export {
   SelectVisualizationSidebar,
   CollectionList,
   CollectionModal,
+  SummarizeBar,
+  FilterBar,
 };

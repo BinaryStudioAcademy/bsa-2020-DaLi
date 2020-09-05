@@ -32,8 +32,6 @@ const currentDashboardReducer = (state = initialState, { type, payload }) => {
 
     case GET_DASHBOARD_SUCCESS: {
       const { dashboard } = payload;
-      // dashboard.config = JSON.parse(dashboard.config);
-      // console.log(dashboard);
       return {
         ...state,
         isLoading: false,

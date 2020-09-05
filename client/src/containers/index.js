@@ -16,6 +16,7 @@ import DataSourcesDatasetsContainer from './DataSourcesDatasetsContainer/DataSou
 import DataSourcesTablesContainer from './DataSourcesTablesContainer/DataSourcesTablesContainer';
 import ConnectionDatabaseContainer from './ConnectionDatabaseContainer/ConnectionDatabaseContainer';
 import CollectionContainer from './CollectionContainer/CollectionContainer';
+import AdminRoute from './AdminRoute/AdminRoute';
 
 export {
   LoginPageContainer,
@@ -36,4 +37,5 @@ export {
   DataSourcesTablesContainer,
   ConnectionDatabaseContainer,
   CollectionContainer,
+  AdminRoute,
 };

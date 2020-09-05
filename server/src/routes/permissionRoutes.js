@@ -31,7 +31,6 @@ router.get(
 router.patch(
   '/:id',
   asyncHandler(async (req, res, next) => {
-    console.log(req.body);
     const result = await PermissionService.updateDBPermissions(req.body);
     if (result) {
       res.status(204).json(result);
@@ -46,7 +45,6 @@ router.patch(
 router.patch(
   '/',
   asyncHandler(async (req, res, next) => {
-    console.log(req.body);
     const result = await PermissionService.updatePermissions(req.body);
     if (result) {
       res.status(204).json(result);

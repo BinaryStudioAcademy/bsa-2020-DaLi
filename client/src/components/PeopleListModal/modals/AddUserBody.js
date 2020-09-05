@@ -18,7 +18,7 @@ const validationSchema = Yup.object({
   email: Yup.string().required('Email is required').email('Invalid email'),
 });
 
-const AddUserBody = ({ currentUserId, closeModal, user, addUser, updateUser, setFormData, formData, openModal }) => {
+const AddUserBody = ({ currentUserId, closeModal, user, addUser, updateUser, setFormData, formData }) => {
   const classes = useStyles();
 
   const formik = useFormik({
@@ -40,7 +40,6 @@ const AddUserBody = ({ currentUserId, closeModal, user, addUser, updateUser, set
         updateUser({ id: user.id, data: values, isCurrentUser });
       } else {
         addUser(values);
-        openModal({ user: values, type: 'Password' });
       }
     },
   });
@@ -119,7 +118,6 @@ AddUserBody.propTypes = {
   setFormData: PropTypes.func,
   formData: PropTypes.object,
   closeModal: PropTypes.func,
-  openModal: PropTypes.func,
   user: PropTypes.object,
 };
 

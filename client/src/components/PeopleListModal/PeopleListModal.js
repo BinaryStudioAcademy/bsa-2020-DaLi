@@ -40,6 +40,7 @@ const PeopleListModal = ({
           <AddUserBody
             addUser={addUser}
             closeModal={closeModal}
+            openModal={openModal}
             updateUser={updateUser}
             formData={formData}
             user={modal.user}

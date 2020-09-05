@@ -9,7 +9,6 @@ export const useStyles = makeStyles(() => ({
     alignItems: 'start',
     padding: 0,
     borderRadius: 10,
-    borderBottom: '1px solid rgb(237, 242, 245)',
   },
   itemContainer: {
     display: 'flex',

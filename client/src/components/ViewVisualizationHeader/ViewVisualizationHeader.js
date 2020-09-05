@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { Grid, Button, Typography } from '@material-ui/core';
 import SaveIcon from '@material-ui/icons/Save';
 import FilterListIcon from '@material-ui/icons/FilterList';
+import Chip from '@material-ui/core/Chip';
 import GamesOutlinedIcon from '@material-ui/icons/GamesOutlined';
 import Tooltip from '@material-ui/core/Tooltip';
 import InfoIcon from '@material-ui/icons/Info';
@@ -19,8 +20,9 @@ const ViewVisualizationHeader = (props) => {
     name,
     description,
     visualizationType,
-    tableId,
     onToggleRightSideBar,
+    datasetSettings,
+    updateVisualization,
   } = props;
   const classes = useStyles();
 
@@ -49,6 +51,34 @@ const ViewVisualizationHeader = (props) => {
             <EditIcon className={classes.viewVisualizationTitleIcon} onClick={onVisualizationNameEdit} />
           </>
         )}
+        <div>
+          {(isVisualizationExist && datasetSettings.length && (
+            <Chip
+              className={classes.toggleFiltersChip}
+              size="small"
+              label="Toggle"
+              icon={<FilterListIcon style={{ fill: '#E2E3EF' }} />}
+            />
+          )) ||
+            null}
+          {(isVisualizationExist &&
+            datasetSettings.length &&
+            datasetSettings.map(({ columnName }, index) => {
+              return (
+                <Chip
+                  key={index}
+                  size="small"
+                  className={classes.chip}
+                  label={columnName}
+                  onDelete={() => {
+                    const newDatasetSettings = datasetSettings.filter(({ columnName: name }) => name !== columnName);
+                    updateVisualization(null, newDatasetSettings);
+                  }}
+                />
+              );
+            })) ||
+            null}
+        </div>
       </Grid>
       <Grid className={classes.viewVisualizationButtons} item container>
         <Button
@@ -89,6 +119,8 @@ ViewVisualizationHeader.propTypes = {
   visualizationType: PropTypes.string,
   tableId: PropTypes.string,
   onToggleRightSideBar: PropTypes.func,
+  datasetSettings: PropTypes.array,
+  updateVisualization: PropTypes.func,
 };
 
 export default ViewVisualizationHeader;

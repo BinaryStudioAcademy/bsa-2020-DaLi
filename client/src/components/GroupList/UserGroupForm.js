@@ -42,9 +42,14 @@ const CreateUserGroupForm = ({ handleSubmit, resetForm, isValid, dirty, cancel, 
           as="input"
           placeholder='Something like "Marketing"'
           style={touched.name && errors.name ? { borderColor: 'red' } : {}}
+          id="admin-createGroup-groupName"
         />
         <div>
-          <Button onClick={cancel(resetForm)} style={{ textTransform: 'none', fontSize: 12, color: '#3ca1de' }}>
+          <Button
+            onClick={cancel(resetForm)}
+            style={{ textTransform: 'none', fontSize: 12, color: '#3ca1de' }}
+            id="admin-createGroup-cancel"
+          >
             Cancel
           </Button>
           <Button
@@ -52,6 +57,7 @@ const CreateUserGroupForm = ({ handleSubmit, resetForm, isValid, dirty, cancel, 
             variant="outlined"
             disabled={!(isValid && dirty)}
             style={{ textTransform: 'none', fontSize: 12 }}
+            id="admin-createGroup-add"
           >
             {submitTitle}
           </Button>

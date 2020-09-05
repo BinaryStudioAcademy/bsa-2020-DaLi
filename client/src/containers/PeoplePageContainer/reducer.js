@@ -15,6 +15,9 @@ import {
   GET_MEMBERSHIPS_ERROR,
   GET_MEMBERSHIPS_SUCCESS,
   RESET_NOTIFICATION,
+  OPEN_MODAL,
+  SET_FORM_DATA,
+  CLOSE_MODAL,
 } from './actionTypes';
 
 const initialState = {
@@ -25,6 +28,12 @@ const initialState = {
   error: null,
   message: '',
   status: '',
+  modal: {},
+  formData: {
+    firstName: '',
+    lastName: '',
+    email: '',
+  },
 };
 
 const usersListReducer = (state = initialState, { type, payload }) => {
@@ -65,17 +74,25 @@ const usersListReducer = (state = initialState, { type, payload }) => {
         membership: data,
       };
     }
-    case ADD_USER_ERROR:
-    case DELETE_USER_ERROR:
-    case UPDATE_USER_FROM_LIST_ERROR:
-    case GET_USERS_ERROR:
-    case RESET_PASSWORD_ERROR:
     case GET_MEMBERSHIPS_ERROR: {
       return {
         ...state,
         error: payload,
         temporaryPasswords: '',
         membership: [],
+        message: payload.message,
+        status: 'error',
+      };
+    }
+    case ADD_USER_ERROR:
+    case DELETE_USER_ERROR:
+    case UPDATE_USER_FROM_LIST_ERROR:
+    case GET_USERS_ERROR:
+    case RESET_PASSWORD_ERROR: {
+      return {
+        ...state,
+        error: payload,
+        temporaryPasswords: '',
         message: payload.message,
         status: 'error',
       };
@@ -120,6 +137,29 @@ const usersListReducer = (state = initialState, { type, payload }) => {
       return {
         ...state,
         isLoading: payload,
+      };
+    }
+    case OPEN_MODAL: {
+      return {
+        ...state,
+        modal: { user: payload.user, type: payload.type, open: true },
+      };
+    }
+    case CLOSE_MODAL: {
+      return {
+        ...state,
+        modal: {},
+        formData: {
+          firstName: '',
+          lastName: '',
+          email: '',
+        },
+      };
+    }
+    case SET_FORM_DATA: {
+      return {
+        ...state,
+        formData: payload,
       };
     }
     default:

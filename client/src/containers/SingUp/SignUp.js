@@ -16,22 +16,34 @@ const mapPropsToValues = ({ firstName, lastName, email, password, confirmPasswor
 };
 
 const validationSchema = Yup.object().shape({
-  firstName: Yup.string().required('Required'),
-  lastName: Yup.string().required('Required'),
-  email: Yup.string().email('Enter a valid email').required('Email is required'),
-  password: Yup.string().min(8, 'Password must contain at least 8 characters').required('Enter your password'),
+  firstName: Yup.string()
+    .max(30)
+    .required('Required')
+    .matches(/^[A-Z]/, 'Name must start with a capital letter')
+    .matches(/^.[a-zA-Z_]+$/, 'Letters only'),
+  lastName: Yup.string()
+    .max(30)
+    .required('Required')
+    .matches(/^[A-Z]/, 'Name must start with a capital letter')
+    .matches(/^.[a-zA-Z_]+$/, 'Letters only'),
+  email: Yup.string().max(30).email('Enter a valid email').required('Email is required'),
+  password: Yup.string()
+    .max(30)
+    .matches(
+      /^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]/,
+      'Password must contain one uppercase, one number and one special character.'
+    )
+    .required('Enter your password')
+    .min(8, 'Password is too short - should be 8 chars minimum.'),
   confirmPassword: Yup.string()
+    .max(30)
     .required('Confirm your password')
     .oneOf([Yup.ref('password')], 'Password does not match'),
-  companyName: Yup.string().required('Enter your company name'),
+  companyName: Yup.string(),
 });
 
-const handleSubmit = (values, { setSubmitting }) => {
-  setTimeout(() => {
-    // eslint-disable-next-line
-    alert(JSON.stringify(values, null, 2));
-    setSubmitting(false);
-  }, 1000);
+const handleSubmit = (values, { props }) => {
+  props.handleSubmitRegister(values);
 };
 
 const SignUpContainer = withFormik({

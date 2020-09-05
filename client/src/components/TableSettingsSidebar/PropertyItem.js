@@ -8,7 +8,7 @@ const iconStyles = {
   color: '#c6cfd3',
 };
 
-const PropertyItem = ({ index, name, id, deleteColumn }) => {
+const PropertyItem = ({ index, name, id, deleteColumn, editColumn }) => {
   return (
     <Draggable draggableId={id} index={index}>
       {(provided) => (
@@ -21,7 +21,7 @@ const PropertyItem = ({ index, name, id, deleteColumn }) => {
         >
           <h4>{name}</h4>
           <div className="property-item_buttons-container">
-            <SettingsIcon fontSize="default" style={iconStyles} />
+            <SettingsIcon fontSize="default" style={iconStyles} onClick={() => editColumn(id)} />
             <CloseIcon fontSize="default" style={iconStyles} onClick={deleteColumn(id)} />
           </div>
         </div>
@@ -35,6 +35,7 @@ PropertyItem.propTypes = {
   name: PropTypes.string,
   id: PropTypes.string,
   deleteColumn: PropTypes.func,
+  editColumn: PropTypes.func,
 };
 
 export default PropertyItem;

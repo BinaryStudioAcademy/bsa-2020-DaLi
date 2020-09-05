@@ -6,12 +6,20 @@ import ViewListOutlinedIcon from '@material-ui/icons/ViewListOutlined';
 import ButtonGroup from '@material-ui/core/ButtonGroup';
 import Button from '@material-ui/core/Button';
 import SettingsIcon from '@material-ui/icons/Settings';
+import AppsIcon from '@material-ui/icons/Apps';
 
 import { getButtonClasses } from './helper';
 import './ViewVisualizationMain.css';
 
 const ViewVisualizationMain = (props) => {
-  const { contentViewComponent, currentContentView, visualizationIcon, onToggleSideBar, onSwitchContentView } = props;
+  const {
+    contentViewComponent,
+    currentContentView,
+    visualizationIcon,
+    onSwitchContentView,
+    isVisualizationExist,
+    onToggleSideBar,
+  } = props;
   return (
     <Grid className="view-visualization-main" container item xs direction="column" justify="center" alignItems="center">
       <Grid className="view-visualization-content" item xs>
@@ -19,13 +27,27 @@ const ViewVisualizationMain = (props) => {
       </Grid>
       <Grid item className="view-visualization-footer">
         <Button
-          onClick={onToggleSideBar}
+          onClick={() => {
+            onToggleSideBar(1);
+          }}
+          className="view-visualization__visualization-button"
+          style={!isVisualizationExist ? {} : { display: 'none' }}
+          variant="contained"
+          startIcon={<AppsIcon />}
+        >
+          Visualization
+        </Button>
+        <Button
+          onClick={() => {
+            onToggleSideBar(0);
+          }}
           className="view-visualization__setting-button"
           variant="contained"
           startIcon={<SettingsIcon />}
         >
           Settings
         </Button>
+
         <ButtonGroup className="view-visualization__switcher-container" variant="contained">
           <Button
             className={getButtonClasses('table', currentContentView)}
@@ -49,8 +71,10 @@ ViewVisualizationMain.propTypes = {
   contentViewComponent: PropTypes.object,
   currentContentView: PropTypes.string,
   visualizationIcon: PropTypes.object,
-  onToggleSideBar: PropTypes.func,
   onSwitchContentView: PropTypes.func,
+  isVisualizationExist: PropTypes.bool,
+  onVisualizationButtonClick: PropTypes.func,
+  onToggleSideBar: PropTypes.func,
 };
 
 export default ViewVisualizationMain;

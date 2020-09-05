@@ -3,10 +3,15 @@ import PropTypes from 'prop-types';
 import { Switch, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import { ProtectedRoute, PublicRoute, DataSourcesDatasetsContainer, DataSourcesTablesContainer } from '../containers';
+import {
+  ProtectedRoute,
+  PublicRoute,
+  AdminRoute,
+  DataSourcesDatasetsContainer,
+  DataSourcesTablesContainer,
+} from '../containers';
 import {
   LoginPage,
-  SelectVisualizationPage,
   ViewVisualizationPage,
   AccountSettingsPage,
   DashboardPage,
@@ -32,10 +37,9 @@ const Routes = ({ fetchUser, isAuthorized, isLoading }) => {
       <PublicRoute exact path="/login" component={LoginPage} />
       <ProtectedRoute exact path="/" component={AnalyticsPage} />
       <ProtectedRoute path="/visualizations/:id" component={ViewVisualizationPage} />
-      <ProtectedRoute exact path="/select-visualization" component={SelectVisualizationPage} />
       <ProtectedRoute exact path="/select-visualization/:id" component={ViewVisualizationPage} />
       <ProtectedRoute exact path="/account-settings" component={AccountSettingsPage} />
-      <ProtectedRoute path="/admin" component={AdminPage} />
+      <AdminRoute path="/admin" component={AdminPage} />
       <ProtectedRoute exact path="/dashboards/:id" component={DashboardPage} />
       <ProtectedRoute exact path="/data-sources" component={DataSourcesDatasetsContainer} />
       <ProtectedRoute exact path="/data-sources/:id" component={DataSourcesTablesContainer} />

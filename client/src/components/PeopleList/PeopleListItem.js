@@ -24,15 +24,13 @@ const getInitials = (person) => {
 
 const PeopleListItem = ({
   person,
-  showAddUserModal,
-  showDeactivateUserModal,
   active,
   toggleUserStatus,
-  showResetPasswordModal,
   membership,
   addUserToGroup,
   deleteUserFromGroup,
   currentUserId,
+  openModal,
 }) => {
   const classes = useStyles();
   const colors = colorStyles();
@@ -48,12 +46,12 @@ const PeopleListItem = ({
   };
 
   const onEditUser = () => {
-    showAddUserModal(person);
+    openModal({ user: person, type: 'Edit user' });
     handleClose();
   };
 
   const onDeactivateUser = () => {
-    showDeactivateUserModal(person);
+    openModal({ user: person, type: 'Deactivate user' });
     handleClose();
   };
 
@@ -63,7 +61,8 @@ const PeopleListItem = ({
   };
 
   const handleResetPassword = () => {
-    showResetPasswordModal({ id: person.id, firstName: person.firstName, lastName: person.lastName });
+    openModal({ user: person, type: 'Reset password' });
+    handleClose();
   };
 
   const addValue = (e) => {
@@ -143,9 +142,17 @@ const PeopleListItem = ({
                   open={Boolean(menuAnchorEl)}
                   onClose={() => setMenuAnchorEl(null)}
                 >
-                  <MenuItem onClick={onEditUser}>Edit user</MenuItem>
-                  <MenuItem onClick={handleResetPassword}>Reset password</MenuItem>
-                  <MenuItem onClick={onDeactivateUser} disabled={person.id === currentUserId}>
+                  <MenuItem onClick={onEditUser} id="admin-people-editUser">
+                    Edit user
+                  </MenuItem>
+                  <MenuItem onClick={handleResetPassword} id="admin-people-resetPass">
+                    Reset password
+                  </MenuItem>
+                  <MenuItem
+                    onClick={onDeactivateUser}
+                    disabled={person.id === currentUserId}
+                    id="admin-people-deactivateUser"
+                  >
                     Deactivate user
                   </MenuItem>
                 </Menu>
@@ -153,7 +160,7 @@ const PeopleListItem = ({
             </>
           ) : (
             <Tooltip title="Reactivate this account" arrow>
-              <ReplayIcon onClick={onReactivateUser} style={{ cursor: 'pointer' }} />
+              <ReplayIcon onClick={onReactivateUser} style={{ cursor: 'pointer' }} id="admin-people-reactivateUser" />
             </Tooltip>
           )}
         </TableCell>
@@ -163,15 +170,13 @@ const PeopleListItem = ({
 };
 
 PeopleListItem.propTypes = {
-  showAddUserModal: PropTypes.func,
-  showDeactivateUserModal: PropTypes.func,
   person: PropTypes.object,
   toggleUserStatus: PropTypes.func,
-  showResetPasswordModal: PropTypes.func,
   membership: PropTypes.array,
   addUserToGroup: PropTypes.func,
   deleteUserFromGroup: PropTypes.func,
   active: PropTypes.bool,
+  openModal: PropTypes.func,
   currentUserId: PropTypes.string,
 };
 

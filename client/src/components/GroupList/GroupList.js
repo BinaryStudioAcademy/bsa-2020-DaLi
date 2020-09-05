@@ -70,6 +70,7 @@ const GroupList = ({
         openForm={openForm}
         title={isTheGroup ? currentGroup.name : 'Groups'}
         buttonTitle={isTheGroup ? 'Add members' : 'Create group'}
+        id={isTheGroup ? 'admin-group-addMembers' : 'admin-group-createGroup'}
       />
       <TableContainer className={classes.tableContainer}>
         <Table aria-label="simple table">

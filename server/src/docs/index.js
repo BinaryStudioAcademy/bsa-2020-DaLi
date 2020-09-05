@@ -982,14 +982,14 @@ module.exports = {
       },
     },
     '/tables/{id}/data': {
-      get: {
+      post: {
         security: [
           {
             JWT: [],
           },
         ],
         tags: ['Tables'],
-        summary: 'Get all table data by id',
+        summary: 'Get all table data by id with settings',
         parameters: [
           {
             name: 'id',
@@ -1001,6 +1001,16 @@ module.exports = {
             },
           },
         ],
+        requestBody: {
+          content: {
+            'application/json': {
+              schema: {
+                $ref: '#/definitions/GetTableDataSettings',
+              },
+            },
+          },
+          required: true,
+        },
         responses: {
           200: {
             description: 'Successful operation',
@@ -1116,6 +1126,12 @@ module.exports = {
     },
   },
   definitions: {
+    GetTableDataSettings: {
+      type: 'object',
+      properties: {
+        settings: 'array of settings',
+      },
+    },
     Id: {
       properties: {
         uuid: {

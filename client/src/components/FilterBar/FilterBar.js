@@ -27,7 +27,6 @@ const FilterBar = ({ currentVisualization, closeSidebar, updateVisualization }) 
   const { schema, datasetSettings } = currentVisualization;
 
   const [displayFiltersList, setDisplayFiltersList] = useState(true);
-  // const [isFilterNew, setIsFilterNew] = useState(true);
   const [FilterForm, setFilterForm] = useState(null);
   const [activeFilter, setActiveFilter] = useState({});
 
@@ -43,7 +42,7 @@ const FilterBar = ({ currentVisualization, closeSidebar, updateVisualization }) 
       filter = { ...filterCandidate, isNew: false };
     }
     setActiveFilter(filter);
-    setFilterForm(chooseFilterForm(type, { filter, openFiltersList }));
+    setFilterForm(chooseFilterForm(type, { filter, openFiltersList, setActiveFilter }));
     setDisplayFiltersList(false);
   };
 

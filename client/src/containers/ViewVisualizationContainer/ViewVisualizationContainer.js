@@ -112,7 +112,7 @@ const ViewVisualizationContainer = (props) => {
     // eslint-disable-next-line no-nested-ternary
     schema && data ? (
       currentView === 'table' ? (
-        <InitialTable data={data} config={currentVisualization.config} />
+        <InitialTable data={data} config={currentVisualization.config} schema={schema} />
       ) : (
         visualizationComponent
       )

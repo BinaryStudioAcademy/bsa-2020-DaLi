@@ -52,7 +52,7 @@ class CollectionRepository extends BaseRepository {
 
   getAllCollections(id) {
     return this.model.findAll({
-      where: { [Op.or]: [{ users_id: null }, { users_id: id }] },
+      where: { [Op.or]: [{ users_id: null }, { users_id: id || null }] },
     });
   }
 

@@ -10,11 +10,11 @@ class PermissionCollectionsRepository extends BaseRepository {
     });
   }
 
-  updatePermissionByGroupIdAndTableId(groupId, tableId, access) {
+  updatePermissionByGroupIdAndCollectionId(collectionId, groupId, access) {
     return this.model.update(access, {
       where: {
+        collections_id: collectionId,
         userGroups_id: groupId,
-        dbtable_id: tableId,
       },
     });
   }

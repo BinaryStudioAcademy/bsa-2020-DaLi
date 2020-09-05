@@ -102,6 +102,18 @@ const MapSettingsSidebar = ({ updateConfig, config: oldConfig }) => {
     </option>
   ));
 
+  const getValuesMapViewName = () => {
+    const valuesMapViewName = [];
+    oldConfig.viewList.forEach((value, key) =>
+      valuesMapViewName.push(
+        <option value={value} key={key + value}>
+          {value}
+        </option>
+      )
+    );
+    return valuesMapViewName;
+  };
+
   return (
     <div className={classes.root}>
       <Tabs
@@ -173,21 +185,10 @@ const MapSettingsSidebar = ({ updateConfig, config: oldConfig }) => {
               changeView(event.target.value);
             }}
           >
-            <option value="Google heat map" key="google-heat">
-              Google heat map
-            </option>
-            <option value="Google bubble map" key="google-bubble">
-              Google bubble map
-            </option>
-            <option value="D3 bubble map" key="d3-bubble">
-              D3 bubble map
-            </option>
-            <option value="D3 world bubble map" key="d3 world bubble map">
-              D3 world bubble map
-            </option>
+            {getValuesMapViewName()}
           </NativeSelect>
         </FormControl>
-        {viewName !== 'D3 bubble map' ? (
+        {viewName === oldConfig.viewList.get(1) || viewName === oldConfig.viewList.get(2) ? (
           <FormControl className={classes.formControl}>
             <FormControlLabel
               control={(() => (
@@ -202,7 +203,7 @@ const MapSettingsSidebar = ({ updateConfig, config: oldConfig }) => {
             />
           </FormControl>
         ) : null}
-        {viewName !== 'Google heat map' ? (
+        {viewName !== oldConfig.viewList.get(1) ? (
           <ColorPicker
             className={classes.colorPicker}
             name="color"

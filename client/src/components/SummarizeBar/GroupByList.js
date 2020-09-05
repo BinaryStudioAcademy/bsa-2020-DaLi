@@ -2,9 +2,9 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import TextFieldsIcon from '@material-ui/icons/TextFields';
 import EventIcon from '@material-ui/icons/Event';
+import Filter1Icon from '@material-ui/icons/Filter1';
 import AddIcon from '@material-ui/icons/Add';
 import CloseIcon from '@material-ui/icons/Close';
-import Filter1Icon from '@material-ui/icons/Filter1';
 import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
 

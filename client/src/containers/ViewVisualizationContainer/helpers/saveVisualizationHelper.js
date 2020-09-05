@@ -1,11 +1,5 @@
 export const createNewVisualization = (currentVisualization, name, description, tableId) => {
   const { type, config, datasetSettings } = currentVisualization;
-  // datasetSettings.push({
-  //   columnName: 'createdAt',
-  //   columnType: 'date',
-  //   greaterThan: '2012-03-27T07:27:22Z',
-  //   lessThan: '2020-09-01T08:04:40.633Z',
-  // });
   const createdVisualization = {
     name,
     description,
@@ -17,8 +11,9 @@ export const createNewVisualization = (currentVisualization, name, description, 
   return createdVisualization;
 };
 
-export const createUpdatedVisualization = (currentVisualization, newConfig) => {
-  const { type, name, description, config, datasetSettings, tableId } = currentVisualization;
+export const createUpdatedVisualization = (currentVisualization, newConfig, newDatasetSettings) => {
+  const { type, name, description, config, tableId } = currentVisualization;
+  const datasetSettings = newDatasetSettings || currentVisualization.datasetSettings;
   const updatedVisualization = {
     type,
     name,

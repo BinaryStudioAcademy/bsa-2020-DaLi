@@ -60,6 +60,7 @@ const ViewVisualizationContainer = (props) => {
   const [leftSideBarPage, setLeftSideBarPage] = useState(0);
   const [rightSideBarPage, setRightSideBarPage] = useState(0);
   const [notificationType, setNotificationType] = useState('success');
+  const [datasetSettings, setDatasetSettings] = useState([]);
 
   const userNotificationError = (notification) => {
     setIsNotificationVisible(true);
@@ -86,14 +87,9 @@ const ViewVisualizationContainer = (props) => {
     }
   }, [visualizationId]);
 
-  // useEffect(() => {
-  //   console.log('start');
-  //   console.log(currentVisualization);
-  //   console.log('finish');
-  // }, [currentVisualization.datasetSettings]);
-
   useEffect(() => {
     if ('data' in currentVisualization) {
+      setDatasetSettings(currentVisualization.datasetSettings);
       if (currentVisualization.created !== true) {
         setIsVisualizationExist(false);
         const visualization = createInitVisualization(visualizationId, userId, schema);
@@ -168,8 +164,8 @@ const ViewVisualizationContainer = (props) => {
     props.history.push('/');
   };
 
-  const updateVisualization = (newConfig) => {
-    const updatedVisualization = createUpdatedVisualization(currentVisualization, newConfig);
+  const updateVisualization = (newConfig, newDatasetSettings) => {
+    const updatedVisualization = createUpdatedVisualization(currentVisualization, newConfig, newDatasetSettings);
     updateVisualizationData(visualizationId, updatedVisualization);
     setNotificationMessage('Visualization has been successfully updated');
     setNotificationType('success');
@@ -209,6 +205,8 @@ const ViewVisualizationContainer = (props) => {
         description={currentVisualization.description}
         visualizationType={visualizationId}
         onToggleRightSideBar={onToggleRightSideBar}
+        updateVisualization={updateVisualization}
+        datasetSettings={datasetSettings}
       />
       <Grid container className="view-visualization-container">
         <SaveVisualizationModal
@@ -246,7 +244,11 @@ const ViewVisualizationContainer = (props) => {
         {isRightSideBarOpen && (
           <ViewVisualizationSidebar
             components={[
-              <FilterBar />,
+              <FilterBar
+                currentVisualization={currentVisualization}
+                closeSidebar={() => setIsRightSideBarOpen(false)}
+                updateVisualization={updateVisualization}
+              />,
               <SummarizeBar currentVisualization={currentVisualization} updateVisualization={updateVisualization} />,
             ]}
             sideBarPage={rightSideBarPage}

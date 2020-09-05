@@ -102,16 +102,17 @@ const MapSettingsSidebar = ({ updateConfig, config: oldConfig }) => {
     </option>
   ));
 
+  // const valuesMapViewName = oldConfig.viewList.values();
+
   const getValuesMapViewName = () => {
-    const valuesMapViewName = [];
-    oldConfig.viewList.forEach((value, key) =>
-      valuesMapViewName.push(
-        <option value={value} key={key + value}>
+    const valuesMapViewName = Object.values(oldConfig.viewList);
+    return valuesMapViewName.map((value) => {
+      return (
+        <option value={value} key={value}>
           {value}
         </option>
-      )
-    );
-    return valuesMapViewName;
+      );
+    });
   };
 
   return (
@@ -188,7 +189,7 @@ const MapSettingsSidebar = ({ updateConfig, config: oldConfig }) => {
             {getValuesMapViewName()}
           </NativeSelect>
         </FormControl>
-        {viewName === oldConfig.viewList.get(1) || viewName === oldConfig.viewList.get(2) ? (
+        {viewName === oldConfig.viewList[1] || viewName === oldConfig.viewList[2] ? (
           <FormControl className={classes.formControl}>
             <FormControlLabel
               control={(() => (
@@ -203,7 +204,7 @@ const MapSettingsSidebar = ({ updateConfig, config: oldConfig }) => {
             />
           </FormControl>
         ) : null}
-        {viewName !== oldConfig.viewList.get(1) ? (
+        {viewName !== oldConfig.viewList[1] ? (
           <ColorPicker
             className={classes.colorPicker}
             name="color"

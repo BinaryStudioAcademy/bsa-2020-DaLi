@@ -4,23 +4,23 @@ import { MapVisualizationGoogle, MapVisualizationSchematic, MapVisualizationGoog
 import schematicMapNewYork from './newYork.json';
 import schematicMapWorld from './world.json';
 
-const MapVisualizationContainer = ({ data, config }) => {
+const MapVisualizationContainer = ({ updateConfig, data, config }) => {
   const viewList = config.viewList;
   const chooseMapView = () => {
     let mapView;
     switch (config.view) {
-      case viewList.get(1):
-        mapView = <MapVisualizationGoogleHeat data={data} settings={config} />;
+      case viewList[1]:
+        mapView = <MapVisualizationGoogleHeat updateConfig={updateConfig} data={data} settings={config} />;
         break;
-      case viewList.get(2):
-        mapView = <MapVisualizationGoogle data={data} settings={config} />;
+      case viewList[2]:
+        mapView = <MapVisualizationGoogle updateConfig={updateConfig} data={data} settings={config} />;
         break;
-      case viewList.get(3):
+      case viewList[3]:
         mapView = (
           <MapVisualizationSchematic schematicMap={schematicMapNewYork} data={data} radius={5} settings={config} />
         );
         break;
-      case viewList.get(4):
+      case viewList[4]:
         mapView = (
           <MapVisualizationSchematic schematicMap={schematicMapWorld} data={data} radius={2} settings={config} />
         );
@@ -44,6 +44,7 @@ const MapVisualizationContainer = ({ data, config }) => {
 };
 
 MapVisualizationContainer.propTypes = {
+  updateConfig: PropTypes.func,
   data: PropTypes.array,
   config: PropTypes.object,
 };

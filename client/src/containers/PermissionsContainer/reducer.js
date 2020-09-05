@@ -12,18 +12,27 @@ import {
   SAVE_CHANGES_SUCCESS,
   SAVE_CHANGES_ERROR,
   RESET_PERMISSIONS_STATE,
+  GET_COLLECTIONS_PERMISSIONS_SUCCESS,
+  GET_COLLECTIONS_PERMISSIONS_ERROR,
+  UPDATE_COLLECTIONS_PERMISSIONS,
+  SAVE_COLLECTIONS_CHANGES_ERROR,
+  SAVE_COLLECTIONS_CHANGES_SUCCESS,
+  SAVE_COLLECTIONS_CHANGES,
 } from './actionsTypes';
 
 import {
   updateDatabasesPermissionsState,
   updateTablesPermissionsState,
-  updateDatabasesPermissionsChangesState,
   updateTablesPermissionsChangesState,
+  updateCollectionsPermissionsState,
+  updateDataPermissionsChangesState,
 } from './helpers';
 
 const initialState = {
   initDatabasesPermissions: [],
   currentDatabasesPermissions: [],
+  initCollectionsPermissions: [],
+  currentCollectionsPermissions: [],
   initTablesPermissions: [],
   currentTablesPermissions: [],
   changes: [],
@@ -39,6 +48,7 @@ const permissionsReducer = (state = initialState, { type, payload }) => {
         isLoading: true,
       };
     }
+
     case GET_DATABASES_PERMISSIONS_SUCCESS: {
       const { databasesPermissions } = payload;
       return {
@@ -49,7 +59,19 @@ const permissionsReducer = (state = initialState, { type, payload }) => {
       };
     }
 
-    case GET_DATABASES_PERMISSIONS_ERROR: {
+    case GET_COLLECTIONS_PERMISSIONS_SUCCESS: {
+      const { collectionsPermissions } = payload;
+      return {
+        ...state,
+        isLoading: false,
+        initCollectionsPermissions: collectionsPermissions,
+        currentCollectionsPermissions: collectionsPermissions,
+      };
+    }
+
+    case GET_DATABASES_PERMISSIONS_ERROR:
+    case GET_COLLECTIONS_PERMISSIONS_ERROR:
+    case GET_TABLES_PERMISSIONS_ERROR: {
       const { error } = payload;
       return {
         ...state,
@@ -75,15 +97,6 @@ const permissionsReducer = (state = initialState, { type, payload }) => {
       };
     }
 
-    case GET_TABLES_PERMISSIONS_ERROR: {
-      const { error } = payload;
-      return {
-        ...state,
-        isLoading: false,
-        error,
-      };
-    }
-
     case UPDATE_DATABASES_PERMISSIONS: {
       const { databaseId, groupId, accessType } = payload;
       const [currentDatabasesPermissions, currentTablesPermissions] = updateDatabasesPermissionsState(
@@ -93,17 +106,41 @@ const permissionsReducer = (state = initialState, { type, payload }) => {
         groupId,
         accessType
       );
-      const changes = updateDatabasesPermissionsChangesState(
+      const changes = updateDataPermissionsChangesState(
         state.initDatabasesPermissions,
         state.changes,
         databaseId,
         groupId,
-        accessType
+        accessType,
+        'database'
       );
       return {
         ...state,
         currentDatabasesPermissions,
         currentTablesPermissions,
+        changes,
+      };
+    }
+
+    case UPDATE_COLLECTIONS_PERMISSIONS: {
+      const { collectionId, groupId, accessType } = payload;
+      const currentCollectionsPermissions = updateCollectionsPermissionsState(
+        state.currentCollectionsPermissions,
+        collectionId,
+        groupId,
+        accessType
+      );
+      const changes = updateDataPermissionsChangesState(
+        state.currentCollectionsPermissions,
+        state.changes,
+        collectionId,
+        groupId,
+        accessType,
+        'collection'
+      );
+      return {
+        ...state,
+        currentCollectionsPermissions,
         changes,
       };
     }
@@ -144,13 +181,15 @@ const permissionsReducer = (state = initialState, { type, payload }) => {
       };
     }
 
-    case SAVE_CHANGES: {
+    case SAVE_CHANGES:
+    case SAVE_COLLECTIONS_CHANGES: {
       return {
         ...state,
         isLoading: true,
       };
     }
-    case SAVE_CHANGES_SUCCESS: {
+    case SAVE_CHANGES_SUCCESS:
+    case SAVE_COLLECTIONS_CHANGES_SUCCESS: {
       return {
         ...state,
         isLoading: false,
@@ -158,7 +197,8 @@ const permissionsReducer = (state = initialState, { type, payload }) => {
       };
     }
 
-    case SAVE_CHANGES_ERROR: {
+    case SAVE_CHANGES_ERROR:
+    case SAVE_COLLECTIONS_CHANGES_ERROR: {
       const { error } = payload;
       return {
         ...state,

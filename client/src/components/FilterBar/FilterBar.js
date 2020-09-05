@@ -31,13 +31,10 @@ const FilterBar = ({ currentVisualization, closeSidebar, updateVisualization }) 
 
   const chooseFilterHandler = (name, type) => {
     const filterCandidate = datasetSettings.find((s) => s.columnName === name);
-    let filter = { isNew: true, columnName: name, columnType: type };
+    const filter = filterCandidate
+      ? { isNew: true, columnName: name, columnType: type }
+      : { ...filterCandidate, isNew: false };
 
-    if (filterCandidate) {
-      filter = { ...filterCandidate, isNew: false };
-    } else {
-      filter = { isNew: true, columnName: name, columnType: type };
-    }
     setActiveFilter(filter);
     setFilterForm(chooseFilterForm(type, { filter, openFiltersList, setActiveFilter }));
     setDisplayFiltersList(false);

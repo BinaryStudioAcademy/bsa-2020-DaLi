@@ -14,8 +14,8 @@ export const login = async (data) => {
   const isAdmin = userGroups.some((group) => group.UserGroup.name === 'Administrators');
   await UserRepository.updateById({ id }, { lastLogin: new Date(Date.now()) });
   return {
-    token: createToken({ id, isAdmin }),
-    user: { id, email, firstName, lastName },
+    token: createToken({ id }),
+    user: { id, email, firstName, lastName, isAdmin },
     isAdmin,
   };
 };
@@ -40,7 +40,7 @@ export const autoLogin = async (id, token) => {
   const isAdmin = userGroups.some((group) => group.UserGroup.name === 'Administrators');
   return {
     token: token.split(' ')[1],
-    user: { id, email, firstName, lastName },
+    user: { id, email, firstName, lastName, isAdmin },
     isAdmin,
   };
 };

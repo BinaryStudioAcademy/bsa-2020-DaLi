@@ -8,15 +8,12 @@ import DateFilterForm from './FilterForms/DateFilterForm';
 
 const chooseFilterForm = (type, props) => {
   switch (type) {
-    // case 'number': {
-    //   return <Filter1Icon />;
-    // }
-    // case 'string': {
-    //   return <TextFieldsIcon />;
-    // }
     case 'date': {
       return <DateFilterForm {...props} />;
     }
+
+    case 'number':
+    case 'string':
     default:
       return null;
   }
@@ -53,7 +50,7 @@ const FilterBar = ({ currentVisualization, closeSidebar, updateVisualization }) 
       newDatasetSettings = [...datasetSettings, activeFilter];
     } else {
       delete activeFilter.isNew;
-      const index = datasetSettings.indexOf(({ columnName }) => columnName === activeFilter.columnName);
+      const index = datasetSettings.findIndex(({ columnName }) => columnName === activeFilter.columnName);
       newDatasetSettings[index] = activeFilter;
     }
     updateVisualization(null, newDatasetSettings);

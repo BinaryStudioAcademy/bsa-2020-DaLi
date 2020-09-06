@@ -34,11 +34,11 @@ function BarChart(props) {
   const calcYDataRange = (YKey) => {
     return {
       min: calcMinYDataValue(
-        d3.min(data, (d) => d[YAxis.key]),
+        d3.min(data, (d) => d[YKey]),
         goal
       ),
       max: calcMaxYDataValue(
-        d3.max(data, (d) => d[YAxis.key]),
+        d3.max(data, (d) => d[YKey]),
         goal
       ),
     };
@@ -412,7 +412,7 @@ BarChart.propTypes = {
         displayLabel: PropTypes.bool,
       }),
       YAxis: PropTypes.shape({
-        key: PropTypes.string,
+        key: PropTypes.array,
         label: PropTypes.string,
         displayLabel: PropTypes.bool,
       }),
@@ -434,6 +434,8 @@ BarChart.propTypes = {
         label: PropTypes.string,
       }),
       lineType: PropTypes.string,
+      stacked: PropTypes.bool,
+      color: PropTypes.array,
       trendline: PropTypes.shape({
         display: PropTypes.bool,
         trendlineType: PropTypes.string,

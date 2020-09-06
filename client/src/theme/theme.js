@@ -380,5 +380,13 @@ export const theme = createMuiTheme({
         fontSize: '1.3rem',
       },
     },
+    MuiNativeSelect: {
+      root: {
+        borderRadius: '4',
+        position: 'relative',
+        border: '1px solid #ced4da',
+        padding: '10px 26px 10px 12px',
+      },
+    },
   },
 });

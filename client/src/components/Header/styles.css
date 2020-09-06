@@ -1,77 +1,68 @@
 header {
   height: 83px;
-  background: #FFFFFF;
-  border-bottom: 2px solid #F7F7F7;
-  display: flex;
-  position: relative;
+  background: #ffffff;
+  border-bottom: 2px solid #f7f7f7;
 }
 
-.header-logo-container{
-  background: #1CD1A1;
+.header-container {
+  display: grid;
+  grid-template-columns: max-content 1fr max-content max-content;
+  height: 100%;
+  align-items: center;
+}
+
+.header-logo-container {
+  display: grid;
+  align-items: center;
+  grid-template-columns: max-content 1fr;
+}
+
+.header-logo {
+  background: #1cd1a1;
   width: 48px;
   height: 48px;
-  margin: 15px 0 20px 15%;
+  position: relative;
   border-radius: 60%;
 }
 
-.header-logo-container:before {
+.header-logo:before {
   content: url(logo.svg);
   display: block;
   width: 80px;
   height: 26px;
   position: relative;
-  right: 30px;
-  top: 3px;
+  right: 25px;
 }
 
-.header-logo-container:focus{
+.header-logo-container:focus {
   outline: none;
 }
 
-.header-logo-text{
-  font-family: Poppins;
+.header-logo-text {
+  font-family: "Poppins";
   font-weight: bold;
   font-size: 24px;
   line-height: 36px;
-  color:#4E4E4E;
-  position: relative;
-  left: 60px;
-  top: -20px;
+  color: #4e4e4e;
+  margin-left: 10px;
 }
 
-.header-controls{
-  position: absolute;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    right: 170px;
-    height: inherit;
+.header-controls {
+  grid-column: 3;
+  margin-right: 35px;
 }
 
-.header-icons{
+.header-icons {
   display: flex;
-    align-items: center;
-    justify-content: space-between;
-    width: 120px;
-    position: absolute;
-    right: 10px;
-    height: inherit;
+  justify-content: space-between;
 }
 
-.header-right{
-  position: absolute;
-  right: 15%;
-  display: flex;
-  flex-direction: row-reverse;
-  width: 50%;
-  height: inherit;
+.header-icon {
+  margin-left: 20px;
 }
 
 .admin-header {
   background-color: #0d7a16;
-  justify-content: flex-start;
-  align-items: center;
-  padding-left: 20px;
   color: #fff;
 }
 
@@ -79,21 +70,14 @@ header {
   margin-right: 10px;
 }
 
-.admin-header-nav {
-  display: flex;
-  margin-left: 25px;
-}
-
 .link {
-  margin-left: 3%;
   color: #fff;
   padding: 0 20px;
-  min-height: 26px;
   font-weight: 500;
-  text-decoration : none;
+  text-decoration: none;
   opacity: 0.7;
 }
 
-.admin-settings{
-  margin-right: 5%;
+.admin-settings {
+  justify-self: end;
 }

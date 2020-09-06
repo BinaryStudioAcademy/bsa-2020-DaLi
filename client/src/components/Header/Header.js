@@ -85,57 +85,57 @@ const Header = ({ logout, addDashboard }) => {
 
   return (
     <header className={isAdminPage ? 'admin-header' : ''}>
-      {isAdminPage ? (
-        <>
-          <SettingsIcon className="admin-header-icon" fontSize="large" />
-          <Typography variant="h3">DaLi Admin</Typography>
-          <div className="admin-header-links">
-            <NavLink
-              activeStyle={{
-                opacity: '1',
-              }}
-              className="link"
-              to={{
-                pathname: '/admin/people',
-              }}
-              key="people"
-            >
-              People
-            </NavLink>
-            <NavLink
-              activeStyle={{
-                opacity: '1',
-              }}
-              className="link"
-              to={{
-                pathname: '/admin/databases',
-              }}
-              key="databases"
-            >
-              Databases
-            </NavLink>
-            <NavLink
-              activeStyle={{
-                opacity: '1',
-              }}
-              className="link"
-              to={{
-                pathname: '/admin/permissions',
-              }}
-              key="permissions"
-            >
-              Permissions
-            </NavLink>
-          </div>
-          <SettingsIcon className="admin-settings header-icons" fontSize="large" onClick={handleClick} />
-        </>
-      ) : (
-        <>
-          <div className="header-logo-container">
-            <div role="button" tabIndex="0" className="header-logo" onClick={onHomePage} aria-hidden="true" />
-            <span className="header-logo-text">DaLi</span>
-          </div>
-          <div className="header-right">
+      <div className="wrapper header-container">
+        {isAdminPage ? (
+          <>
+            <SettingsIcon className="admin-header-icon" fontSize="large" />
+            <Typography variant="h3">DaLi Admin</Typography>
+            <div className="admin-header-links">
+              <NavLink
+                activeStyle={{
+                  opacity: '1',
+                }}
+                className="link"
+                to={{
+                  pathname: '/admin/people',
+                }}
+                key="people"
+              >
+                People
+              </NavLink>
+              <NavLink
+                activeStyle={{
+                  opacity: '1',
+                }}
+                className="link"
+                to={{
+                  pathname: '/admin/databases',
+                }}
+                key="databases"
+              >
+                Databases
+              </NavLink>
+              <NavLink
+                activeStyle={{
+                  opacity: '1',
+                }}
+                className="link"
+                to={{
+                  pathname: '/admin/permissions',
+                }}
+                key="permissions"
+              >
+                Permissions
+              </NavLink>
+            </div>
+            <SettingsIcon className="admin-settings header-icons" fontSize="large" onClick={handleClick} />
+          </>
+        ) : (
+          <>
+            <div className="header-logo-container">
+              <div role="button" tabIndex="0" className="header-logo" onClick={onHomePage} aria-hidden="true" />
+              <span className="header-logo-text">DaLi</span>
+            </div>
             <div className="header-controls">
               <StyledNavLink style={{ height: 'max-content' }}>
                 <NavLink
@@ -157,30 +157,35 @@ const Header = ({ logout, addDashboard }) => {
               <IconButton size="small" aria-label="dashboard" onClick={handleDataSourcesClick}>
                 <ControlPointIcon fontSize="large" />
               </IconButton>
-              <IconButton size="small" aria-label="dashboard" onClick={handleDataSourcesClick}>
+              <IconButton
+                size="small"
+                aria-label="dashboard"
+                style={{ marginLeft: '20px' }}
+                onClick={handleDataSourcesClick}
+              >
                 <EventIcon fontSize="large" />
               </IconButton>
-              <IconButton size="small" aria-label="settings" onClick={handleClick}>
+              <IconButton size="small" aria-label="settings" style={{ marginLeft: '20px' }} onClick={handleClick}>
                 <SettingsIcon fontSize="large" />
               </IconButton>
             </div>
-          </div>
-        </>
-      )}
-      <Menu id="simple-menu" anchorEl={anchorEl} keepMounted open={Boolean(anchorEl)} onClose={handleClose}>
-        <MenuItem onClick={onAccountSettings}>Account Setting</MenuItem>
-        {isAdminPage ? (
-          <MenuItem onClick={handleClickOnExitAdmin}>Exit Admin</MenuItem>
-        ) : (
-          <MenuItem onClick={handleClickOnAdmin}>Admin</MenuItem>
+          </>
         )}
-        <MenuItem onClick={onSignOut}>Sign out</MenuItem>
-      </Menu>
-      <AddDashboardModal
-        isVisible={addDashboardModalVisible}
-        closeModal={hideAddDashboardModal}
-        addDashboard={addDashboard}
-      />
+        <Menu id="simple-menu" anchorEl={anchorEl} keepMounted open={Boolean(anchorEl)} onClose={handleClose}>
+          <MenuItem onClick={onAccountSettings}>Account Setting</MenuItem>
+          {isAdminPage ? (
+            <MenuItem onClick={handleClickOnExitAdmin}>Exit Admin</MenuItem>
+          ) : (
+            <MenuItem onClick={handleClickOnAdmin}>Admin</MenuItem>
+          )}
+          <MenuItem onClick={onSignOut}>Sign out</MenuItem>
+        </Menu>
+        <AddDashboardModal
+          isVisible={addDashboardModalVisible}
+          closeModal={hideAddDashboardModal}
+          addDashboard={addDashboard}
+        />
+      </div>
     </header>
   );
 };

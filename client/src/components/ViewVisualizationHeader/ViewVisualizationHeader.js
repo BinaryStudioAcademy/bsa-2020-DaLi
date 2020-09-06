@@ -116,6 +116,7 @@ ViewVisualizationHeader.propTypes = {
   name: PropTypes.string,
   description: PropTypes.string,
   visualizationType: PropTypes.string,
+  tableId: PropTypes.string,
   onToggleRightSideBar: PropTypes.func,
   datasetSettings: PropTypes.array,
   updateVisualization: PropTypes.func,

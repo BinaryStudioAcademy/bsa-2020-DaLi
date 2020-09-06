@@ -47,19 +47,24 @@ const ViewVisualizationContainer = (props) => {
     fetchDataAndSchema,
     data,
     schema,
+
+    tableId,
+    visualizationType,
     updateVisualizationData,
   } = props;
 
   const [currentView, setCurrentView] = useState('table');
   const [isLeftSideBarOpen, setIsLeftSideBarOpen] = useState(false);
   const [isRightSideBarOpen, setIsRightSideBarOpen] = useState(false);
-  const [isVisualizationExist, setIsVisualizationExist] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isNotificationVisible, setIsNotificationVisible] = useState(false);
   const [notificationMessage, setNotificationMessage] = useState('');
   const [leftSideBarPage, setLeftSideBarPage] = useState(0);
   const [rightSideBarPage, setRightSideBarPage] = useState(0);
   const [notificationType, setNotificationType] = useState('success');
+  const [isVisualizationExist] = useState(() => {
+    return !!visualizationId;
+  });
   const [datasetSettings, setDatasetSettings] = useState([]);
 
   const userNotificationError = (notification) => {
@@ -88,13 +93,10 @@ const ViewVisualizationContainer = (props) => {
   }, [visualizationId]);
 
   useEffect(() => {
-    if ('data' in currentVisualization) {
+    if (isNewVisualization && 'data' in currentVisualization && (!currentVisualization.created || isSameData)) {
       setDatasetSettings(currentVisualization.datasetSettings);
-      if (currentVisualization.created !== true) {
-        setIsVisualizationExist(false);
-        const visualization = createInitVisualization(visualizationId, userId, schema);
-        setVisualization(visualization);
-      }
+      const visualization = createInitVisualization(visualizationType, userId, schema);
+      setVisualization(visualization);
     }
   }, [data]);
 
@@ -147,6 +149,18 @@ const ViewVisualizationContainer = (props) => {
     }
   };
 
+  const onToggleRightSideBar = (type) => () => {
+    if (rightSideBarType === type) {
+      setIsRightSideBarOpen(false);
+      setRightSideBarType('');
+    } else {
+      setRightSideBarType(type);
+      setIsRightSideBarOpen(true);
+    }
+  };
+
+  const selectComponentForRightSidebar = getRightSidebarComponent(rightSideBarType, currentVisualization);
+
   const openModal = () => setIsModalOpen(true);
 
   const closeModal = () => setIsModalOpen(false);
@@ -157,7 +171,12 @@ const ViewVisualizationContainer = (props) => {
 
   const createVisualization = ({ name, description }) => {
     updateVisualizationName({ name, description });
-    const newVisualization = createNewVisualization(currentVisualization, name, description, tableId);
+    const newVisualization = createNewVisualization(
+      currentVisualization,
+      name,
+      description,
+      currentVisualization.tableId
+    );
     visualizationsAPIService.createVisualization(newVisualization);
     closeModal();
     setIsVisualizationExist(true);
@@ -204,6 +223,7 @@ const ViewVisualizationContainer = (props) => {
         name={currentVisualization.name}
         description={currentVisualization.description}
         visualizationType={visualizationId}
+        tableId={tableId}
         onToggleRightSideBar={onToggleRightSideBar}
         updateVisualization={updateVisualization}
         datasetSettings={datasetSettings}
@@ -289,6 +309,8 @@ ViewVisualizationContainer.propTypes = {
     tableId: PropTypes.string,
     prevPath: PropTypes.string,
   }),
+  tableId: PropTypes.string,
+  visualizationType: PropTypes.string,
   updateVisualizationData: PropTypes.func,
 };
 

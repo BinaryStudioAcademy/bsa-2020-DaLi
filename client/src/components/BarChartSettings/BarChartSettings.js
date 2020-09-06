@@ -74,7 +74,13 @@ const BarChartSettings = ({ updateConfig, config: oldConfig }) => {
   const classes = useStyles();
 
   const { XAxis, YAxis } = oldConfig.axisData;
-  const { goal, color: barColor, showDataPointsValues: incomingShowDataPointsValues, trendline } = oldConfig.display;
+  const {
+    goal,
+    color: barColor,
+    showDataPointsValues: incomingShowDataPointsValues,
+    trendline,
+    stacked,
+  } = oldConfig.display;
 
   const [value, setValue] = useState(0);
   const [xAxis, setXAxis] = useState(XAxis.key || XAxis.availableKeys[0]);
@@ -88,6 +94,7 @@ const BarChartSettings = ({ updateConfig, config: oldConfig }) => {
   const [labelYAxis, setLabelYAxis] = useState(YAxis.label);
   const [showDataPointsValues, setShowDataPointsValues] = useState(incomingShowDataPointsValues);
   const [showTrendline, setShowTrendline] = useState(trendline.display);
+  const [showStacked, setShowStacked] = useState(stacked);
   const [trendlineType, setTrendlineType] = useState(trendline.trendlineType);
   const [polynomialOrder, setPolynomialOrder] = useState(trendline.polynomial.order);
   const [config, setConfig] = useState(oldConfig);
@@ -133,6 +140,7 @@ const BarChartSettings = ({ updateConfig, config: oldConfig }) => {
           },
         },
         showDataPointsValues,
+        stacked: showStacked,
       },
     });
   };
@@ -151,6 +159,9 @@ const BarChartSettings = ({ updateConfig, config: oldConfig }) => {
     const newYAxes = [...yAxis];
     newYAxes.splice(id, 1);
     setYAxis(newYAxes);
+    if (newYAxes.length === 1) {
+      setLabelYAxis(newYAxes[0]);
+    }
   };
 
   const valuesX = XAxis.availableKeys.map((value) => (
@@ -234,6 +245,12 @@ const BarChartSettings = ({ updateConfig, config: oldConfig }) => {
         </Button>
       </TabPanel>
       <TabPanel value={value} index={1}>
+        {YAxis.key.length > 1 ? (
+          <FormControlLabel
+            control={<PrettySwitch checked={showStacked} onChange={(event) => setShowStacked(event.target.checked)} />}
+            label="Stack"
+          />
+        ) : null}
         <FormControlLabel
           control={<PrettySwitch checked={isGoalLine} onChange={(event) => setIsGoalLine(event.target.checked)} />}
           label="Goal line"

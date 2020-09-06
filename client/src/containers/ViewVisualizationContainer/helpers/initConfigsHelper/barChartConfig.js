@@ -34,6 +34,7 @@ function createInitBarChartConfig(schema, getYKeys, getXKeys) {
       },
       showDataPointsValues: false,
       lineType: '',
+      stacked: false,
     },
   };
 }

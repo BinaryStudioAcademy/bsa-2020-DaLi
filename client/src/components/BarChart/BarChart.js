@@ -14,84 +14,94 @@ function BarChart(props) {
   const [height, setHeight] = useState(props.chart.height);
   const { margin } = props.chart;
   const { data } = props;
-  const { goal, trendline, showDataPointsValues, color } = props.settings.display;
+  const { goal, trendline, showDataPointsValues, color, stacked } = props.settings.display;
   const XAxis = props.settings.axisData.XAxis;
   const YAxis = props.settings.axisData.YAxis;
-  
-  const draw = () => {
-    const chart = d3.select(svgRef.current);
-    
-    chart.selectAll('*').remove();
 
-    const drawLine = (YKey, index) => {
-    data.forEach(item => item[YKey] = Number(item[YKey]));
-    const yDataRange = {
-      min: calcMinYDataValue(
-        d3.min(data, (d) => d[YKey]),
-        goal
-      ),
-      max: calcMaxYDataValue(
-        d3.max(data, (d) => d[YKey]),
-        goal
-      ),
-    };
+  const initChart = (ref) => {
+    const chart = d3.select(ref).attr('width', '100%').attr('height', '100%');
+    return chart;
+  };
 
-    chart.select('.d3-tip').remove();
-    const tip = d3Tip()
-      .attr('class', 'd3-tip')
-      .offset([-10, 0])
-      .html(
-        (d) =>
-          `
-        <div><span>${XAxis.label}:</span> <span style='color:white'>${d[XAxis.key]}</span></div>
-        <div><span>${YKey}:</span> <span style='color:white'>${d[YKey]}</span></div>
-      `
-      );
-    chart.call(tip).attr('height', '100%').attr('width', '100%');
+  const convertStringData = (data, keys) => {
+    data.forEach((item) => {
+      keys.forEach((YKey) => {
+        item[YKey] = Number(item[YKey]);
+      });
+    });
+  };
 
-    const xScale = d3
+  const calcYDataRange = (YKey) => {
+      return {
+        min: calcMinYDataValue(
+          d3.min(data, (d) => d[YKey]),
+          goal
+        ),
+        max: calcMaxYDataValue(
+          d3.max(data, (d) => d[YKey]),
+          goal
+        ),
+      };
+  };
+
+  const calcXScale = (data, XKey) => {
+    return d3
       .scaleBand()
-      .domain(data.map((d) => d[XAxis.key]))
+      .domain(data.map((d) => d[XKey]))
       .range([margin.left, width - margin.right])
       .padding(0.1);
+  };
 
-    const yScale = d3
-      .scaleLinear()
-      .domain([yDataRange.min, yDataRange.max])
-      .range([height - margin.bottom, margin.top]);
+  const calcYScale = (YKey, extent=null) => {
+      return d3
+        .scaleLinear()
+        .domain(extent?extent:[calcYDataRange(YKey).min, calcYDataRange(YKey).max])
+        .range([height - margin.bottom, margin.top]);
+  };
 
+  const drawAxes = (chart, xScale) => {
+    const yScale = calcYScale(YAxis.key[0]) // TODO: yScale[0] replace
     const xAxis = (g) =>
       g.attr('transform', `translate(0,${height - margin.bottom})`).call(d3.axisBottom(xScale).tickSize(0));
-    const yAxis = (g) => g.attr('transform', `translate(${margin.left},0)`).call(d3.axisLeft(yScale).tickSize(0));
-
-    let barsInfo = null;
-    if (showDataPointsValues) {
-      barsInfo = chart.selectAll(`.value-${YKey}`).data(data).join('g');
-    }
+    const yAxis = (g) => g.attr('transform', `translate(${margin.left},0)`).call(d3.axisLeft(yScale).tickSize(0)); 
 
     chart.append('g').attr('class', 'x-axis axis').call(xAxis);
     chart.append('g').attr('class', 'y-axis axis').call(yAxis);
+  };
 
+  const drawGroupedChart = (chart, data, xScale, xSubgroup, colors, tips) => {
+    //.attr('height', '100%').attr('width', '100%');//);
+    // YAxis.key.forEach((key,index) => {
+    //   console.log('drawing')
     chart
       .append('g')
       .attr('class', 'bars')
       .selectAll()
       .data(data)
-      .join('rect')
-      .attr('class', 'bar')
-      .attr('fill', color[index])
-      .attr('x', (d) => xScale(d[XAxis.key])+index*xScale.bandwidth()/YAxis.key.length)
+      .enter()
+      .append('g')
+      .attr('transform', (d) => 'translate(' + xScale(d[XAxis.key]) + ',0)')
+      .selectAll('rect')
+      .data((d) =>
+        YAxis.key.map((key, index) => {
+          return { key: key, value: d[key], index: index, [XAxis.key]: d[XAxis.key] };
+        })
+      )
+      .enter()
+      .append('rect')
+      .attr('x', (d) => xSubgroup(d.key))
       .attr('y', (d) => {
-        const zero = yScale(0);
-        const current = yScale(d[YKey]);
+        const zero = calcYScale(d.key)(0);
+        const current = calcYScale(d.key)(d.value);
         const yPos = zero > current ? current : zero;
         return yPos;
       })
+      .attr('width', xSubgroup.bandwidth())
       .attr('height', (d) => {
-        const zero = yScale(0);
-        const current = yScale(d[YKey]);
+        const zero = calcYScale(d.key)(0);
+        const current = calcYScale(d.key)(d.value);
         let barHeight = Math.abs(zero - current);
-        if (yDataRange.min >= 0) {
+        if (calcYDataRange(d.key).min >= 0) {
           const chartElemY = chart.node().getBoundingClientRect().y;
           const xAxisElemY = chart.select('.x-axis').node().getBoundingClientRect().y;
           const xAxisY = xAxisElemY - chartElemY;
@@ -99,9 +109,10 @@ function BarChart(props) {
         }
         return barHeight;
       })
-      .attr('width', xScale.bandwidth()/YAxis.key.length)
+      .attr('fill', (d) => colors(d.key))
       .on('mouseenter', (_, index) => {
-        chart.selectAll('.bar')
+        chart
+          .selectAll('.bar')
           .filter((__, i) => i !== index)
           .transition()
           .duration(500)
@@ -110,145 +121,179 @@ function BarChart(props) {
       .on('mouseleave', () => {
         chart.selectAll('.bar').transition().duration(500).attr('opacity', 1);
       })
-      .on('mouseover', tip.show)
-      .on('mouseout', tip.hide);
+      .on('mouseover', (d, index, elem) => tips.show(d, elem[index]))
+      .on('mouseout', (d, index, elem) => tips.hide(d, elem[index]));
 
       if (showDataPointsValues) {
-        barsInfo
-          .append('text')
-          .attr('class', 'bar__value')
-          .attr('x', (a) => {
-            return xScale(a[XAxis.key]) + (2*index+1)*xScale.bandwidth()/(2*YAxis.key.length)})
-          .attr('y', (a) => yScale(a[YKey]) - 20)
-          .attr('text-anchor', 'middle')
-          .text((a) => `${a[YKey]}`);
+        addDataPoints(chart, xScale);
       }
-      if (yDataRange.min < 0) {
+  };
+
+  const drawStackedChart = (chart, xScale, tips) => {
+    // stacks / layers
+    const stackGenerator = d3.stack().keys(YAxis.key).order(d3.stackOrderDescending);
+    const layers = stackGenerator(data);
+    console.log(layers);
+    const extent = [0, d3.max(layers, (layer) => d3.max(layer, (sequence) => sequence[1]))];
+
+    const yScale = calcYScale(null, extent);
+
+    // rendering
+    chart
+      .selectAll('.layer')
+      .data(layers)
+      .join('g')
+      .attr('class', 'layer')
+      .attr('fill', (layer) => color[YAxis.key.indexOf(layer.key)])
+      .selectAll('rect')
+      .data((layer) => {
+        return layer.map(sequence => {sequence.key = layer.key; return sequence})
+      })
+      .join('rect')
+      .attr('x', (sequence) => xScale(sequence.data[XAxis.key]))
+      .attr('width', xScale.bandwidth())
+      .attr('y', (sequence) => { console.log('sequence');console.log(sequence); return yScale(sequence[1])})
+      .attr('height', (sequence) => yScale(sequence[0]) - yScale(sequence[1]))
+      .on('mouseover', (d, index, elem) => {
+        // console.log(`mouseover`)
+        // console.log(d);
+        // console.log(index);
+        // console.log(elem);
+        return tips.show(d, elem[index])
+      })
+      .on('mouseout', (d, index, elem) => tips.hide(d, elem[index]));
+
+      if (showDataPointsValues) {
+        // addDataPoints(chart, xScale, yScale, layers);
+        const values = layers.map(a=>a.map(item => item[1]));
+        const maxValues = values.reduce((prev, current) => current.map((item,index) => item>prev[index]?item:prev[index]))
+        console.log(maxValues);
+
         chart
-          .append('line')
-          .style('stroke', '#EE8625')
-          .style('stroke-width', 3)
-          .attr('x1', 0)
-          .attr('y1', yScale(0))
-          .attr('x2', width)
-          .attr('y2', yScale(0));
-  
-        const y = yScale(0);
-  
-        chart
-          .append('text')
-          .attr('y', y - 10)
-          .attr('x', 70)
-          .attr('text-anchor', 'middle')
-          .attr('class', 'line__label')
-          .text('0');
+        .selectAll(`.value`)
+        .data(layers[0])
+        .join('g')
+        .append('text')
+        .attr('class', 'bar__value')
+        .attr('x', (a) => xScale(a.data[XAxis.key]) + xScale.bandwidth() / 2)
+        .attr('y', (a,index) => {
+          // console.log('a')
+          // console.log(a)
+          // const maxa = d3.max()
+          return yScale(maxValues[index]) - 10})//stacked ? yPosStacked(barIndex) : yPosGrouped(a,key,index)})
+        // .attr('transform', d => (YAxis.key.length > 1 && !stacked)?`translate(${xPosGrouped(d,index)},${yPosGrouped(d,key,index)}), rotate(-90)`:'rotate(0)')
+        .attr('text-anchor', 'middle')
+        .text((a,index) => maxValues[index])
       }
-  
-      if (goal.display && index === 1) {
-        const y = yScale(goal.value);
-        chart.append('line').attr('id', 'goal').attr('x1', 0).attr('y1', y).attr('x2', width).attr('y2', y);
-  
-        chart
-          .append('text')
-          .attr('y', y - 10)
-          .attr('x', width - 50)
-          .attr('text-anchor', 'middle')
-          .attr('class', 'line__label')
-          .text(goal.label);
-      }
-    }
+  };
 
-    // YAxis.key.forEach((YKey,index) => drawLine(YKey, index));
+  const showLegend = (chart) => {
+    const legendContainer = chart.append('g').attr('transform', 'translate(' + (margin.left + 50) + ',0)');
+    const legendRectSize = 18;
+    const legendSpacing = 4;
 
-    const drawStacked = () => {
-      const chart = d3.select(svgRef.current)
-      .attr('width', '100%')
-      .attr('height', '100%')
-      // stacks / layers
-    const stackGenerator = d3.stack()
-    .keys(YAxis.key)
-    .order(d3.stackOrderAscending);
-  const layers = stackGenerator(data);
-  const extent = [
-    0,
-    d3.max(layers, layer => d3.max(layer, sequence => sequence[1]))
-  ];
-  console.log(data);
-  console.log(layers);
-  console.log(extent);
+    const legend = legendContainer
+      .selectAll('.legend')
+      .data(YAxis.key)
+      .enter()
+      .append('g')
+      .attr('class', 'legend')
+      .attr('transform', function (d, i) {
+        const width = legendRectSize + legendSpacing + 40;
+        const offset = (width * 3) / 2;
+        const horz = i * offset;
+        const vert = 0;
+        return 'translate(' + horz + ',' + vert + ')';
+      });
 
-  // chart.call(tip).attr('height', '100%').attr('width', '100%');
+    legend
+      .append('rect')
+      .attr('width', legendRectSize)
+      .attr('height', legendRectSize)
+      .style('fill', (d, i) => color[i])
+      .style('stroke', (d, i) => color[i]);
 
-  // scales
-  const xScale = d3
-      .scaleBand()
-      .domain(data.map((d) => d[XAxis.key]))
-      .range([margin.left, width - margin.right])
-      .padding(0.1);
+    legend
+      .append('text')
+      .attr('x', legendRectSize + legendSpacing)
+      .attr('y', legendRectSize - legendSpacing)
+      .text((d) => d);
+  };
 
-  // const yScale = d3
-  //     .scaleLinear()
-  //     .domain([yDataRange.min, yDataRange.max])
-  //     .range([height - margin.bottom, margin.top]);
+  const createTips = (chart) => {
+    chart.select('.d3-tip').remove();
+    const tipHtmlStacked = (d) => `
+    <div><span>${XAxis.label}:</span> <span style='color:white'>${d.data[XAxis.key]}</span></div>
+    <div><span>${d.key}:</span> <span style='color:white'>${d.data[d.key]}</span></div>
+  `;
+    const tipHtmlGrouped = (d) => `
+    <div><span>${XAxis.label}:</span> <span style='color:white'>${d[XAxis.key]}</span></div>
+    <div><span>${d.key}:</span> <span style='color:white'>${d.value}</span></div>
+  `;
 
-  const yScale = d3.scaleLinear()
-    .domain(extent)
-    .range([height - margin.bottom, margin.top]);
+    const tips = d3Tip()
+      .attr('class', 'd3-tip')
+      .offset([-10, 0])
+      .html((d) => stacked ? tipHtmlStacked(d) : tipHtmlGrouped(d));
+    /*tips.forEach((tip) => */ chart.call(tips).attr('height', '100%').attr('width', '100%'); //);
+    return tips;
+  };
 
-    const xAxis = (g) =>
-    g.attr('transform', `translate(0,${height - margin.bottom})`).call(d3.axisBottom(xScale).tickSize(0));
-  const yAxis = (g) => g.attr('transform', `translate(${margin.left},0)`).call(d3.axisLeft(yScale).tickSize(0));
+  const addDataPoints = (chart, xScale, yScale, layers) => {
+    console.log('layers');
+    console.log(layers);
+    const xPosStacked = (a) => xScale(a[XAxis.key]) + xScale.bandwidth() / 2;
+    const xPosGrouped = (a,index) => xScale(a[XAxis.key]) + ((2 * index + 1) * xScale.bandwidth()) / (2 * YAxis.key.length);
+    const yPosStacked = (barIndex) => yScale(layers[YAxis.key.length-1][barIndex][1]) - 10;
+    const yPosGrouped = (a,key,index) => /*(YAxis.key.length > 1) ? yScale[index](a[key]) + 20 :*/ calcYScale(YAxis.key[index])(a[key]) - 10;
 
-  chart.append('g').attr('class', 'x-axis axis').call(xAxis);
-  chart.append('g').attr('class', 'y-axis axis').call(yAxis);
+    const pointTextStacked = (index, barIndex) => (index === 0) ? layers[YAxis.key.length-1][barIndex][1] : '';
+    const pointText = (a,key) =>  `${a[key]}`;
 
-  // rendering
-  chart
-    .selectAll(".layer")
-    .data(layers)
-    .join("g")
-    .attr("class", "layer")
-    .attr("fill", layer => {
-      
-      console.log(layer);
-      return color[layer.index]})
-    .selectAll("rect")
-    .data(layer => layer)
-    .join("rect")
-    .attr("x", sequence => xScale(sequence.data[XAxis.key]))
-    .attr("width", xScale.bandwidth())
-    .attr("y", sequence => yScale(sequence[1]))
-    .attr("height", sequence => yScale(sequence[0]) - yScale(sequence[1]));
-    }
-    drawStacked();
+    YAxis.key.forEach((key, index) =>
+      chart
+        .selectAll(`.value`)
+        .data(data)
+        .join('g')
+        .append('text')
+        .attr('class', 'bar__value')
+        .attr('x', (a) => stacked ? xPosStacked(a) : xPosGrouped(a,index))
+        .attr('y', (a, barIndex) => {
+          console.log('a')
+          console.log(a)
+          return stacked ? yPosStacked(barIndex) : yPosGrouped(a,key,index)})
+        // .attr('transform', d => (YAxis.key.length > 1 && !stacked)?`translate(${xPosGrouped(d,index)},${yPosGrouped(d,key,index)}), rotate(-90)`:'rotate(0)')
+        .attr('text-anchor', 'middle')
+        .text((a,barIndex) => stacked ? pointTextStacked(index, barIndex): pointText(a, key))
+    );
+  };
 
-    if (trendline.display && data.length && YAxis.key.length === 1) {
-      const { polynomial, trendlineType } = trendline;
-      const xDataRange = {
-        min: data[0][XAxis.key],
-        max: data[data.length - 1][XAxis.key[0]],
-      };
-      const barUnitWidth = (xDataRange.max - xDataRange.min) / data.length;
-      const xScaleForLines = d3
-        .scaleLinear()
-        .domain([xDataRange.min, xDataRange.max])
-        .range([margin.left, width - margin.right]);
+  const addTrendLine = (chart) => {
+    const { polynomial, trendlineType } = trendline;
+    const xDataRange = {
+      min: data[0][XAxis.key],
+      max: data[data.length - 1][XAxis.key],
+    };
+    const barUnitWidth = (xDataRange.max - xDataRange.min) / data.length;
+    const xScaleForLines = d3
+      .scaleLinear()
+      .domain([xDataRange.min, xDataRange.max])
+      .range([margin.left, width - margin.right]);
 
-      const trendlineData = data.map((item) => [item[XAxis.key], item[YAxis.key[0]]]);
-      const domain = [xDataRange.min, xDataRange.max - barUnitWidth];
-      const config = {
-        xOffset: xScale.bandwidth() / 2,
-        order: polynomial.order,
-      };
+    const trendlineData = data.map((item) => [item[XAxis.key], item[YAxis.key[0]]]);
+    const domain = [xDataRange.min, xDataRange.max - barUnitWidth];
+    const config = {
+      xOffset: calcXScale(data, XAxis.key).bandwidth() / 2,
+      order: polynomial.order,
+    };
 
-      const trendlineCreator = new TrendlineCreator(trendlineType, chart, xScaleForLines, yScale);
-      trendlineCreator.render(domain, trendlineData, config);
-    }
+    const yScale = calcYScale(YAxis.key[0]);
 
-    
-    // delete axis values
-    chart.selectAll('.axis').selectAll('text').remove();
+    const trendlineCreator = new TrendlineCreator(trendlineType, chart, xScaleForLines, yScale);
+    trendlineCreator.render(domain, trendlineData, config);
+  }
 
+  const displayAxesLabels = (chart) => {
     if (YAxis.displayLabel) {
       chart
         .append('text')
@@ -269,57 +314,100 @@ function BarChart(props) {
         .attr('text-anchor', 'middle')
         .text(XAxis.label);
     }
+  }
 
-    const legendContainer = chart.append('g').attr('transform', 'translate(' + (margin.left + 50) + ',0)');
+  const displayGoalLine = (chart) => {
+    const y = calcYScale(YAxis.key[0])(goal.value);
+    chart.append('line').attr('id', 'goal').attr('x1', 0).attr('y1', y).attr('x2', width).attr('y2', y);
 
-    const legendRectSize = 18;
-    const legendSpacing = 4;
-
-    if(YAxis.key.length>1){
-    const legend = legendContainer
-      .selectAll('.legend')
-      .data(YAxis.key)
-      .enter()
-      .append('g')
-      .attr('class', 'legend')
-      .attr('transform', function (d, i) {
-        const width = legendRectSize + legendSpacing + 40;
-        // const offset = (width * color.length) / 2;
-        const offset = (width * 3) / 2;
-        const horz = i*offset;
-        const vert = 0;
-        return 'translate(' + horz + ',' + vert + ')';
-      });
-
-    legend
-      .append('rect')
-      .attr('width', legendRectSize)
-      .attr('height', legendRectSize)
-      .style('fill', (d, i) => color[i])
-      .style('stroke', (d, i) => color[i]);
-
-    legend
+    chart
       .append('text')
-      .attr('x', legendRectSize + legendSpacing)
-      .attr('y', legendRectSize - legendSpacing)
-      .text((d) => d);
+      .attr('y', y - 10)
+      .attr('x', width - 50)
+      .attr('text-anchor', 'middle')
+      .attr('class', 'line__label')
+      .text(goal.label);
+  }
+
+  const draw = () => {
+    const chart = initChart(svgRef.current);
+    chart.selectAll('*').remove();
+
+    convertStringData(data, YAxis.key);
+
+    const tips = createTips(chart);
+
+    const xScale = calcXScale(data, XAxis.key);
+
+    drawAxes(chart, xScale);
+
+    // Another scale for subgroup position?
+    const xSubgroup = d3.scaleBand().domain(YAxis.key).range([0, xScale.bandwidth()]).padding([0.05]);
+
+    // color palette = one color per subgroup
+    const colors = d3.scaleOrdinal().domain(YAxis.key).range(color);
+
+    // draw chart
+    stacked ? drawStackedChart(chart, xScale, tips) : drawGroupedChart(chart, data, xScale, xSubgroup, colors, tips);
+
+    // let barsInfo = null;
+
+
+    const yScale = calcYDataRange(YAxis.key[0]);
+    if (yScale.min < 0) {
+      chart
+        .append('line')
+        .style('stroke', '#EE8625')
+        .style('stroke-width', 3)
+        .attr('x1', 0)
+        .attr('y1', yScale(0))
+        .attr('x2', width)
+        .attr('y2', yScale(0));
+
+      const y = calcYScale(YAxis.key[0]);
+
+      chart
+        .append('text')
+        .attr('y', y - 10)
+        .attr('x', 70)
+        .attr('text-anchor', 'middle')
+        .attr('class', 'line__label')
+        .text('0');
+    }
+
+    if (goal.display) {
+      displayGoalLine(chart);
+    }
+
+    if (trendline.display && data.length) {
+        addTrendLine(chart);
+    }
+
+    // delete axis values
+    chart.selectAll('.axis').selectAll('text').remove();
+
+    displayAxesLabels(chart);
+
+    if (YAxis.key.length > 1) {
+      showLegend(chart);
     }
   };
 
   const onResize = () => {
     setHeight(svgRef.current.parentElement.offsetHeight);
-    setWidth(svgRef.current.parentElement.offsetWidth)
+    setWidth(svgRef.current.parentElement.offsetWidth);
   };
 
   useEffect(() => {
     setHeight(svgRef.current.parentElement.offsetHeight);
     setWidth(svgRef.current.parentElement.offsetWidth);
     draw();
+    console.log(`stacked ${stacked}`);
 
     window.addEventListener('resize', onResize);
-    return ()=>window.removeEventListener('resize', onResize);
-  }, [JSON.stringify(props), props.chart, props.data,width, height]);
-  
+    return () => window.removeEventListener('resize', onResize);
+  }, [JSON.stringify(props), props.chart, props.data, width, height]);
+
   return <svg ref={svgRef} id="barChartVisualization" />;
 }
 

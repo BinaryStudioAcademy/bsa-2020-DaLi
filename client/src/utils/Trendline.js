@@ -7,6 +7,8 @@ export default class TrendlineCreator {
     this.trendlineParent = trendlineParent;
     this.xScale = xScale;
     this.yScale = yScale;
+    console.log(xScale);
+    console.log(yScale);
   }
 
   capitalizedTrendlineType() {

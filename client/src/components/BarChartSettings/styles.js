@@ -102,6 +102,10 @@ export const useStyles = makeStyles((theme) => ({
   ySelectControl: {
     margin: '5px',
   },
+  switches: {
+    display: 'flex',
+    flexDirection: 'column',
+  },
 }));
 
 export const switchStyles = makeStyles((theme) => ({

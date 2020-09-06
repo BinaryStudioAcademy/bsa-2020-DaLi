@@ -32,16 +32,16 @@ function BarChart(props) {
   };
 
   const calcYDataRange = (YKey) => {
-      return {
-        min: calcMinYDataValue(
-          d3.min(data, (d) => d[YKey]),
-          goal
-        ),
-        max: calcMaxYDataValue(
-          d3.max(data, (d) => d[YKey]),
-          goal
-        ),
-      };
+    return {
+      min: calcMinYDataValue(
+        d3.min(data, (d) => d[YKey]),
+        goal
+      ),
+      max: calcMaxYDataValue(
+        d3.max(data, (d) => d[YKey]),
+        goal
+      ),
+    };
   };
 
   const calcXScale = (data, XKey) => {
@@ -52,27 +52,24 @@ function BarChart(props) {
       .padding(0.1);
   };
 
-  const calcYScale = (YKey, extent=null) => {
-      return d3
-        .scaleLinear()
-        .domain(extent?extent:[calcYDataRange(YKey).min, calcYDataRange(YKey).max])
-        .range([height - margin.bottom, margin.top]);
+  const calcYScale = (YKey, extent = null) => {
+    return d3
+      .scaleLinear()
+      .domain(extent ? extent : [calcYDataRange(YKey).min, calcYDataRange(YKey).max])
+      .range([height - margin.bottom, margin.top]);
   };
 
   const drawAxes = (chart, xScale) => {
-    const yScale = calcYScale(YAxis.key[0]) // TODO: yScale[0] replace
+    const yScale = calcYScale(YAxis.key[0]); // TODO: yScale[0] replace
     const xAxis = (g) =>
       g.attr('transform', `translate(0,${height - margin.bottom})`).call(d3.axisBottom(xScale).tickSize(0));
-    const yAxis = (g) => g.attr('transform', `translate(${margin.left},0)`).call(d3.axisLeft(yScale).tickSize(0)); 
+    const yAxis = (g) => g.attr('transform', `translate(${margin.left},0)`).call(d3.axisLeft(yScale).tickSize(0));
 
     chart.append('g').attr('class', 'x-axis axis').call(xAxis);
     chart.append('g').attr('class', 'y-axis axis').call(yAxis);
   };
 
   const drawGroupedChart = (chart, data, xScale, xSubgroup, colors, tips) => {
-    //.attr('height', '100%').attr('width', '100%');//);
-    // YAxis.key.forEach((key,index) => {
-    //   console.log('drawing')
     chart
       .append('g')
       .attr('class', 'bars')
@@ -89,6 +86,7 @@ function BarChart(props) {
       )
       .enter()
       .append('rect')
+      .attr('class', 'bar')
       .attr('x', (d) => xSubgroup(d.key))
       .attr('y', (d) => {
         const zero = calcYScale(d.key)(0);
@@ -110,30 +108,54 @@ function BarChart(props) {
         return barHeight;
       })
       .attr('fill', (d) => colors(d.key))
-      .on('mouseenter', (_, index) => {
-        chart
-          .selectAll('.bar')
-          .filter((__, i) => i !== index)
-          .transition()
-          .duration(500)
-          .attr('opacity', 0.6);
+      .on('mouseover', (d, index, elem) => {
+        tips.show(d, elem[index]);
+        fade(0.4, d);
       })
-      .on('mouseleave', () => {
-        chart.selectAll('.bar').transition().duration(500).attr('opacity', 1);
-      })
-      .on('mouseover', (d, index, elem) => tips.show(d, elem[index]))
-      .on('mouseout', (d, index, elem) => tips.hide(d, elem[index]));
+      .on('mouseout', (d, index, elem) => {
+        tips.hide(d, elem[index]);
+        resetFade();
+      });
 
-      if (showDataPointsValues) {
-        addDataPoints(chart, xScale);
-      }
+    if (showDataPointsValues) {
+    const xPosGrouped = (a, index) => xScale(a[XAxis.key]) + ((2 * index + 1) * xScale.bandwidth()) / (2 * YAxis.key.length);
+    const yPosGrouped = (a, key, index) => calcYScale(YAxis.key[index])(a[key]) - 10;
+    const pointText = (a, key) => `${a[key]}`;
+
+      YAxis.key.forEach((key, index) =>
+      chart
+        .selectAll(`.value`)
+        .data(data)
+        .join('g')
+        .append('text')
+        .attr('class', 'bar__value')
+        .attr('x', (a) => xPosGrouped(a, index))
+        .attr('y', (a, barIndex) => yPosGrouped(a, key, index))
+        // .attr('transform', d => (YAxis.key.length > 1 && !stacked)?`translate(${xPosGrouped(d,index)},${yPosGrouped(d,key,index)}), rotate(-90)`:'rotate(0)')
+        .attr('text-anchor', 'middle')
+        .text((a) => pointText(a, key))
+      )
+    }
+  };
+
+  const fade = (opacity, selectedBar) => {
+    d3.selectAll('.bar')
+      .filter(function (d, i) {
+        return selectedBar !== d;
+      })
+      .transition()
+      .duration(500)
+      .style('opacity', opacity);
+  };
+
+  const resetFade = () => {
+    d3.selectAll('.bar').transition().duration(500).style('opacity', 1);
   };
 
   const drawStackedChart = (chart, xScale, tips) => {
     // stacks / layers
     const stackGenerator = d3.stack().keys(YAxis.key).order(d3.stackOrderDescending);
     const layers = stackGenerator(data);
-    console.log(layers);
     const extent = [0, d3.max(layers, (layer) => d3.max(layer, (sequence) => sequence[1]))];
 
     const yScale = calcYScale(null, extent);
@@ -147,44 +169,44 @@ function BarChart(props) {
       .attr('fill', (layer) => color[YAxis.key.indexOf(layer.key)])
       .selectAll('rect')
       .data((layer) => {
-        return layer.map(sequence => {sequence.key = layer.key; return sequence})
+        return layer.map((sequence) => {
+          sequence.key = layer.key;
+          return sequence;
+        });
       })
       .join('rect')
+      .attr('class', 'bar')
       .attr('x', (sequence) => xScale(sequence.data[XAxis.key]))
       .attr('width', xScale.bandwidth())
-      .attr('y', (sequence) => { console.log('sequence');console.log(sequence); return yScale(sequence[1])})
+      .attr('y', (sequence) => {
+        return yScale(sequence[1]);
+      })
       .attr('height', (sequence) => yScale(sequence[0]) - yScale(sequence[1]))
       .on('mouseover', (d, index, elem) => {
-        // console.log(`mouseover`)
-        // console.log(d);
-        // console.log(index);
-        // console.log(elem);
-        return tips.show(d, elem[index])
+        fade(0.4, d); tips.show(d, elem[index]);
       })
-      .on('mouseout', (d, index, elem) => tips.hide(d, elem[index]));
+      .on('mouseout', (d, index, elem) => { tips.hide(d, elem[index]); resetFade();});
 
-      if (showDataPointsValues) {
-        // addDataPoints(chart, xScale, yScale, layers);
-        const values = layers.map(a=>a.map(item => item[1]));
-        const maxValues = values.reduce((prev, current) => current.map((item,index) => item>prev[index]?item:prev[index]))
-        console.log(maxValues);
+    if (showDataPointsValues) {
+      const values = layers.map((a) => a.map((item) => item[1]));
+      const maxValues = values.reduce((prev, current) =>
+        current.map((item, index) => (item > prev[index] ? item : prev[index]))
+      );
 
-        chart
+      chart
         .selectAll(`.value`)
         .data(layers[0])
         .join('g')
         .append('text')
         .attr('class', 'bar__value')
         .attr('x', (a) => xScale(a.data[XAxis.key]) + xScale.bandwidth() / 2)
-        .attr('y', (a,index) => {
-          // console.log('a')
-          // console.log(a)
-          // const maxa = d3.max()
-          return yScale(maxValues[index]) - 10})//stacked ? yPosStacked(barIndex) : yPosGrouped(a,key,index)})
+        .attr('y', (a, index) => {
+          return yScale(maxValues[index]) - 10;
+        }) 
         // .attr('transform', d => (YAxis.key.length > 1 && !stacked)?`translate(${xPosGrouped(d,index)},${yPosGrouped(d,key,index)}), rotate(-90)`:'rotate(0)')
         .attr('text-anchor', 'middle')
-        .text((a,index) => maxValues[index])
-      }
+        .text((a, index) => maxValues[index]);
+    }
   };
 
   const showLegend = (chart) => {
@@ -234,38 +256,9 @@ function BarChart(props) {
     const tips = d3Tip()
       .attr('class', 'd3-tip')
       .offset([-10, 0])
-      .html((d) => stacked ? tipHtmlStacked(d) : tipHtmlGrouped(d));
-    /*tips.forEach((tip) => */ chart.call(tips).attr('height', '100%').attr('width', '100%'); //);
+      .html((d) => (stacked ? tipHtmlStacked(d) : tipHtmlGrouped(d)));
+      chart.call(tips).attr('height', '100%').attr('width', '100%');
     return tips;
-  };
-
-  const addDataPoints = (chart, xScale, yScale, layers) => {
-    console.log('layers');
-    console.log(layers);
-    const xPosStacked = (a) => xScale(a[XAxis.key]) + xScale.bandwidth() / 2;
-    const xPosGrouped = (a,index) => xScale(a[XAxis.key]) + ((2 * index + 1) * xScale.bandwidth()) / (2 * YAxis.key.length);
-    const yPosStacked = (barIndex) => yScale(layers[YAxis.key.length-1][barIndex][1]) - 10;
-    const yPosGrouped = (a,key,index) => /*(YAxis.key.length > 1) ? yScale[index](a[key]) + 20 :*/ calcYScale(YAxis.key[index])(a[key]) - 10;
-
-    const pointTextStacked = (index, barIndex) => (index === 0) ? layers[YAxis.key.length-1][barIndex][1] : '';
-    const pointText = (a,key) =>  `${a[key]}`;
-
-    YAxis.key.forEach((key, index) =>
-      chart
-        .selectAll(`.value`)
-        .data(data)
-        .join('g')
-        .append('text')
-        .attr('class', 'bar__value')
-        .attr('x', (a) => stacked ? xPosStacked(a) : xPosGrouped(a,index))
-        .attr('y', (a, barIndex) => {
-          console.log('a')
-          console.log(a)
-          return stacked ? yPosStacked(barIndex) : yPosGrouped(a,key,index)})
-        // .attr('transform', d => (YAxis.key.length > 1 && !stacked)?`translate(${xPosGrouped(d,index)},${yPosGrouped(d,key,index)}), rotate(-90)`:'rotate(0)')
-        .attr('text-anchor', 'middle')
-        .text((a,barIndex) => stacked ? pointTextStacked(index, barIndex): pointText(a, key))
-    );
   };
 
   const addTrendLine = (chart) => {
@@ -291,7 +284,7 @@ function BarChart(props) {
 
     const trendlineCreator = new TrendlineCreator(trendlineType, chart, xScaleForLines, yScale);
     trendlineCreator.render(domain, trendlineData, config);
-  }
+  };
 
   const displayAxesLabels = (chart) => {
     if (YAxis.displayLabel) {
@@ -314,7 +307,7 @@ function BarChart(props) {
         .attr('text-anchor', 'middle')
         .text(XAxis.label);
     }
-  }
+  };
 
   const displayGoalLine = (chart) => {
     const y = calcYScale(YAxis.key[0])(goal.value);
@@ -327,7 +320,7 @@ function BarChart(props) {
       .attr('text-anchor', 'middle')
       .attr('class', 'line__label')
       .text(goal.label);
-  }
+  };
 
   const draw = () => {
     const chart = initChart(svgRef.current);
@@ -351,7 +344,6 @@ function BarChart(props) {
     stacked ? drawStackedChart(chart, xScale, tips) : drawGroupedChart(chart, data, xScale, xSubgroup, colors, tips);
 
     // let barsInfo = null;
-
 
     const yScale = calcYDataRange(YAxis.key[0]);
     if (yScale.min < 0) {
@@ -380,7 +372,7 @@ function BarChart(props) {
     }
 
     if (trendline.display && data.length) {
-        addTrendLine(chart);
+      addTrendLine(chart);
     }
 
     // delete axis values
@@ -402,7 +394,6 @@ function BarChart(props) {
     setHeight(svgRef.current.parentElement.offsetHeight);
     setWidth(svgRef.current.parentElement.offsetWidth);
     draw();
-    console.log(`stacked ${stacked}`);
 
     window.addEventListener('resize', onResize);
     return () => window.removeEventListener('resize', onResize);

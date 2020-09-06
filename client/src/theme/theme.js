@@ -373,5 +373,12 @@ export const theme = createMuiTheme({
         height: 'max-content',
       },
     },
+    MuiAvatar: {
+      root: {
+        width: '50px',
+        height: '50px',
+        fontSize: '1.3rem',
+      },
+    },
   },
 });

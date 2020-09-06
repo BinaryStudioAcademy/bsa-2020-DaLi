@@ -1,8 +1,9 @@
 import { makeStyles } from '@material-ui/core/styles';
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles((theme) => ({
   viewVisualizationHeader: {
-    height: '60px',
+    minHeight: '60px',
+    height: 'fit-content',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'space-between',
@@ -31,7 +32,7 @@ const useStyles = makeStyles(() => ({
     color: 'gray',
     fontSize: '22px',
     cursor: 'pointer',
-    marginLeft: '20px',
+    margin: '0 20px',
   },
 
   viewVisualizationButtons: {
@@ -49,6 +50,29 @@ const useStyles = makeStyles(() => ({
       background: '#3ca1de',
     },
     borderRadius: '5px',
+    marginLeft: '10px',
+  },
+
+  viewVisualizationFilterButton: {
+    color: 'rgb(113, 114, 173)',
+    backgroundColor: 'rgba(113, 114, 173, 0.2)',
+    textTransform: 'none',
+    '&:hover': {
+      backgroundColor: 'rgba(113, 114, 173, 0.5)',
+    },
+    borderRadius: '5px',
+    marginLeft: '10px',
+  },
+
+  viewVisualizationSummarizeButton: {
+    color: 'white',
+    backgroundColor: 'rgba(136, 191, 77, 0.8)',
+    textTransform: 'none',
+    '&:hover': {
+      backgroundColor: 'rgba(136, 191, 77, 1)',
+    },
+    borderRadius: '5px',
+    marginLeft: '10px',
   },
 
   viewVisualizationDeleteButton: {
@@ -60,6 +84,22 @@ const useStyles = makeStyles(() => ({
     },
     borderRadius: '5px',
     marginRight: '20px',
+  },
+
+  chip: {
+    margin: theme.spacing(0.5),
+    borderRadius: 5,
+    fontWeight: 'bold',
+    backgroundColor: '#E2E3EF',
+    color: '#7172AD',
+  },
+
+  toggleFiltersChip: {
+    margin: theme.spacing(0.5),
+    borderRadius: 5,
+    fontWeight: 'bold',
+    color: '#E2E3EF',
+    backgroundColor: '#7172AD',
   },
 }));
 

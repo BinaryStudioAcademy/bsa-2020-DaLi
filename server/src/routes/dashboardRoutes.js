@@ -47,7 +47,17 @@ router.post(
 router.patch(
   '/:id',
   asyncHandler(async (req, res, next) => {
-    const result = await DashboardService.updateDashboard(req.params.id, req.body);
+    let result = null;
+    console.log(req.query);
+
+    if (req.query.collection) {
+      result = await DashboardService.updateDashboard(req.params.id, {
+        collections_id: req.query.collection,
+      });
+    } else {
+      result = await DashboardService.updateDashboard(req.params.id, req.body);
+    }
+
     if (result) {
       res.status(200).json(result);
       next();

@@ -7,6 +7,8 @@ import userGroupsRoutes from './userGroupsRoutes';
 import databaseRoutes from './databaseRoutes';
 import permissionRoutes from './permissionRoutes';
 import dbTableRoutes from './dbTableRoutes';
+import collectionRoutes from './collectionRoutes';
+import permissionCollectionsRoutes from './permissionCollectionsRoutes';
 
 export default (app) => {
   app.use('/', home);
@@ -16,6 +18,8 @@ export default (app) => {
   app.use('/api/dashboards', dashboardRoutes);
   app.use('/api/user-groups', userGroupsRoutes);
   app.use('/api/databases', databaseRoutes);
+  app.use('/api/permissions/collections', permissionCollectionsRoutes);
   app.use('/api/permissions', permissionRoutes);
   app.use('/api/tables', dbTableRoutes);
+  app.use('/api/collections', collectionRoutes);
 };

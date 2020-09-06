@@ -34,11 +34,11 @@ function BarChart(props) {
   const calcYDataRange = (YKey) => {
     return {
       min: calcMinYDataValue(
-        d3.min(data, (d) => d[YKey]),
+        d3.min(data, (d) => d[YAxis.key]),
         goal
       ),
       max: calcMaxYDataValue(
-        d3.max(data, (d) => d[YKey]),
+        d3.max(data, (d) => d[YAxis.key]),
         goal
       ),
     };
@@ -202,7 +202,7 @@ function BarChart(props) {
         .attr('x', (a) => xScale(a.data[XAxis.key]) + xScale.bandwidth() / 2)
         .attr('y', (a, index) => {
           return yScale(maxValues[index]) - 10;
-        }) 
+        })
         // .attr('transform', d => (YAxis.key.length > 1 && !stacked)?`translate(${xPosGrouped(d,index)},${yPosGrouped(d,key,index)}), rotate(-90)`:'rotate(0)')
         .attr('text-anchor', 'middle')
         .text((a, index) => maxValues[index]);
@@ -412,7 +412,7 @@ BarChart.propTypes = {
         displayLabel: PropTypes.bool,
       }),
       YAxis: PropTypes.shape({
-        key: PropTypes.array,
+        key: PropTypes.string,
         label: PropTypes.string,
         displayLabel: PropTypes.bool,
       }),

@@ -34,5 +34,3 @@ export const OPEN_MODAL = 'OPEN_MODAL';
 export const CLOSE_MODAL = 'CLOSE_MODAL';
 
 export const SET_FORM_DATA = 'SET_FORM_DATA';
-
-export const SET_ACTIVE_TAB_INDEX = 'SET_ACTIVE_TAB_INDEX';

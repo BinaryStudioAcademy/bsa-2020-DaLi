@@ -16,7 +16,6 @@ import ColorPicker from 'material-ui-color-picker';
 import ToggleButton from '@material-ui/lab/ToggleButton';
 import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup';
 import FormLabel from '@material-ui/core/FormLabel';
-import CloseIcon from '@material-ui/icons/Close';
 import { useStyles, switchStyles } from './styles';
 
 const PrettySwitch = (props) => {
@@ -84,7 +83,7 @@ const BarChartSettings = ({ updateConfig, config: oldConfig }) => {
 
   const [value, setValue] = useState(0);
   const [xAxis, setXAxis] = useState(XAxis.key || XAxis.availableKeys[0]);
-  const [yAxis, setYAxis] = useState(YAxis.key || [YAxis.availableKeys[0]]);
+  const [yAxis, setYAxis] = useState(YAxis.key || YAxis.availableKeys[0]);
   const [isGoalLine, setIsGoalLine] = useState(goal.display);
   const [goalLine, setGoalLine] = useState(goal.value);
   const [color, setColor] = useState(barColor);
@@ -211,38 +210,25 @@ const BarChartSettings = ({ updateConfig, config: oldConfig }) => {
             {valuesX}
           </NativeSelect>
         </FormControl>
-        <InputLabel className={classes.label} shrink htmlFor="yAxis-native-helper">
-          Y-Axis
-        </InputLabel>
-        {yAxis.map((value, index) => (
-          <FormControl className={classes.ySelectControl}>
-            <div className={classes.ySelectItem}>
-              <NativeSelect
-                key={`line${index}`}
-                className={classes.select}
-                value={value}
-                onChange={(event) => {
-                  const newYAxes = [...yAxis];
-                  newYAxes[index] = event.target.value;
-                  setYAxis(newYAxes);
-                  if (yAxis.length === 1) {
-                    setLabelYAxis(event.target.value);
-                  }
-                }}
-                inputProps={{
-                  id: 'yAxis-native-helper',
-                  name: 'yAxis',
-                }}
-              >
-                {valuesY}
-              </NativeSelect>
-              {yAxis.length > 1 ? <CloseIcon fontSize="default" onClick={() => deleteChart(index)} /> : null}
-            </div>
-          </FormControl>
-        ))}
-        <Button variant="contained" className={classes.addSeriesBtn} onClick={addChart}>
-          Add another series
-        </Button>
+        <FormControl className={classes.formControl}>
+          <InputLabel className={classes.label} shrink htmlFor="yAxis-native-helper">
+            Y-Axis
+          </InputLabel>
+          <NativeSelect
+            className={classes.select}
+            value={yAxis}
+            onChange={(event) => {
+              setYAxis(event.target.value);
+              setLabelYAxis(event.target.value);
+            }}
+            inputProps={{
+              id: 'yAxis-native-helper',
+              name: 'yAxis',
+            }}
+          >
+            {valuesY}
+          </NativeSelect>
+        </FormControl>
       </TabPanel>
       <TabPanel value={value} index={1}>
         <div className={classes.switches}>

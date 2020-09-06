@@ -1,6 +1,7 @@
 import createError from 'http-errors';
 import DashboardRepository from '../repositories/dashboardRepository';
 import DashboardVisualizationsRepository from '../repositories/dashboardVisualizationsRepository';
+import CollectionRepository from '../repositories/collectionRepository';
 
 export const getDashboards = async () => {
   const result = await DashboardRepository.getAllWithVisualizations();
@@ -8,7 +9,8 @@ export const getDashboards = async () => {
 };
 
 export const createDashboard = async (data) => {
-  const result = await DashboardRepository.create(data);
+  const initialCollectionId = await CollectionRepository.getInitialCollectionId();
+  const result = await DashboardRepository.create({ ...data, collections_id: initialCollectionId });
   return result;
 };
 
@@ -52,6 +54,14 @@ export const updateDashboard = async (dashboardId, dataToUpdate) => {
   if (!currentDashboard) {
     throw createError(404, `Dashboard with id of ${dashboardId} not found`);
   }
+
+  if (dataToUpdate.collections_id) {
+    await DashboardRepository.updateById({ id: dashboardId }, dataToUpdate);
+    return {
+      status: 'Dashboard added to collection success',
+    };
+  }
+
   const { newVisualizationsId, deletedDashboardVisualizationsId, updatedDashboardData } = dataToUpdate;
 
   await Promise.all(

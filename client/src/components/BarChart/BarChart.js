@@ -216,7 +216,7 @@ function BarChart(props) {
 
     const legend = legendContainer
       .selectAll('.legend')
-      .data(YAxis.key)
+      .data(YAxis.label)
       .enter()
       .append('g')
       .attr('class', 'legend')
@@ -295,7 +295,7 @@ function BarChart(props) {
         .attr('y', margin.left - 10)
         .attr('transform', 'rotate(-90)')
         .attr('text-anchor', 'middle')
-        .text(YAxis.label);
+        .text(YAxis.label[0]);
     }
 
     if (XAxis.displayLabel) {
@@ -413,7 +413,7 @@ BarChart.propTypes = {
       }),
       YAxis: PropTypes.shape({
         key: PropTypes.array,
-        label: PropTypes.string,
+        label: PropTypes.array,
         displayLabel: PropTypes.bool,
       }),
     }),
@@ -434,6 +434,7 @@ BarChart.propTypes = {
         label: PropTypes.string,
       }),
       lineType: PropTypes.string,
+      stacked: PropTypes.bool,
       trendline: PropTypes.shape({
         display: PropTypes.bool,
         trendlineType: PropTypes.string,

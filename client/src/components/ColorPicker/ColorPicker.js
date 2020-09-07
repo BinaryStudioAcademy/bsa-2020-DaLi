@@ -1,26 +1,25 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 import React, { useState } from 'react';
+import PropTypes from 'prop-types';
 import { useHistory, useLocation } from 'react-router-dom';
 import TextField from '@material-ui/core/TextField';
 import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
-import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
+// import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
 import EqualizerOutlinedIcon from '@material-ui/icons/EqualizerOutlined';
 import TimelineOutlinedIcon from '@material-ui/icons/TimelineOutlined';
 import Popover from '@material-ui/core/Popover';
 import ToggleButton from '@material-ui/lab/ToggleButton';
 import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup';
-import Button from '@material-ui/core/Button';
 import ButtonBase from '@material-ui/core/ButtonBase';
 import { useStyles } from './styles';
 
-const ColorPicker = ({ color: oldColor = 'red', label, index, handleColorChange }) => {
+const ColorPicker = ({ color: oldColor = 'red', label, index, multiline, handleColorChange, handleLabelChange }) => {
   const history = useHistory();
   const location = useLocation();
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = useState(null);
   const [color, setColor] = useState(oldColor);
-  const [multiline, setMultiline] = useState(false);
 
   const handleClose = () => {
     setAnchorEl(null);
@@ -30,8 +29,8 @@ const ColorPicker = ({ color: oldColor = 'red', label, index, handleColorChange 
     setAnchorEl(event.currentTarget);
   };
 
-  const handleChange = (event) => {
-    console.log(event);
+  const changeLabel = (label) => {
+    handleLabelChange(label, index);
   };
 
   const pickColor = (event) => {
@@ -60,8 +59,6 @@ const ColorPicker = ({ color: oldColor = 'red', label, index, handleColorChange 
         <div className={classes.colorBox}>
           <ButtonBase
             aria-describedby={id}
-            // variant="contained"
-            // color="primary"
             onClick={handleClick}
             className={classes.colorSquare}
             style={{ backgroundColor: color }}
@@ -114,7 +111,7 @@ const ColorPicker = ({ color: oldColor = 'red', label, index, handleColorChange 
           </Popover>
         </div>
         <TextField
-          id="standard-basic"
+          id={`color-picker ${index}`}
           label=""
           className={classes.input}
           type="text"
@@ -123,7 +120,7 @@ const ColorPicker = ({ color: oldColor = 'red', label, index, handleColorChange 
           }}
           value={label}
           onChange={(event) => {
-            handleChange(event);
+            changeLabel(event.target.value);
           }}
         />
         {multiline ? (
@@ -136,7 +133,6 @@ const ColorPicker = ({ color: oldColor = 'red', label, index, handleColorChange 
             value=""
             exclusive
             onChange={(event, type) => {
-              // setPolynomialOrder(parseInt(order));
               handleTypeChange(event, type);
             }}
             aria-label="trendlinePolynomialOrder"
@@ -160,6 +156,15 @@ const ColorPicker = ({ color: oldColor = 'red', label, index, handleColorChange 
       </div>
     </div>
   );
+};
+
+ColorPicker.propTypes = {
+  color: PropTypes.string,
+  label: PropTypes.string,
+  index: PropTypes.number,
+  multiline: PropTypes.bool,
+  handleColorChange: PropTypes.func,
+  handleLabelChange: PropTypes.func,
 };
 
 export default ColorPicker;

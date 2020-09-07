@@ -34,9 +34,11 @@ import PermissionsHeader from './PermissionsHeader/PermissionsHeader';
 import PermissionsTable from './PermissionsTable/PermissionsTable';
 import PermissionsModal from './PermissionsModal/PermissionsModal';
 import SelectVisualizationSidebar from './SelectVisualizationSidebar/SelectVisualizationSidebar';
+import ColorPicker from './ColorPicker/ColorPicker';
 
 export {
   BarChart,
+  ColorPicker,
   Header,
   SaveVisualizationModal,
   AddDashboardModal,

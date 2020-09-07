@@ -17,6 +17,7 @@ import ToggleButton from '@material-ui/lab/ToggleButton';
 import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup';
 import FormLabel from '@material-ui/core/FormLabel';
 import CloseIcon from '@material-ui/icons/Close';
+import ColorPicker2 from '../ColorPicker/ColorPicker';
 import { useStyles, switchStyles } from './styles';
 
 const PrettySwitch = (props) => {
@@ -386,6 +387,7 @@ const BarChartSettings = ({ updateConfig, config: oldConfig }) => {
             }}
           />
         ))}
+        <ColorPicker2 />
       </TabPanel>
       <TabPanel value={value} index={2}>
         <FormControlLabel

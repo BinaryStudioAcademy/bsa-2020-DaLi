@@ -302,7 +302,6 @@ export const theme = createMuiTheme({
         height: '63px',
         boxSizing: 'border-box',
         position: 'relative',
-        marginLeft: '5px',
         '&::before': {
           display: 'block',
           borderRadius: '7px',

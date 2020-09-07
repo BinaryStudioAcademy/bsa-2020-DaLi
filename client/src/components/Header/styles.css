@@ -64,6 +64,7 @@ header {
 .admin-header {
   background-color: #0d7a16;
   color: #fff;
+  border: none;
 }
 
 .admin-header-icon {

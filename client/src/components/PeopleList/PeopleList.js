@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import Snackbar from '@material-ui/core/Snackbar';
 import Alert from '@material-ui/lab/Alert';
-import Button from '@material-ui/core/Button';
 import Backdrop from '@material-ui/core/Backdrop';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Tabs from '@material-ui/core/Tabs';
@@ -97,9 +96,9 @@ const PeopleList = ({
     setAddUserModalVisible(true);
   };
 
-  const addUserHandler = () => {
-    showAddUserModal(null);
-  };
+  // const addUserHandler = () => {
+  //   showAddUserModal(null);
+  // };
 
   const showDeactivateUserModal = (person) => {
     setUser(person);
@@ -117,9 +116,9 @@ const PeopleList = ({
 
   return (
     <div className={classes.root}>
+      <PeopleListHeader addUser={addUser} />
       {!isInactiveUsers ? (
         <>
-          <PeopleListHeader addUser={addUser} />
           <PeopleTable
             active
             people={people}
@@ -139,9 +138,6 @@ const PeopleList = ({
               <Tab label="Active" className={classes.tab} />
               <Tab label="Deactivated" className={classes.tab} />
             </Tabs>
-            <Button className={classes.addPersonButton} variant="contained" onClick={addUserHandler}>
-              Add someone
-            </Button>
           </div>
           <TabPanel value={value} index={0}>
             <PeopleTable

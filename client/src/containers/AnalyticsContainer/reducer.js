@@ -120,13 +120,27 @@ const analyticsReducer = (state = initialState, { type, payload }) => {
         status: 'success',
       };
     }
-    case ADD_COLLECTION_SUCCESS:
-    case DELETE_COLLECTION_SUCCESS:
+    case DELETE_COLLECTION_SUCCESS: {
+      return {
+        ...state,
+        isLoading: false,
+        message: 'Collection successfully deleted',
+        status: 'success',
+      };
+    }
+    case ADD_COLLECTION_SUCCESS: {
+      return {
+        ...state,
+        isLoading: false,
+        message: 'Collection successfully added',
+        status: 'success',
+      };
+    }
     case UPDATE_COLLECTION_SUCCESS: {
       return {
         ...state,
         isLoading: false,
-        message: 'Collections successfully updated',
+        message: 'Collection successfully updated',
         status: 'success',
       };
     }

@@ -49,7 +49,7 @@ const CollectionModal = ({
 
   if (modal.type === 'Move collection') {
     return (
-      <Modal className={classes.modal} open={isOpen || true} onClose={closeModal}>
+      <Modal className={classes.modal} open={isOpen || true} onClose={closeModal} style={{ minHeight: 300 }}>
         <>
           <MoveCollectionBody
             closeModal={closeModal}

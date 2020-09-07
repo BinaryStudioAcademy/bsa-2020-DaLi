@@ -56,6 +56,7 @@ export const useStyles = makeStyles(() => ({
     display: 'flex',
     flexDirection: 'column',
     position: 'relative',
+    minHeight: 400,
   },
 
   modalInput: {
@@ -139,5 +140,8 @@ export const useStyles = makeStyles(() => ({
     '& $icon': {
       color: '#ffffff',
     },
+  },
+  collectionContainer: {
+    flex: 1,
   },
 }));

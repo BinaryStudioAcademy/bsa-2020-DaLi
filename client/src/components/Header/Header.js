@@ -128,7 +128,18 @@ const Header = ({ logout, addDashboard }) => {
                 Permissions
               </NavLink>
             </div>
-            <SettingsIcon className="admin-settings header-icons" fontSize="large" onClick={handleClick} />
+            <IconButton
+              className="admin-settings header-icons"
+              size="small"
+              aria-label="settings"
+              style={{
+                marginLeft: '20px',
+                color: '#ffffff',
+              }}
+              onClick={handleClick}
+            >
+              <SettingsIcon fontSize="large" />
+            </IconButton>
           </>
         ) : (
           <>
@@ -154,17 +165,18 @@ const Header = ({ logout, addDashboard }) => {
               </StyledNavLink>
             </div>
             <div className="header-icons">
-              <IconButton size="small" aria-label="dashboard" onClick={handleDataSourcesClick}>
+              <IconButton size="small" aria-label="dashboard" onClick={handleAddMenuClick}>
                 <ControlPointIcon fontSize="large" />
               </IconButton>
-              <IconButton
-                size="small"
-                aria-label="dashboard"
-                style={{ marginLeft: '20px' }}
-                onClick={handleDataSourcesClick}
+              <Menu
+                id="simple-menu"
+                anchorEl={addMenuAnchorEl}
+                keepMounted
+                open={Boolean(addMenuAnchorEl)}
+                onClose={handleClose}
               >
-                <EventIcon fontSize="large" />
-              </IconButton>
+                <MenuItem onClick={showAddDashboardModal}>Add dashboard</MenuItem>
+              </Menu>
               <IconButton size="small" aria-label="settings" style={{ marginLeft: '20px' }} onClick={handleClick}>
                 <SettingsIcon fontSize="large" />
               </IconButton>

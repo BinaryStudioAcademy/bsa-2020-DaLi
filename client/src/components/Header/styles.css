@@ -34,7 +34,11 @@ header {
   right: 25px;
 }
 
-.header-logo-container:focus {
+.header-logo:hover {
+  cursor: pointer;
+}
+
+.header-logo:focus {
   outline: none;
 }
 
@@ -62,7 +66,7 @@ header {
 }
 
 .admin-header {
-  background-color: #0d7a16;
+  background-color: #1cd1a1;
   color: #fff;
   border: none;
 }

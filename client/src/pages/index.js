@@ -1,5 +1,4 @@
 import LoginPage from './LoginPage';
-import VisualizationsPage from './VisualizationsPage/VisualizationsPage';
 import ViewVisualizationPage from './ViewVisualizationPage';
 import AccountSettingsPage from './AccountSettingsPage/AccountSettingsPage';
 import DashboardPage from './DashboardPage/DashboardPage';
@@ -9,7 +8,6 @@ import ConnectionDatabasePage from './ConnectionDatabasePage/ConnectionDatabaseP
 
 export {
   LoginPage,
-  VisualizationsPage,
   ViewVisualizationPage,
   AccountSettingsPage,
   DashboardPage,

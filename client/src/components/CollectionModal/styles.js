@@ -117,6 +117,7 @@ export const useStyles = makeStyles(() => ({
     padding: '10px 5px',
     borderRadius: 6,
     marginTop: 5,
+    cursor: 'pointer',
   },
 
   icon: {
@@ -133,6 +134,7 @@ export const useStyles = makeStyles(() => ({
     padding: '10px 5px',
     borderRadius: 6,
     marginTop: 5,
+    cursor: 'pointer',
 
     '& $icon': {
       color: '#ffffff',

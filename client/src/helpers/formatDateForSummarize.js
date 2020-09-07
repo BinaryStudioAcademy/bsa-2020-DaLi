@@ -34,7 +34,7 @@ const getDate = (date, period) => {
 };
 
 export const formatDateForSummarize = (data, config) => {
-  if (config.isSummarize && config.summarize.groupBy.type === 'date') {
+  if (config?.isSummarize && config?.summarize.groupBy.type === 'date') {
     const dateColumn = config.summarize.groupBy.as;
     return data.map((row) => {
       const newRow = { ...row };

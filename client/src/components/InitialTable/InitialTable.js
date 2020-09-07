@@ -63,7 +63,7 @@ const InitialTable = (props) => {
   });
 
   return (
-    <TableContainer className={classes.initialTable}>
+    <TableContainer className={classes.initialTable} id="initialTableContainer">
       <Table>
         <TableHead>
           <TableRow>{tableHeadRows}</TableRow>

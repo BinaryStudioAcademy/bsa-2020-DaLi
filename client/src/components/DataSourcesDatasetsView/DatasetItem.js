@@ -14,7 +14,12 @@ const DataSourcesViewItem = ({ dataset }) => {
   };
 
   return (
-    <Grid item className="data-source-item dataset-item" onClick={() => handleDatasetClick(dataset)}>
+    <Grid
+      item
+      className="data-source-item dataset-item"
+      onClick={() => handleDatasetClick(dataset)}
+      id={`dataset-${dataset.dbNickname}`}
+    >
       <FaDatabase style={{ color: '#7073a9', fontSize: 30 }} />
       <p>{dataset.dbNickname}</p>
     </Grid>

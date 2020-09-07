@@ -86,12 +86,6 @@ const ViewVisualizationContainer = (props) => {
     }
   }, [visualizationId]);
 
-  // useEffect(() => {
-  //   console.log('start');
-  //   console.log(currentVisualization);
-  //   console.log('finish');
-  // }, [currentVisualization.datasetSettings]);
-
   useEffect(() => {
     if ('data' in currentVisualization) {
       if (currentVisualization.created !== true) {

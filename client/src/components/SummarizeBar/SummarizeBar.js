@@ -8,19 +8,21 @@ import useStyles from './styles';
 import GroupByList from './GroupByList';
 
 const summarizes = [
-  { id: 0, name: 'count', operation: 'COUNT' },
-  { id: 1, name: 'Sum of', operation: 'SUM' },
-  { id: 2, name: 'Average of', operation: 'AVG' },
+  { id: 0, name: 'count', operation: 'COUNT', isNeedArgument: false, argument: '' },
+  { id: 1, name: 'sum_of', operation: 'SUM', isNeedArgument: true, argument: '' },
+  { id: 2, name: 'average_of', operation: 'AVG', isNeedArgument: true, argument: '' },
 ];
 
 const SummarizeBar = ({ currentVisualization, updateVisualization }) => {
   const classes = useStyles();
   const [currentSummarize, setCurrentSummarize] = useState(null);
+  const [isSelectArgument, setIsSelectArgument] = useState(false);
   const [currentGroupBy, setCurrentGroupBy] = useState({ name: null, type: null, period: null, as: null });
   const [isSummarize, setIsSummarize] = useState(false);
   const [isInitializeSummarize, setIsInitializeSummarize] = useState(true);
-
   const [menuAnchorEl, setMenuAnchorEl] = useState(null);
+  const isTableVisual = currentVisualization.type === 'TABLE';
+
   const handleMenuClick = (event) => {
     setMenuAnchorEl(event.currentTarget);
   };
@@ -33,6 +35,7 @@ const SummarizeBar = ({ currentVisualization, updateVisualization }) => {
     e.stopPropagation();
     setIsSummarize(false);
     nullGroupBy();
+    setIsSelectArgument(false);
     setCurrentSummarize(null);
     setIsInitializeSummarize(false);
   };
@@ -58,15 +61,33 @@ const SummarizeBar = ({ currentVisualization, updateVisualization }) => {
       const groupByName = currentGroupBy.period
         ? `${currentGroupBy.name}_by_${currentGroupBy.period}`
         : currentGroupBy.name;
-      newConfig.axisData.XAxis.key = groupByName;
-      newConfig.axisData.XAxis.label = groupByName;
-      newConfig.axisData.YAxis.key = currentSummarize.name;
-      newConfig.axisData.YAxis.label = currentSummarize.name;
       newConfig.isSummarize = true;
+      if (isTableVisual) {
+        const summarizeColumns = [
+          {
+            id: currentSummarize.name,
+            title: currentSummarize.name,
+            type: 'number',
+            visible: true,
+          },
+          {
+            id: groupByName,
+            title: groupByName,
+            type: currentGroupBy.type,
+            visible: true,
+          },
+        ];
+        newConfig.summarizeColumns = summarizeColumns;
+      } else {
+        newConfig.axisData.XAxis.key = groupByName;
+        newConfig.axisData.XAxis.label = groupByName;
+        newConfig.axisData.YAxis.key = currentSummarize.name;
+        newConfig.axisData.YAxis.label = currentSummarize.name;
+      }
       const summarize = {
         select: {
           operation: currentSummarize.operation,
-          column: '*',
+          column: currentSummarize.isNeedArgument ? currentSummarize.argument : '*',
           as: currentSummarize.name,
         },
         groupBy: {
@@ -78,10 +99,14 @@ const SummarizeBar = ({ currentVisualization, updateVisualization }) => {
       };
       newConfig.summarize = summarize;
     } else {
-      newConfig.axisData.XAxis.key = newConfig.axisData.XAxis.availableKeys[0];
-      newConfig.axisData.XAxis.label = newConfig.axisData.XAxis.availableKeys[0];
-      newConfig.axisData.YAxis.key = newConfig.axisData.YAxis.availableKeys[0];
-      newConfig.axisData.YAxis.label = newConfig.axisData.YAxis.availableKeys[0];
+      if (isTableVisual) {
+        delete newConfig.summarizeColumns;
+      } else {
+        newConfig.axisData.XAxis.key = newConfig.axisData.XAxis.availableKeys[0];
+        newConfig.axisData.XAxis.label = newConfig.axisData.XAxis.availableKeys[0];
+        newConfig.axisData.YAxis.key = newConfig.axisData.YAxis.availableKeys[0];
+        newConfig.axisData.YAxis.label = newConfig.axisData.YAxis.availableKeys[0];
+      }
       newConfig.summarize = {
         select: {},
         groupBy: '',
@@ -92,10 +117,28 @@ const SummarizeBar = ({ currentVisualization, updateVisualization }) => {
   };
 
   const selectSummarize = (summarize) => () => {
-    setCurrentSummarize(summarize);
+    if (summarize.isNeedArgument) {
+      setCurrentSummarize(summarize);
+      setIsSelectArgument(true);
+    } else {
+      setCurrentSummarize(summarize);
+      setIsSummarize(true);
+      setMenuAnchorEl(null);
+    }
+  };
+
+  const selectArgument = (name) => () => {
+    setCurrentSummarize({ ...currentSummarize, argument: name });
     setIsSummarize(true);
+    setIsSelectArgument(false);
     setMenuAnchorEl(null);
   };
+
+  const closeMenu = () => {
+    setMenuAnchorEl(null);
+    setIsSelectArgument(false);
+  };
+
   return (
     <div style={{ width: '100%', display: 'flex', flexDirection: 'column' }}>
       <div>
@@ -103,7 +146,7 @@ const SummarizeBar = ({ currentVisualization, updateVisualization }) => {
         {isSummarize && (
           <>
             <Button className={classes.summarizeByButton} variant="contained" fullWidth onClick={handleMenuClick}>
-              {currentSummarize.name}
+              {`${currentSummarize.name} ${currentSummarize.argument}`}
               <CloseIcon onClick={deleteSummarize} />
             </Button>
           </>
@@ -115,18 +158,23 @@ const SummarizeBar = ({ currentVisualization, updateVisualization }) => {
             </Button>
           </>
         )}
-        <Menu
-          id="add-summarize"
-          anchorEl={menuAnchorEl}
-          keepMounted
-          open={Boolean(menuAnchorEl)}
-          onClose={() => setMenuAnchorEl(null)}
-        >
-          {summarizes.map((summarize) => (
-            <MenuItem key={summarize.id} onClick={selectSummarize(summarize)}>
-              {summarize.name}
-            </MenuItem>
-          ))}
+        <Menu id="add-summarize" anchorEl={menuAnchorEl} keepMounted open={Boolean(menuAnchorEl)} onClose={closeMenu}>
+          {!isSelectArgument &&
+            summarizes.map((summarize) => (
+              <MenuItem key={summarize.id} onClick={selectSummarize(summarize)}>
+                {summarize.name}
+              </MenuItem>
+            ))}
+          {isSelectArgument &&
+            currentVisualization.schema
+              .filter((column) => column.data_type === 'number')
+              .map((column) => {
+                return (
+                  <MenuItem key={column.column_name} onClick={selectArgument(column.column_name)}>
+                    {column.column_name}
+                  </MenuItem>
+                );
+              })}
         </Menu>
       </div>
       {isSummarize && (

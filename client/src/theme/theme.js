@@ -393,5 +393,10 @@ export const theme = createMuiTheme({
         padding: '10px 26px 10px 12px',
       },
     },
+    MuiTableCell: {
+      head: {
+        fontWeight: '700',
+      },
+    },
   },
 });

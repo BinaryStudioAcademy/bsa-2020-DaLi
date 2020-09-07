@@ -1,15 +1,16 @@
 import React from 'react';
 import { Grid, Button, Typography } from '@material-ui/core';
 import PropTypes from 'prop-types';
-import { useStyles } from './styles';
+
+import './styles.css';
 
 const GroupListHeader = ({ openForm, title, buttonTitle }) => {
-  const classes = useStyles();
-
   return (
-    <Grid className={classes.groupListHeader}>
-      <Typography className={classes.groupListTitle}>{title}</Typography>
-      <Button className={classes.addGroupButton} variant="contained" onClick={openForm}>
+    <Grid className="group-list-header-container">
+      <Typography variant="h1" color="textPrimary">
+        {title}
+      </Typography>
+      <Button size="large" variant="contained" color="primary" onClick={openForm}>
         {buttonTitle}
       </Button>
     </Grid>

@@ -9,8 +9,15 @@ export const useStyles = makeStyles(() => ({
     fontSize: 12,
     letterSpacing: 2,
   },
-  title: {
+  collectionName: {
     marginTop: 0,
+    marginBottom: 10,
+  },
+  collectionDescription: {
+    color: '#74838f',
+    cursor: 'pointer',
+    fontSize: 20,
+    marginLeft: 20,
   },
   headerContainer: {
     display: 'flex',

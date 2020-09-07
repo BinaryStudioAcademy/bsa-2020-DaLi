@@ -1,4 +1,3 @@
-/* eslint-disable no-nested-ternary */
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
@@ -38,7 +37,7 @@ const useStyles = makeStyles({
   },
 });
 
-const Header = ({ logout, addDashboard, isAdmin }) => {
+const Header = ({ logout, addDashboard }) => {
   const history = useHistory();
   const location = useLocation();
   const classes = useStyles();
@@ -195,17 +194,15 @@ const Header = ({ logout, addDashboard, isAdmin }) => {
         <MenuItem onClick={onAccountSettings} id="header-gear-accSett">
           Account Setting
         </MenuItem>
-        {isAdmin ? (
-          isAdminPage ? (
-            <MenuItem onClick={handleClickOnExitAdmin} id="header-gear-exitAdmin">
-              Exit Admin
-            </MenuItem>
-          ) : (
-            <MenuItem onClick={handleClickOnAdmin} id="header-gear-admin">
-              Admin
-            </MenuItem>
-          )
-        ) : null}
+        {isAdminPage ? (
+          <MenuItem onClick={handleClickOnExitAdmin} id="header-gear-exitAdmin">
+            Exit Admin
+          </MenuItem>
+        ) : (
+          <MenuItem onClick={handleClickOnAdmin} id="header-gear-admin">
+            Admin
+          </MenuItem>
+        )}
         <MenuItem onClick={onSignOut} id="header-gear-signOut">
           Sign out
         </MenuItem>
@@ -220,14 +217,9 @@ const Header = ({ logout, addDashboard, isAdmin }) => {
 };
 
 Header.propTypes = {
-  isAdmin: PropTypes.bool,
   logout: PropTypes.func,
   addDashboard: PropTypes.func,
 };
 
-const mapStateToProps = ({ currentUser }) => ({
-  isAdmin: currentUser.isAdmin,
-});
-
 const mapDispatchToProps = { logout, addDashboard };
-export default connect(mapStateToProps, mapDispatchToProps)(Header);
+export default connect(null, mapDispatchToProps)(Header);

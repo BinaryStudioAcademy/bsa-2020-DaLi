@@ -15,7 +15,6 @@ import AnalyticsTabsContainer from './AnalyticsTabsContainer/AnalyticsTabsContai
 import DataSourcesDatasetsContainer from './DataSourcesDatasetsContainer/DataSourcesDatasetsContainer';
 import DataSourcesTablesContainer from './DataSourcesTablesContainer/DataSourcesTablesContainer';
 import ConnectionDatabaseContainer from './ConnectionDatabaseContainer/ConnectionDatabaseContainer';
-import AdminRoute from './AdminRoute/AdminRoute';
 
 export {
   LoginPageContainer,
@@ -35,5 +34,4 @@ export {
   DataSourcesDatasetsContainer,
   DataSourcesTablesContainer,
   ConnectionDatabaseContainer,
-  AdminRoute,
 };

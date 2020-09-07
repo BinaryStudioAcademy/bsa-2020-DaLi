@@ -30,7 +30,6 @@ const loginReducer = (state = initialState, { type, payload }) => {
         isAuthorized: Boolean(payload.user),
         isLoading: false,
         token: payload.token,
-        isAdmin: payload.isAdmin,
       };
     }
     case FETCH_USER_SUCCESS: {
@@ -41,7 +40,6 @@ const loginReducer = (state = initialState, { type, payload }) => {
         isAuthorized: true,
         isLoading: false,
         token: payload.token,
-        isAdmin: payload.isAdmin,
       };
     }
     case LOGOUT_USER_SUCCESS: {

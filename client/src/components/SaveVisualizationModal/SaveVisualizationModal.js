@@ -27,7 +27,7 @@ const SaveVisualizationModal = ({closeModal, saveVisualization, isVisible, title
     saveVisualization(values);
   };
   return (
-    <Dialog open={isVisible || false} maxWidth="sm" fullWidth id="saveVisualizationModal">
+    <Dialog open={isVisible || false} maxWidth="sm" fullWidth>
       <DialogTitle>
         {title}
         <IconButton
@@ -46,7 +46,7 @@ const SaveVisualizationModal = ({closeModal, saveVisualization, isVisible, title
         onSubmit={(values) => save(values)}
       >
         {/* eslint-disable-next-line */}
-        {(props) => <MyForm cancel={cancel} {...props} />}
+        {(props) => <MyForm cancel={cancel} {...props}/>}
       </Formik>
     </Dialog>
   );
@@ -64,25 +64,14 @@ const MyForm = ({ handleSubmit, resetForm, isValid, dirty, cancel, errors, touch
         as="input"
         placeholder="What is the name of your card?"
         style={touched.name && errors.name ? { borderColor: 'red' } : {}}
-        id="saveVisualizationModal-name"
       />
       <div className="labelsContainer">
         <span>Description</span>
       </div>
-      <Field
-        name="description"
-        as="textarea"
-        placeholder="It`s optional but oh, so helpful"
-        id="saveVisualizationModal-description"
-      />
+      <Field name="description" as="textarea" placeholder="It`s optional but oh, so helpful" />
     </DialogContent>
     <MuiDialogActions className="visualizationModalFooter">
-      <Button
-        onClick={cancel(resetForm)}
-        variant="outlined"
-        style={{ textTransform: 'none', fontSize: 12 }}
-        id="saveVisualizationModal-cancel"
-      >
+      <Button onClick={cancel(resetForm)} variant="outlined" style={{ textTransform: 'none', fontSize: 12 }}>
         Cancel
       </Button>
       <Button
@@ -90,7 +79,6 @@ const MyForm = ({ handleSubmit, resetForm, isValid, dirty, cancel, errors, touch
         variant="outlined"
         disabled={!(isValid && dirty)}
         style={{ textTransform: 'none', fontSize: 12 }}
-        id="saveVisualizationModal-save"
       >
         Save
       </Button>

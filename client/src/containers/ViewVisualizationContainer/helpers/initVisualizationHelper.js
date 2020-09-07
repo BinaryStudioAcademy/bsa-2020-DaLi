@@ -9,9 +9,9 @@ import {
 
 export const checkIsVisualizationNew = (id) => VISUALIZATIONS_TYPES_TO_CREATE.includes(id);
 
-export const checkIsVisualizationTypeChangedDuringCreation = (prevPath, tableId) => {
+export const checkIsVisualizationTypeChangedDuringCreation = (prevPath) => {
   if (typeof prevPath === 'string') {
-    return prevPath.split('/')[2] === tableId;
+    return VISUALIZATIONS_TYPES_TO_CREATE.includes(prevPath.slice(22));
   }
   return false;
 };

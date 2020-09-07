@@ -25,6 +25,8 @@ export const useStyles = makeStyles(() => ({
 
     '& span': {
       marginLeft: 5,
+      textOverflow: 'ellipsis',
+      overflow: 'hidden',
     },
   },
 

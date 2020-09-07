@@ -75,7 +75,7 @@ const DeleteDatabaseForm = ({ handleSubmit, resetForm, isValid, dirty, cancel, e
         <ErrorMessage name="hintWord" component="div" className="error" />
       </DialogContent>
       <MuiDialogActions style={{ padding: 0, marginTop: '10px' }}>
-        <Button onClick={cancel(resetForm)} variant="outlined" style={{ textTransform: 'none', fontSize: 12 }}>
+        <Button onClick={cancel(resetForm)} variant="outlined">
           Cancel
         </Button>
         <Button

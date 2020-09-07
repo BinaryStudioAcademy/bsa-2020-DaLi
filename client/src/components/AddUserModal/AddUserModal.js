@@ -3,11 +3,11 @@ import Dialog from '@material-ui/core/Dialog';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import DialogContent from '@material-ui/core/DialogContent';
 import MuiDialogActions from '@material-ui/core/DialogActions';
-import Button from '@material-ui/core/Button';
+import { Button, Typography, TextField } from '@material-ui/core';
 import CloseIcon from '@material-ui/icons/Close';
 import IconButton from '@material-ui/core/IconButton';
 import * as Yup from 'yup';
-import { Formik, Form, Field } from 'formik';
+import { Formik, Form, ErrorMessage, Field, getIn } from 'formik';
 import PropTypes from 'prop-types';
 
 import './styles.css';
@@ -24,6 +24,12 @@ const ValidationSchema = Yup.object({
     .max(10, 'Last name must be at most 30 characters'),
   email: Yup.string().required('Email is required').email('Invalid email'),
 });
+
+const getStyles = (errors, touched, fieldName) => {
+  return getIn(errors, fieldName) && getIn(touched, fieldName)
+    ? { borderRadius: '5px', backgroundColor: 'rgba(255, 0, 0, 0.3)' }
+    : {};
+};
 
 const AddUserModal = ({ closeModal, submitHandler, isVisible, user }) => {
   const [passwordModalVisible, setPasswordModalVisible] = React.useState(false);
@@ -52,7 +58,7 @@ const AddUserModal = ({ closeModal, submitHandler, isVisible, user }) => {
   return (
     <Dialog open={isVisible || false} maxWidth="sm" fullWidth>
       <DialogTitle>
-        {user ? 'Edit user' : 'New user'}
+        <Typography variant="h3">{user ? 'Edit user' : 'New user'}</Typography>
         <IconButton
           aria-label="close"
           size="small"
@@ -62,7 +68,6 @@ const AddUserModal = ({ closeModal, submitHandler, isVisible, user }) => {
           <CloseIcon style={{ fontSize: 18, color: '#c6cfd4' }} />
         </IconButton>
       </DialogTitle>
-
       <Formik
         initialValues={
           user
@@ -72,58 +77,50 @@ const AddUserModal = ({ closeModal, submitHandler, isVisible, user }) => {
         validationSchema={ValidationSchema}
         onSubmit={handleSubmit}
       >
-        {(props) => <MyForm openPasswordModal={openPasswordModal} editMode={!!user} cancel={cancel} {...props} />}
+        {(props) => <AddUserForm openPasswordModal={openPasswordModal} editMode={!!user} cancel={cancel} {...props} />}
       </Formik>
       <PasswordModal open={passwordModalVisible} closePasswordModal={closePasswordModal} />
     </Dialog>
   );
 };
 
-const MyForm = ({ resetForm, isValid, dirty, cancel, errors, touched, editMode }) => {
+const AddUserForm = ({ resetForm, isValid, dirty, cancel, errors, touched, editMode }) => {
   return (
-    <Form>
+    <Form className="add-user-form">
       <DialogContent>
-        <div>
-          <span>First name</span>
-          <p>{touched.firstName && errors.firstName}</p>
-        </div>
+        <Typography variant="subtitle2">First name</Typography>
         <Field
           name="firstName"
-          as="input"
+          as={TextField}
+          variant="outlined"
           placeholder="Johnny"
-          style={touched.firstName && errors.firstName ? { borderColor: 'red' } : {}}
+          style={getStyles(errors, touched, 'firstName')}
         />
-        <div>
-          <span>Last name</span>
-          <p>{touched.lastName && errors.lastName}</p>
-        </div>
+        <ErrorMessage name="firstName" component="div" className="error" />
+        <Typography variant="subtitle2">Last name</Typography>
         <Field
           name="lastName"
-          as="input"
+          as={TextField}
+          variant="outlined"
           placeholder="Appleseed"
-          style={touched.name && errors.name ? { borderColor: 'red' } : {}}
+          style={getStyles(errors, touched, 'lastName')}
         />
-        <div>
-          <span>Email</span>
-          <p>{touched.email && errors.email}</p>
-        </div>
+        <ErrorMessage name="lastName" component="div" className="error" />
+        <Typography variant="subtitle2">Email</Typography>
         <Field
           name="email"
-          as="input"
+          as={TextField}
+          variant="outlined"
           placeholder="youlooknicetoday@email.com"
-          style={touched.name && errors.name ? { borderColor: 'red' } : {}}
+          style={getStyles(errors, touched, 'email')}
         />
+        <ErrorMessage name="email" component="div" className="error" />
       </DialogContent>
       <MuiDialogActions>
-        <Button onClick={cancel(resetForm)} variant="outlined" style={{ textTransform: 'none', fontSize: 12 }}>
+        <Button onClick={cancel(resetForm)} variant="outlined">
           Cancel
         </Button>
-        <Button
-          type="submit"
-          variant="outlined"
-          disabled={isValid && !dirty}
-          style={{ textTransform: 'none', fontSize: 12 }}
-        >
+        <Button type="submit" variant="contained" color="primary" disabled={isValid && !dirty}>
           {editMode ? 'Update' : 'Create'}
         </Button>
       </MuiDialogActions>
@@ -144,7 +141,7 @@ AddUserModal.propTypes = {
   }),
 };
 
-MyForm.propTypes = {
+AddUserForm.propTypes = {
   handleSubmit: PropTypes.func,
   resetForm: PropTypes.func,
   isValid: PropTypes.bool,

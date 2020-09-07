@@ -341,10 +341,16 @@ export const theme = createMuiTheme({
     MuiDialogContent: {
       root: {
         width: '100%',
+        padding: '8px',
         boxSizing: 'border-box',
         '& .MuiTypography-root': {
           padding: '10px 0',
         },
+      },
+    },
+    MuiDialogTitle: {
+      root: {
+        padding: '0',
       },
     },
     MuiFormControl: {

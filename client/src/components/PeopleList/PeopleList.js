@@ -96,10 +96,6 @@ const PeopleList = ({
     setAddUserModalVisible(true);
   };
 
-  // const addUserHandler = () => {
-  //   showAddUserModal(null);
-  // };
-
   const showDeactivateUserModal = (person) => {
     setUser(person);
     setDeactivateUserModalVisible(true);

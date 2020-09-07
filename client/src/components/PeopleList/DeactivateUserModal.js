@@ -6,6 +6,7 @@ import IconButton from '@material-ui/core/IconButton';
 import MuiDialogActions from '@material-ui/core/DialogActions';
 import Button from '@material-ui/core/Button';
 import PropTypes from 'prop-types';
+import { Typography, DialogContent } from '@material-ui/core';
 
 const DeactivateUserModal = ({ isVisible, closeModal, user, confirmHandler }) => {
   const onClickHandler = () => {
@@ -16,7 +17,7 @@ const DeactivateUserModal = ({ isVisible, closeModal, user, confirmHandler }) =>
   return (
     <Dialog open={isVisible || false} maxWidth="sm" fullWidth>
       <DialogTitle>
-        {user ? `Deactivate ${user.firstName} ${user.lastName}?` : ''}
+        <Typography variant="h3">{user ? `Deactivate ${user.firstName} ${user.lastName}?` : ''}</Typography>
         <IconButton
           aria-label="close"
           size="small"
@@ -26,14 +27,15 @@ const DeactivateUserModal = ({ isVisible, closeModal, user, confirmHandler }) =>
           <CloseIcon style={{ fontSize: 18, color: '#c6cfd4' }} />
         </IconButton>
       </DialogTitle>
-      <div style={{ padding: '16px 24px' }}>
-        {user ? `${user.firstName} ${user.lastName} won't be able to log in anymore.` : ''}
-      </div>
-      <MuiDialogActions className="addUserModalFooter">
+      <DialogContent style={{ padding: 0 }}>
+        <Typography variant="body2" style={{ textAlign: 'center' }}>
+          {user ? `${user.firstName} ${user.lastName} won't be able to log in anymore.` : ''}
+        </Typography>
+      </DialogContent>
+      <MuiDialogActions>
         <Button
-          type="button"
           variant="outlined"
-          style={{ textTransform: 'none', backgroundColor: '#ff0000', color: '#ffffff' }}
+          style={{ backgroundColor: '#ed6e6e', borderColor: '#ed6e6e', color: '#ffffff' }}
           onClick={onClickHandler}
         >
           Deactivate

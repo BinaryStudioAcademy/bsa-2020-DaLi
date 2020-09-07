@@ -46,16 +46,6 @@ export const useStyles = makeStyles((theme) => ({
     textTransform: 'none',
     color: '#000',
   },
-  addPersonButton: {
-    color: 'white',
-    textTransform: 'none',
-    background: '#3ca1de',
-    padding: '6px 16px',
-    '&:hover': {
-      background: '#3ca1de',
-    },
-    borderRadius: '5px',
-  },
   select: {
     width: '100%',
     fontSize: 14,

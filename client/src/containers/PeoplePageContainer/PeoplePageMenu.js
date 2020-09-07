@@ -8,7 +8,7 @@ const PeoplePageMenu = () => {
   const classes = useStyles();
   return (
     <div className={classes.menu}>
-      <MenuList className={classes.menuList}>
+      <MenuList>
         <MenuItem className={classes.menuItem}>
           <NavLink
             exact

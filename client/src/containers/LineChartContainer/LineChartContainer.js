@@ -1,10 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import LineChart from '../../components/LineChart/LineChart';
+import { formatDateForSummarize } from '../../helpers/formatDateForSummarize';
 
 const LineChartContainer = ({ config, data }) => {
   // const containerRef = useRef();
-
+  const dataWithFormatDateForSummarize = formatDateForSummarize(data, config);
   const chart = {
     margin: {
       top: 40,
@@ -22,8 +23,9 @@ const LineChartContainer = ({ config, data }) => {
         width: '100%',
         height: '100%',
       }}
+      id="lineChartVisualizationContainer"
     >
-      <LineChart data={data} settings={config} chart={chart} />
+      <LineChart data={dataWithFormatDateForSummarize} settings={config} chart={chart} />
     </div>
   );
 };

@@ -28,7 +28,7 @@ export default class DBPostgresManager {
   getTablenames() {
     return this.sequelize
       .query(
-        `
+          `
       SELECT 
         tablename 
       FROM 
@@ -48,7 +48,7 @@ export default class DBPostgresManager {
     let query = settings.length ? ' WHERE ' : '';
     let isFirstOption = true;
     settings.forEach((setting) => {
-      const { columnName, columnType } = setting;
+      const {columnName, columnType} = setting;
       if (columnType === 'date') {
         const greaterThan = setting.greaterThan ? new Date(setting.greaterThan).toISOString() : '-infinity';
         const lessThan = setting.lessThan ? new Date(setting.lessThan).toISOString() : 'infinity';
@@ -65,16 +65,28 @@ export default class DBPostgresManager {
     return query;
   }
 
-  getTableDataByName(name, settings) {
+  getTableDataByName(name, settings, isSummarize, summarize) {
     settings = settings.map((s) => JSON.parse(s));
-    console.log(settings);
+    let groupBy;
+    if (isSummarize) {
+      if (summarize.groupBy.type === 'date') {
+        groupBy = `date_trunc('${summarize.groupBy.period}',${summarize.groupBy.name}) as ${summarize.groupBy.as}`
+      } else {
+        groupBy = summarize.groupBy.name;
+      }
+    }
     const filterQuery = this.formQueryFromSettings(settings);
+    const select = isSummarize ? 'SELECT ' + summarize.select.operation + '('
+      + summarize.select.column + ')' + ' as ' + summarize.select.as + ', '
+      + groupBy : 'SELECT *';
     return this.sequelize
       .query(
         `
-        SELECT *
+        ${select}
         FROM "${name}"
         ${filterQuery}
+        ${isSummarize ? 'GROUP BY ' + summarize.groupBy.as : ''}
+        ${isSummarize ?'ORDER BY '+summarize.groupBy.as+' ASC' : ''} 
         `
       )
       .then((data) => {
@@ -86,12 +98,12 @@ export default class DBPostgresManager {
     return this.sequelize
       .query(
         `
-      SELECT 
+      SELECT
         data_type,
-        column_name 
-      FROM 
+        column_name
+      FROM
         information_schema.columns
-      WHERE 
+      WHERE
         table_name = '${name}';`
       )
       .then((data) => {

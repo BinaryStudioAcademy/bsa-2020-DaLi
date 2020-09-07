@@ -16,7 +16,10 @@ export function* getDashboard(payload) {
     const arrayOfDataForVisualizations = yield all(
       dashboard.Visualizations.map((visualization) => {
         const datasetSettings = visualization.datasetSettings || [];
-        return call(dbTableAPIService.getTableData, visualization.tableId, { settings: datasetSettings });
+        return call(dbTableAPIService.getTableData, visualization.tableId, {
+          settings: datasetSettings,
+          config: visualization.config,
+        });
       })
     );
     arrayOfDataForVisualizations.forEach((data, index) => {

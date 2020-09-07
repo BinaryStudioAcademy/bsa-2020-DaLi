@@ -19,6 +19,7 @@ const ViewVisualizationHeader = (props) => {
     description,
     visualizationType,
     onToggleRightSideBar,
+    tableId,
   } = props;
   const classes = useStyles();
 
@@ -29,7 +30,7 @@ const ViewVisualizationHeader = (props) => {
           <span className={classes.viewVisualizationTitleSection}>
             {isVisualizationExist ? 'Visualizations / ' : 'Create Visualization / '}
           </span>
-          {isVisualizationExist ? name : `New ${visualizationType}`}
+          {isVisualizationExist ? name : `${tableId} / ${visualizationType}`}
         </Typography>
         {isVisualizationExist && (
           <>
@@ -54,6 +55,7 @@ const ViewVisualizationHeader = (props) => {
           variant="contained"
           startIcon={<SaveIcon />}
           onClick={onVisualizationSave}
+          id="saveVisualization"
         >
           Save
         </Button>
@@ -86,6 +88,7 @@ ViewVisualizationHeader.propTypes = {
   description: PropTypes.string,
   visualizationType: PropTypes.string,
   onToggleRightSideBar: PropTypes.func,
+  tableId: PropTypes.string,
 };
 
 export default ViewVisualizationHeader;

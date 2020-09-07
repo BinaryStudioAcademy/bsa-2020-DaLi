@@ -90,6 +90,18 @@ export const useStyles = makeStyles((theme) => ({
     color: 'black',
     marginTop: '10px',
   },
+  addSeriesBtn: {
+    textTransform: 'none',
+    color: '#519ee3',
+    backgroundColor: '#eeeeee',
+  },
+  ySelectItem: {
+    display: 'flex',
+    alignItems: 'center',
+  },
+  ySelectControl: {
+    margin: '5px',
+  },
 }));
 
 export const switchStyles = makeStyles((theme) => ({

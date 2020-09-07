@@ -10,15 +10,13 @@ import PeopleListItem from './PeopleListItem';
 
 const PeopleTable = ({
   people,
-  showAddUserModal,
-  showDeactivateUserModal,
   active,
   toggleUserStatus,
-  showResetPasswordModal,
   membership,
   addUserToGroup,
   deleteUserFromGroup,
   currentUserId,
+  openModal,
 }) => {
   return (
     <TableContainer>
@@ -48,14 +46,12 @@ const PeopleTable = ({
               active={active}
               key={person.id}
               person={person}
-              showAddUserModal={showAddUserModal}
-              showDeactivateUserModal={showDeactivateUserModal}
               toggleUserStatus={toggleUserStatus}
-              showResetPasswordModal={showResetPasswordModal}
               membership={membership}
               addUserToGroup={addUserToGroup}
               deleteUserFromGroup={deleteUserFromGroup}
               currentUserId={currentUserId}
+              openModal={openModal}
             />
           ))}
         </TableBody>
@@ -66,14 +62,12 @@ const PeopleTable = ({
 
 PeopleTable.propTypes = {
   people: PropTypes.array,
-  showAddUserModal: PropTypes.func,
-  showDeactivateUserModal: PropTypes.func,
   active: PropTypes.bool,
   toggleUserStatus: PropTypes.func,
-  showResetPasswordModal: PropTypes.func,
   membership: PropTypes.array,
   addUserToGroup: PropTypes.func,
   deleteUserFromGroup: PropTypes.func,
   currentUserId: PropTypes.string,
+  openModal: PropTypes.func,
 };
 export default PeopleTable;

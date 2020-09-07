@@ -74,9 +74,21 @@ const AnalyticsTabs = ({ visualizations, dashboards, deleteVisualization, delete
         visualizationId={visualizationIdToDelete}
       />
       <AnalyticsTabsHeader value={value} onChange={handleChange}>
-        <Tab classes={{ root: classes.tabsButtons, selected: classes.selected }} label="Everything" />
-        <Tab classes={{ root: classes.tabsButtons, selected: classes.selected }} label="Dashboards" />
-        <Tab classes={{ root: classes.tabsButtons, selected: classes.selected }} label="Visualizations" />
+        <Tab
+          classes={{ root: classes.tabsButtons, selected: classes.selected }}
+          label="Everything"
+          id="analytics-tab-everything"
+        />
+        <Tab
+          classes={{ root: classes.tabsButtons, selected: classes.selected }}
+          label="Dashboards"
+          id="analytics-tab-dashboards"
+        />
+        <Tab
+          classes={{ root: classes.tabsButtons, selected: classes.selected }}
+          label="Visualizations"
+          id="analytics-tab-visualizations"
+        />
       </AnalyticsTabsHeader>
       {isLoading ? (
         <CircularProgress size={40} left={-20} top={-40} style={{ marginLeft: '50%', marginTop: '50%' }} />

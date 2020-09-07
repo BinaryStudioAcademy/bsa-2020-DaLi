@@ -22,7 +22,6 @@ export const useStyles = makeStyles((theme) => ({
     width: '21px',
     height: '21px',
     cursor: 'pointer',
-    // backgroundColor: 'rgb(80,158,227)',
     borderRadius: '2px',
   },
   colorPalette: {
@@ -66,5 +65,25 @@ export const useStyles = makeStyles((theme) => ({
     display: 'flex',
     background: 'rgb(237, 242, 245)',
     borderRadius: '6px',
+  },
+  btnGroup: {
+    marginLeft: '0.5rem',
+    borderRadius: '4px',
+    alignSelf: 'stretch',
+    display: 'flex',
+    border: '1px solid #f0f0f0',
+  },
+  btnItem: {
+    padding: '0.5rem',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    flex: '1 0 auto',
+    cursor: 'pointer',
+  },
+  iconStyles: {
+    flexShrink: '0',
+    width: '16px',
+    height: '16px',
   },
 }));

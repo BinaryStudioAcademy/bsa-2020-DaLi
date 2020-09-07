@@ -146,7 +146,18 @@ const BarChartSettings = ({ updateConfig, config: oldConfig }) => {
     });
   };
 
-  const colorList = ['blue', 'red', 'green', 'orange', 'purple', 'indigo', 'cyan', 'teal', 'lime', 'yellow'];
+  const colorList = [
+    '#4aa1de',
+    'rgb(80, 158, 227)',
+    'rgb(136, 191, 77)',
+    'rgb(169, 137, 197)',
+    'rgb(239, 140, 140)',
+    'rgb(249, 212, 92)',
+    'rgb(242, 168, 111)',
+    'rgb(152, 217, 217)',
+    'rgb(113, 114, 173)',
+    'rgb(116, 131, 143)',
+  ];
 
   const addChart = () => {
     if (yAxis.length < YAxis.availableKeys.length) {
@@ -163,6 +174,12 @@ const BarChartSettings = ({ updateConfig, config: oldConfig }) => {
     if (newYAxes.length === 1) {
       setLabelYAxis(newYAxes[0]);
     }
+  };
+
+  const handleColorChange = (newColor, index) => {
+    const newColors = [...color];
+    newColors[index] = newColor;
+    setColor(newColors);
   };
 
   const valuesX = XAxis.availableKeys.map((value) => (
@@ -374,20 +391,18 @@ const BarChartSettings = ({ updateConfig, config: oldConfig }) => {
           ) : null}
         </div>
         {yAxis.map((value, index) => (
-          <ColorPicker
-            key={`color-${index}`}
-            className={classes.colorPicker}
-            name="color"
-            defaultValue={`${value} color`}
-            value={color[index]}
-            onChange={(newColor) => {
-              const newColors = [...color];
-              newColors[index] = newColor;
-              setColor(newColors);
-            }}
-          />
+          <>
+            <ColorPicker
+              key={`color-${index}`}
+              className={classes.colorPicker}
+              name="color"
+              defaultValue={`${value} color`}
+              value={color[index]}
+              onChange={(newColor) => handleColorChange(newColor, index)}
+            />
+            <ColorPicker2 label={value} color={color[index]} index={index} handleColorChange={handleColorChange} />
+          </>
         ))}
-        <ColorPicker2 />
       </TabPanel>
       <TabPanel value={value} index={2}>
         <FormControlLabel

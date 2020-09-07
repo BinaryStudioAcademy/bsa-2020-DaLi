@@ -103,6 +103,7 @@ const AddUserBody = ({
             onClick={handleSubmit}
             style={{ textTransform: 'none', fontSize: 12, marginLeft: 5 }}
             id={`${currentCollection?.id} moveCollectionModalButton-move`}
+            disabled={!activeCollection}
           >
             Move
           </Button>

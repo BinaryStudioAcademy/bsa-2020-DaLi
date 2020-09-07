@@ -50,6 +50,10 @@ export const useStyles = makeStyles(() => ({
     '&:hover': {
       background: '#3ca1de',
     },
+    '&:disabled': {
+      opacity: 0.5,
+      color: 'white',
+    },
   },
 
   addCollectionModalForm: {

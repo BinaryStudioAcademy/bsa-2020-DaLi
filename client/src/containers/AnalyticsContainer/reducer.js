@@ -18,6 +18,8 @@ import {
   MOVE_TO_COLLECTION_SUCCESS,
   DELETE_COLLECTION_SUCCESS,
   UPDATE_COLLECTION_SUCCESS,
+  UPDATE_COLLECTION_ERROR,
+  DELETE_COLLECTION_ERROR,
 } from './actionsTypes';
 
 const initialState = {
@@ -47,6 +49,16 @@ const analyticsReducer = (state = initialState, { type, payload }) => {
         isLoading: true,
       };
     }
+    case UPDATE_COLLECTION_ERROR:
+    case DELETE_COLLECTION_ERROR: {
+      return {
+        ...state,
+        isLoading: false,
+        status: 'error',
+        message: payload.message,
+      };
+    }
+
     case FETCH_VISUALIZATIONS_ERROR:
     case GET_COLLECTIONS_ERROR:
     case MOVE_TO_COLLECTION_ERROR: {

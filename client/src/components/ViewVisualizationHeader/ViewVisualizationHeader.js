@@ -51,7 +51,7 @@ const ViewVisualizationHeader = (props) => {
           </>
         )}
         <div>
-          {(isVisualizationExist && datasetSettings.length && (
+          {(isVisualizationExist && datasetSettings?.length && (
             <Chip
               className={classes.toggleFiltersChip}
               size="small"
@@ -61,7 +61,7 @@ const ViewVisualizationHeader = (props) => {
           )) ||
             null}
           {(isVisualizationExist &&
-            datasetSettings.length &&
+            datasetSettings?.length &&
             datasetSettings.map(({ columnName }, index) => {
               return (
                 <Chip
@@ -88,22 +88,26 @@ const ViewVisualizationHeader = (props) => {
         >
           Save
         </Button>
-        <Button
-          className={classes.viewVisualizationFilterButton}
-          variant="contained"
-          startIcon={<FilterListIcon />}
-          onClick={onToggleRightSideBar(0)}
-        >
-          Filter
-        </Button>
-        <Button
-          className={classes.viewVisualizationSummarizeButton}
-          variant="contained"
-          startIcon={<GamesOutlinedIcon />}
-          onClick={onToggleRightSideBar(1)}
-        >
-          Summarize
-        </Button>
+        {isVisualizationExist && (
+          <>
+            <Button
+              className={classes.viewVisualizationFilterButton}
+              variant="contained"
+              startIcon={<FilterListIcon />}
+              onClick={onToggleRightSideBar(0)}
+            >
+              Filter
+            </Button>
+            <Button
+              className={classes.viewVisualizationSummarizeButton}
+              variant="contained"
+              startIcon={<GamesOutlinedIcon />}
+              onClick={onToggleRightSideBar(1)}
+            >
+              Summarize
+            </Button>
+          </>
+        )}
       </Grid>
     </Grid>
   );

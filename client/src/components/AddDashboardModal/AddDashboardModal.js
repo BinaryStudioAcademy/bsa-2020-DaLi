@@ -11,8 +11,6 @@ import { Formik, Form, Field } from 'formik';
 import PropTypes from 'prop-types';
 import { TextField, Typography } from '@material-ui/core';
 
-import './styles.css';
-
 const ValidationSchema = Yup.object({
   name: Yup.string().required('Name is required'),
 });
@@ -64,7 +62,7 @@ const MyForm = ({ handleSubmit, resetForm, isValid, dirty, cancel, errors, touch
         id="outlined-required"
         variant="outlined"
         placeholder="What is the name of your dashboard?"
-        style={touched.name && errors.name ? { borderColor: 'red' } : {}}
+        style={touched.name && errors.name ? { borderRadius: '5px', backgroundColor: 'rgba(255, 0, 0, 0.3)' } : {}}
       />
       <Typography variant="subtitle2">Description</Typography>
       <Field

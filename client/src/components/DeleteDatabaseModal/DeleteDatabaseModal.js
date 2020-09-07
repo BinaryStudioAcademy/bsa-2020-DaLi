@@ -1,33 +1,18 @@
 import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
 import Dialog from '@material-ui/core/Dialog';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
 import MuiDialogActions from '@material-ui/core/DialogActions';
 import Button from '@material-ui/core/Button';
-import { Formik, Form, Field } from 'formik';
+import { Formik, Form, ErrorMessage, Field } from 'formik';
 import * as Yup from 'yup';
 import PropTypes from 'prop-types';
+import { Typography, IconButton, TextField } from '@material-ui/core';
+import CloseIcon from '@material-ui/icons/Close';
 import HINT_WORD from './constants';
-
-import './styles.css';
 
 const ValidationSchema = Yup.object({
   hintWord: Yup.string().max(6),
-});
-
-const useStyles = makeStyles({
-  // deleteButton: {
-  //   color: 'white',
-  //   textTransform: 'none',
-  //   background: 'red',
-  //   '&:hover': {
-  //     background: 'red',
-  //   },
-  //   borderRadius: '5px',
-  //   marginRight: '20px',
-  // },
 });
 
 const DeleteDatabaseModal = ({ isVisible, closeModal, deleteDatabase, databaseId }) => {
@@ -43,7 +28,17 @@ const DeleteDatabaseModal = ({ isVisible, closeModal, deleteDatabase, databaseId
 
   return (
     <Dialog open={isVisible || false} maxWidth="sm" fullWidth>
-      <DialogTitle>Delete this database?</DialogTitle>
+      <DialogTitle>
+        <Typography variant="h3">Delete this database?</Typography>
+        <IconButton
+          aria-label="close"
+          size="small"
+          style={{ position: 'absolute', top: 20, right: 24 }}
+          onClick={closeModal}
+        >
+          <CloseIcon style={{ fontSize: 18, color: '#c6cfd4' }} />
+        </IconButton>
+      </DialogTitle>
       <Formik initialValues={{ hintWord: '' }} ValidationSchema={ValidationSchema} onSubmit={deleteDb}>
         {/* eslint-disable-next-line */}
         {(props) => <DeleteDatabaseForm cancel={cancel} {...props} />}
@@ -53,8 +48,6 @@ const DeleteDatabaseModal = ({ isVisible, closeModal, deleteDatabase, databaseId
 };
 
 const DeleteDatabaseForm = ({ handleSubmit, resetForm, isValid, dirty, cancel, errors, touched }) => {
-  const classes = useStyles();
-
   const validateHintWord = (value) => {
     let error;
     if (value !== HINT_WORD) {
@@ -64,28 +57,31 @@ const DeleteDatabaseForm = ({ handleSubmit, resetForm, isValid, dirty, cancel, e
   };
 
   return (
-    <Form className="visualizationModalForm" onSubmit={handleSubmit}>
-      <DialogContent>
-        <DialogContentText>
-          If you&#39;re sure, please type <strong>{HINT_WORD}</strong> in this box:
-        </DialogContentText>
+    <Form onSubmit={handleSubmit}>
+      <DialogContent style={{ padding: '0 0 10px' }}>
+        <Typography variant="subtitle2">
+          If you&#39;re sure, please type <strong style={{ color: '#1CD1A1' }}>{HINT_WORD}</strong> in this box:
+        </Typography>
         <Field
+          as={TextField}
           name="hintWord"
-          as="input"
           maxLength={6}
+          variant="outlined"
           validate={validateHintWord}
-          style={touched.hintWord && errors.hintWord ? { borderColor: 'red' } : {}}
+          style={
+            touched.hintWord && errors.hintWord ? { borderRadius: '5px', backgroundColor: 'rgba(255, 0, 0, 0.3)' } : {}
+          }
         />
-        <span className="errorMessage">{touched.hintWord && errors.hintWord}</span>
+        <ErrorMessage name="hintWord" component="div" className="error" />
       </DialogContent>
-      <MuiDialogActions className="visualizationModalFooter">
+      <MuiDialogActions style={{ padding: 0, marginTop: '10px' }}>
         <Button onClick={cancel(resetForm)} variant="outlined" style={{ textTransform: 'none', fontSize: 12 }}>
           Cancel
         </Button>
         <Button
-          className={classes.deleteButton}
           type="submit"
           variant="contained"
+          color="primary"
           disabled={!(isValid && dirty)}
           style={{ textTransform: 'none', fontSize: 12 }}
         >

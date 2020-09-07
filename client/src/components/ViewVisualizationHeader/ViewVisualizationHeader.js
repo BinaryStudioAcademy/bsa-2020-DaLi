@@ -5,6 +5,7 @@ import SaveIcon from '@material-ui/icons/Save';
 import FilterListIcon from '@material-ui/icons/FilterList';
 import GamesOutlinedIcon from '@material-ui/icons/GamesOutlined';
 import Tooltip from '@material-ui/core/Tooltip';
+import Chip from '@material-ui/core/Chip';
 import InfoIcon from '@material-ui/icons/Info';
 import EditIcon from '@material-ui/icons/Edit';
 
@@ -19,6 +20,8 @@ const ViewVisualizationHeader = (props) => {
     description,
     visualizationType,
     onToggleRightSideBar,
+    datasetSettings,
+    updateVisualization,
     tableId,
   } = props;
   const classes = useStyles();
@@ -44,7 +47,36 @@ const ViewVisualizationHeader = (props) => {
                 <InfoIcon className={classes.viewVisualizationTitleIcon} />
               </Tooltip>
             )}
-
+            <div>
+              {(isVisualizationExist && datasetSettings?.length && (
+                <Chip
+                  className={classes.toggleFiltersChip}
+                  size="small"
+                  label="Toggle"
+                  icon={<FilterListIcon style={{ fill: '#E2E3EF' }} />}
+                />
+              )) ||
+                null}
+              {(isVisualizationExist &&
+                datasetSettings?.length &&
+                datasetSettings.map(({ columnName }, index) => {
+                  return (
+                    <Chip
+                      key={index}
+                      size="small"
+                      className={classes.chip}
+                      label={columnName}
+                      onDelete={() => {
+                        const newDatasetSettings = datasetSettings.filter(
+                          ({ columnName: name }) => name !== columnName
+                        );
+                        updateVisualization(null, newDatasetSettings);
+                      }}
+                    />
+                  );
+                })) ||
+                null}
+            </div>
             <EditIcon className={classes.viewVisualizationTitleIcon} onClick={onVisualizationNameEdit} />
           </>
         )}
@@ -59,22 +91,26 @@ const ViewVisualizationHeader = (props) => {
         >
           Save
         </Button>
-        <Button
-          className={classes.viewVisualizationFilterButton}
-          variant="contained"
-          startIcon={<FilterListIcon />}
-          onClick={onToggleRightSideBar(0)}
-        >
-          Filter
-        </Button>
-        <Button
-          className={classes.viewVisualizationSummarizeButton}
-          variant="contained"
-          startIcon={<GamesOutlinedIcon />}
-          onClick={onToggleRightSideBar(1)}
-        >
-          Summarize
-        </Button>
+        {isVisualizationExist && (
+          <>
+            <Button
+              className={classes.viewVisualizationFilterButton}
+              variant="contained"
+              startIcon={<FilterListIcon />}
+              onClick={onToggleRightSideBar(0)}
+            >
+              Filter
+            </Button>
+            <Button
+              className={classes.viewVisualizationSummarizeButton}
+              variant="contained"
+              startIcon={<GamesOutlinedIcon />}
+              onClick={onToggleRightSideBar(1)}
+            >
+              Summarize
+            </Button>
+          </>
+        )}
       </Grid>
     </Grid>
   );
@@ -89,6 +125,8 @@ ViewVisualizationHeader.propTypes = {
   visualizationType: PropTypes.string,
   onToggleRightSideBar: PropTypes.func,
   tableId: PropTypes.string,
+  datasetSettings: PropTypes.array,
+  updateVisualization: PropTypes.func,
 };
 
 export default ViewVisualizationHeader;

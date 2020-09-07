@@ -23,6 +23,7 @@ const LineChartContainer = ({ config, data }) => {
         width: '100%',
         height: '100%',
       }}
+      id="lineChartVisualizationContainer"
     >
       <LineChart data={dataWithFormatDateForSummarize} settings={config} chart={chart} />
     </div>

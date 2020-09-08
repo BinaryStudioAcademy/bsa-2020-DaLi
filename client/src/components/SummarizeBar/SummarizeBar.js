@@ -52,7 +52,14 @@ const SummarizeBar = ({ currentVisualization, updateVisualization }) => {
     const summarizeIndex = summarizes.findIndex(
       (item) => item.name === currentVisualization.config.summarize.select.as
     );
-    setCurrentSummarize(summarizes[summarizeIndex]);
+    if (summarizes[summarizeIndex].isNeedArgument) {
+      setCurrentSummarize({
+        ...summarizes[summarizeIndex],
+        argument: currentVisualization.config.summarize.select.column,
+      });
+    } else {
+      setCurrentSummarize(summarizes[summarizeIndex]);
+    }
   }
 
   const updateConfig = () => {

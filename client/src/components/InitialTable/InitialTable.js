@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import Table from '@material-ui/core/Table';
 import { makeStyles } from '@material-ui/core/styles';
@@ -22,7 +22,6 @@ const useStyles = makeStyles({
 });
 
 const getTableHead = (data) => {
-  // eslint-disable-next-line camelcase
   return Object.keys(data[0]);
 };
 
@@ -40,6 +39,9 @@ const InitialTable = (props) => {
   const [sortedBy, setSortedBy] = useState('id');
   const classes = useStyles();
   const tableProperties = getTableHead(data);
+  useEffect(() => {
+    setData(formatDateForSummarize(Data, config));
+  }, [Data]);
   const tableHeadRows = tableProperties.map((property) => (
     <TableCell
       key={property}

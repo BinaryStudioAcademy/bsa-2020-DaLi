@@ -42,6 +42,10 @@ export default (sequelize, DataTypes) => {
         type: DataTypes.JSON,
         allowNull: false,
       },
+      datasetSettings: {
+        type: DataTypes.ARRAY(DataTypes.JSON),
+        defaultValue: [],
+      },
       tableId: {
         type: DataTypes.UUID,
         allowNull: false,

@@ -14,55 +14,179 @@ function LineChart({ settings, data, chart: chartSize }) {
   const XAxis = settings.axisData.XAxis;
   const YAxis = settings.axisData.YAxis;
 
-  const [config, setConfig] = useState({});
+  // const [config, setConfig] = useState({});
   const svgRef = useRef();
   const [width, setWidth] = useState(chartSize.width);
   const [height, setHeight] = useState(chartSize.height);
-
-  const chart = d3.select(svgRef.current);
   const { margin } = chartSize;
 
+  // const chart = d3.select(svgRef.current);
+  const initChart = (ref) => {
+    const chart = d3.select(ref).attr('width', '100%').attr('height', '100%');
+    return chart;
+  };
+
+  const convertStringData = (data, keys) => {
+    data.forEach((item) => {
+      keys.forEach((YKey) => {
+        item[YKey] = Number(item[YKey]);
+      });
+    });
+  };
+
+  const calcYDataRange = (YKey) => {
+    return {
+      min: calcMinYDataValue(
+        d3.min(data, (d) => d[YKey]),
+        goal
+      ),
+      max: calcMaxYDataValue(
+        d3.max(data, (d) => d[YKey]),
+        goal
+      ),
+    };
+  };
+
+  const calcXScale = (data, XKey) => {
+    return d3
+      .scaleBand()
+      .domain(data.map((d) => d[XKey]))
+      .range([margin.left, width - margin.right])
+      .padding(0.1);
+  };
+
+  const calcYScale = (YKey, extent = null) => {
+    return d3
+      .scaleLinear()
+      .domain(extent ? extent : [calcYDataRange(YKey).min, calcYDataRange(YKey).max])
+      .range([height - margin.bottom, margin.top]);
+  };
+
+  const drawAxes = (chart, xScale) => {
+    const yScale = calcYScale(YAxis.key[0]); // TODO: yScale[0] replace
+    const xAxis = (g) =>
+      g.attr('transform', `translate(0,${height - margin.bottom})`).call(d3.axisBottom(xScale).tickSize(0));
+    const yAxis = (g) => g.attr('transform', `translate(${margin.left},0)`).call(d3.axisLeft(yScale).tickSize(0));
+
+    chart.append('g').attr('class', 'x-axis axis').call(xAxis);
+    chart.append('g').attr('class', 'y-axis axis').call(yAxis);
+  };
+
+  const showLegend = (chart) => {
+    const legendContainer = chart.append('g').attr('transform', 'translate(' + (margin.left + 50) + ',0)');
+    const legendRectSize = 18;
+    const legendSpacing = 4;
+
+    const legend = legendContainer
+      .selectAll('.legend')
+      .data(YAxis.key)
+      .enter()
+      .append('g')
+      .attr('class', 'legend')
+      .attr('transform', function (d, i) {
+        const width = legendRectSize + legendSpacing + 40;
+        const offset = (width * 3) / 2;
+        const horz = i * offset;
+        const vert = 0;
+        return 'translate(' + horz + ',' + vert + ')';
+      });
+
+    legend
+      .append('rect')
+      .attr('width', legendRectSize)
+      .attr('height', legendRectSize)
+      .style('fill', (d, i) => color[i])
+      .style('stroke', (d, i) => color[i]);
+
+    legend
+      .append('text')
+      .attr('x', legendRectSize + legendSpacing)
+      .attr('y', legendRectSize - legendSpacing)
+      .text((d) => d);
+  };
+
+  const createTips = (chart) => {
+    chart.select(`.d3-tip`).remove();
+    const tip = d3Tip()
+      .attr('class', 'd3-tip')
+      .offset([-10, 0])
+      .html(
+        (d) => `
+  <div><span>${XAxis.label}:</span> <span style='color:white'>${d[XAxis.key]}</span></div>
+  <div><span>${YKey}:</span> <span style='color:white'>${d[YKey]}</span></div>
+`
+      );
+
+    chart.call(tip).attr('height', '100%').attr('width', '100%');
+  }
+
+  const addTrendLine = (chart) => {
+    const { polynomial, trendlineType } = trendline;
+    const xDataRange = {
+      min: data[0][XAxis.key],
+      max: data[data.length - 1][XAxis.key],
+    };
+    const barUnitWidth = (xDataRange.max - xDataRange.min) / data.length;
+    const xScaleForLines = d3
+      .scaleLinear()
+      .domain([xDataRange.min, xDataRange.max])
+      .range([margin.left, width - margin.right]);
+
+    const trendlineData = data.map((item) => [item[XAxis.key], item[YAxis.key[0]]]);
+    const domain = [xDataRange.min, xDataRange.max - barUnitWidth];
+    const config = {
+      xOffset: calcXScale(data, XAxis.key).bandwidth() / 2,
+      order: polynomial.order,
+    };
+
+    const yScale = calcYScale(YAxis.key[0]);
+
+    const trendlineCreator = new TrendlineCreator(trendlineType, chart, xScaleForLines, yScale);
+    trendlineCreator.render(domain, trendlineData, config);
+  };
+
+  const displayAxesLabels = (chart) => {
+    if (YAxis.displayLabel) {
+      chart
+        .append('text')
+        .attr('class', 'label')
+        .attr('x', -(height / 2))
+        .attr('y', margin.left - 10)
+        .attr('transform', 'rotate(-90)')
+        .attr('text-anchor', 'middle')
+        .text(YAxis.label);
+    }
+
+    if (XAxis.displayLabel) {
+      chart
+        .append('text')
+        .attr('class', 'label')
+        .attr('x', width / 2)
+        .attr('y', height - margin.bottom + 30)
+        .attr('text-anchor', 'middle')
+        .text(XAxis.label);
+    }
+  };
+
+  const displayGoalLine = (chart) => {
+    const y = calcYScale(YAxis.key[0])(goal.value);
+    chart.append('line').attr('id', 'goal').attr('x1', 0).attr('y1', y).attr('x2', width).attr('y2', y);
+
+    chart
+      .append('text')
+      .attr('y', y - 10)
+      .attr('x', width - 50)
+      .attr('text-anchor', 'middle')
+      .attr('class', 'line__label')
+      .text(goal.label);
+  };
+
   const draw = () => {
-    setConfig(settings);
+    // setConfig(settings);
 
     chart.selectAll('*').remove();
 
-    const drawLine = (YKey, index) => {
-      data.forEach((item) => (item[YKey] = Number(item[YKey])));
 
-      const yDataRange = {
-        min: calcMinYDataValue(
-          d3.min(data, (d) => d[YKey]),
-          goal
-        ),
-        max: calcMaxYDataValue(
-          d3.max(data, (d) => d[YKey]),
-          goal
-        ),
-      };
-
-      const xScale = d3
-        .scaleBand()
-        .domain(data.map((d) => d[XAxis.key]))
-        .range([margin.left, width - margin.right]);
-
-      const yScale = d3
-        .scaleLinear()
-        .domain([yDataRange.min, yDataRange.max])
-        .range([height - margin.bottom, margin.top]);
-
-      chart.select(`.d3-tip`).remove();
-      const tip = d3Tip()
-        .attr('class', 'd3-tip')
-        .offset([-10, 0])
-        .html(
-          (d) => `
-    <div><span>${XAxis.label}:</span> <span style='color:white'>${d[XAxis.key]}</span></div>
-    <div><span>${YKey}:</span> <span style='color:white'>${d[YKey]}</span></div>
-  `
-        );
-
-      chart.call(tip).attr('height', '100%').attr('width', '100%');
 
       const line = d3
         .line()
@@ -99,12 +223,12 @@ function LineChart({ settings, data, chart: chartSize }) {
           .attr('text-anchor', 'middle')
           .text((d) => d[YKey]);
       }
-      const xAxis = (g) => {
-        return g.attr('transform', `translate(0,${height - margin.bottom})`).call(d3.axisBottom(xScale).tickSize(0));
-      };
-      const yAxis = (g) => g.attr('transform', `translate(${margin.left},0)`).call(d3.axisLeft(yScale).tickSize(0));
-      chart.append('g').attr('class', 'x-axis axis').call(xAxis);
-      chart.append('g').attr('class', 'y-axis axis').call(yAxis);
+      // const xAxis = (g) => {
+      //   return g.attr('transform', `translate(0,${height - margin.bottom})`).call(d3.axisBottom(xScale).tickSize(0));
+      // };
+      // const yAxis = (g) => g.attr('transform', `translate(${margin.left},0)`).call(d3.axisLeft(yScale).tickSize(0));
+      // chart.append('g').attr('class', 'x-axis axis').call(xAxis);
+      // chart.append('g').attr('class', 'y-axis axis').call(yAxis);
 
       if (yDataRange.min < 0) {
         chart
@@ -139,9 +263,9 @@ function LineChart({ settings, data, chart: chartSize }) {
           .attr('class', 'line__label')
           .text(goal.label);
       }
-    };
+    // };
 
-    YAxis.key.forEach((YKey, index) => drawLine(YKey, index));
+    // YAxis.key.forEach((YKey, index) => drawLine(YKey, index));
 
     // delete axis values
     chart.selectAll('.axis').selectAll('text').remove();

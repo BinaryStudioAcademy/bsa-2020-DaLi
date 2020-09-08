@@ -35,6 +35,11 @@ function createInitBarChartConfig(schema, getYKeys, getXKeys) {
       showDataPointsValues: false,
       lineType: '',
     },
+    isSummarize: false,
+    summarize: {
+      select: {},
+      groupBy: {},
+    },
   };
 }
 

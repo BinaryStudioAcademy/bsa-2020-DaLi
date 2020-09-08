@@ -3,6 +3,7 @@ import asyncHandler from 'express-async-handler';
 import createError from 'http-errors';
 import * as DatabaseService from '../services/databaseService';
 import { permissionsMiddleware } from '../middlewares/permissionsMiddleware';
+import { denyAccessForNonAdmins } from '../middlewares/denyAccesForNonAdminsMiddleware';
 
 const router = Router();
 
@@ -55,7 +56,11 @@ router.get(
 
 router.post(
   '/',
+  denyAccessForNonAdmins,
   asyncHandler(async (req, res, next) => {
+    console.log();
+    console.log(req.user);
+    console.log();
     const result = await DatabaseService.createDatabase(req.body);
     if (result) {
       res.status(201).json(result);
@@ -69,6 +74,7 @@ router.post(
 
 router.patch(
   '/:id',
+  denyAccessForNonAdmins,
   asyncHandler(async (req, res, next) => {
     const result = await DatabaseService.updateDatabase(
       {
@@ -88,6 +94,7 @@ router.patch(
 
 router.delete(
   '/:id',
+  denyAccessForNonAdmins,
   asyncHandler(async (req, res, next) => {
     const result = await DatabaseService.deleteDatabase({
       id: req.params.id,

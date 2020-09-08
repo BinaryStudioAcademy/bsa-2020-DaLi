@@ -4,7 +4,9 @@ import {
   GET_DATASETS_SUCCESS,
   GET_TABLES_ERROR,
   GET_TABLES_SUCCESS,
-  SET_CUREENT_DB_NAME,
+  SET_CURRENT_DB_NAME,
+  GET_DATASET_NAME_ERROR,
+  SYNC_DB_TABLES_ERROR,
 } from './actionTypes';
 
 const initialState = {
@@ -19,6 +21,8 @@ const initialState = {
 
 const datasetsListReducer = (state = initialState, { type, payload }) => {
   switch (type) {
+    case SYNC_DB_TABLES_ERROR:
+    case GET_DATASET_NAME_ERROR:
     case GET_DATASETS_ERROR:
     case GET_TABLES_ERROR:
       return {
@@ -35,7 +39,7 @@ const datasetsListReducer = (state = initialState, { type, payload }) => {
         status: 'success',
       };
     }
-    case SET_CUREENT_DB_NAME: {
+    case SET_CURRENT_DB_NAME: {
       return {
         ...state,
         currentDbName: payload,

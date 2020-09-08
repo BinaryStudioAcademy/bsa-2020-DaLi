@@ -1,19 +1,18 @@
-function createInitBarChartConfig(dataSample, schema, getYKeys) {
-  const keys = Object.keys(dataSample);
+function createInitBarChartConfig(schema, getYKeys, getXKeys) {
   const YKeys = getYKeys(schema);
-  if (keys.length < 2) throw Error('The table must contain at least 2 columns');
+  const XKeys = getXKeys(schema);
   return {
     axisData: {
       XAxis: {
-        availableKeys: keys,
-        key: keys[0],
-        label: keys[0],
+        availableKeys: XKeys,
+        key: XKeys[0],
+        label: XKeys[0],
         displayLabel: true,
       },
       YAxis: {
         availableKeys: YKeys,
-        key: YKeys[0],
-        label: YKeys[0],
+        key: [YKeys[1]],
+        label: YKeys[1],
         displayLabel: true,
       },
     },
@@ -23,7 +22,7 @@ function createInitBarChartConfig(dataSample, schema, getYKeys) {
         value: 0,
         label: 'our goal',
       },
-      color: '#4aa1de',
+      color: ['#4aa1de'],
       trendline: {
         display: false,
         trendlineType: 'linear',
@@ -35,6 +34,11 @@ function createInitBarChartConfig(dataSample, schema, getYKeys) {
       },
       showDataPointsValues: false,
       lineType: '',
+    },
+    isSummarize: false,
+    summarize: {
+      select: {},
+      groupBy: {},
     },
   };
 }

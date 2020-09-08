@@ -1,0 +1,68 @@
+import React from 'react';
+import Button from '@material-ui/core/Button';
+import EqualizerOutlinedIcon from '@material-ui/icons/EqualizerOutlined';
+import TimelineOutlinedIcon from '@material-ui/icons/TimelineOutlined';
+import MapOutlinedIcon from '@material-ui/icons/MapOutlined';
+import AppsIcon from '@material-ui/icons/Apps';
+import { useHistory } from 'react-router-dom';
+import PropTypes from 'prop-types';
+
+import useStyles from './styles';
+
+const SelectVisualizationSidebar = ({ tableId }) => {
+  const history = useHistory();
+  const classes = useStyles();
+
+  const myVisualizations = [
+    {
+      id: 'selectVisualization-lineChart',
+      name: 'Line',
+      icon: <TimelineOutlinedIcon className={classes.iconStyles} />,
+      type: 'line-chart',
+    },
+    {
+      id: 'selectVisualization-barChart',
+      name: 'Bar',
+      icon: <EqualizerOutlinedIcon className={classes.iconStyles} />,
+      type: 'bar-chart',
+    },
+    {
+      id: 'selectVisualization-table',
+      name: 'Table',
+      icon: <AppsIcon className={classes.iconStyles} />,
+      type: 'table',
+    },
+    {
+      id: 'selectVisualization-map',
+      name: 'Map',
+      icon: <MapOutlinedIcon className={classes.iconStyles} />,
+      type: 'map',
+    },
+  ];
+
+  const onButtonClick = (type) => {
+    history.push({
+      pathname: `/create-visualization/${tableId}/${type}`,
+      prevPath: history.location.pathname,
+    });
+  };
+
+  return (
+    <div className={classes.basicContainer}>
+      {myVisualizations.map((item, index) => {
+        return (
+          <Button key={index} onClick={() => onButtonClick(item.type)} className={classes.buttonStyle} id={item.id}>
+            {item.icon}
+            <span className={classes.visName}>{item.name}</span>
+          </Button>
+        );
+      })}
+    </div>
+  );
+};
+
+SelectVisualizationSidebar.propTypes = {
+  tableId: PropTypes.string,
+};
+
+export default SelectVisualizationSidebar;

@@ -12,8 +12,22 @@ import './EnhancedTable.css';
 const EnhancedTable = (props) => {
   const { columns, rows, sortOrder, sortOrderBy, handleRequestSort } = props;
 
+  const activeColumns = columns
+    .filter((column) => (column.isMiniBarChart ? column.id : null))
+    .map((column) => column.id);
+
+  const maxColumnsValue = activeColumns.map((column) => {
+    const maxValue = Math.max(
+      ...rows.map((row) => {
+        return parseFloat(row[column].replace(/\s/g, ''));
+      })
+    );
+
+    return { column, maxValue };
+  });
+
   return (
-    <TableContainer className="enhanced-table">
+    <TableContainer className="enhanced-table" id="tableVisualization">
       <Table>
         <EnhancedTableHead
           columns={columns}
@@ -21,7 +35,7 @@ const EnhancedTable = (props) => {
           sortOrderBy={sortOrderBy}
           onRequestSort={handleRequestSort}
         />
-        <EnhancedTableBody rows={rows} />
+        <EnhancedTableBody rows={rows} maxColumnsValue={maxColumnsValue} />
       </Table>
     </TableContainer>
   );

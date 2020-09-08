@@ -1,6 +1,8 @@
+import createError from 'http-errors';
 import UserGroupsRepository from '../repositories/userGroupsRepository';
 import UsersUserGroupsRepository from '../repositories/usersUserGroupsRepository';
 import { setInitialDBPermissionsOnGroupAdd } from './permissionService';
+import { setInitialCollectionPermissionsOnGroupAdd } from './permissionCollectionsService';
 
 export const getUserGroups = async () => {
   const result = await UserGroupsRepository.getAllWithUsers();
@@ -8,15 +10,20 @@ export const getUserGroups = async () => {
 };
 
 export const createUserGroup = async (data) => {
-  const result = await UserGroupsRepository.create(data);
-  await setInitialDBPermissionsOnGroupAdd(result.id);
-  return result;
+  try {
+    const result = await UserGroupsRepository.create(data);
+    await setInitialDBPermissionsOnGroupAdd(result.id);
+    await setInitialCollectionPermissionsOnGroupAdd(result.id);
+    return result;
+  } catch (err) {
+    throw createError(400, err.message);
+  }
 };
 
 export const deleteUserGroup = async (id) => {
   const item = await UserGroupsRepository.getById(id);
   if (!item) {
-    return null;
+    throw createError(404, `User group with id of ${id.id} not found`);
   }
   const result = await UserGroupsRepository.deleteById(id);
   return result;
@@ -25,7 +32,7 @@ export const deleteUserGroup = async (id) => {
 export const updateUserGroup = async (id, dataToUpdate) => {
   const item = await UserGroupsRepository.getById(id);
   if (!item) {
-    return null;
+    throw createError(404, `User group with id of ${id.id} not found`);
   }
   const result = await UserGroupsRepository.updateById(id, dataToUpdate);
   return result;
@@ -34,14 +41,15 @@ export const updateUserGroup = async (id, dataToUpdate) => {
 export const getUserGroup = async (id) => {
   const item = await UserGroupsRepository.getWithUsers(id.id);
   if (!item) {
-    return null;
+    throw createError(404, `User group with id of ${id.id} not found`);
   }
   return item[0];
 };
+
 export const getAllGroupsWithUsers = async () => {
   const item = await UserGroupsRepository.getAllGroupsWithUsers();
   if (!item) {
-    return null;
+    throw createError(404, 'No groups with users found');
   }
   return item;
 };
@@ -58,7 +66,7 @@ export const addUser = async (data) => {
 export const deleteUser = async (id) => {
   const item = await UsersUserGroupsRepository.getById(id);
   if (!item) {
-    return null;
+    throw createError(404, `No records with id ${id} found in UserUserGroups table`);
   }
   const result = await UsersUserGroupsRepository.deleteById(id);
   return result;
@@ -67,7 +75,7 @@ export const deleteUser = async (id) => {
 export const getGroupsByUser = async (id) => {
   const item = await UsersUserGroupsRepository.getGroupsByUser(id);
   if (!item) {
-    return null;
+    throw createError(404, `No groups for user with id of ${id.id} found in UserUserGroups table`);
   }
   return item;
 };

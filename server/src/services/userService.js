@@ -1,25 +1,39 @@
-/* eslint-disable */
+import createError from 'http-errors';
 import UserRepository from '../repositories/userRepository';
-import UserGroupsRepository from '../repositories/userGroupsRepository';
-import UsersUserGroupsRepository from '../repositories/usersUserGroupsRepository';
+import CollectionRepository from '../repositories/collectionRepository';
+import { compare, encryptSync } from '../helpers/cryptoHelper';
+import { generatePassword } from '../helpers/generatePassword';
+import { PRIVATE_COLLECTIONS } from '../config/types';
 
 export const getUsers = async () => {
   const result = await UserRepository.getAll();
   return result;
 };
 
-export const createUser = async (data) => {
-  const allGroups = await UserGroupsRepository.getAll();
-  const allUsersGroupID = allGroups.filter((group) => group.name === 'All Users')[0].id;
-  const result = await UserRepository.create(data);
-  await UsersUserGroupsRepository.create({ users_id: result.id, userGroups_id: allUsersGroupID });
+export const createUser = async (user) => {
+  if (await UserRepository.getByEmail(user.email)) {
+    throw createError(409, 'This email is assigned to another user');
+  }
+  const password = user.password ? user.password : '';
+  const result = await UserRepository.createUsersWithDefaultGroups({
+    ...user,
+    password: encryptSync(user.password),
+  });
+
+  await CollectionRepository.create({
+    name: PRIVATE_COLLECTIONS,
+    users_id: result.id,
+  });
+
+  if (password) result.password = password;
+
   return result;
 };
 
 export const deleteUser = async (id) => {
   const item = await UserRepository.getById(id);
   if (!item) {
-    return null;
+    throw createError(404, `User with id of ${id.id} not found`);
   }
   const result = await UserRepository.deleteById(id);
   return result;
@@ -28,23 +42,37 @@ export const deleteUser = async (id) => {
 export const updateUser = async (id, dataToUpdate) => {
   const item = await UserRepository.getById(id);
   if (!item) {
-    throw new Error({ code: 404, message: `User with id of ${id} not found` });
+    throw createError(404, `User with id of ${id.id} not found`);
   }
   if (dataToUpdate.email && item.email !== dataToUpdate.email) {
     if (await UserRepository.getByEmail(dataToUpdate.email)) {
-      throw new Error({ code: 409, message: 'This email is assigned to another user' });
+      throw createError(409, 'This email is assigned to another user');
     }
   }
+
   if (dataToUpdate.oldPassword) {
-    if (dataToUpdate.oldPassword !== item.password) {
-      throw new Error({ code: 409, message: 'Wrong current password' });
-    } else if (dataToUpdate.password === item.password) {
-      throw new Error({ code: 409, message: 'New password cannot match the current one' });
+    const currentPassword = await compare(dataToUpdate.oldPassword, item.password);
+
+    if (!currentPassword) {
+      throw createError(409, 'Wrong current password');
+    } else if (await compare(dataToUpdate.password, item.password)) {
+      throw createError(409, 'New password cannot match the current one');
     } else {
       delete dataToUpdate.oldPassword;
     }
   }
 
+  if (dataToUpdate.password || dataToUpdate.password === null) {
+    dataToUpdate.password = dataToUpdate.password || generatePassword();
+    const password = dataToUpdate.password || '';
+    const result = await UserRepository.updateById(id, {
+      ...dataToUpdate,
+      password: encryptSync(dataToUpdate.password),
+    });
+    result.password = password;
+
+    return result;
+  }
   const result = await UserRepository.updateById(id, dataToUpdate);
   return result;
 };
@@ -52,7 +80,7 @@ export const updateUser = async (id, dataToUpdate) => {
 export const getUser = async (id) => {
   const item = await UserRepository.getById(id);
   if (!item) {
-    return null;
+    throw createError(404, `User with id of ${id.id} not found`);
   }
   return item;
 };

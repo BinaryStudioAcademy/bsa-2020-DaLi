@@ -6,17 +6,20 @@ import { FaDatabase } from 'react-icons/fa';
 
 import './styles.css';
 
-const DataSourcesViewItem = ({ dataset, getTables, setCurrentDbName }) => {
+const DataSourcesViewItem = ({ dataset }) => {
   const history = useHistory();
 
   const handleDatasetClick = (dataset) => {
     history.push(`/data-sources/${dataset.id}`);
-    setCurrentDbName(dataset.dbNickname);
-    getTables(dataset.id);
   };
 
   return (
-    <Grid item className="data-source-item dataset-item" onClick={() => handleDatasetClick(dataset)}>
+    <Grid
+      item
+      className="data-source-item dataset-item"
+      onClick={() => handleDatasetClick(dataset)}
+      id={`dataset-${dataset.dbNickname}`}
+    >
       <FaDatabase style={{ color: '#7073a9', fontSize: 30 }} />
       <p>{dataset.dbNickname}</p>
     </Grid>
@@ -25,8 +28,6 @@ const DataSourcesViewItem = ({ dataset, getTables, setCurrentDbName }) => {
 
 DataSourcesViewItem.propTypes = {
   dataset: PropTypes.object,
-  getTables: PropTypes.func,
-  setCurrentDbName: PropTypes.func,
 };
 
 export default DataSourcesViewItem;

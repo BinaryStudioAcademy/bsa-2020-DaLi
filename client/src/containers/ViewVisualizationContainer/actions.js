@@ -2,8 +2,10 @@ import {
   SET_VISUALIZATION,
   UPDATE_VISUALIZATION_CONFIG,
   UPDATE_VISUALIZATION_NAME,
-  FETCH_VISUALIZATION,
   CREATE_VISUALIZATION,
+  FETCH_VISUALIZATION_WITH_DATA_AND_SCHEMA,
+  FETCH_DATA_AND_SCHEMA,
+  UPDATE_VISUALIZATION,
 } from './actionTypes';
 
 export const setVisualization = (visualization) => {
@@ -15,7 +17,7 @@ export const setVisualization = (visualization) => {
 
 export const fetchVisualization = (id) => {
   return {
-    type: FETCH_VISUALIZATION,
+    type: FETCH_VISUALIZATION_WITH_DATA_AND_SCHEMA,
     id,
   };
 };
@@ -38,5 +40,21 @@ export const createVisualization = (newVisualization, history) => {
   return {
     type: CREATE_VISUALIZATION,
     payload: { newVisualization, history },
+  };
+};
+
+export const fetchDataAndSchema = (tableId, settings = []) => {
+  return {
+    type: FETCH_DATA_AND_SCHEMA,
+    tableId,
+    settings,
+  };
+};
+
+export const updateVisualizationData = (visualizationId, updatedVisualization) => {
+  return {
+    type: UPDATE_VISUALIZATION,
+    visualizationId,
+    updatedVisualization,
   };
 };

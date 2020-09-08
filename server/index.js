@@ -6,9 +6,10 @@ import swaggerUi from 'swagger-ui-express';
 import { sequelize } from './src/models';
 import routes from './src/routes';
 import errorHandlerMiddleware from './src/middlewares/errorHandlerMiddleware';
-import { passportMiddleware } from './src/middlewares/passport';
-
+import authorizationMiddleware from './src/middlewares/authorizationMiddleware';
+import routesWhiteListConfig from './src/config/routesWhiteListConfig';
 import * as swaggerDocument from './src/docs';
+import './src/config/passportConfig';
 
 const app = express();
 app.use(
@@ -17,18 +18,15 @@ app.use(
     allowedHeaders: ['Origin', 'X-Requested-With', 'Content-Type', 'Accept', 'Authorization'],
   })
 );
-app.use(passport.initialize());
-passportMiddleware(passport);
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(passport.initialize());
 app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
-
+app.use('/api', authorizationMiddleware(routesWhiteListConfig));
 routes(app);
 
 app.use(errorHandlerMiddleware);
-
-sequelize.sync();
 
 sequelize
   .authenticate()

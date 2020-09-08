@@ -65,6 +65,99 @@ export const updateDatabasesPermissionsState = (
   return [updatedDatabasesPermission, updatedTablesPermissionsAccess];
 };
 
+export const updateCollectionsPermissionsState = (currentCollectionsPermissions, collectionId, groupId, accessType) => {
+  const updatedDatabasesPermission = currentCollectionsPermissions.map((item) => {
+    if (item.id === collectionId) {
+      return {
+        ...item,
+        groups: item.groups.map((group) => {
+          if (group.groupId === groupId) {
+            return {
+              ...group,
+              access: accessType,
+            };
+          }
+          return group;
+        }),
+      };
+    }
+    return item;
+  });
+
+  return updatedDatabasesPermission;
+};
+
+export const updateDataPermissionsChangesState = (
+  initDataPermissions,
+  currentChanges,
+  dataId,
+  groupId,
+  accessType,
+  dataType
+) => {
+  const dataIdProperty = dataType === 'collection' ? 'collectionId' : 'databaseId';
+  const changedDataIndex = currentChanges.findIndex((item) => item[dataIdProperty] === dataId);
+  const isDataNotChanged = changedDataIndex === -1;
+  if (isDataNotChanged) {
+    const newChangedDatabase = { [dataIdProperty]: dataId, groups: [{ groupId, access: accessType }] };
+    return [...currentChanges, newChangedDatabase];
+  }
+
+  const oldDataPermissions = currentChanges[changedDataIndex];
+  const changedDataGroupIndex = currentChanges[changedDataIndex].groups.findIndex((item) => item.groupId === groupId);
+
+  const isGroupNotChanged = changedDataGroupIndex === -1;
+  if (isGroupNotChanged) {
+    const updatedDataPermissions = {
+      ...oldDataPermissions,
+      groups: oldDataPermissions.groups.concat({ groupId, access: accessType }),
+    };
+    return [
+      ...currentChanges.slice(0, changedDataIndex),
+      updatedDataPermissions,
+      ...currentChanges.slice(changedDataIndex + 1),
+    ];
+  }
+
+  const initDataPermissionGroupAccess = initDataPermissions
+    .filter((item) => item.id === dataId)[0]
+    .groups.filter((item) => item.groupId === groupId)[0].access;
+
+  if (initDataPermissionGroupAccess === accessType) {
+    const updatedGroups = [
+      ...oldDataPermissions.groups.slice(0, changedDataGroupIndex),
+      ...oldDataPermissions.groups.slice(changedDataGroupIndex + 1),
+    ];
+    if (!updatedGroups.length) {
+      return [...currentChanges.slice(0, changedDataIndex), ...currentChanges.slice(changedDataIndex + 1)];
+    }
+    const updatedDataPermissions = {
+      ...oldDataPermissions,
+      groups: updatedGroups,
+    };
+    return [
+      ...currentChanges.slice(0, changedDataIndex),
+      updatedDataPermissions,
+      ...currentChanges.slice(changedDataIndex + 1),
+    ];
+  }
+
+  const updatedDataPermissionsGroup = { groupId, access: accessType };
+  const updatedDataPermissions = {
+    ...oldDataPermissions,
+    groups: [
+      ...oldDataPermissions.groups.slice(0, changedDataGroupIndex),
+      updatedDataPermissionsGroup,
+      ...oldDataPermissions.groups.slice(changedDataGroupIndex + 1),
+    ],
+  };
+  return [
+    ...currentChanges.slice(0, changedDataIndex),
+    updatedDataPermissions,
+    ...currentChanges.slice(changedDataIndex + 1),
+  ];
+};
+
 const changeDatabasePermissionsAccess = (currentDatabasePermissions, updatedTablesPermission, databaseId, groupId) => {
   const currentTables = updatedTablesPermission.filter((item) => item.databaseId === databaseId)[0].tables;
   const tablesCurrentGroupPermissions = currentTables.map(
@@ -136,74 +229,6 @@ export const updateTablesPermissionsState = (
     groupId
   );
   return [updatedDatabasesPermission, updatedTablesPermission];
-};
-
-export const updateDatabasesPermissionsChangesState = (
-  initDatabasesPermissions,
-  currentChanges,
-  databaseId,
-  groupId,
-  accessType
-) => {
-  const changedDatabaseIndex = currentChanges.findIndex((item) => item.databaseId === databaseId);
-  const isDatabaseNotChanged = changedDatabaseIndex === -1;
-  if (isDatabaseNotChanged) {
-    const newChangedDatabase = { databaseId, groups: [{ groupId, access: accessType }] };
-    return [...currentChanges, newChangedDatabase];
-  }
-  const oldDatabasePermissions = currentChanges[changedDatabaseIndex];
-  const changedDatabaseGroupIndex = currentChanges[changedDatabaseIndex].groups.findIndex(
-    (item) => item.groupId === groupId
-  );
-
-  const isGroupNotChanged = changedDatabaseGroupIndex === -1;
-  if (isGroupNotChanged) {
-    const updatedDatabasePermissions = {
-      ...oldDatabasePermissions,
-      groups: oldDatabasePermissions.groups.concat({ groupId, access: accessType }),
-    };
-    return [
-      ...currentChanges.slice(0, changedDatabaseIndex),
-      updatedDatabasePermissions,
-      ...currentChanges.slice(changedDatabaseIndex + 1),
-    ];
-  }
-  const initDatabasePermissionGroupAccess = initDatabasesPermissions
-    .filter((item) => item.databaseId === databaseId)[0]
-    .groups.filter((item) => item.groupId === groupId)[0].access;
-
-  if (initDatabasePermissionGroupAccess === accessType) {
-    const updatedGroups = [
-      ...oldDatabasePermissions.groups.slice(0, changedDatabaseGroupIndex),
-      ...oldDatabasePermissions.groups.slice(changedDatabaseGroupIndex + 1),
-    ];
-    if (!updatedGroups.length) {
-      return [...currentChanges.slice(0, changedDatabaseIndex), ...currentChanges.slice(changedDatabaseIndex + 1)];
-    }
-    const updatedDatabasePermissions = {
-      ...oldDatabasePermissions,
-      groups: updatedGroups,
-    };
-    return [
-      ...currentChanges.slice(0, changedDatabaseIndex),
-      updatedDatabasePermissions,
-      ...currentChanges.slice(changedDatabaseIndex + 1),
-    ];
-  }
-  const updatedDatabasePermissionsGroup = { groupId, access: accessType };
-  const updatedDatabasePermissions = {
-    ...oldDatabasePermissions,
-    groups: [
-      ...oldDatabasePermissions.groups.slice(0, changedDatabaseGroupIndex),
-      updatedDatabasePermissionsGroup,
-      ...oldDatabasePermissions.groups.slice(changedDatabaseGroupIndex + 1),
-    ],
-  };
-  return [
-    ...currentChanges.slice(0, changedDatabaseIndex),
-    updatedDatabasePermissions,
-    ...currentChanges.slice(changedDatabaseIndex + 1),
-  ];
 };
 
 export const updateTablesPermissionsChangesState = (

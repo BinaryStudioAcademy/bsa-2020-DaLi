@@ -1,5 +1,11 @@
 .table-settings-sidebar-container {
     width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.table-settings-sidebar-content {
+    flex: 1;
 }
 
 .property-item {
@@ -49,4 +55,36 @@
     border-radius: 100px !important;
     width: 50%;
     padding: 10px 0;
+}
+
+.columns-restore-icon {
+    font-size: 15px !important;
+}
+
+.columns-restore-icon:hover {
+    cursor: pointer;
+}
+
+.edit-menu-title {
+    color: #2e353b;
+    font-size: 16px;
+    font-weight: bold;
+    margin-top: 15px;
+    margin-bottom: 5px;
+}
+.edit-menu-back-button {
+    color: #2e353b;
+    font-style: normal;
+    font-size: 20px;
+    font-weight: 900;
+    cursor: pointer;
+    margin-bottom: 20px;
+    text-transform: uppercase;
+    display: flex;
+    align-items: center;    
+}
+
+.edit-menu-back-button span {
+    font-size: 22px;
+
 }

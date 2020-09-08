@@ -43,18 +43,20 @@ module.exports = {
           200: {
             description: 'Successful operation',
           },
-          404: {
-            description: 'User not found',
-          },
           401: {
             description: 'Invalid password',
+          },
+          403: {
+            description: 'User account deactivated',
+          },
+          404: {
+            description: 'User not found',
           },
         },
       },
     },
     '/auth/register': {
       post: {
-        deprecated: true,
         tags: ['Authentication'],
         summary: 'Register user',
         requestBody: {
@@ -128,11 +130,14 @@ module.exports = {
           required: true,
         },
         responses: {
-          200: {
+          201: {
             description: 'New users were created',
           },
           400: {
             description: 'Invalid parameters',
+          },
+          409: {
+            description: 'Conflict',
           },
         },
       },
@@ -160,6 +165,9 @@ module.exports = {
         responses: {
           200: {
             description: 'Successful operation',
+          },
+          400: {
+            description: 'Invalid parameters',
           },
           404: {
             description: 'User not found',
@@ -199,6 +207,9 @@ module.exports = {
           200: {
             description: 'Successful operation',
           },
+          400: {
+            description: 'Invalid parameters',
+          },
           404: {
             description: 'User not found',
           },
@@ -227,8 +238,210 @@ module.exports = {
           200: {
             description: 'Successful operation',
           },
+          400: {
+            description: 'Invalid parameters',
+          },
           404: {
             description: 'User not found',
+          },
+        },
+      },
+    },
+    '/user-groups': {
+      get: {
+        security: [
+          {
+            JWT: [],
+          },
+        ],
+        tags: ['User Groups'],
+        summary: 'Get all user groups',
+        responses: {
+          200: {
+            description: 'Successful operation',
+          },
+        },
+      },
+      post: {
+        security: [
+          {
+            JWT: [],
+          },
+        ],
+        tags: ['User Groups'],
+        summary: 'Create user group',
+        parameters: [],
+        requestBody: {
+          content: {
+            'application/json': {
+              schema: {
+                $ref: '#/definitions/UserGroup',
+              },
+            },
+          },
+          required: true,
+        },
+        responses: {
+          201: {
+            description: 'New user group was created',
+          },
+          400: {
+            description: 'User group creation failed',
+          },
+        },
+      },
+    },
+    '/user-groups/users': {
+      get: {
+        security: [
+          {
+            JWT: [],
+          },
+        ],
+        tags: ['User Groups'],
+        summary: 'Get all user groups with users',
+        responses: {
+          200: {
+            description: 'Successful operation',
+          },
+          400: {
+            description: 'Invalid parameters',
+          },
+          404: {
+            description: 'No groups with users found',
+          },
+        },
+      },
+    },
+    '/user-groups/{groupId}': {
+      get: {
+        security: [
+          {
+            JWT: [],
+          },
+        ],
+        tags: ['User Groups'],
+        summary: 'Get user group by id',
+        parameters: [
+          {
+            name: 'groupId',
+            in: 'path',
+            description: 'ID of user group',
+            required: true,
+            schema: {
+              $ref: '#/definitions/Id',
+            },
+          },
+        ],
+        responses: {
+          200: {
+            description: 'Successful operation',
+          },
+          400: {
+            description: 'Invalid parameters',
+          },
+          404: {
+            description: 'User group not found',
+          },
+        },
+      },
+      post: {
+        security: [
+          {
+            JWT: [],
+          },
+        ],
+        tags: ['User Groups'],
+        summary: 'Add user to group by id',
+        parameters: [
+          {
+            name: 'groupId',
+            in: 'path',
+            description: 'ID of user group',
+            required: true,
+            schema: {
+              $ref: '#/definitions/Id',
+            },
+          },
+        ],
+        responses: {
+          200: {
+            description: 'Successful operation',
+          },
+          400: {
+            description: 'User has not been added',
+          },
+        },
+      },
+      patch: {
+        security: [
+          {
+            JWT: [],
+          },
+        ],
+        tags: ['User Groups'],
+        summary: 'Update user group',
+        parameters: [
+          {
+            name: 'groupId',
+            in: 'path',
+            description: 'ID of user group',
+            required: true,
+            schema: {
+              $ref: '#/definitions/Id',
+            },
+          },
+        ],
+        requestBody: {
+          content: {
+            'application/json': {
+              schema: {
+                $ref: '#/definitions/UserGroup',
+              },
+            },
+          },
+          required: true,
+        },
+        responses: {
+          200: {
+            description: 'Successful operation',
+          },
+          400: {
+            description: 'Invalid parameters',
+          },
+          404: {
+            description: 'User group not found',
+          },
+        },
+      },
+      delete: {
+        security: [
+          {
+            JWT: [],
+          },
+        ],
+        tags: ['User Groups'],
+        summary: 'Delete user group or user from group',
+        parameters: [
+          {
+            name: 'groupId',
+            in: 'path',
+            description: 'ID of user group',
+            required: true,
+            schema: {
+              $ref: '#/definitions/Id',
+            },
+          },
+        ],
+        responses: {
+          200: {
+            description: 'Successful operation',
+          },
+          400: {
+            description: 'Invalid parameters',
+          },
+          404: {
+            description: 'User group or user not found',
           },
         },
       },
@@ -268,7 +481,7 @@ module.exports = {
           required: true,
         },
         responses: {
-          200: {
+          201: {
             description: 'New visualizations were created',
           },
           400: {
@@ -300,6 +513,9 @@ module.exports = {
         responses: {
           200: {
             description: 'Successful operation',
+          },
+          400: {
+            description: 'Invalid parameters',
           },
           404: {
             description: 'Visualization not found',
@@ -339,6 +555,9 @@ module.exports = {
           200: {
             description: 'Successful operation',
           },
+          400: {
+            description: 'Invalid parameters',
+          },
           404: {
             description: 'Visualization not found',
           },
@@ -367,8 +586,188 @@ module.exports = {
           200: {
             description: 'Successful operation',
           },
+          400: {
+            description: 'Invalid parameters',
+          },
           404: {
             description: 'Visualization not found',
+          },
+        },
+      },
+    },
+    '/dashboards': {
+      get: {
+        security: [
+          {
+            JWT: [],
+          },
+        ],
+        tags: ['Dashboards'],
+        summary: 'Get all dashboards',
+        responses: {
+          200: {
+            description: 'Successful operation',
+          },
+        },
+      },
+      post: {
+        security: [
+          {
+            JWT: [],
+          },
+        ],
+        tags: ['Dashboards'],
+        summary: 'Create dashboard',
+        parameters: [],
+        requestBody: {
+          content: {
+            'application/json': {
+              schema: {
+                $ref: '#/definitions/Dashboards',
+              },
+            },
+          },
+          required: true,
+        },
+        responses: {
+          201: {
+            description: 'New dashboard was created',
+          },
+          400: {
+            description: 'Invalid parameters',
+          },
+        },
+      },
+    },
+    '/dashboards/{id}': {
+      get: {
+        security: [
+          {
+            JWT: [],
+          },
+        ],
+        tags: ['Dashboards'],
+        summary: 'Get dashboard by id',
+        parameters: [
+          {
+            name: 'id',
+            in: 'path',
+            description: 'ID of dashboard',
+            required: true,
+            schema: {
+              $ref: '#/definitions/Id',
+            },
+          },
+        ],
+        responses: {
+          200: {
+            description: 'Successful operation',
+          },
+          400: {
+            description: 'Invalid parameters',
+          },
+          404: {
+            description: 'Dashboard not found',
+          },
+        },
+      },
+      post: {
+        security: [
+          {
+            JWT: [],
+          },
+        ],
+        tags: ['Dashboards'],
+        summary: 'Add visualization to dashboard by dashboard id',
+        parameters: [
+          {
+            name: 'id',
+            in: 'path',
+            description: 'ID of dashboard',
+            required: true,
+            schema: {
+              $ref: '#/definitions/Id',
+            },
+          },
+        ],
+        responses: {
+          200: {
+            description: 'Successful operation',
+          },
+          400: {
+            description: 'Visualization has not been added',
+          },
+        },
+      },
+      patch: {
+        security: [
+          {
+            JWT: [],
+          },
+        ],
+        tags: ['Dashboards'],
+        summary: 'Update dashboard',
+        parameters: [
+          {
+            name: 'id',
+            in: 'path',
+            description: 'ID of dashboard',
+            required: true,
+            schema: {
+              $ref: '#/definitions/Id',
+            },
+          },
+        ],
+        requestBody: {
+          content: {
+            'application/json': {
+              schema: {
+                $ref: '#/definitions/Dashboards',
+              },
+            },
+          },
+          required: true,
+        },
+        responses: {
+          200: {
+            description: 'Successful operation',
+          },
+          400: {
+            description: 'Invalid parameters',
+          },
+          404: {
+            description: 'Dashboard not found',
+          },
+        },
+      },
+      delete: {
+        security: [
+          {
+            JWT: [],
+          },
+        ],
+        tags: ['Dashboards'],
+        summary: 'Delete dashboard',
+        parameters: [
+          {
+            name: 'id',
+            in: 'path',
+            description: 'ID of dashboard',
+            required: true,
+            schema: {
+              $ref: '#/definitions/Id',
+            },
+          },
+        ],
+        responses: {
+          200: {
+            description: 'Successful operation',
+          },
+          400: {
+            description: 'Invalid parameters',
+          },
+          404: {
+            description: 'Dashboard not found',
           },
         },
       },
@@ -408,7 +807,7 @@ module.exports = {
           required: true,
         },
         responses: {
-          200: {
+          201: {
             description: 'New database was created',
           },
           400: {
@@ -440,6 +839,9 @@ module.exports = {
         responses: {
           200: {
             description: 'Successful operation',
+          },
+          400: {
+            description: 'Invalid parameters',
           },
           404: {
             description: 'Database not found',
@@ -479,6 +881,9 @@ module.exports = {
           200: {
             description: 'Successful operation',
           },
+          400: {
+            description: 'Invalid parameters',
+          },
           404: {
             description: 'Database not found',
           },
@@ -506,6 +911,9 @@ module.exports = {
         responses: {
           200: {
             description: 'Successful operation',
+          },
+          400: {
+            description: 'Invalid parameters',
           },
           404: {
             description: 'Database not found',
@@ -543,15 +951,45 @@ module.exports = {
         },
       },
     },
+    '/databases/{id}/tables/update': {
+      patch: {
+        security: [
+          {
+            JWT: [],
+          },
+        ],
+        tags: ['Databases'],
+        summary: 'Update database tables by id',
+        parameters: [
+          {
+            name: 'id',
+            in: 'path',
+            description: 'ID of database',
+            required: true,
+            schema: {
+              $ref: '#/definitions/Id',
+            },
+          },
+        ],
+        responses: {
+          200: {
+            description: 'Successful operation',
+          },
+          404: {
+            description: 'Database not found',
+          },
+        },
+      },
+    },
     '/tables/{id}/data': {
-      get: {
+      post: {
         security: [
           {
             JWT: [],
           },
         ],
         tags: ['Tables'],
-        summary: 'Get all table data by id',
+        summary: 'Get all table data by id with settings',
         parameters: [
           {
             name: 'id',
@@ -563,6 +1001,16 @@ module.exports = {
             },
           },
         ],
+        requestBody: {
+          content: {
+            'application/json': {
+              schema: {
+                $ref: '#/definitions/GetTableDataSettings',
+              },
+            },
+          },
+          required: true,
+        },
         responses: {
           200: {
             description: 'Successful operation',
@@ -637,7 +1085,7 @@ module.exports = {
           required: true,
         },
         responses: {
-          204: {
+          200: {
             description: 'Successful operation',
           },
           409: {
@@ -678,6 +1126,12 @@ module.exports = {
     },
   },
   definitions: {
+    GetTableDataSettings: {
+      type: 'object',
+      properties: {
+        settings: 'array of settings',
+      },
+    },
     Id: {
       properties: {
         uuid: {
@@ -721,7 +1175,7 @@ module.exports = {
       properties: {
         type: {
           type: 'string',
-          enum: ['LINE_CHART', 'BAR_CHART', 'TABLE'],
+          enum: ['LINE_CHART', 'BAR_CHART', 'TABLE', 'MAP'],
         },
         name: {
           type: 'string',
@@ -731,6 +1185,9 @@ module.exports = {
         },
         config: {
           type: 'object',
+        },
+        tableId: {
+          type: 'string',
         },
       },
     },
@@ -757,6 +1214,28 @@ module.exports = {
           type: 'string',
         },
         dbPassword: {
+          type: 'string',
+        },
+      },
+    },
+    Dashboards: {
+      type: 'object',
+      properties: {
+        name: {
+          type: 'string',
+        },
+        description: {
+          type: 'string',
+        },
+        config: {
+          type: 'object',
+        },
+      },
+    },
+    UserGroups: {
+      type: 'object',
+      properties: {
+        name: {
           type: 'string',
         },
       },

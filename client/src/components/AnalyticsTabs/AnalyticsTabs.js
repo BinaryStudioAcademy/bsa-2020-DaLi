@@ -21,7 +21,16 @@ const useStyles = makeStyles(() => ({
   selected: {},
 }));
 
-const AnalyticsTabs = ({ visualizations, dashboards, deleteVisualization, deleteDashboard, isLoading }) => {
+const AnalyticsTabs = ({
+  visualizations,
+  dashboards,
+  deleteVisualization,
+  deleteDashboard,
+  isLoading,
+  openModal,
+  moveToCollection,
+  collectionId,
+}) => {
   const classes = useStyles();
   const [value, setValue] = React.useState(0);
   const [isWarningVisible, setIsWarningVisible] = React.useState(false);
@@ -61,7 +70,7 @@ const AnalyticsTabs = ({ visualizations, dashboards, deleteVisualization, delete
 
   const sortData = (data) => {
     return data.sort((elem, nextElem) => {
-      return new Date(elem.updatedAt) - new Date(nextElem.updatedAt);
+      return new Date(nextElem.updatedAt) - new Date(elem.updatedAt);
     });
   };
 
@@ -74,9 +83,21 @@ const AnalyticsTabs = ({ visualizations, dashboards, deleteVisualization, delete
         visualizationId={visualizationIdToDelete}
       />
       <AnalyticsTabsHeader value={value} onChange={handleChange}>
-        <Tab classes={{ root: classes.tabsButtons, selected: classes.selected }} label="Everything" />
-        <Tab classes={{ root: classes.tabsButtons, selected: classes.selected }} label="Dashboards" />
-        <Tab classes={{ root: classes.tabsButtons, selected: classes.selected }} label="Visualizations" />
+        <Tab
+          classes={{ root: classes.tabsButtons, selected: classes.selected }}
+          label="Everything"
+          id="analytics-tab-everything"
+        />
+        <Tab
+          classes={{ root: classes.tabsButtons, selected: classes.selected }}
+          label="Dashboards"
+          id="analytics-tab-dashboards"
+        />
+        <Tab
+          classes={{ root: classes.tabsButtons, selected: classes.selected }}
+          label="Visualizations"
+          id="analytics-tab-visualizations"
+        />
       </AnalyticsTabsHeader>
       {isLoading ? (
         <CircularProgress size={40} left={-20} top={-40} style={{ marginLeft: '50%', marginTop: '50%' }} />
@@ -89,6 +110,9 @@ const AnalyticsTabs = ({ visualizations, dashboards, deleteVisualization, delete
             deleteVisualization={removeVisualization}
             deleteDashboard={removeDashboard}
             data={sortData([...visualizations, ...dashboards])}
+            openModal={openModal}
+            moveToCollection={moveToCollection}
+            collectionId={collectionId}
           />
           <AnalyticsTabsPanel
             value={value}
@@ -96,6 +120,9 @@ const AnalyticsTabs = ({ visualizations, dashboards, deleteVisualization, delete
             deleteVisualization={removeVisualization}
             deleteDashboard={removeDashboard}
             data={sortData(dashboards)}
+            openModal={openModal}
+            moveToCollection={moveToCollection}
+            collectionId={collectionId}
           />
           <AnalyticsTabsPanel
             value={value}
@@ -103,6 +130,9 @@ const AnalyticsTabs = ({ visualizations, dashboards, deleteVisualization, delete
             deleteVisualization={removeVisualization}
             deleteDashboard={removeDashboard}
             data={sortData(visualizations)}
+            openModal={openModal}
+            moveToCollection={moveToCollection}
+            collectionId={collectionId}
           />
         </>
       )}
@@ -116,6 +146,9 @@ AnalyticsTabs.propTypes = {
   isLoading: PropTypes.bool,
   deleteVisualization: PropTypes.func,
   deleteDashboard: PropTypes.func,
+  openModal: PropTypes.func,
+  moveToCollection: PropTypes.func,
+  collectionId: PropTypes.string,
 };
 
 export default AnalyticsTabs;

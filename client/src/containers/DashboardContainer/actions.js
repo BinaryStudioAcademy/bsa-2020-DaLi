@@ -1,5 +1,5 @@
 import { GET_DASHBOARD, UPDATE_DASHBOARD } from './actionsTypes';
-import { FETCH_VISUALIZATIONS } from '../AnalyticsTabsContainer/actionsTypes';
+import { FETCH_VISUALIZATIONS } from '../AnalyticsContainer/actionsTypes';
 
 export const getDashboard = (id) => {
   return {
@@ -18,13 +18,13 @@ export const updateDashboard = ({
   dashboardId,
   newVisualizationsId,
   deletedDashboardVisualizationsId,
-  updatedDashboard,
+  updatedDashboardData,
 }) => {
   return {
     type: UPDATE_DASHBOARD,
     dashboardId,
     newVisualizationsId,
     deletedDashboardVisualizationsId,
-    updatedDashboard,
+    updatedDashboardData,
   };
 };

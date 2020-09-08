@@ -5,26 +5,25 @@ import Box from '@material-ui/core/Box';
 import EqualizerOutlinedIcon from '@material-ui/icons/EqualizerOutlined';
 import TimelineOutlinedIcon from '@material-ui/icons/TimelineOutlined';
 import TableChartOutlinedIcon from '@material-ui/icons/TableChartOutlined';
+import MapOutlinedIcon from '@material-ui/icons/MapOutlined';
 import DashboardIcon from '@material-ui/icons/Dashboard';
 import Tooltip from '@material-ui/core/Tooltip';
 import InfoIcon from '@material-ui/icons/Info';
 import DeleteIcon from '@material-ui/icons/Delete';
+import MoveToInboxIcon from '@material-ui/icons/MoveToInbox';
 import { Link, useHistory } from 'react-router-dom';
-import { dbTableAPIService } from '../../../services/api/dbTableAPI.service';
 
 import { useStyles } from './styles';
 
-const AnalyticsTabsPanel = ({ value, index, data, deleteVisualization, deleteDashboard }) => {
+const AnalyticsTabsPanel = ({ value, index, data, deleteVisualization, deleteDashboard, openModal, collectionId }) => {
   const classes = useStyles();
   const history = useHistory();
 
-  const onVisualizationsClick = (id, tableId) => {
-    dbTableAPIService.getTable(tableId).then((data) =>
-      history.push({
-        pathname: `/visualizations/${id}`,
-        data,
-      })
-    );
+  const onVisualizationsClick = (id) => {
+    history.push({
+      pathname: `/visualizations/${id}`,
+      data,
+    });
   };
 
   const chooseIcon = (type) => {
@@ -38,10 +37,20 @@ const AnalyticsTabsPanel = ({ value, index, data, deleteVisualization, deleteDas
       case 'TABLE': {
         return <TableChartOutlinedIcon className={classes.icon} />;
       }
+      case 'MAP': {
+        return <MapOutlinedIcon className={classes.icon} />;
+      }
       default: {
         return <DashboardIcon className={classes.icon} />;
       }
     }
+  };
+
+  const handleMoveVisualization = (visualization) => {
+    openModal({ visualization, type: 'Move collection' });
+  };
+  const handleMoveDashboard = (dashboard) => {
+    openModal({ dashboard, type: 'Move collection' });
   };
 
   return (
@@ -54,12 +63,19 @@ const AnalyticsTabsPanel = ({ value, index, data, deleteVisualization, deleteDas
                 <>
                   <Link to={`/dashboards/${item.id}`} className={classes.item}>
                     {chooseIcon(item.type)}
-                    <span>{item.name}</span>
+                    <span id={`analytics-${item.id}-name`}>{item.name}</span>
                   </Link>
-                  <Tooltip title={item.description} placement="left" className={classes.description}>
-                    <InfoIcon />
-                  </Tooltip>
-                  <DeleteIcon className={classes.menuIcon} id={item.id} onClick={deleteDashboard(item.id)} />
+                  {item.description.length ? (
+                    <Tooltip title={item.description} placement="left" className={classes.description}>
+                      <InfoIcon id={`analytics-${item.id}-info`} />
+                    </Tooltip>
+                  ) : null}
+                  <MoveToInboxIcon className={classes.moveIcon} onClick={() => handleMoveDashboard(item)} />
+                  <DeleteIcon
+                    className={classes.menuIcon}
+                    id={`analytics-${item.id}-delete`}
+                    onClick={deleteDashboard({ id: item.id, collectionId })}
+                  />
                 </>
               ) : (
                 <>
@@ -71,7 +87,12 @@ const AnalyticsTabsPanel = ({ value, index, data, deleteVisualization, deleteDas
                     {chooseIcon(item.type)}
                     <span>{item.name}</span>
                   </div>
-                  <DeleteIcon className={classes.menuIcon} id={item.id} onClick={deleteVisualization(item.id)} />
+                  <MoveToInboxIcon className={classes.moveIcon} onClick={() => handleMoveVisualization(item)} />
+                  <DeleteIcon
+                    className={classes.menuIcon}
+                    id={item.id}
+                    onClick={deleteVisualization({ id: item.id, collectionId })}
+                  />
                 </>
               )}
             </div>
@@ -88,6 +109,8 @@ AnalyticsTabsPanel.propTypes = {
   deleteDashboard: PropTypes.func,
   index: PropTypes.any.isRequired,
   value: PropTypes.any.isRequired,
+  openModal: PropTypes.func,
+  collectionId: PropTypes.string,
 };
 
 export default AnalyticsTabsPanel;

@@ -3,8 +3,9 @@ import { Grid, Typography, Snackbar } from '@material-ui/core';
 import Alert from '@material-ui/lab/Alert';
 import * as Yup from 'yup';
 import { Formik, Form, Field, ErrorMessage, getIn } from 'formik';
+import { Link, useHistory } from 'react-router-dom';
 import NativeSelect from '@material-ui/core/NativeSelect';
-import { useHistory } from 'react-router-dom';
+
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import useStyles from './styles';
@@ -18,7 +19,7 @@ const AddDatabaseSchema = Yup.object().shape({
   port: Yup.string().matches(/^\d+$/, 'The field should have digits only').required('Required'),
   databaseName: Yup.string().required('Required'),
   username: Yup.string().required('Required'),
-  password: Yup.string().max(30).required('Required'),
+  password: Yup.string().max(100).required('Required'),
 });
 
 const getStyles = (errors, touched, fieldName) => {
@@ -64,10 +65,18 @@ const ConnectionDatabaseContainer = ({ addDatabase, isNotification, message, sta
   return (
     <Grid className={classes.content} xs item container direction="column" alignItems="center">
       <Typography className={classes.titleName}>
-        <span className={classes.titleSection}>
-          DATABASES <span className={classes.emptySpace}> &gt; </span>
-          <span style={{ color: '#000' }}>ADD DATABASE</span>
-        </span>
+        <div>
+          <Link
+            to={{
+              pathname: '/admin/databases',
+            }}
+            className={classes.breadcrumbs}
+          >
+            DATABASES
+          </Link>
+          <span className={classes.emptySpace}> &gt; </span>
+          <span style={{ color: '#2e353b' }}>ADD DATABASE</span>
+        </div>
       </Typography>
       <div className={classes.wrapper}>
         <Formik

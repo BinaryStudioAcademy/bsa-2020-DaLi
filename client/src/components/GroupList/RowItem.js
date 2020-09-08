@@ -12,7 +12,7 @@ import PropTypes from 'prop-types';
 import { useStyles } from './styles';
 import UserGroupForm from './UserGroupForm';
 
-const RowItem = ({ item, deleteGroup, updateUserGroup, isTheGroup, deleteUser }) => {
+const RowItem = ({ item, deleteGroup, updateUserGroup, isTheGroup, deleteUser, isAllowChange }) => {
   const classes = useStyles();
   const [menuAnchorEl, setMenuAnchorEl] = useState(null);
   const [isActiveEditMode, setIsActiveEditMode] = useState(false);
@@ -51,7 +51,9 @@ const RowItem = ({ item, deleteGroup, updateUserGroup, isTheGroup, deleteUser })
             {!isTheGroup && (
               <>
                 <Avatar className={classes.avatar}>{item.name[0]}</Avatar>
-                <NavLink to={`/admin/people/groups/${item.id}`}>{item.name}</NavLink>
+                <NavLink to={`/admin/people/groups/${item.id}`} id={`admin-groups-${item.name}`}>
+                  {item.name}
+                </NavLink>
               </>
             )}
             {isTheGroup && (
@@ -62,7 +64,7 @@ const RowItem = ({ item, deleteGroup, updateUserGroup, isTheGroup, deleteUser })
           </TableCell>
           <TableCell align="left">{isTheGroup ? item.email : item.userCount}</TableCell>
           <TableCell align="left">
-            {!isTheGroup && (
+            {!isTheGroup && isAllowChange && (
               <>
                 <MoreHorizIcon className={classes.dots} onClick={handleMenuClick} />
                 <Menu
@@ -77,7 +79,7 @@ const RowItem = ({ item, deleteGroup, updateUserGroup, isTheGroup, deleteUser })
                 </Menu>
               </>
             )}
-            {isTheGroup && (
+            {isTheGroup && isAllowChange && (
               <IconButton aria-label="close" size="small" onClick={deleteItem(item.UsersUserGroups.id)}>
                 <CloseIcon style={{ fontSize: 18, color: '#c6cfd4' }} />
               </IconButton>
@@ -104,6 +106,7 @@ RowItem.propTypes = {
   updateUserGroup: PropTypes.func,
   isTheGroup: PropTypes.bool,
   deleteUser: PropTypes.func,
+  isAllowChange: PropTypes.bool,
 };
 
 export default RowItem;

@@ -2,6 +2,8 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
+import Alert from '@material-ui/lab/Alert';
+import { Snackbar } from '@material-ui/core';
 import { GroupList } from '../../components';
 import {
   resetError,
@@ -25,6 +27,10 @@ const UserGroupsPageContainer = ({
   users,
   addUserToGroup,
   deleteUserFromGroup,
+  isError,
+  messageError,
+  resetError,
+  currentUserId,
 }) => {
   const deleteGroup = (id) => () => {
     deleteUserGroup(id);
@@ -51,14 +57,26 @@ const UserGroupsPageContainer = ({
           users={users}
           addUser={addUser}
           deleteUser={deleteUser}
+          currentUserId={currentUserId}
         />
       )}
+      <Snackbar
+        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+        open={isError}
+        autoHideDuration={6000}
+        onClose={resetError}
+      >
+        <Alert elevation={6} variant="filled" severity="error" onClose={resetError}>
+          {messageError}
+        </Alert>
+      </Snackbar>
     </>
   );
 };
 
 const mapStateToProps = (state) => {
   return {
+    currentUserId: state.currentUser.user.id,
     users: state.admin.people.users,
     groups: state.admin.groups.groups,
     currentGroup: state.admin.groups.currentGroup,
@@ -75,6 +93,7 @@ UserGroupsPageContainer.propTypes = {
   isLoading: PropTypes.bool,
   addUserGroup: PropTypes.func,
   deleteUserGroup: PropTypes.func,
+  setError: PropTypes.func,
   resetError: PropTypes.func,
   isTheGroup: PropTypes.bool,
   currentGroup: PropTypes.object,
@@ -83,6 +102,7 @@ UserGroupsPageContainer.propTypes = {
   updateUserGroup: PropTypes.func,
   addUserToGroup: PropTypes.func,
   deleteUserFromGroup: PropTypes.func,
+  currentUserId: PropTypes.string,
 };
 
 export default withRouter(

@@ -7,8 +7,8 @@ import {
   ADD_USER_SUCCESS,
   ADD_USER_ERROR,
   UPDATE_USER_FROM_LIST,
-  UPDATE_USER_SUCCESS,
-  UPDATE_USER_ERROR,
+  UPDATE_USER_FROM_LIST_SUCCESS,
+  UPDATE_USER_FROM_LIST_ERROR,
   DELETE_USER,
   DELETE_USER_SUCCESS,
   DELETE_USER_ERROR,
@@ -19,7 +19,9 @@ import {
   GET_MEMBERSHIPS,
   GET_MEMBERSHIPS_SUCCESS,
   GET_MEMBERSHIPS_ERROR,
+  CLOSE_MODAL,
 } from './actionTypes';
+import { FETCH_USER } from '../LoginPageContainer/actionTypes';
 import { usersAPIService } from '../../services/api/usersAPI.service';
 import { SetIsLoading, setTemporaryPassword } from './actions';
 import { userGroupsAPIService } from '../../services/api/userGroupsAPI.service';
@@ -31,7 +33,7 @@ export function* getUsersSaga() {
     yield put({ type: GET_USERS_SUCCESS, payload: res });
     yield put(SetIsLoading(false));
   } catch (error) {
-    yield put({ type: GET_USERS_ERROR, error });
+    yield put({ type: GET_USERS_ERROR, payload: error });
     yield put(SetIsLoading(false));
   }
 }
@@ -42,12 +44,10 @@ export function* watchGetUsersSaga() {
 
 export function* getUsersMembershipSaga() {
   try {
-    yield put(SetIsLoading(true));
     const response = yield call(userGroupsAPIService.getAllGroupsWithUsers);
     yield put({ type: GET_MEMBERSHIPS_SUCCESS, payload: response });
-    yield put(SetIsLoading(false));
   } catch (error) {
-    yield put({ type: GET_MEMBERSHIPS_ERROR, error });
+    yield put({ type: GET_MEMBERSHIPS_ERROR, payload: error });
     yield put(SetIsLoading(false));
   }
 }
@@ -58,14 +58,12 @@ export function* watchGetUsersMembershipSaga() {
 
 export function* addUserSaga(payload) {
   try {
-    yield put(SetIsLoading(true));
     const response = yield call(usersAPIService.createUser, payload.user);
     yield put({ type: ADD_USER_SUCCESS });
     yield put(setTemporaryPassword(response.password));
     yield put({ type: GET_USERS });
   } catch (error) {
-    yield put({ type: ADD_USER_ERROR, error });
-    yield put(SetIsLoading(false));
+    yield put({ type: ADD_USER_ERROR, payload: error });
   }
 }
 
@@ -80,7 +78,7 @@ export function* deleteUserSaga(payload) {
     yield put({ type: DELETE_USER_SUCCESS });
     yield put({ type: GET_USERS });
   } catch (error) {
-    yield put({ type: DELETE_USER_ERROR, error });
+    yield put({ type: DELETE_USER_ERROR, payload: error });
     yield put(SetIsLoading(false));
   }
 }
@@ -91,13 +89,12 @@ export function* watchDeleteUserSaga() {
 
 export function* toggleUserStatus({ payload }) {
   try {
-    yield put(SetIsLoading(true));
     yield call(usersAPIService.toggleUserStatus, payload.id, payload.data);
-    yield put({ type: UPDATE_USER_SUCCESS });
+    yield put({ type: UPDATE_USER_FROM_LIST_SUCCESS });
+    yield put({ type: CLOSE_MODAL });
     yield put({ type: GET_USERS });
   } catch (error) {
-    yield put({ type: UPDATE_USER_ERROR, payload: error, error });
-    yield put(SetIsLoading(false));
+    yield put({ type: UPDATE_USER_FROM_LIST_ERROR, payload: error, error });
   }
 }
 
@@ -108,10 +105,14 @@ export function* watchToggleUserStatus() {
 export function* updateUser({ payload }) {
   try {
     const res = yield call(usersAPIService.updateUser, payload.id, payload.data);
-    yield put({ type: UPDATE_USER_SUCCESS, payload: res });
+    yield put({ type: UPDATE_USER_FROM_LIST_SUCCESS, payload: res });
+    yield put({ type: CLOSE_MODAL });
     yield put({ type: GET_USERS });
+    if (payload.isCurrentUser) {
+      yield put({ type: FETCH_USER });
+    }
   } catch (error) {
-    yield put({ type: UPDATE_USER_ERROR, payload: error });
+    yield put({ type: UPDATE_USER_FROM_LIST_ERROR, payload: error });
   }
 }
 
@@ -122,7 +123,6 @@ export function* watchUpdateUserData() {
 export function* resetUserPasswordSaga(payload) {
   try {
     const response = yield call(usersAPIService.updateUser, payload.id, { password: null });
-
     yield put({ type: RESET_PASSWORD_SUCCESS, payload: response });
   } catch (error) {
     yield put({ type: RESET_PASSWORD_ERROR, payload: error });

@@ -3,24 +3,33 @@ import PropTypes from 'prop-types';
 
 import { EnhancedTable } from '../../components';
 
-import { updateColumnsOrder, getRows } from './helper';
+import { updateColumns, getRows } from './helper';
+import { formatDateForSummarize } from '../../helpers/formatDateForSummarize';
 
 const TableVisualizationContainer = ({ config, updateConfig, data }) => {
-  const { columns, sort } = config;
-
+  const { sort } = config;
+  const columns = config.isSummarize ? config.summarizeColumns : config.columns;
+  const dataWithFormatDateForSummarize = formatDateForSummarize(data, config);
   const [sortOrder, setSortOrder] = useState(sort.order);
   const [sortOrderBy, setSortOrderBy] = useState(sort.orderBy);
 
   const handleRequestSort = (_event, property) => {
     const isAsc = sortOrderBy === property && sortOrder === 'asc';
-    setSortOrder(isAsc ? 'desc' : 'asc');
-    setSortOrderBy(property);
-    const updatedConfig = { ...config, sort: { order: sortOrder, orderBy: sortOrderBy } };
+    const updatedSortOrder = isAsc ? 'desc' : 'asc';
+    const updateSortOrderBy = property;
+    setSortOrder(updatedSortOrder);
+    setSortOrderBy(updateSortOrderBy);
+    const updatedConfig = { ...config, sort: { order: updatedSortOrder, orderBy: updateSortOrderBy } };
     updateConfig(updatedConfig);
   };
 
-  const updatedColumns = updateColumnsOrder(columns);
-  const rows = getRows(data, updatedColumns, sortOrder, sortOrderBy);
+  const updatedColumns = updateColumns(columns);
+  const rows = getRows(
+    config.isSummarize ? dataWithFormatDateForSummarize : data,
+    updatedColumns,
+    sortOrder,
+    sortOrderBy
+  );
 
   return (
     <EnhancedTable

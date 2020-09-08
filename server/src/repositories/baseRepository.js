@@ -14,8 +14,12 @@ export default class BaseRepository {
   }
 
   async create(data) {
-    const result = await this.model.create(data);
-    return result;
+    try {
+      const result = await this.model.create(data);
+      return result;
+    } catch (error) {
+      throw new Error(error.errors[0].message);
+    }
   }
 
   async updateById({ id }, data) {

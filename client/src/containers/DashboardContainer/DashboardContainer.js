@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
@@ -52,14 +53,9 @@ const DashboardContainer = (props) => {
   };
 
   useEffect(() => {
-    if (!visualizations.length) {
-      fetchVisualizations();
-    }
-  }, [visualizations, fetchVisualizations]);
-
-  useEffect(() => {
     getDashboard(id);
-  }, [id, getDashboard]);
+    fetchVisualizations();
+  }, [id, getDashboard, fetchVisualizations]);
 
   useEffect(() => {
     const dashboardConfig = getDashboardConfig(currentDashboard);
@@ -68,13 +64,13 @@ const DashboardContainer = (props) => {
     setDescription(currentDashboard.description);
     setDashboardVisualizations(currentDashboard.Visualizations || []);
     setCurrentLayout(dashboardConfig?.layout || []);
-    setCurrentLayouts(dashboardConfig?.layouts || []);
+    setCurrentLayouts(dashboardConfig?.layouts || {});
 
     setOldName(currentDashboard.name);
     setOldDescription(currentDashboard.description);
     setOldDashboardVisualizations(currentDashboard.Visualizations || []);
     setOldLayout(dashboardConfig?.layout || []);
-    setOldLayouts(dashboardConfig?.layouts || []);
+    setOldLayouts(dashboardConfig?.layouts || {});
 
     document.addEventListener('fullscreenchange', fullScreenListener);
   }, [currentDashboard]);
@@ -112,7 +108,7 @@ const DashboardContainer = (props) => {
     if (!name.length) {
       return;
     }
-    const updatedDashboard = createUpdatedDashboard(name, description, currentLayout, currentLayouts);
+    const updatedDashboardData = createUpdatedDashboard(name, description, currentLayout, currentLayouts);
     const newVisualizationsId = getNewVisualizationsId(addedVisualizationsId, currentDashboard.Visualizations);
     const deletedDashboardVisualizationsId = getDashboardVisualizationsId(
       deletedVisualizationsId,
@@ -123,7 +119,7 @@ const DashboardContainer = (props) => {
       dashboardId: id,
       newVisualizationsId,
       deletedDashboardVisualizationsId,
-      updatedDashboard,
+      updatedDashboardData,
     });
 
     setViewDashboardMode('default');
@@ -132,13 +128,12 @@ const DashboardContainer = (props) => {
 
   const onVisualizationAdd = (visualizationId, newVisualizationData) => {
     const newLayoutItem = createNewLayoutItem(visualizationId, currentLayout, cols, breakpoint);
+    setCurrentLayout(currentLayout.concat(newLayoutItem));
     const visualization = getVisualization(visualizationId, visualizations);
     const updatedDeletedVisualizationsId = updateVisualizationsId(visualizationId, deletedVisualizationsId);
     visualization.data = newVisualizationData;
-
     setDashboardVisualizations(dashboardVisualizations.concat(visualization));
     setAddedVisualizationsId(addedVisualizationsId.concat(visualizationId));
-    setCurrentLayout(currentLayout.concat(newLayoutItem));
     setDeletedVisualizationsId(updatedDeletedVisualizationsId);
   };
 
@@ -180,7 +175,7 @@ const DashboardContainer = (props) => {
     setViewDashboardMode('default');
   };
 
-  return isLoading ? (
+  return isLoading || !currentDashboard || !visualizations.length ? (
     <div style={{ position: 'relative' }}>
       <CircularProgress size={40} left={-20} top={10} style={{ marginLeft: '50%' }} />
     </div>

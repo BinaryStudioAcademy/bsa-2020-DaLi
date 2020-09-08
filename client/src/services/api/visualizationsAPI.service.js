@@ -16,6 +16,9 @@ class VisualizationsAPIService extends baseAPIService {
 
   updateVisualization = (id, updatedVisualization) => this.patchData(`/${id}`, updatedVisualization);
 
+  addToCollection = (visualizationId, collectionId) =>
+    this.patchDataWithParams(`/${visualizationId}`, { collection: collectionId });
+
   deleteVisualization = (id) => this.deleteData(`${id}`);
 }
 

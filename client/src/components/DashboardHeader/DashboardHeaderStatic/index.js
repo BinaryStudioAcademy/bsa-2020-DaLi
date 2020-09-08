@@ -14,14 +14,16 @@ const DashboardHeaderStatic = (props) => {
     <Grid className={classes.dashboardStaticHeader}>
       <Grid className={classes.dashboardStaticTitle} item container>
         <Typography className={classes.dashboardStaticName}>{name}</Typography>
-        <Tooltip
-          classes={{
-            tooltip: classes.dashboardStaticDescription,
-          }}
-          title={description}
-        >
-          <InfoIcon className={classes.dashboardStaticDescriptionIcon} />
-        </Tooltip>
+        {description?.length ? (
+          <Tooltip
+            classes={{
+              tooltip: classes.dashboardStaticDescription,
+            }}
+            title={description}
+          >
+            <InfoIcon className={classes.dashboardStaticDescriptionIcon} />
+          </Tooltip>
+        ) : null}
       </Grid>
       <Grid className={classes.dashboardStaticControls} item container>
         <EditIcon

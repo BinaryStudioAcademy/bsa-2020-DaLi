@@ -16,12 +16,14 @@ import {
   FETCH_USER_SUCCESS,
   FETCH_USER,
   FETCH_USER_ERROR,
+  REGISTER_ADMIN,
+  REGISTER_ADMIN_ERROR,
 } from './actionTypes';
 
 export function* loginSaga(payload) {
   try {
     const response = yield call(authAPIService.loginUser, payload.request);
-    setToken(response.token);
+    setToken(response.token, payload.request.rememberMe);
     yield put({ type: LOGIN_USER_SUCCESS, payload: response });
   } catch (error) {
     removeToken();
@@ -38,6 +40,7 @@ export function* fetchUserSaga() {
     const response = yield call(authAPIService.getCurrentUser);
     yield put({ type: FETCH_USER_SUCCESS, payload: response });
   } catch (error) {
+    removeToken();
     yield put({ type: FETCH_USER_ERROR, payload: error });
   }
 }
@@ -73,6 +76,22 @@ export function* watchUpdateUserData() {
   yield takeEvery(UPDATE_USER, updateUser);
 }
 
+export function* registerAdmin({ payload }) {
+  try {
+    const { email, password } = payload;
+    yield call(authAPIService.registerUser, payload);
+    const loginResponse = yield call(authAPIService.loginUser, { email, password });
+    setToken(loginResponse.token);
+    yield put({ type: LOGIN_USER_SUCCESS, payload: loginResponse });
+  } catch (error) {
+    yield put({ type: REGISTER_ADMIN_ERROR, payload: error });
+  }
+}
+
+export function* watchRegisterAdmin() {
+  yield takeEvery(REGISTER_ADMIN, registerAdmin);
+}
+
 export default function* authSaga() {
-  yield all([watchLoginSaga(), watchLogoutSaga(), watchUpdateUserData(), watchFetchUserSaga()]);
+  yield all([watchLoginSaga(), watchLogoutSaga(), watchUpdateUserData(), watchFetchUserSaga(), watchRegisterAdmin()]);
 }

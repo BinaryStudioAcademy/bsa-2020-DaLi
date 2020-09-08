@@ -1,7 +1,5 @@
-/* eslint-disable camelcase */
-/* eslint-disable no-unused-vars */
-/* eslint-disable class-methods-use-this */
 import Sequelize from 'sequelize';
+import schemaNormalizer from '../helpers/postgresDataTypeNormalizer';
 
 export default class DBMySQLManager {
   constructor(databaseURL) {
@@ -52,9 +50,7 @@ export default class DBMySQLManager {
       .then((data) => {
         const schemaCols = data[0];
         return schemaCols.map((col) => {
-          const column_name = col.COLUMN_NAME;
-          const data_type = col.DATA_TYPE;
-          return { column_name, data_type };
+          return { column_name: col.COLUMN_NAME, data_type: schemaNormalizer(col.DATA_TYPE) };
         });
       });
   }

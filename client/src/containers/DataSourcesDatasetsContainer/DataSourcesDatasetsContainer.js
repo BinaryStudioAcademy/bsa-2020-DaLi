@@ -1,28 +1,33 @@
 import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import { DataSourcesDatasetsView } from '../../components';
-import { getDatasets, getTables, setCurrentDbName } from './actions';
+import { getDatasets } from './actions';
 
-const DataSourcesDatasetsContainer = ({ datasets, getDatasets, getTables, setCurrentDbName }) => {
+const DataSourcesDatasetsContainer = ({ datasets, getDatasets }) => {
   useEffect(() => {
     getDatasets();
   }, [getDatasets]);
 
-  return <DataSourcesDatasetsView datasets={datasets} getTables={getTables} setCurrentDbName={setCurrentDbName} />;
+  return !datasets.length ? (
+    <div style={{ position: 'relative' }}>
+      <CircularProgress size={40} left={-20} top={10} style={{ marginLeft: '50%' }} />
+    </div>
+  ) : (
+    <DataSourcesDatasetsView datasets={datasets} />
+  );
 };
 
 DataSourcesDatasetsContainer.propTypes = {
   datasets: PropTypes.array,
   getDatasets: PropTypes.func,
-  getTables: PropTypes.func,
-  setCurrentDbName: PropTypes.func,
 };
 
 const mapStateToProps = ({ datasets }) => ({
   datasets: datasets.datasets,
 });
 
-const mapDispatchToProps = { getDatasets, getTables, setCurrentDbName };
+const mapDispatchToProps = { getDatasets };
 
 export default connect(mapStateToProps, mapDispatchToProps)(DataSourcesDatasetsContainer);

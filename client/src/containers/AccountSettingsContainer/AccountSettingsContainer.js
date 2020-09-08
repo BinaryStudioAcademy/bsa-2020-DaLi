@@ -23,11 +23,11 @@ const PasswordSchema = Yup.object().shape({
   newPassword: Yup.string()
     .max(30)
     .required('Required')
+    .min(8, 'Password is too short - should be 8 chars minimum.')
     .matches(
       /^(?=.*[A-Za-z])(?=.*\d)(?=.*[-!$%^&*()_+|~=:;<>?,#@.])[A-Za-z\d-!$%^&*()_+|~=:;<>?,#@.]{8,}$/,
       'Password must contain one uppercase, one lowercase, one number and one special character.'
-    )
-    .min(8, 'Password is too short - should be 8 chars minimum.'),
+    ),
   confirmedPassword: Yup.string()
     .required('Required')
     .test('passwords-match', 'The password and confirm password must match', function (value) {
@@ -177,7 +177,7 @@ const AccountSettingsContainer = ({
                 <Form>
                   <div className={classes.relative}>
                     <label htmlFor="currentPassword" className={classes.label}>
-                      CurrentPassword
+                      Current password
                     </label>
                     <Field
                       type="password"

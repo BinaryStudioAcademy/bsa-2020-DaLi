@@ -10,7 +10,7 @@ import * as actions from './actions';
 import { checkIsTablePermissionExist, getCurrentDatabaseTablesPermissions, getCurrentDatabaseTitle } from './helpers';
 import { DEFAULT_ACCESS_TYPES, TABLE_ACCESS_TYPES } from './config';
 import { useStyles } from './styles';
-import { DEFAULT_COLLECTIONS } from '../../constants';
+import { DEFAULT_COLLECTIONS, PRIVATE_COLLECTIONS } from '../../constants';
 
 const PermissionsContainer = (props) => {
   const {
@@ -123,7 +123,7 @@ const PermissionsContainer = (props) => {
       break;
     case 'collections':
       tableData = permissions.currentCollectionsPermissions.filter(
-        (collection) => collection.name !== DEFAULT_COLLECTIONS
+        (collection) => collection.name !== DEFAULT_COLLECTIONS && collection.name !== PRIVATE_COLLECTIONS
       );
       onAccessChange = onCollectionsAccessChange;
       accessTypes = DEFAULT_ACCESS_TYPES;

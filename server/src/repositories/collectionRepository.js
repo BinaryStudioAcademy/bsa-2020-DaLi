@@ -88,8 +88,8 @@ class CollectionRepository extends BaseRepository {
         result.map((collection) => {
           const groups = collection.PermissionCollections.map((group) => {
             return {
-              id: group.userGroups.id,
-              name: group.userGroups.name,
+              groupId: group.userGroups.id,
+              groupName: group.userGroups.name,
               access: group.permissionGranted,
             };
           });

@@ -21,9 +21,9 @@ const useStyles = makeStyles({
   },
 });
 
-const getTableHead = (schema) => {
+const getTableHead = (data) => {
   // eslint-disable-next-line camelcase
-  return schema.map(({ column_name }) => column_name);
+  return Object.keys(data[0]);
 };
 
 const sortByProperty = (arrOfObjects, property, sortedBy) => {
@@ -35,11 +35,11 @@ const sortByProperty = (arrOfObjects, property, sortedBy) => {
   return arrOfObjects;
 };
 const InitialTable = (props) => {
-  const { data: Data, config, schema } = props;
+  const { data: Data, config } = props;
   const [data, setData] = useState(formatDateForSummarize(Data, config));
   const [sortedBy, setSortedBy] = useState('id');
   const classes = useStyles();
-  const tableProperties = getTableHead(schema);
+  const tableProperties = getTableHead(data);
   const tableHeadRows = tableProperties.map((property) => (
     <TableCell
       key={property}
@@ -78,7 +78,6 @@ const InitialTable = (props) => {
 InitialTable.propTypes = {
   data: PropTypes.array,
   config: PropTypes.object,
-  schema: PropTypes.array,
 };
 
 export default InitialTable;

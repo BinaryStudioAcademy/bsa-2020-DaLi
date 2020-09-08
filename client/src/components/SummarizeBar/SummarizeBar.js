@@ -81,7 +81,7 @@ const SummarizeBar = ({ currentVisualization, updateVisualization }) => {
       } else {
         newConfig.axisData.XAxis.key = groupByName;
         newConfig.axisData.XAxis.label = groupByName;
-        newConfig.axisData.YAxis.key = currentSummarize.name;
+        newConfig.axisData.YAxis.key = [currentSummarize.name];
         newConfig.axisData.YAxis.label = currentSummarize.name;
       }
       const summarize = {
@@ -104,7 +104,7 @@ const SummarizeBar = ({ currentVisualization, updateVisualization }) => {
       } else {
         newConfig.axisData.XAxis.key = newConfig.axisData.XAxis.availableKeys[0];
         newConfig.axisData.XAxis.label = newConfig.axisData.XAxis.availableKeys[0];
-        newConfig.axisData.YAxis.key = newConfig.axisData.YAxis.availableKeys[0];
+        newConfig.axisData.YAxis.key = [newConfig.axisData.YAxis.availableKeys[0]];
         newConfig.axisData.YAxis.label = newConfig.axisData.YAxis.availableKeys[0];
       }
       newConfig.summarize = {

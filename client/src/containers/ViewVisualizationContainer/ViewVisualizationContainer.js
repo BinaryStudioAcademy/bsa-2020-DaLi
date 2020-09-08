@@ -132,15 +132,11 @@ const ViewVisualizationContainer = (props) => {
   };
 
   const onToggleRightSideBar = (newRightSideBarPage) => () => {
-    // console.log(newRightSideBarPage, rightSideBarPage, isRightSideBarOpen);
     if (newRightSideBarPage !== rightSideBarPage && isRightSideBarOpen) {
-      // console.log('111111');
       setRightSideBarPage(newRightSideBarPage);
     } else if (newRightSideBarPage === rightSideBarPage && isRightSideBarOpen) {
-      // console.log('222222');
       setIsRightSideBarOpen(false);
     } else {
-      // console.log('333333');
       setIsRightSideBarOpen(true);
       setRightSideBarPage(newRightSideBarPage);
     }
@@ -206,7 +202,11 @@ const ViewVisualizationContainer = (props) => {
         visualizationType={visualizationType}
         updateVisualization={updateVisualization}
         datasetSettings={datasetSettings}
-        rightSideBarPage={rightSideBarPage}
+        onChipCloseRemoveSidebar={() => {
+          if (rightSideBarPage === 0 && isRightSideBarOpen) {
+            setIsRightSideBarOpen(false);
+          }
+        }}
       />
       <Grid container className="view-visualization-container">
         <SaveVisualizationModal

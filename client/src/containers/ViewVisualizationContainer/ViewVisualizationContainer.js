@@ -62,6 +62,7 @@ const ViewVisualizationContainer = (props) => {
   const [leftSideBarPage, setLeftSideBarPage] = useState(0);
   const [rightSideBarPage, setRightSideBarPage] = useState(0);
   const [notificationType, setNotificationType] = useState('success');
+  const [datasetSettings, setDatasetSettings] = useState([]);
   const [isVisualizationExist] = useState(() => {
     return !!visualizationId;
   });
@@ -85,6 +86,7 @@ const ViewVisualizationContainer = (props) => {
   }, [visualizationType]);
 
   useEffect(() => {
+    setDatasetSettings(currentVisualization.datasetSettings);
     if (isNewVisualization && 'data' in currentVisualization && (!currentVisualization.created || isSameData)) {
       const visualization = createInitVisualization(visualizationType, userId, schema);
       setVisualization(visualization);
@@ -110,7 +112,7 @@ const ViewVisualizationContainer = (props) => {
     // eslint-disable-next-line no-nested-ternary
     schema && data ? (
       currentView === 'table' ? (
-        <InitialTable data={data} config={currentVisualization.config} />
+        <InitialTable data={data} config={currentVisualization.config} schema={schema} />
       ) : (
         visualizationComponent
       )
@@ -156,8 +158,8 @@ const ViewVisualizationContainer = (props) => {
     props.history.push('/');
   };
 
-  const updateVisualization = () => {
-    const updatedVisualization = createUpdatedVisualization(currentVisualization);
+  const updateVisualization = (newConfig, newDatasetSettings) => {
+    const updatedVisualization = createUpdatedVisualization(currentVisualization, newConfig, newDatasetSettings);
     updateVisualizationData(visualizationId, updatedVisualization);
     setNotificationMessage('Visualization has been successfully updated');
     setNotificationType('success');
@@ -198,6 +200,13 @@ const ViewVisualizationContainer = (props) => {
         onToggleRightSideBar={onToggleRightSideBar}
         tableId={tableId}
         visualizationType={visualizationType}
+        updateVisualization={updateVisualization}
+        datasetSettings={datasetSettings}
+        onChipCloseRemoveSidebar={() => {
+          if (rightSideBarPage === 0 && isRightSideBarOpen) {
+            setIsRightSideBarOpen(false);
+          }
+        }}
       />
       <Grid container className="view-visualization-container">
         <SaveVisualizationModal
@@ -235,7 +244,11 @@ const ViewVisualizationContainer = (props) => {
         {isRightSideBarOpen && (
           <ViewVisualizationSidebar
             components={[
-              <FilterBar currentVisualization={currentVisualization} />,
+              <FilterBar
+                currentVisualization={currentVisualization}
+                closeSidebar={() => setIsRightSideBarOpen(false)}
+                updateVisualization={updateVisualization}
+              />,
               <SummarizeBar currentVisualization={currentVisualization} updateVisualization={updateVisualization} />,
             ]}
             sideBarPage={rightSideBarPage}

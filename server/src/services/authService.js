@@ -31,6 +31,7 @@ export const register = async (user) => {
       status: 'Register success',
     };
   }
+  throw createError(400, 'User with such email is already exists');
 };
 
 export const autoLogin = async (id, token) => {

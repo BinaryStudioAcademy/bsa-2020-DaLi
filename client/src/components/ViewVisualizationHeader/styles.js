@@ -1,8 +1,9 @@
 import { makeStyles } from '@material-ui/core/styles';
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles((theme) => ({
   viewVisualizationHeader: {
-    height: '60px',
+    minHeight: '60px',
+    height: 'fit-content',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'space-between',
@@ -31,7 +32,7 @@ const useStyles = makeStyles(() => ({
     color: 'gray',
     fontSize: '22px',
     cursor: 'pointer',
-    marginLeft: '20px',
+    marginLeft: '0 20px',
   },
 
   viewVisualizationButtons: {
@@ -83,6 +84,22 @@ const useStyles = makeStyles(() => ({
     },
     borderRadius: '5px',
     marginRight: '20px',
+  },
+
+  chip: {
+    margin: theme.spacing(0.5),
+    borderRadius: 5,
+    fontWeight: 'bold',
+    backgroundColor: '#E2E3EF',
+    color: '#7172AD',
+  },
+
+  toggleFiltersChip: {
+    margin: theme.spacing(0.5),
+    borderRadius: 5,
+    fontWeight: 'bold',
+    color: '#E2E3EF',
+    backgroundColor: '#7172AD',
   },
 }));
 

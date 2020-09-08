@@ -73,7 +73,7 @@ const AddUserBody = ({
               currentCollection.id !== id && (
                 <div
                   className={activeCollection === id ? classes.active : classes.collectionItem}
-                  id={id}
+                  id={`collection-${id}`}
                   onClick={handleClick}
                   key={id}
                   aria-hidden="true"

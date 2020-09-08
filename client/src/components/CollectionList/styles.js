@@ -28,6 +28,11 @@ export const useStyles = makeStyles(() => ({
       textOverflow: 'ellipsis',
       overflow: 'hidden',
     },
+
+    '&:hover': {
+      backgroundColor: '#edf2f557',
+      color: '#509ee3',
+    },
   },
 
   addCollection: {

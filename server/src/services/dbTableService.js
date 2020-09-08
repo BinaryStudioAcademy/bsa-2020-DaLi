@@ -10,7 +10,7 @@ export const getAllByDatabaseId = async (id) => {
 
 export const getTableData = async (id, { settings, config }) => {
   let data = null;
-  const {isSummarize, summarize} = config ? JSON.parse(config) : {isSummarize: false, summarize: {}};
+  const { isSummarize, summarize } = config ? JSON.parse(config) : { isSummarize: false, summarize: {} };
   const table = await DBTable.getById(id);
   if (table) {
     let manager = new DBManager(table.DatabaseId);

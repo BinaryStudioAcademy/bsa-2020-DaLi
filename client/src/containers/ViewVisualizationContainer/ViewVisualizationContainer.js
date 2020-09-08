@@ -9,7 +9,6 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import Alert from '@material-ui/lab/Alert';
 
 import * as actions from './actions';
-import { visualizationsAPIService } from '../../services/api/visualizationsAPI.service';
 
 import {
   ViewVisualizationSidebar,
@@ -44,6 +43,8 @@ const ViewVisualizationContainer = (props) => {
     updateVisualizationName,
     location: { prevPath },
     fetchVisualization,
+    createVisualization,
+    history,
     fetchDataAndSchema,
     data,
     schema,
@@ -150,12 +151,10 @@ const ViewVisualizationContainer = (props) => {
 
   const hideNotification = () => setIsNotificationVisible(false);
 
-  const createVisualization = ({ name, description }) => {
-    updateVisualizationName({ name, description });
+  const onVisualizationCreate = ({ name, description }) => {
     const newVisualization = createNewVisualization(currentVisualization, name, description, tableId);
-    visualizationsAPIService.createVisualization(newVisualization);
+    createVisualization(newVisualization, history);
     closeModal();
-    props.history.push('/');
   };
 
   const updateVisualization = (newConfig, newDatasetSettings) => {
@@ -211,7 +210,7 @@ const ViewVisualizationContainer = (props) => {
       <Grid container className="view-visualization-container">
         <SaveVisualizationModal
           closeModal={closeModal}
-          saveVisualization={isVisualizationExist ? editVisualizationName : createVisualization}
+          saveVisualization={isVisualizationExist ? editVisualizationName : onVisualizationCreate}
           isVisible={isModalOpen}
           title={isVisualizationExist ? 'Edit visualization name' : 'Save visualization'}
           name={currentVisualization.name}
@@ -288,6 +287,7 @@ ViewVisualizationContainer.propTypes = {
   location: PropTypes.shape({
     prevPath: PropTypes.string,
   }),
+  createVisualization: PropTypes.func,
   updateVisualizationData: PropTypes.func,
   tableId: PropTypes.string,
   visualizationType: PropTypes.string,

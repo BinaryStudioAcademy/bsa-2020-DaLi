@@ -3,6 +3,7 @@ import {
   SET_VISUALIZATION_SUCCESS,
   UPDATE_VISUALIZATION_CONFIG,
   UPDATE_VISUALIZATION_NAME,
+  CREATE_VISUALIZATION_ERROR,
   FETCH_VISUALIZATION_WITH_DATA_AND_SCHEMA_SUCCESS,
   FETCH_VISUALIZATION_WITH_DATA_AND_SCHEMA_START,
   FETCH_DATA_AND_SCHEMA_IN_PROGRESS,
@@ -47,6 +48,14 @@ const viewVisualizationReducer = (state = { loading: true, created: false }, { t
         ...state,
         name,
         description,
+      };
+    }
+
+    case CREATE_VISUALIZATION_ERROR: {
+      const { error } = payload;
+      return {
+        ...state,
+        error,
       };
     }
 

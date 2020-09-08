@@ -2,6 +2,7 @@ import {
   SET_VISUALIZATION,
   UPDATE_VISUALIZATION_CONFIG,
   UPDATE_VISUALIZATION_NAME,
+  CREATE_VISUALIZATION,
   FETCH_VISUALIZATION_WITH_DATA_AND_SCHEMA,
   FETCH_DATA_AND_SCHEMA,
   UPDATE_VISUALIZATION,
@@ -32,6 +33,13 @@ export const updateVisualizationName = ({ name, description }) => {
   return {
     type: UPDATE_VISUALIZATION_NAME,
     payload: { name, description },
+  };
+};
+
+export const createVisualization = (newVisualization, history) => {
+  return {
+    type: CREATE_VISUALIZATION,
+    payload: { newVisualization, history },
   };
 };
 

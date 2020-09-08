@@ -1,5 +1,7 @@
 import { all, put, call, takeEvery } from 'redux-saga/effects';
 import {
+  CREATE_VISUALIZATION,
+  CREATE_VISUALIZATION_ERROR,
   FETCH_VISUALIZATION_WITH_DATA_AND_SCHEMA,
   FETCH_VISUALIZATION_WITH_DATA_AND_SCHEMA_SUCCESS,
   SET_VISUALIZATION,
@@ -11,6 +13,7 @@ import {
   FETCH_DATA_AND_SCHEMA_SUCCESS,
   UPDATE_VISUALIZATION,
 } from './actionTypes';
+
 import { visualizationsAPIService } from '../../services/api/visualizationsAPI.service';
 import { dbTableAPIService } from '../../services/api/dbTableAPI.service';
 
@@ -69,9 +72,24 @@ export function* watchUpdateVisualizationSaga() {
   yield takeEvery(UPDATE_VISUALIZATION, updateVisualizationSaga);
 }
 
+function* createVisualization({ payload }) {
+  try {
+    const { newVisualization, history } = payload;
+    yield call(visualizationsAPIService.createVisualization, newVisualization);
+    history.push('/');
+  } catch (error) {
+    yield put({ type: CREATE_VISUALIZATION_ERROR, payload: { error } });
+  }
+}
+
+export function* watchCreateVisualization() {
+  yield takeEvery(CREATE_VISUALIZATION, createVisualization);
+}
+
 export default function* currentVisualizationSaga() {
   yield all([
     watchFetchVisualizationWithDataAndSchemaSaga(),
+    watchCreateVisualization(),
     watchSetVisualizationSaga(),
     watchFetchDataAndSchemaSaga(),
     watchUpdateVisualizationSaga(),

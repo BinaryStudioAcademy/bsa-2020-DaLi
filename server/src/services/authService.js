@@ -22,6 +22,7 @@ export const login = async (data) => {
   };
 };
 
+// eslint-disable-next-line consistent-return
 export const register = async (user) => {
   const candidate = await UserRepository.getByEmail(user.email);
   if (!candidate) {

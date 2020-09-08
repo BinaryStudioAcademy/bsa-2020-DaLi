@@ -3,6 +3,7 @@ import asyncHandler from 'express-async-handler';
 import createError from 'http-errors';
 import * as CollectionService from '../services/collectionService';
 import { collectionPermissionsMiddleware } from '../middlewares/collectionPermissionsMiddleware';
+import { defaultCollectionsMiddleware } from '../middlewares/defaultCollectionsMiddleware';
 
 const router = Router();
 
@@ -50,6 +51,7 @@ router.post(
 
 router.patch(
   '/:id',
+  defaultCollectionsMiddleware,
   asyncHandler(async (req, res, next) => {
     const result = await CollectionService.updateCollections(req.params.id, req.body);
     if (result) {
@@ -64,6 +66,7 @@ router.patch(
 
 router.delete(
   '/:id',
+  defaultCollectionsMiddleware,
   asyncHandler(async (req, res, next) => {
     const result = await CollectionService.deleteCollection(req.params.id);
     if (result) {

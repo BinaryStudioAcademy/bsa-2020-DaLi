@@ -17,6 +17,7 @@ const AddUserBody = ({
 }) => {
   const classes = useStyles();
   const [activeCollection, setActiveCollection] = useState();
+  const [filteredCollections, setFilteredCollections] = useState(collections);
   const handleClick = (e) => {
     e.preventDefault();
     setActiveCollection(e.currentTarget.id);
@@ -38,6 +39,15 @@ const AddUserBody = ({
     }
   };
 
+  const handleSearch = (event) => {
+    const updatedCollections = collections.filter((collection) => {
+      const nameLowerCase = collection.name.toLowerCase();
+      const filter = event.target.value.toLowerCase();
+      return nameLowerCase.includes(filter);
+    });
+    setFilteredCollections(updatedCollections);
+  };
+
   return (
     <div className={classes.modalContainer} id={`${currentCollection?.id} moveCollectionModal`}>
       <div className={classes.modalHeader}>
@@ -48,16 +58,17 @@ const AddUserBody = ({
         </h2>
         <CloseIcon className={classes.closeIcon} onClick={closeModal} />
       </div>
-      <form className={classes.addCollectionModalForm}>
+      <form className={classes.addCollectionModalForm} autoComplete="off">
         <input
           id={`${currentCollection?.id} moveCollectionModal-name`}
           className={classes.modalInput}
           name="name"
           type="text"
           placeholder="My new fantastic collections"
+          onChange={handleSearch}
         />
-        <div>
-          {collections.map(({ name, id }) => {
+        <div className={classes.collectionContainer}>
+          {filteredCollections.map(({ name, id }) => {
             return (
               currentCollection.id !== id && (
                 <div
@@ -93,6 +104,7 @@ const AddUserBody = ({
             onClick={handleSubmit}
             style={{ textTransform: 'none', fontSize: 12, marginLeft: 5 }}
             id={`${currentCollection?.id} moveCollectionModalButton-move`}
+            disabled={!activeCollection}
           >
             Move
           </Button>

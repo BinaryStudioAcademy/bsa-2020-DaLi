@@ -50,12 +50,17 @@ export const useStyles = makeStyles(() => ({
     '&:hover': {
       background: '#3ca1de',
     },
+    '&:disabled': {
+      opacity: 0.5,
+      color: 'white',
+    },
   },
 
   addCollectionModalForm: {
     display: 'flex',
     flexDirection: 'column',
     position: 'relative',
+    minHeight: 400,
   },
 
   modalInput: {
@@ -117,6 +122,7 @@ export const useStyles = makeStyles(() => ({
     padding: '10px 5px',
     borderRadius: 6,
     marginTop: 5,
+    cursor: 'pointer',
   },
 
   icon: {
@@ -133,9 +139,13 @@ export const useStyles = makeStyles(() => ({
     padding: '10px 5px',
     borderRadius: 6,
     marginTop: 5,
+    cursor: 'pointer',
 
     '& $icon': {
       color: '#ffffff',
     },
+  },
+  collectionContainer: {
+    flex: 1,
   },
 }));

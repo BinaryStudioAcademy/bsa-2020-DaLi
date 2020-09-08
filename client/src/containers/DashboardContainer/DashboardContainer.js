@@ -53,14 +53,9 @@ const DashboardContainer = (props) => {
   };
 
   useEffect(() => {
-    if (!visualizations.length) {
-      fetchVisualizations();
-    }
-  }, [visualizations]);
-
-  useEffect(() => {
     getDashboard(id);
-  }, [id]);
+    fetchVisualizations();
+  }, [id, getDashboard, fetchVisualizations]);
 
   useEffect(() => {
     const dashboardConfig = getDashboardConfig(currentDashboard);

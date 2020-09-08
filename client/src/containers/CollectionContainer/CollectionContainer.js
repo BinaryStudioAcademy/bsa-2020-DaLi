@@ -5,6 +5,9 @@ import Snackbar from '@material-ui/core/Snackbar';
 import Alert from '@material-ui/lab/Alert';
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
+import Tooltip from '@material-ui/core/Tooltip';
+import InfoIcon from '@material-ui/icons/Info';
+
 import { useParams, Link, useHistory } from 'react-router-dom';
 import { useStyles } from './styles';
 import AnalyticsTabs from '../../components/AnalyticsTabs/AnalyticsTabs';
@@ -65,7 +68,14 @@ const CollectionContainer = ({
               <Link to="/" className={classes.link}>
                 Our analytics
               </Link>
-              <h1 className={classes.title}>{currentCollection.name || 'Collection not found'}</h1>
+              <h1 className={classes.collectionName}>
+                {currentCollection.name || 'Collection not found'}
+                {currentCollection.description && (
+                  <Tooltip title={currentCollection.description} placement="right">
+                    <InfoIcon className={classes.collectionDescription} />
+                  </Tooltip>
+                )}
+              </h1>
             </div>
             <EditIcon
               className={classes.icon}

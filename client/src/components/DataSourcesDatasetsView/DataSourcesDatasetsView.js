@@ -4,26 +4,18 @@ import { makeStyles } from '@material-ui/core/styles';
 import Breadcrumbs from '@material-ui/core/Breadcrumbs';
 import Typography from '@material-ui/core/Typography';
 import { Grid } from '@material-ui/core';
+import NavigateNextIcon from '@material-ui/icons/NavigateNext';
 import DatasetItem from './DatasetItem';
 
 import './styles.css';
 
 const useStyles = makeStyles(() => ({
-  // breadcrumbs: {
-  //   marginBottom: '15px',
-  // },
-  // breadcrumbsItem: {
-  //   textTransform: 'uppercase',
-  //   fontSize: '13px',
-  //   lineHeight: '13px',
-  //   color: 'rgba(0, 0, 0, 0.54)',
-  // },
-  // itemList: {
-  //   display: 'grid',
-  //   gridTemplateColumns: 'repeat(auto-fill, minmax(350px, 1fr))',
-  //   alignItems: 'center',
-  //   gridGap: '20px',
-  // },
+  itemList: {
+    display: 'grid',
+    gridTemplateColumns: 'repeat(auto-fill, minmax(350px, 1fr))',
+    marginTop: '10px',
+    gridGap: '20px',
+  },
 }));
 
 const DataSourcesDatasetsView = ({ datasets }) => {
@@ -31,16 +23,23 @@ const DataSourcesDatasetsView = ({ datasets }) => {
 
   return (
     <main className="data-source-view">
-      <Breadcrumbs className={classes.breadcrumbs} aria-label="breadcrumb">
-        <Typography className={classes.breadcrumbsItem} color="inherit">
-          Our data
-        </Typography>
-      </Breadcrumbs>
-      <Grid container className={classes.itemList}>
-        {datasets.map((dataset) => {
-          return <DatasetItem key={dataset.id} dataset={dataset} />;
-        })}
-      </Grid>
+      <div className="wrapper">
+        <Breadcrumbs separator={<NavigateNextIcon />} aria-label="breadcrumb">
+          <Typography variant="body2" color="primary">
+            Our data
+          </Typography>
+        </Breadcrumbs>
+        <div className="data-source-dataset-view-header">
+          <Typography variant="h1" color="textPrimary">
+            Datasets
+          </Typography>
+        </div>
+        <Grid container className={classes.itemList}>
+          {datasets.map((dataset) => {
+            return <DatasetItem key={dataset.id} dataset={dataset} />;
+          })}
+        </Grid>
+      </div>
     </main>
   );
 };

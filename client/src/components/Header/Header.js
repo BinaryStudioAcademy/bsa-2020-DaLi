@@ -36,6 +36,10 @@ const Header = ({ logout, addDashboard }) => {
     setAddMenuAnchorEl(event.currentTarget);
   };
 
+  const handleAddMenuClose = () => {
+    setAddMenuAnchorEl(null);
+  };
+
   const handleClose = () => {
     setAnchorEl(null);
   };
@@ -173,7 +177,7 @@ const Header = ({ logout, addDashboard }) => {
                 anchorEl={addMenuAnchorEl}
                 keepMounted
                 open={Boolean(addMenuAnchorEl)}
-                onClose={handleClose}
+                onClose={handleAddMenuClose}
               >
                 <MenuItem onClick={showAddDashboardModal}>Add dashboard</MenuItem>
               </Menu>

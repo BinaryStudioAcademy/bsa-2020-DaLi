@@ -211,7 +211,7 @@ export const theme = createMuiTheme({
         alignItems: 'center',
         padding: '0 30px 0',
         boxSizing: 'border-box',
-        gridTemplateColumns: '35% 65%',
+        gridTemplateColumns: '25% 75%',
         '& .paper-analitics-icon': {
           border: '10px solid #FAA9C6',
           boxSizing: 'border-box',
@@ -242,7 +242,7 @@ export const theme = createMuiTheme({
           display: 'flex',
           justifyContent: 'center',
           alignItems: 'center',
-          '& .MuiSvgIcon-root': {
+          '& svg': {
             width: '25px',
             height: '25px',
             color: '#1CD1A1',
@@ -286,7 +286,7 @@ export const theme = createMuiTheme({
           },
           '& .paper-data-icon, & .paper-collection-icon': {
             borderColor: '#FFFFFF',
-            '& .MuiSvgIcon-root': {
+            '& svg': {
               color: '#FFFFFF',
             },
           },

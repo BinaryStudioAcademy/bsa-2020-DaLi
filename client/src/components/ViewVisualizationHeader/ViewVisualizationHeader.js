@@ -23,6 +23,7 @@ const ViewVisualizationHeader = (props) => {
     datasetSettings,
     updateVisualization,
     tableId,
+    rightSideBarPage,
   } = props;
   const classes = useStyles();
 
@@ -71,6 +72,10 @@ const ViewVisualizationHeader = (props) => {
                           ({ columnName: name }) => name !== columnName
                         );
                         updateVisualization(null, newDatasetSettings);
+                        if (rightSideBarPage === 0) {
+                          // console.log(rightSideBarPage);
+                          onToggleRightSideBar(rightSideBarPage);
+                        }
                       }}
                     />
                   );
@@ -127,6 +132,7 @@ ViewVisualizationHeader.propTypes = {
   tableId: PropTypes.string,
   datasetSettings: PropTypes.array,
   updateVisualization: PropTypes.func,
+  rightSideBarPage: PropTypes.number,
 };
 
 export default ViewVisualizationHeader;

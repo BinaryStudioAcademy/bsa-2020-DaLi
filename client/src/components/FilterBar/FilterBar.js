@@ -48,6 +48,9 @@ const FilterBar = ({ currentVisualization, closeSidebar, updateVisualization }) 
     }
     newDatasetSettings = [...newDatasetSettings, filter];
     updateVisualization(null, newDatasetSettings);
+    if (isNew) {
+      closeSidebar();
+    }
   };
 
   return (

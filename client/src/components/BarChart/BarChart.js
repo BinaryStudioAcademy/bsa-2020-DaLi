@@ -59,17 +59,23 @@ function BarChart(props) {
       .range([height - margin.bottom, margin.top]);
   };
 
-  const drawAxes = (chart, xScale) => {
-    const yScale = calcYScale(YAxis.key[0]); // TODO: yScale[0] replace
+  const drawAxes = (chart, xScale, yMaxIndex) => {
+    const yScale = calcYScale(YAxis.key[yMaxIndex]); 
     const xAxis = (g) =>
       g.attr('transform', `translate(0,${height - margin.bottom})`).call(d3.axisBottom(xScale).tickSize(0));
     const yAxis = (g) => g.attr('transform', `translate(${margin.left},0)`).call(d3.axisLeft(yScale).tickSize(0));
 
-    chart.append('g').attr('class', 'x-axis axis').call(xAxis);
+    chart.append('g').attr('class', 'x-axis axis').call(xAxis).selectAll("text")
+    .attr("y", 0)
+    .attr("x", -9)
+    .attr("dy", ".35em")
+    .attr("transform", "rotate(-45)")
+    // .attr("transform", "translate(0,10)")
+    .style("text-anchor", "end");
     chart.append('g').attr('class', 'y-axis axis').call(yAxis);
   };
 
-  const drawGroupedChart = (chart, data, xScale, xSubgroup, colors, tips) => {
+  const drawGroupedChart = (chart, data, xScale, xSubgroup, colors, tips, yMaxIndex) => {
     chart
       .append('g')
       .attr('class', 'bars')
@@ -89,17 +95,18 @@ function BarChart(props) {
       .attr('class', 'bar')
       .attr('x', (d) => xSubgroup(d.key))
       .attr('y', (d) => {
-        const zero = calcYScale(d.key)(0);
-        const current = calcYScale(d.key)(d.value);
+        const zero = calcYScale(YAxis.key[yMaxIndex])(0);
+        const current = calcYScale(YAxis.key[yMaxIndex])(d.value);
+        console.log(zero,current);
         const yPos = zero > current ? current : zero;
         return yPos;
       })
       .attr('width', xSubgroup.bandwidth())
       .attr('height', (d) => {
-        const zero = calcYScale(d.key)(0);
-        const current = calcYScale(d.key)(d.value);
+        const zero = calcYScale(YAxis.key[yMaxIndex])(0);
+        const current = calcYScale(YAxis.key[yMaxIndex])(d.value);
         let barHeight = Math.abs(zero - current);
-        if (calcYDataRange(d.key).min >= 0) {
+        if (calcYDataRange(YAxis.key[yMaxIndex]).min >= 0) {
           const chartElemY = chart.node().getBoundingClientRect().y;
           const xAxisElemY = chart.select('.x-axis').node().getBoundingClientRect().y;
           const xAxisY = xAxisElemY - chartElemY;
@@ -119,7 +126,7 @@ function BarChart(props) {
 
     if (showDataPointsValues) {
     const xPosGrouped = (a, index) => xScale(a[XAxis.key]) + ((2 * index + 1) * xScale.bandwidth()) / (2 * YAxis.key.length);
-    const yPosGrouped = (a, key, index) => calcYScale(YAxis.key[index])(a[key]) - 10;
+    const yPosGrouped = (a, key, index) => calcYScale(YAxis.key[yMaxIndex])(a[key]) - 10;
     const pointText = (a, key) => `${a[key]}`;
 
       YAxis.key.forEach((key, index) =>
@@ -261,7 +268,7 @@ function BarChart(props) {
     return tips;
   };
 
-  const addTrendLine = (chart) => {
+  const addTrendLine = (chart,yMaxIndex) => {
     const { polynomial, trendlineType } = trendline;
     const xDataRange = {
       min: data[0][XAxis.key],
@@ -280,7 +287,7 @@ function BarChart(props) {
       order: polynomial.order,
     };
 
-    const yScale = calcYScale(YAxis.key[0]);
+    const yScale = calcYScale(YAxis.key[yMaxIndex]);
 
     const trendlineCreator = new TrendlineCreator(trendlineType, chart, xScaleForLines, yScale);
     trendlineCreator.render(domain, trendlineData, config);
@@ -309,8 +316,8 @@ function BarChart(props) {
     }
   };
 
-  const displayGoalLine = (chart) => {
-    const y = calcYScale(YAxis.key[0])(goal.value);
+  const displayGoalLine = (chart,yMaxIndex) => {
+    const y = calcYScale(YAxis.key[yMaxIndex])(goal.value);
     chart.append('line').attr('id', 'goal').attr('x1', 0).attr('y1', y).attr('x2', width).attr('y2', y);
 
     chart
@@ -331,8 +338,11 @@ function BarChart(props) {
     const tips = createTips(chart);
 
     const xScale = calcXScale(data, XAxis.key);
+    const yMaxValues = YAxis.key.map(key => calcYDataRange(key).max);
+    const yMax = Math.max(...yMaxValues);
+    const yMaxIndex = yMaxValues.findIndex(item => item === yMax);
 
-    drawAxes(chart, xScale);
+    drawAxes(chart, xScale,yMaxIndex);
 
     // Another scale for subgroup position?
     const xSubgroup = d3.scaleBand().domain(YAxis.key).range([0, xScale.bandwidth()]).padding([0.05]);
@@ -341,11 +351,11 @@ function BarChart(props) {
     const colors = d3.scaleOrdinal().domain(YAxis.key).range(color);
 
     // draw chart
-    stacked ? drawStackedChart(chart, xScale, tips) : drawGroupedChart(chart, data, xScale, xSubgroup, colors, tips);
+    stacked ? drawStackedChart(chart, xScale, tips) : drawGroupedChart(chart, data, xScale, xSubgroup, colors, tips, yMaxIndex);
 
     // let barsInfo = null;
 
-    const yScale = calcYDataRange(YAxis.key[0]);
+    const yScale = calcYDataRange(YAxis.key[yMaxIndex]);
     if (yScale.min < 0) {
       chart
         .append('line')
@@ -356,7 +366,7 @@ function BarChart(props) {
         .attr('x2', width)
         .attr('y2', yScale(0));
 
-      const y = calcYScale(YAxis.key[0]);
+      const y = calcYScale(YAxis.key[yMaxIndex]);
 
       chart
         .append('text')
@@ -368,15 +378,15 @@ function BarChart(props) {
     }
 
     if (goal.display) {
-      displayGoalLine(chart);
+      displayGoalLine(chart,yMaxIndex);
     }
 
     if (trendline.display && data.length) {
-      addTrendLine(chart);
+      addTrendLine(chart,yMaxIndex);
     }
 
     // delete axis values
-    chart.selectAll('.axis').selectAll('text').remove();
+    // chart.selectAll('.axis').selectAll('text').remove();
 
     displayAxesLabels(chart);
 

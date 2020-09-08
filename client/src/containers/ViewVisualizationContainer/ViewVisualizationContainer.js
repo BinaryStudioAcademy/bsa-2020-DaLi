@@ -112,7 +112,7 @@ const ViewVisualizationContainer = (props) => {
     // eslint-disable-next-line no-nested-ternary
     schema && data ? (
       currentView === 'table' ? (
-        <InitialTable data={data} config={currentVisualization.config} schema={schema} />
+        <InitialTable data={data} config={currentVisualization.config} />
       ) : (
         visualizationComponent
       )
@@ -183,7 +183,7 @@ const ViewVisualizationContainer = (props) => {
     closeModal();
   };
 
-  const selectVisualizationSidebar = getSelectVisualizationSidebar(tableId);
+  const selectVisualizationSidebar = getSelectVisualizationSidebar(tableId, schema);
 
   return !currentVisualization.created || !schema || !data ? (
     <div style={{ position: 'relative' }}>

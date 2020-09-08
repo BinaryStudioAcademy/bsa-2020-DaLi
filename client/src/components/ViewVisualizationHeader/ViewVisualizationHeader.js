@@ -48,6 +48,7 @@ const ViewVisualizationHeader = (props) => {
                 <InfoIcon className={classes.viewVisualizationTitleIcon} />
               </Tooltip>
             )}
+            <EditIcon className={classes.viewVisualizationTitleIcon} onClick={onVisualizationNameEdit} />
             <div>
               {(isVisualizationExist && datasetSettings?.length && (
                 <Chip
@@ -79,7 +80,6 @@ const ViewVisualizationHeader = (props) => {
                 })) ||
                 null}
             </div>
-            <EditIcon className={classes.viewVisualizationTitleIcon} onClick={onVisualizationNameEdit} />
           </>
         )}
       </Grid>

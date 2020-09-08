@@ -28,6 +28,10 @@ export const getYKeys = (schema) => {
   return availableKeys.map((obj) => obj.column_name);
 };
 
+export const canTableBeDisplayed = (schema) => {
+  return !getYKeys(schema).length;
+};
+
 export const getXKeys = (schema) => {
   const availableKeys = schema.filter(({ data_type }) => {
     const isNum = data_type === 'number';

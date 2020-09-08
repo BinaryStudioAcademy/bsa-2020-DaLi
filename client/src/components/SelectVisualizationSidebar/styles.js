@@ -31,6 +31,9 @@ const useStyles = makeStyles((theme) => ({
     bottom: '-30px',
     color: '#33A1DE',
   },
+  invalidDataTooltip: {
+    fontSize: '13px',
+  },
 }));
 
 export default useStyles;

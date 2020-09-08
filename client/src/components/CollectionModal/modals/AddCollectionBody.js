@@ -18,12 +18,7 @@ const AddUserBody = ({ closeModal, editableCollection, setFormData, formData, ad
   const classes = useStyles();
 
   const formik = useFormik({
-    initialValues: editableCollection
-      ? {
-          name: formData.name || editableCollection.name,
-          description: formData.description || editableCollection.description,
-        }
-      : formData,
+    initialValues: { ...formData, ...editableCollection },
 
     validationSchema,
 

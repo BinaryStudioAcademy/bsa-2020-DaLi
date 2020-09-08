@@ -12,7 +12,6 @@ import InfoIcon from '@material-ui/icons/Info';
 import DeleteIcon from '@material-ui/icons/Delete';
 import MoveToInboxIcon from '@material-ui/icons/MoveToInbox';
 import { Link, useHistory } from 'react-router-dom';
-import { dbTableAPIService } from '../../../services/api/dbTableAPI.service';
 
 import { useStyles } from './styles';
 
@@ -20,13 +19,11 @@ const AnalyticsTabsPanel = ({ value, index, data, deleteVisualization, deleteDas
   const classes = useStyles();
   const history = useHistory();
 
-  const onVisualizationsClick = (id, tableId) => {
-    dbTableAPIService.getTable(tableId).then((data) =>
-      history.push({
-        pathname: `/visualizations/${id}`,
-        data,
-      })
-    );
+  const onVisualizationsClick = (id) => {
+    history.push({
+      pathname: `/visualizations/${id}`,
+      data,
+    });
   };
 
   const chooseIcon = (type) => {

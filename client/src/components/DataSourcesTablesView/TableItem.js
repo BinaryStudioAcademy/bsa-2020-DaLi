@@ -22,7 +22,7 @@ const TableItem = ({ table }) => {
 
   const onTableClick = () => {
     history.push({
-      pathname: '/select-visualization/table',
+      pathname: `/create-visualization/${table.id}/table`,
       tableId: table.id,
     });
   };

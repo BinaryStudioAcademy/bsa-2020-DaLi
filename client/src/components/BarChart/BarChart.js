@@ -157,7 +157,6 @@ function BarChart(props) {
           .text(goal.label);
       }
     }
-    console.log(YAxis);
     YAxis.key.forEach((YKey,index) => drawLine(YKey, index));
 
     if (trendline.display && data.length && YAxis.key.length === 1) {

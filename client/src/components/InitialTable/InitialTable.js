@@ -42,7 +42,7 @@ const InitialTable = (props) => {
   const tableProperties = getTableHead(data);
   useEffect(() => {
     setData(formatDateForSummarize(Data, config));
-  }, [Data]);
+  }, [Data, config]);
   const tableHeadRows = tableProperties.map((property) => (
     <TableCell
       key={property}

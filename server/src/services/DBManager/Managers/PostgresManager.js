@@ -77,7 +77,7 @@ export default class DBPostgresManager {
     }
     const filterQuery = this.formQueryFromSettings(settings);
     const select = isSummarize
-      ? `SELECT ${summarize.select.operation}(${+summarize.select.column}) as ${summarize.select.as}, ${groupBy}`
+      ? `SELECT ${summarize.select.operation}(${summarize.select.column}) as ${summarize.select.as}, ${groupBy}`
       : 'SELECT *';
     return this.sequelize
       .query(

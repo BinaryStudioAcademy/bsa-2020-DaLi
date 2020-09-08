@@ -39,29 +39,27 @@ Object.keys(models).forEach((key) => {
 });
 
 sequelize.sync().then(async () => {
-  const groups = await models.UserGroups.findAll();
-  if (groups.length >= 2) return;
-
-  const defaultGroupsId = [];
-  let defaultCollectionId = '';
-  await models.UserGroups.create({
-    name: ADMIN_GROUP,
-  }).then((group) => defaultGroupsId.push(group.id));
-  await models.UserGroups.create({
-    name: ALL_USERS_GROUP,
-  }).then((group) => defaultGroupsId.push(group.id));
-
-  await models.Collection.create({ name: DEFAULT_COLLECTIONS }).then((collection) => {
-    defaultCollectionId = collection.id;
-    return defaultGroupsId;
-  });
-  defaultGroupsId.forEach(async (groupId) => {
-    await models.PermissionCollections.create({
-      permissionGranted: 'granted',
-      userGroups_id: groupId,
-      collections_id: defaultCollectionId,
+  try {
+    const { id: adminGroupId } = await models.UserGroups.create({
+      name: ADMIN_GROUP,
     });
-  });
+    const { id: allUsersGroupId } = await models.UserGroups.create({
+      name: ALL_USERS_GROUP,
+    });
+    const { id: defaultCollectionId } = await models.Collection.create({
+      name: DEFAULT_COLLECTIONS,
+    });
+
+    [adminGroupId, allUsersGroupId].forEach(async (groupId) => {
+      await models.PermissionCollections.create({
+        permissionGranted: 'granted',
+        userGroups_id: groupId,
+        collections_id: defaultCollectionId,
+      });
+    });
+  } catch (error) {
+    //
+  }
 });
 
 export default models;

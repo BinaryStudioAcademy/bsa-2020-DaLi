@@ -9,9 +9,9 @@ import {
 
 export const checkIsVisualizationNew = (id) => VISUALIZATIONS_TYPES_TO_CREATE.includes(id);
 
-export const checkIsVisualizationTypeChangedDuringCreation = (prevPath) => {
+export const checkIsVisualizationTypeChangedDuringCreation = (prevPath, tableId) => {
   if (typeof prevPath === 'string') {
-    return VISUALIZATIONS_TYPES_TO_CREATE.includes(prevPath.slice(22));
+    return prevPath.split('/')[2] === tableId;
   }
   return false;
 };
@@ -40,13 +40,15 @@ export const getXKeys = (schema) => {
   return availableKeys.map((obj) => obj.column_name);
 };
 
-export const createInitVisualization = (visualizationType, userId, schema) => {
+export const createInitVisualization = (visualizationType, userId, schema, tableId) => {
   const newVisualization = {
     name: '',
     description: '',
     config: '',
     type: '',
     UserId: userId,
+    tableId,
+    datasetSettings: [],
   };
   switch (visualizationType) {
     case 'bar-chart':

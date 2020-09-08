@@ -5,12 +5,15 @@ import * as DBTablesService from '../services/dbTableService';
 
 const router = Router();
 
-router.get(
+router.post(
   '/:id/data',
   asyncHandler(async (req, res, next) => {
-    const result = await DBTablesService.getTableData({
-      id: req.params.id,
-    });
+    const result = await DBTablesService.getTableData(
+      {
+        id: req.params.id,
+      },
+      req.body
+    );
     if (result) {
       res.status(200).json(result);
       next();

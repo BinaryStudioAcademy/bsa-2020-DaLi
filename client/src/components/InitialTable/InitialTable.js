@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import Table from '@material-ui/core/Table';
 import { makeStyles } from '@material-ui/core/styles';
@@ -7,6 +7,7 @@ import TableCell from '@material-ui/core/TableCell';
 import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
+import { formatDateForSummarize } from '../../helpers/formatDateForSummarize';
 
 const useStyles = makeStyles({
   initialTable: {
@@ -33,12 +34,14 @@ const sortByProperty = (arrOfObjects, property, sortedBy) => {
   return arrOfObjects;
 };
 const InitialTable = (props) => {
-  const { data: Data } = props;
-  const [data, setData] = useState(Data);
+  const { data: Data, config } = props;
+  const [data, setData] = useState(formatDateForSummarize(Data, config));
   const [sortedBy, setSortedBy] = useState('id');
   const classes = useStyles();
-
   const tableProperties = getTableHead(data);
+  useEffect(() => {
+    setData(formatDateForSummarize(Data, config));
+  }, [Data]);
   const tableHeadRows = tableProperties.map((property) => (
     <TableCell
       key={property}
@@ -76,6 +79,7 @@ const InitialTable = (props) => {
 
 InitialTable.propTypes = {
   data: PropTypes.array,
+  config: PropTypes.object,
 };
 
 export default InitialTable;

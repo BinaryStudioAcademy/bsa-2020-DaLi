@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import config from '../../config/index';
 import './styles.css';
 
-const MapVisualizationGoogleHeat = ({ data, settings }) => {
+const MapVisualizationGoogleHeat = ({ updateConfig, data, settings }) => {
   const API_GOOGLE_KEY = config.api.google;
   const positions = data.map((location) => {
     return {
@@ -24,19 +24,27 @@ const MapVisualizationGoogleHeat = ({ data, settings }) => {
 
   const options = settings.isSatellite ? { mapTypeId: 'satellite' } : { mapTypeId: 'roadmap' };
 
+  const onChange = ({ center, zoom }) => {
+    if (updateConfig) {
+      updateConfig({ ...settings, mapCenter: center, zoom });
+    }
+  };
+
   return (
     <GoogleMapReact
       options={options}
-      defaultCenter={{ lat: 40.71274, lng: -74.005974 }}
-      defaultZoom={4}
+      center={settings.mapCenter}
+      zoom={settings.zoom}
       bootstrapURLKeys={{ key: API_GOOGLE_KEY, libraries: 'visualization' }}
       heatmapLibrary
       heatmap={heatMapData}
+      onChange={onChange}
     />
   );
 };
 
 MapVisualizationGoogleHeat.propTypes = {
+  updateConfig: PropTypes.func,
   data: PropTypes.array,
   settings: PropTypes.object,
 };

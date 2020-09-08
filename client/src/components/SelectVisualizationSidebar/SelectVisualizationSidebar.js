@@ -42,8 +42,7 @@ const SelectVisualizationSidebar = ({ tableId }) => {
 
   const onButtonClick = (type) => {
     history.push({
-      pathname: `/select-visualization/${type}`,
-      tableId,
+      pathname: `/create-visualization/${tableId}/${type}`,
       prevPath: history.location.pathname,
     });
   };

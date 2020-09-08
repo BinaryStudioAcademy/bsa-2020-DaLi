@@ -1,20 +1,26 @@
 export const createNewVisualization = (currentVisualization, name, description, tableId) => {
-  delete currentVisualization.data;
-  delete currentVisualization.schema;
+  const { type, config, datasetSettings } = currentVisualization;
   const createdVisualization = {
-    ...currentVisualization,
     name,
     description,
     tableId,
-    config: JSON.stringify(currentVisualization.config),
+    type,
+    datasetSettings: datasetSettings.map((s) => JSON.stringify(s)),
+    config: JSON.stringify(config),
   };
   return createdVisualization;
 };
 
-export const createUpdatedVisualization = (currentVisualization) => {
+export const createUpdatedVisualization = (currentVisualization, newConfig, newDatasetSettings) => {
+  const { type, name, description, config, tableId } = currentVisualization;
+  const datasetSettings = newDatasetSettings || currentVisualization.datasetSettings;
   const updatedVisualization = {
-    ...currentVisualization,
-    config: JSON.stringify(currentVisualization.config),
+    type,
+    name,
+    description,
+    tableId,
+    datasetSettings: datasetSettings.map((s) => JSON.stringify(s)),
+    config: JSON.stringify(newConfig || config),
   };
   return updatedVisualization;
 };

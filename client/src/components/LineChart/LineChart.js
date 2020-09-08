@@ -107,7 +107,7 @@ function LineChart({ settings, data, chart: chartSize }) {
 
   const createTips = (chart) => {
     chart.select(`.d3-tip`).remove();
-    const tip = d3Tip()
+    const tips = d3Tip()
       .attr('class', 'd3-tip')
       .offset([-10, 0])
       .html(
@@ -117,7 +117,7 @@ function LineChart({ settings, data, chart: chartSize }) {
 `
       );
 
-    chart.call(tip).attr('height', '100%').attr('width', '100%');
+   return tips;
   }
 
   const addTrendLine = (chart) => {
@@ -168,7 +168,7 @@ function LineChart({ settings, data, chart: chartSize }) {
     }
   };
 
-  const displayGoalLine = (chart) => {
+  const displayGoalLine = (chart, tips) => {
     const y = calcYScale(YAxis.key[0])(goal.value);
     chart.append('line').attr('id', 'goal').attr('x1', 0).attr('y1', y).attr('x2', width).attr('y2', y);
 
@@ -181,48 +181,59 @@ function LineChart({ settings, data, chart: chartSize }) {
       .text(goal.label);
   };
 
+  const drawLineChart = (chart, tips) => {
+    const line = d3
+    .line()
+    .curve(d3[lineType[index]])
+    .x((d) => xScale(d[XAxis.key]) + xScale.bandwidth() / 2)
+    .y((d) => yScale(d[YKey]));
+  chart
+    .append('path')
+    .datum(data.sort((a, b) => a[XAxis.key] - b[XAxis.key]))
+    .attr('class', 'line')
+    .attr('d', line)
+    .style('stroke', color[index]);
+  chart
+    .selectAll(`.dot-${YKey}`)
+    .data(data)
+    .enter()
+    .append('circle')
+    .attr('class', 'dot')
+    .attr('cx', (d) => xScale(d[XAxis.key]) + xScale.bandwidth() / 2)
+    .attr('cy', (d) => yScale(d[YKey]))
+    .attr('r', 5)
+    .style('stroke', color[index])
+    .on('mouseover', tips.show)
+    .on('mouseout', tips.hide);
+  if (showDataPointsValues) {
+    chart
+      .selectAll(`.dot__value-${YKey}`)
+      .data(data)
+      .enter()
+      .append('text')
+      .attr('class', 'dot__value')
+      .attr('x', (d) => xScale(d[XAxis.key]) + xScale.bandwidth() / 2)
+      .attr('y', (d) => yScale(d[YKey]) - 20)
+      .attr('text-anchor', 'middle')
+      .text((d) => d[YKey]);
+  }
+  }
+
   const draw = () => {
     // setConfig(settings);
-
+    const chart = initChart(svgRef.current);
     chart.selectAll('*').remove();
 
+    convertStringData(data, YAxis.key);
 
+    const tips = createTips(chart);
 
-      const line = d3
-        .line()
-        .curve(d3[lineType[index]])
-        .x((d) => xScale(d[XAxis.key]) + xScale.bandwidth() / 2)
-        .y((d) => yScale(d[YKey]));
-      chart
-        .append('path')
-        .datum(data.sort((a, b) => a[XAxis.key] - b[XAxis.key]))
-        .attr('class', 'line')
-        .attr('d', line)
-        .style('stroke', color[index]);
-      chart
-        .selectAll(`.dot-${YKey}`)
-        .data(data)
-        .enter()
-        .append('circle')
-        .attr('class', 'dot')
-        .attr('cx', (d) => xScale(d[XAxis.key]) + xScale.bandwidth() / 2)
-        .attr('cy', (d) => yScale(d[YKey]))
-        .attr('r', 5)
-        .style('stroke', color[index])
-        .on('mouseover', tip.show)
-        .on('mouseout', tip.hide);
-      if (showDataPointsValues) {
-        chart
-          .selectAll(`.dot__value-${YKey}`)
-          .data(data)
-          .enter()
-          .append('text')
-          .attr('class', 'dot__value')
-          .attr('x', (d) => xScale(d[XAxis.key]) + xScale.bandwidth() / 2)
-          .attr('y', (d) => yScale(d[YKey]) - 20)
-          .attr('text-anchor', 'middle')
-          .text((d) => d[YKey]);
-      }
+    const xScale = calcXScale(data, XAxis.key);
+
+    drawAxes(chart, xScale);
+
+    drawLineChart(chart, tips);
+
       // const xAxis = (g) => {
       //   return g.attr('transform', `translate(0,${height - margin.bottom})`).call(d3.axisBottom(xScale).tickSize(0));
       // };
@@ -251,103 +262,70 @@ function LineChart({ settings, data, chart: chartSize }) {
           .text('0');
       }
 
-      if (goal.display && index === 1) {
-        const y = yScale(goal.value);
-        chart.append('line').attr('id', 'goal').attr('x1', 0).attr('y1', y).attr('x2', width).attr('y2', y);
+      if (goal.display) {
+        displayGoalLine(chart);
+      }
   
-        chart
-          .append('text')
-          .attr('y', y - 10)
-          .attr('x', width - 50)
-          .attr('text-anchor', 'middle')
-          .attr('class', 'line__label')
-          .text(goal.label);
+      if (trendline.display && data.length) {
+        addTrendLine(chart);
+      }
+  
+      // delete axis values
+      chart.selectAll('.axis').selectAll('text').remove();
+  
+      displayAxesLabels(chart);
+  
+      if (YAxis.key.length > 1) {
+        showLegend(chart);
       }
     // };
 
     // YAxis.key.forEach((YKey, index) => drawLine(YKey, index));
 
-    // delete axis values
-    chart.selectAll('.axis').selectAll('text').remove();
+    // if (trendline.display && data.length && YAxis.key.length === 1) {
+    //   const xDataRange = {
+    //     min: data[0][XAxis.key],
+    //     max: data[data.length - 1][XAxis.key],
+    //   };
+    //   const xScaleForTrendline = d3
+    //     .scaleLinear()
+    //     .domain([xDataRange.min, xDataRange.max])
+    //     .range([margin.left, width - margin.right]);
+    //   const { polynomial, trendlineType } = trendline;
 
-    if (trendline.display && data.length && YAxis.key.length === 1) {
-      const xDataRange = {
-        min: data[0][XAxis.key],
-        max: data[data.length - 1][XAxis.key],
-      };
-      const xScaleForTrendline = d3
-        .scaleLinear()
-        .domain([xDataRange.min, xDataRange.max])
-        .range([margin.left, width - margin.right]);
-      const { polynomial, trendlineType } = trendline;
+    //   const trendlineData = data.map((item) => [item[XAxis.key], item[YAxis.key[0]]]);
+    //   const barUnitWidth = (xDataRange.max - xDataRange.min) / data.length;
+    //   const domain = [xDataRange.min, xDataRange.max - barUnitWidth];
+    //   const config = {
+    //     xOffset: xScale.bandwidth() / 2,
+    //     order: polynomial.order,
+    //   };
 
-      const trendlineData = data.map((item) => [item[XAxis.key], item[YAxis.key[0]]]);
-      const barUnitWidth = (xDataRange.max - xDataRange.min) / data.length;
-      const domain = [xDataRange.min, xDataRange.max - barUnitWidth];
-      const config = {
-        xOffset: xScale.bandwidth() / 2,
-        order: polynomial.order,
-      };
+    //   const trendlineCreator = new TrendlineCreator(trendlineType, chart, xScaleForTrendline, yScale);
+    //   trendlineCreator.render(domain, trendlineData, config);
+    // }
 
-      const trendlineCreator = new TrendlineCreator(trendlineType, chart, xScaleForTrendline, yScale);
-      trendlineCreator.render(domain, trendlineData, config);
-    }
+    // if (YAxis.displayLabel) {
+    //   chart
+    //     .append('text')
+    //     .attr('class', 'label')
+    //     .attr('x', -height / 2)
+    //     .attr('y', margin.left - 10)
+    //     .attr('transform', 'rotate(-90)')
+    //     .attr('text-anchor', 'middle')
+    //     .text(YAxis.label);
+    // }
 
-    if (YAxis.displayLabel) {
-      chart
-        .append('text')
-        .attr('class', 'label')
-        .attr('x', -height / 2)
-        .attr('y', margin.left - 10)
-        .attr('transform', 'rotate(-90)')
-        .attr('text-anchor', 'middle')
-        .text(YAxis.label);
-    }
+    // if (XAxis.displayLabel) {
+    //   chart
+    //     .append('text')
+    //     .attr('class', 'label')
+    //     .attr('x', width / 2)
+    //     .attr('y', height - margin.bottom + 30)
+    //     .attr('text-anchor', 'middle')
+    //     .text(XAxis.label);
+    // }
 
-    if (XAxis.displayLabel) {
-      chart
-        .append('text')
-        .attr('class', 'label')
-        .attr('x', width / 2)
-        .attr('y', height - margin.bottom + 30)
-        .attr('text-anchor', 'middle')
-        .text(XAxis.label);
-    }
-
-    const legendContainer = chart.append('g').attr('transform', 'translate(' + (margin.left + 50) + ',0)');
-
-    const legendRectSize = 18;
-    const legendSpacing = 4;
-
-    if(YAxis.key.length>1){
-    const legend = legendContainer
-      .selectAll('.legend')
-      .data(YAxis.key)
-      .enter()
-      .append('g')
-      .attr('class', 'legend')
-      .attr('transform', function (d, i) {
-        const width = legendRectSize + legendSpacing + 40;
-        // const offset = (width * color.length) / 2;
-        const offset = (width * 3) / 2;
-        const horz = i*offset;
-        const vert = 0;
-        return 'translate(' + horz + ',' + vert + ')';
-      });
-
-    legend
-      .append('rect')
-      .attr('width', legendRectSize)
-      .attr('height', legendRectSize)
-      .style('fill', (d, i) => color[i])
-      .style('stroke', (d, i) => color[i]);
-
-    legend
-      .append('text')
-      .attr('x', legendRectSize + legendSpacing)
-      .attr('y', legendRectSize - legendSpacing)
-      .text((d) => d);
-    }
   };
 
   const onResize = () => {

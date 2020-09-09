@@ -28,6 +28,12 @@ const useStyles = makeStyles(() => ({
 
 function DateFilterForm({ filter, openFiltersList, setActiveFilter }) {
   const classes = useStyles();
+  //   date filter model : {
+  //     type: 'date',
+  //     name: 'name',
+  //     greaterThan: min date value,
+  //     lessThan: max date value,
+  //   }
 
   const [dateFormatPicker, setDateFormatPicker] = useState('next');
   const [dateUnitType, setDateUnitType] = useState('days');
@@ -76,9 +82,6 @@ function DateFilterForm({ filter, openFiltersList, setActiveFilter }) {
           </>
         );
 
-      case 'today':
-      case 'thisMonth':
-      case 'thisYear':
       default:
         return null;
     }

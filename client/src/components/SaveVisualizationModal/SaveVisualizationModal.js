@@ -16,8 +16,7 @@ const ValidationSchema = Yup.object({
   name: Yup.string().required('Name is required'),
 });
 // eslint-disable-next-line
-const SaveVisualizationModal = ({closeModal, saveVisualization, isVisible, title, name, description}) => {
-
+const SaveVisualizationModal = ({ closeModal, saveVisualization, isVisible, title, name, description }) => {
   const cancel = (resetForm) => () => {
     resetForm();
     closeModal();

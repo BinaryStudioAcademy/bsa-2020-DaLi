@@ -1,10 +1,10 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
 import { Grid, Button, Typography } from '@material-ui/core';
-import { useStyles } from './styles';
+
+import './styles.css';
 
 const DatabaseListHeader = () => {
-  const classes = useStyles();
   const history = useHistory();
 
   const handleAddDatabase = () => {
@@ -12,14 +12,14 @@ const DatabaseListHeader = () => {
   };
 
   return (
-    <div>
-      <Grid className={classes.databaseListHeader}>
-        <Typography className={classes.databaseListTitle}>Databases</Typography>
-        <Button className={classes.addDatabaseButton} variant="contained" onClick={handleAddDatabase}>
-          Add Database
-        </Button>
-      </Grid>
-    </div>
+    <Grid className="database-list-header-container">
+      <Typography variant="h1" color="textPrimary">
+        Databases
+      </Typography>
+      <Button size="large" variant="contained" color="primary" onClick={handleAddDatabase}>
+        Add Database
+      </Button>
+    </Grid>
   );
 };
 

@@ -3,11 +3,14 @@ import PropTypes from 'prop-types';
 import { connect, useDispatch } from 'react-redux';
 import Snackbar from '@material-ui/core/Snackbar';
 import MuiAlert from '@material-ui/lab/Alert';
+import { Typography } from '@material-ui/core';
 import { LoginForm, Modal } from '../../components';
-
+import hero from '../../images/DaLi-Sign-Up-Page.png';
 import { registerAdmin, login } from './actions';
 import SignUpContainer from '../SingUp/SignUp';
 import { authAPIService } from '../../services/api/AuthAPI.service';
+
+import './styles.css';
 
 const LoginPageContainer = ({ error }) => {
   const [isModalVisible, setIsModalVisible] = useState(false);
@@ -42,13 +45,22 @@ const LoginPageContainer = ({ error }) => {
   }
 
   return (
-    <div className="container">
+    <div className="login-container">
+      <div className="login-hero-container">
+        <img alt="hero-dali" src={hero} className="hero-dali" />
+      </div>
       <div className="form-wrapper">
-        <h1 className="title">Sign in to DaLi</h1>
+        <Typography variant="h1" className="title" color="primary">
+          Sign in to DaLi
+        </Typography>
         <LoginForm setIsModalVisible={setIsModalVisible} login={handleSubmit} />
         {isModalVisible && (
           <Modal onModalClose={() => setIsModalVisible(false)}>
-            <Modal.Body>Please contact an administrator to reset your password</Modal.Body>
+            <Modal.Body>
+              <Typography variant="h3" color="textPrimary">
+                Please contact an administrator to reset your password
+              </Typography>
+            </Modal.Body>
             <Modal.Footer>
               <Modal.Footer.CloseBtn>Back to login</Modal.Footer.CloseBtn>
             </Modal.Footer>

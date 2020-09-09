@@ -8,7 +8,6 @@ export const useStyles = makeStyles(() => ({
   },
   tableRow: {
     transition: '0.3s',
-
     '&:hover': {
       backgroundColor: '#4785bb0f',
       '& $deleteButton': {
@@ -23,26 +22,22 @@ export const useStyles = makeStyles(() => ({
     fontWeight: 700,
     width: '40%',
   },
-  databaseType: {
-    width: '40%',
-  },
   deleteButton: {
     opacity: 0,
     backgroundColor: '#ed6e6e',
     borderColor: '#ed6e6e',
     color: '#ffffff',
-    padding: '8px 16px',
     transition: '0.3s',
-
     '&:hover': {
       backgroundColor: '#ed6e6e',
     },
   },
   item: {
-    color: 'inherit',
     textDecoration: 'none',
+    color: '#1CD1A1',
     '&:hover': {
-      borderBottom: '1px solid #509ee3',
+      textDecoration: 'underline',
+      textDecorationColor: '#1CD1A1',
     },
   },
 }));

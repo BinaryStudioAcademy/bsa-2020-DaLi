@@ -157,35 +157,35 @@ function BarChart(props) {
           .attr('class', 'line__label')
           .text(goal.label);
       }
+
+      if (trendline.display  && YAxis.key.length === 1 && props.data.length) {
+        const { polynomial, trendlineType } = trendline;
+        const xDataRange = {
+          min: data[0][XAxis.key],
+          max: data[data.length - 1][XAxis.key],
+        };
+        console.log(xDataRange);
+        const barUnitWidth = (xDataRange.max - xDataRange.min) / data.length;
+        const xScaleForLines = d3
+          .scaleLinear()
+          .domain([xDataRange.min, xDataRange.max])
+          .range([margin.left, width - margin.right]);
+  
+        const trendlineData = data.map((item) => [item[XAxis.key], item[YAxis.key[0]]]);
+        const domain = [xDataRange.min, xDataRange.max - barUnitWidth];
+        const config = {
+          xOffset: xScale.bandwidth() / 2,
+          order: polynomial.order,
+        };
+  
+        const trendlineCreator = new TrendlineCreator(trendlineType, chart, xScaleForLines, yScale);
+        console.log(trendlineCreator);
+        trendlineCreator.render(domain, trendlineData, config);
+      }
+
     }
     YAxis.key.forEach((YKey,index) => drawLine(YKey, index));
 
-    if (props.data.length) {
-    if (trendline.display  && YAxis.key.length === 1) {
-      const { polynomial, trendlineType } = trendline;
-      const xDataRange = {
-        min: data[0][XAxis.key],
-        max: data[data.length - 1][XAxis.key[0]],
-      };
-      const barUnitWidth = (xDataRange.max - xDataRange.min) / data.length;
-      const xScaleForLines = d3
-        .scaleLinear()
-        .domain([xDataRange.min, xDataRange.max])
-        .range([margin.left, width - margin.right]);
-
-      const trendlineData = data.map((item) => [item[XAxis.key], item[YAxis.key[0]]]);
-      const domain = [xDataRange.min, xDataRange.max - barUnitWidth];
-      const config = {
-        xOffset: xScale.bandwidth() / 2,
-        order: polynomial.order,
-      };
-
-      const trendlineCreator = new TrendlineCreator(trendlineType, chart, xScaleForLines, yScale);
-      trendlineCreator.render(domain, trendlineData, config);
-    }
-  }
-
-    
     // delete axis values
     chart.selectAll('.axis').selectAll('text').remove();
 

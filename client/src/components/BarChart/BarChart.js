@@ -70,7 +70,6 @@ function BarChart(props) {
     .attr("x", -9)
     .attr("dy", ".35em")
     .attr("transform", "rotate(-45)")
-    // .attr("transform", "translate(0,10)")
     .style("text-anchor", "end");
     chart.append('g').attr('class', 'y-axis axis').call(yAxis);
   };
@@ -97,7 +96,6 @@ function BarChart(props) {
       .attr('y', (d) => {
         const zero = calcYScale(YAxis.key[yMaxIndex])(0);
         const current = calcYScale(YAxis.key[yMaxIndex])(d.value);
-        console.log(zero,current);
         const yPos = zero > current ? current : zero;
         return yPos;
       })

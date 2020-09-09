@@ -8,7 +8,7 @@ import PropTypes from 'prop-types';
 
 import { updateUser, hideUserUpdateMessage, updateUserError } from './actions';
 
-import { mockProfile, getUserInitials } from './helper';
+import { getUserInitials } from './helper';
 
 import './styles.css';
 
@@ -54,7 +54,7 @@ const AccountSettingsContainer = ({
   updateUserError,
 }) => {
   const [activeTab, setActiveTab] = useState(0);
-  const userInitials = getUserInitials(mockProfile);
+  const userInitials = getUserInitials({ firstName, lastName });
   const initialPasswordValues = {
     currentPassword: '',
     newPassword: '',

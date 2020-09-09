@@ -1,11 +1,5 @@
-export const mockProfile = {
-  firstName: 'Admin',
-  secondName: 'User',
-  email: 'admin.user@binary-studio.com',
-};
-
 export const getUserInitials = (profile) => {
-  const { firstName, secondName } = profile;
-  const userInitials = `${firstName[0]}${secondName[0]}`;
+  const { firstName = 'Admin', lastName = 'User' } = profile;
+  const userInitials = `${firstName[0].toUpperCase()}${lastName[0].toUpperCase()}`;
   return userInitials;
 };

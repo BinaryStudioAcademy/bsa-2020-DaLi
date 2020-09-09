@@ -186,7 +186,7 @@ const ViewVisualizationContainer = (props) => {
 
   return !currentVisualization.created || !schema || !data ? (
     <div style={{ position: 'relative' }}>
-      <CircularProgress size={40} left={-20} top={10} style={{ marginLeft: '50%' }} />
+      <CircularProgress size={40} left={-20} top={10} style={{ marginLeft: '50%', marginTop: '35%' }} />
     </div>
   ) : (
     <>

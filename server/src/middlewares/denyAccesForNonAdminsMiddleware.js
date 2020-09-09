@@ -6,7 +6,7 @@ export const denyAccessForNonAdmins = async (req, res, next) => {
   const userGroupsName = userGroups.map((group) => group.UserGroup.name);
 
   if (!userGroupsName.includes('Administrators')) {
-    const error = createError(409, 'You do not have admin rights');
+    const error = createError(403, 'You do not have admin rights');
     return next(error);
   }
   return next();
@@ -17,7 +17,7 @@ export const secureUserUpdate = async (req, res, next) => {
   const userGroupsName = userGroups.map((group) => group.UserGroup.name);
 
   if (!userGroupsName.includes('Administrators') && req.params.id !== req.user.id) {
-    const error = createError(409, 'You can not update user');
+    const error = createError(403, 'You can not update user');
     return next(error);
   }
 

@@ -4,26 +4,53 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon --exec babel-node index.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "babel ./ -D -d dist --ignore ./node_modules",
+    "start": "node index.js",
+    "start:dev": "nodemon --inspect --exec babel-node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "lint": "eslint",
+    "lint:write": "eslint --fix",
+    "prettier": "prettier --write src/**/*.js"
   },
   "author": "Ivan Patsai",
   "license": "ISC",
   "dependencies": {
+    "bcrypt": "^5.0.0",
     "cors": "^2.8.5",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
+    "express-async-handler": "^1.1.4",
+    "http-errors": "^1.8.0",
+    "jsonwebtoken": "^8.5.1",
+    "jwt-decode": "^2.2.0",
+    "mongodb": "^3.6.0",
+    "mysql2": "^2.1.0",
+    "passport": "^0.4.1",
+    "passport-jwt": "^4.0.0",
+    "passport-local": "^1.0.0",
     "pg": "^8.3.0",
-    "sequelize": "^6.3.3"
+    "sequelize": "^6.3.3",
+    "swagger-ui-express": "^4.1.4",
+    "validator": "^13.1.1"
   },
   "devDependencies": {
+    "@babel/cli": "^7.10.5",
     "@babel/core": "^7.10.5",
     "@babel/node": "^7.10.5",
+    "@babel/plugin-transform-runtime": "^7.11.0",
+    "@babel/polyfill": "^7.10.4",
     "@babel/preset-env": "^7.10.4",
+    "babel-eslint": "^10.1.0",
+    "eslint": "^7.6.0",
+    "eslint-config-airbnb-base": "^14.2.0",
+    "eslint-plugin-babel": "^5.3.1",
+    "eslint-plugin-import": "^2.22.0",
+    "eslint-plugin-prettier": "^3.1.4",
     "husky": "^4.2.5",
     "lint-staged": ">=10",
     "nodemon": "^2.0.4",
-    "prettier": "2.0.5"
+    "prettier": "^2.0.5",
+    "swagger-ui-express": "^4.1.4"
   },
   "husky": {
     "hooks": {
@@ -31,6 +58,9 @@
     }
   },
   "lint-staged": {
-    "*.{js,css,md}": "prettier --write"
+    "*.{js,css,md}": [
+      "npm run lint:write",
+      "git add"
+    ]
   }
 }

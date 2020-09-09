@@ -1,6 +1,24 @@
-import { fork, all } from "redux-saga/effects";
-import { exampleSaga } from "../containers/ExampleContainer/exampleSagas";
+import { all } from 'redux-saga/effects';
+import authSaga from '../containers/LoginPageContainer/sagas';
+import analyticsSaga from '../containers/AnalyticsContainer/sagas';
+import currentDashboardSaga from '../containers/DashboardContainer/sagas';
+import currentVisualizationSaga from '../containers/ViewVisualizationContainer/sagas';
+import usersSaga from '../containers/PeoplePageContainer/sagas';
+import datasetsSaga from '../containers/DataSourcesDatasetsContainer/sagas';
+import userGroupsSaga from '../containers/UserGroupsPageContainer/sagas';
+import databasesSaga from '../containers/DatabasesPageContainer/sagas';
+import permissionsSaga from '../containers/PermissionsContainer/sagas';
 
 export function* rootSaga() {
-    yield all([fork(exampleSaga)]);
+  yield all([
+    authSaga(),
+    analyticsSaga(),
+    currentDashboardSaga(),
+    currentVisualizationSaga(),
+    usersSaga(),
+    datasetsSaga(),
+    userGroupsSaga(),
+    databasesSaga(),
+    permissionsSaga(),
+  ]);
 }

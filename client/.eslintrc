@@ -1,0 +1,57 @@
+
+{
+  "env": {
+    "es6": true,
+    "browser": true,
+    "node": true
+  },
+  "extends": ["airbnb"],
+  "plugins": ["babel", "import", "react", "react-hooks", "prettier"],
+  "parser": "babel-eslint",
+  "parserOptions": {
+    "ecmaVersion": 6,
+    "sourceType": "module",
+    "ecmaFeatures": {
+      "jsx": true
+    }
+  },
+  "rules": {
+    "linebreak-style": "off",
+    "arrow-parens": "off",
+    "object-curly-newline": "off",
+    "no-mixed-operators": "off",
+    "arrow-body-style": "off",
+    "function-paren-newline": "off",
+    "no-plusplus": "off",
+    "space-before-function-paren": 0,
+    "no-console": "error",
+    "no-alert": "error",
+    "no-param-reassign": "off",
+    "max-len": ["error", 120, 2, { "ignoreUrls": true }],
+    "radix": "off",
+    "react/require-default-props": "off",
+    "react/forbid-prop-types": "off",
+    "react/jsx-filename-extension": ["error", { "extensions": [".js"] }],
+    "prefer-destructuring": "off",
+    "react/no-find-dom-node": "off",
+    "react/no-did-mount-set-state": "off",
+    "react/no-unused-prop-types": "off",
+    "react/no-array-index-key": "off",
+    "react/jsx-one-expression-per-line": "off",
+    "react-hooks/rules-of-hooks": "error",
+    "react-hooks/exhaustive-deps": "warn",
+    "react/no-children-prop": 0,
+    "import/no-extraneous-dependencies": ["error", { "devDependencies": true }],
+    "import/prefer-default-export": "off",
+    "operator-linebreak": [2, "after", { "overrides": { "?": "before", ":": "before" }} ],
+    "prettier/prettier": ["error"],
+    "jsx-a11y/label-has-associated-control": "off",
+    "react/jsx-props-no-spreading": 0,
+    "newline-per-chained-call": 0,
+    "implicit-arrow-linebreak": 0,
+    "comma-dangle": 0,
+    "indent": 0,
+    "no-shadow": 0
+  }
+}
+

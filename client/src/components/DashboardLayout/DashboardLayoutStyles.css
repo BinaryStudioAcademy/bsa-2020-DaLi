@@ -1,0 +1,140 @@
+.dashboard-container {
+  background: #f9fbfc;
+  box-sizing: border-box;
+
+  padding: 40px;
+  overflow-x: hidden;
+
+} 
+
+.dashboard-container .react-grid-layout {
+  position: relative;
+  transition: height 200ms ease;
+  min-height: calc(100vh - 215px);
+}
+
+.dashboard-container--edit .react-grid-layout{
+  min-height: calc(100vh - 320px);
+  background-image: linear-gradient(to bottom, transparent 50%, #f9fbfc 50%),
+  linear-gradient(to right, #f3f4f4 50%, #f9fbfc 50%);
+  background-size: 30px 30px, 30px 30px;
+}
+
+.dashboard-container--full-screen .react-grid-layout{
+  min-height: calc(100vh - 135px);
+}
+
+.dashboard-container .dashboard-layout-item__header{
+  height: 50px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0px 20px;
+  box-sizing: border-box;
+  border-bottom: 1px solid #f3f4f4;
+}
+
+.dashboard-container .dashboard-layout-item__title{
+  font-size: 15px;
+}
+
+.dashboard-container .dashboard-layout-item__delete{
+  font-size: 19px;
+  color: gray;
+  border: none;
+  display: none;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  border-radius: 50%;
+  width: 35px;
+  height: 35px;
+  background: #f9fbfc;
+}
+
+.dashboard-container--edit .dashboard-layout-item__delete{
+  display: flex;
+}
+
+.dashboard-container .dashboard-layout-item__delete:hover {
+  color: red;
+  cursor: pointer;
+}
+.dashboard-container .dashboard-layout-item__delete:focus {
+  outline-color: gray;
+  outline-width: 1px;
+}
+
+.dashboard-container .dashboard-layout-item__visualization{
+  height:calc(100% - 50px);
+  width: 100%;
+  padding: 10px;
+  box-sizing: border-box;
+}
+
+.dashboard-container .react-grid-item{
+  box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+  transition: all 0.3s cubic-bezier(.25,.8,.25,1);
+  background: #fff;
+  box-sizing: border-box;
+  transition: all 200ms ease;
+  transition-property: left, top;
+}
+
+.dashboard-container--edit .react-grid-item:hover{
+  cursor: move; 
+  cursor: grab;
+  cursor: -webkit-grab;
+}
+
+.dashboard-container--edit.react-grid-item.cssTransforms {
+  transition-property: transform;
+}
+
+.dashboard-container--edit .react-grid-item.resizing {
+  z-index: 1;
+  opacity: 0.9;
+  will-change: width, height;
+}
+
+.dashboard-container .react-grid-item.react-draggable-dragging {
+  transition: none;
+  z-index: 3;
+  will-change: transform;
+  
+  cursor: move; 
+  cursor: grab;
+  cursor: -webkit-grab;
+}
+
+.dashboard-container .react-grid-item.react-grid-placeholder {
+  background: #52afe3;
+  opacity: 0.2;
+  transition-duration: 100ms;
+  z-index: 2;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  -o-user-select: none;
+  user-select: none;
+}
+
+.dashboard-container--edit .react-grid-item > .react-resizable-handle {
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  bottom: 0;
+  right: 0;
+  background: url("data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBzdGFuZGFsb25lPSJubyI/Pg08IS0tIEdlbmVyYXRvcjogQWRvYmUgRmlyZXdvcmtzIENTNiwgRXhwb3J0IFNWRyBFeHRlbnNpb24gYnkgQWFyb24gQmVhbGwgKGh0dHA6Ly9maXJld29ya3MuYWJlYWxsLmNvbSkgLiBWZXJzaW9uOiAwLjYuMSAgLS0+DTwhRE9DVFlQRSBzdmcgUFVCTElDICItLy9XM0MvL0RURCBTVkcgMS4xLy9FTiIgImh0dHA6Ly93d3cudzMub3JnL0dyYXBoaWNzL1NWRy8xLjEvRFREL3N2ZzExLmR0ZCI+DTxzdmcgaWQ9IlVudGl0bGVkLVBhZ2UlMjAxIiB2aWV3Qm94PSIwIDAgNiA2IiBzdHlsZT0iYmFja2dyb3VuZC1jb2xvcjojZmZmZmZmMDAiIHZlcnNpb249IjEuMSINCXhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHhtbDpzcGFjZT0icHJlc2VydmUiDQl4PSIwcHgiIHk9IjBweCIgd2lkdGg9IjZweCIgaGVpZ2h0PSI2cHgiDT4NCTxnIG9wYWNpdHk9IjAuMzAyIj4NCQk8cGF0aCBkPSJNIDYgNiBMIDAgNiBMIDAgNC4yIEwgNCA0LjIgTCA0LjIgNC4yIEwgNC4yIDAgTCA2IDAgTCA2IDYgTCA2IDYgWiIgZmlsbD0iIzAwMDAwMCIvPg0JPC9nPg08L3N2Zz4=");
+  background-position: bottom right;
+  padding: 0 3px 3px 0;
+  background-repeat: no-repeat;
+  background-origin: content-box;
+  box-sizing: border-box;
+  cursor: se-resize;
+}
+
+.dashboard-container .react-grid-item.static {
+  background: #cce;
+}
+

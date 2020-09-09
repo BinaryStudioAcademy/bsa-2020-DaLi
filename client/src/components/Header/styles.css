@@ -1,0 +1,69 @@
+header {
+  background-color: #519ee3;
+  display: flex;
+  justify-content: space-between;
+  padding: 0px 35px;
+  align-items: center;
+  box-sizing: border-box;
+  height: 55px;
+}
+
+.admin-header {
+  background-color: #7073a9;
+  justify-content: flex-start;
+  align-items: center;
+  padding-left: 20px;
+  color: #fff;
+}
+
+.admin-header-icon {
+  margin-right: 10px;
+}
+
+.admin-header-nav {
+  display: flex;
+  margin-left: 25px;
+}
+
+.admin-header-nav .MuiTabs-indicator {
+  display: none;
+}
+
+.header-logo {
+  background-image: url("./logo.png");
+  background-position: center;
+  background-color: #fff;
+  width: 35px;
+  height: 35px;
+  background-repeat: no-repeat;
+  background-size: cover;
+  font-size: 0;
+}
+
+.header-logo:hover {
+  cursor: pointer;
+}
+
+.header-controls {
+  display: flex;
+}
+
+.data-sources-btn {
+  display: flex;
+  align-items: center;
+  color: white;
+}
+
+.data-sources-btn:hover {
+  cursor: pointer;
+}
+
+.header-icons {
+  color: #fff;
+  margin-left: 35px;
+  cursor: pointer;
+}
+
+.MuiListItem-root.MuiMenuItem-root svg {
+  margin-right: 10px;
+}

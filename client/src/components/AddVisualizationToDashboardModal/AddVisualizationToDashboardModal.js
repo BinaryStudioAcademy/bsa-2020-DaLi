@@ -21,7 +21,8 @@ const AddVisualizationToDashboardModal = ({ closeModal, addVisualization, isVisi
   }, [visualizations]);
 
   const addNewVisualization = (id, tableId) => () => {
-    dbTableAPIService.getTableData(tableId, { settings: [] }).then((data) => {
+    const { config, datasetSettings } = visualizations.find((vis) => vis.id === id);
+    dbTableAPIService.getTableData(tableId, { settings: datasetSettings, config }).then((data) => {
       addVisualization(id, data);
       closeModal();
     });

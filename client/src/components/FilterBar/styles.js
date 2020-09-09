@@ -45,9 +45,7 @@ const useStyles = makeStyles(() => ({
     '&:hover': {
       color: '#2e363b',
     },
-    // fontSize: '20px',
     cursor: 'pointer',
-    // marginLeft: '20px',
   },
 }));
 

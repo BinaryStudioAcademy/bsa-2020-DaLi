@@ -56,6 +56,7 @@ function FilterFieldsList({ schema, chooseFilterHandler, activeFilterName }) {
 
         return disabled ? (
           <Tooltip
+            key={index + Date.now()}
             classes={{
               tooltip: classes.unknownTypeTooltip,
             }}

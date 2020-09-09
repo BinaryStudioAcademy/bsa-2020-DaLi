@@ -33,6 +33,7 @@ const sortByProperty = (arrOfObjects, property, sortedBy) => {
   }
   return arrOfObjects;
 };
+
 const InitialTable = (props) => {
   const { data: Data, config } = props;
   const [data, setData] = useState(formatDateForSummarize(Data, config));
@@ -41,7 +42,7 @@ const InitialTable = (props) => {
   const tableProperties = getTableHead(data);
   useEffect(() => {
     setData(formatDateForSummarize(Data, config));
-  }, [Data]);
+  }, [Data, config]);
   const tableHeadRows = tableProperties.map((property) => (
     <TableCell
       key={property}
@@ -80,6 +81,7 @@ const InitialTable = (props) => {
 InitialTable.propTypes = {
   data: PropTypes.array,
   config: PropTypes.object,
+  schema: PropTypes.array,
 };
 
 export default InitialTable;

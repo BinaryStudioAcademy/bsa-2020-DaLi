@@ -226,10 +226,9 @@ function LineChartSettings({ updateConfig, config: oldConfig }) {
           Y-Axis
         </InputLabel>
         {yAxis.map((value, index) => (
-          <FormControl className={classes.ySelectControl}>
+          <FormControl key={`line${index}`} className={classes.ySelectControl}>
             <div className={classes.ySelectItem}>
               <NativeSelect
-                key={`line${index}`}
                 className={classes.select}
                 value={value}
                 onChange={(event) => {

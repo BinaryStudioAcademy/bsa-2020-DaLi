@@ -12,11 +12,11 @@ import NativeSelect from '@material-ui/core/NativeSelect';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Switch from '@material-ui/core/Switch';
 import TextField from '@material-ui/core/TextField';
-import ColorPicker from 'material-ui-color-picker';
 import ToggleButton from '@material-ui/lab/ToggleButton';
 import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup';
 import FormLabel from '@material-ui/core/FormLabel';
 import CloseIcon from '@material-ui/icons/Close';
+import ColorPicker from '../ColorPicker/ColorPicker';
 import { useStyles, switchStyles } from './styles';
 
 const PrettySwitch = (props) => {
@@ -157,23 +157,46 @@ const BarChartSettings = ({ updateConfig, config: oldConfig }) => {
     });
   };
 
-  const colorList = ['blue', 'red', 'green', 'orange', 'purple', 'indigo', 'cyan', 'teal', 'lime', 'yellow'];
+  const colorList = [
+    'rgb(80, 158, 227)',
+    'rgb(136, 191, 77)',
+    'rgb(169, 137, 197)',
+    'rgb(239, 140, 140)',
+    'rgb(249, 212, 92)',
+    'rgb(242, 168, 111)',
+    'rgb(152, 217, 217)',
+    'rgb(113, 114, 173)',
+    'rgb(116, 131, 143)',
+  ];
 
   const addChart = () => {
     if (yAxis.length < YAxis.availableKeys.length) {
       const availableKeys = [...YAxis.availableKeys].filter((item) => !yAxis.includes(item));
       setYAxis([...yAxis, availableKeys[0]]);
-      setColor([...color, colorList[yAxis.length % 10]]);
+      setLabelYAxis([...labelYAxis, availableKeys[0]]);
+      setColor([...color, colorList[yAxis.length % 9]]);
     }
   };
 
   const deleteChart = (id) => {
     const newYAxes = [...yAxis];
+    const newYLabels = [...labelYAxis];
     newYAxes.splice(id, 1);
+    newYLabels.splice(id, 1);
     setYAxis(newYAxes);
-    if (newYAxes.length === 1) {
-      setLabelYAxis(newYAxes[0]);
-    }
+    setLabelYAxis(newYLabels);
+  };
+
+  const handleColorChange = (newColor, index) => {
+    const newColors = [...color];
+    newColors[index] = newColor;
+    setColor(newColors);
+  };
+
+  const handleLabelChange = (newLabel, index) => {
+    const newYAxes = [...labelYAxis];
+    newYAxes[index] = newLabel;
+    setLabelYAxis(newYAxes);
   };
 
   const valuesX = XAxis.availableKeys.map((value) => (
@@ -227,19 +250,17 @@ const BarChartSettings = ({ updateConfig, config: oldConfig }) => {
           Y-Axis
         </InputLabel>
         {yAxis.map((value, index) => (
-          <FormControl className={classes.ySelectControl}>
+          <FormControl key={`line${index}`} className={classes.ySelectControl}>
             <div className={classes.ySelectItem}>
               <NativeSelect
-                key={`line${index}`}
                 className={classes.select}
                 value={value}
                 onChange={(event) => {
                   const newYAxes = [...yAxis];
                   newYAxes[index] = event.target.value;
                   setYAxis(newYAxes);
-                  if (yAxis.length === 1) {
-                    setLabelYAxis(event.target.value);
-                  }
+                  // if (yAxis.length === 1) {
+                  setLabelYAxis(newYAxes);
                 }}
                 inputProps={{
                   id: 'yAxis-native-helper',
@@ -386,16 +407,13 @@ const BarChartSettings = ({ updateConfig, config: oldConfig }) => {
         </div>
         {yAxis.map((value, index) => (
           <ColorPicker
-            key={`color-${index}`}
-            className={classes.colorPicker}
-            name="color"
-            defaultValue={`${value} color`}
-            value={color[index]}
-            onChange={(newColor) => {
-              const newColors = [...color];
-              newColors[index] = newColor;
-              setColor(newColors);
-            }}
+            label={labelYAxis[index]}
+            key={index}
+            color={color[index]}
+            index={index}
+            multiline={yAxis.length > 1}
+            handleColorChange={handleColorChange}
+            handleLabelChange={handleLabelChange}
           />
         ))}
       </TabPanel>
@@ -433,10 +451,12 @@ const BarChartSettings = ({ updateConfig, config: oldConfig }) => {
             InputLabelProps={{
               shrink: true,
             }}
-            value={labelYAxis}
+            value={labelYAxis[0]}
             onChange={(event) => {
-              setLabelYAxis(event.target.value);
-              validateField('labelYAxis', event.target.value);
+              // validateField('labelYAxis', event.target.value);
+              const newYAxes = [...labelYAxis];
+              newYAxes[0] = event.target.value;
+              setLabelYAxis(newYAxes);
             }}
             helperText={errors.labelYAxis ? '20 characters is max' : null}
             error={errors.labelYAxis}

@@ -23,7 +23,7 @@ function createInitBarChartConfig(schema, getYKeys, getXKeys) {
         value: 0,
         label: 'our goal',
       },
-      color: ['#4aa1de'],
+      color: ['rgb(80, 158, 227)'],
       trendline: {
         display: false,
         trendlineType: 'linear',

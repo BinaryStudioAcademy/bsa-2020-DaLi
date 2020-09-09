@@ -7,9 +7,19 @@ import {
   FETCH_VISUALIZATION_WITH_DATA_AND_SCHEMA_START,
   FETCH_DATA_AND_SCHEMA_IN_PROGRESS,
   FETCH_DATA_AND_SCHEMA_SUCCESS,
+  UPDATE_VISUALIZATION_ERROR,
+  UPDATE_VISUALIZATION_SUCCESS,
+  RESET_NOTIFICATION,
 } from './actionTypes';
 
-const viewVisualizationReducer = (state = { loading: true, created: false }, { type, payload }) => {
+const initialState = {
+  loading: false,
+  created: false,
+  status: '',
+  message: '',
+};
+
+const viewVisualizationReducer = (state = initialState, { type, payload }) => {
   switch (type) {
     case SET_VISUALIZATION_SUCCESS: {
       const { visualization } = payload;
@@ -30,6 +40,8 @@ const viewVisualizationReducer = (state = { loading: true, created: false }, { t
         ...visualization,
         loading: false,
         created: true,
+        // status: '',
+        // message: '',
       };
     }
 
@@ -73,7 +85,29 @@ const viewVisualizationReducer = (state = { loading: true, created: false }, { t
         loading: true,
       };
     }
-
+    case UPDATE_VISUALIZATION_SUCCESS: {
+      return {
+        ...state,
+        isLoading: false,
+        message: 'Visualization has been successfully updated',
+        status: 'success',
+      };
+    }
+    case UPDATE_VISUALIZATION_ERROR: {
+      return {
+        ...state,
+        loading: false,
+        status: 'error',
+        message: payload.message,
+      };
+    }
+    case RESET_NOTIFICATION: {
+      return {
+        ...state,
+        message: '',
+        status: '',
+      };
+    }
     default:
       return state;
   }

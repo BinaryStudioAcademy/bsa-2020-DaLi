@@ -62,8 +62,8 @@ function LineChart({ settings, data, chart: chartSize }) {
       .range([height - margin.bottom, margin.top]);
   };
 
-  const drawAxes = (chart, xScale) => {
-    const yScale = calcYScale(YAxis.key[0]); // TODO: yScale[0] replace
+  const drawAxes = (chart, xScale, yMaxIndex) => {
+    const yScale = calcYScale(YAxis.key[yMaxIndex]);
     const xAxis = (g) =>
       g.attr('transform', `translate(0,${height - margin.bottom})`).call(d3.axisBottom(xScale).tickSize(0));
     const yAxis = (g) => g.attr('transform', `translate(${margin.left},0)`).call(d3.axisLeft(yScale).tickSize(0));
@@ -111,14 +111,14 @@ function LineChart({ settings, data, chart: chartSize }) {
       .attr('class', 'd3-tip')
       .offset([-10, 0])
       .html(
-        (d) => `
+        (d) => {console.log(d); return`
   <div><span>${XAxis.label}:</span> <span style='color:white'>${d[XAxis.key]}</span></div>
   <div><span>${YKey}:</span> <span style='color:white'>${d[YKey]}</span></div>
-`
+`}
       );
 
-   return tips;
-  }
+    return tips;
+  };
 
   const addTrendLine = (chart) => {
     const { polynomial, trendlineType } = trendline;
@@ -181,43 +181,53 @@ function LineChart({ settings, data, chart: chartSize }) {
       .text(goal.label);
   };
 
-  const drawLineChart = (chart, tips) => {
-    const line = d3
-    .line()
-    .curve(d3[lineType[index]])
-    .x((d) => xScale(d[XAxis.key]) + xScale.bandwidth() / 2)
-    .y((d) => yScale(d[YKey]));
-  chart
-    .append('path')
-    .datum(data.sort((a, b) => a[XAxis.key] - b[XAxis.key]))
-    .attr('class', 'line')
-    .attr('d', line)
-    .style('stroke', color[index]);
-  chart
-    .selectAll(`.dot-${YKey}`)
-    .data(data)
-    .enter()
-    .append('circle')
-    .attr('class', 'dot')
-    .attr('cx', (d) => xScale(d[XAxis.key]) + xScale.bandwidth() / 2)
-    .attr('cy', (d) => yScale(d[YKey]))
-    .attr('r', 5)
-    .style('stroke', color[index])
-    .on('mouseover', tips.show)
-    .on('mouseout', tips.hide);
-  if (showDataPointsValues) {
-    chart
-      .selectAll(`.dot__value-${YKey}`)
-      .data(data)
-      .enter()
-      .append('text')
-      .attr('class', 'dot__value')
-      .attr('x', (d) => xScale(d[XAxis.key]) + xScale.bandwidth() / 2)
-      .attr('y', (d) => yScale(d[YKey]) - 20)
-      .attr('text-anchor', 'middle')
-      .text((d) => d[YKey]);
-  }
-  }
+  const drawLineChart = (chart, data, xScale, tips, yMaxIndex) => {
+    YAxis.key.map((YKey, index) => {
+      const line = d3
+        .line()
+        .curve(d3[lineType[index]]) // TODO: Add index
+        .x((d) => xScale(d[XAxis.key]) + xScale.bandwidth() / 2)
+        .y((d) => calcYScale(YAxis.key[yMaxIndex]));
+      chart
+        .append('path')
+        .datum(data.sort((a, b) => a[XAxis.key] - b[XAxis.key]))
+        .attr('class', 'line')
+        .attr('d', line)
+        .style('stroke', color[index]); // TODO: add index
+      chart
+        .selectAll(`.dot-${YAxis.key[index]}`) //YKey replace
+        .data(
+          data //(d) => d
+          // YAxis.key.map((key, index) => {
+          //   return { key: key, value: d[key], index: index, [XAxis.key]: d[XAxis.key] };
+          // })
+        )
+        .enter()
+        .append('circle')
+        .attr('class', 'dot')
+        .attr('cx', (d) => xScale(d[XAxis.key]) + xScale.bandwidth() / 2)
+        .attr('cy', (d) => {
+          console.log(d);
+          return calcYScale(YAxis.key[yMaxIndex])(d[YKey]);
+        })
+        .attr('r', 5)
+        .style('stroke', color[index]) // TODO: add index
+        .on('mouseover', tips.show)
+        .on('mouseout', tips.hide);
+      if (showDataPointsValues) {
+        chart
+          .selectAll(`.dot__value-${YKey}`)
+          .data(data)
+          .enter()
+          .append('text')
+          .attr('class', 'dot__value')
+          .attr('x', (d) => xScale(d[XAxis.key]) + xScale.bandwidth() / 2)
+          .attr('y', (d) => calcYScale(YAxis.key[yMaxIndex])(d[YKey]) - 20)
+          .attr('text-anchor', 'middle')
+          .text((d) => d[YKey]);
+      }
+    });
+  };
 
   const draw = () => {
     // setConfig(settings);
@@ -229,55 +239,59 @@ function LineChart({ settings, data, chart: chartSize }) {
     const tips = createTips(chart);
 
     const xScale = calcXScale(data, XAxis.key);
+    const yMaxValues = YAxis.key.map((key) => calcYDataRange(key).max);
+    const yMax = Math.max(...yMaxValues);
+    const yMaxIndex = yMaxValues.findIndex((item) => item === yMax);
 
-    drawAxes(chart, xScale);
+    drawAxes(chart, xScale, yMaxIndex);
 
-    drawLineChart(chart, tips);
+    drawLineChart(chart, data, xScale, tips, yMaxIndex);
 
-      // const xAxis = (g) => {
-      //   return g.attr('transform', `translate(0,${height - margin.bottom})`).call(d3.axisBottom(xScale).tickSize(0));
-      // };
-      // const yAxis = (g) => g.attr('transform', `translate(${margin.left},0)`).call(d3.axisLeft(yScale).tickSize(0));
-      // chart.append('g').attr('class', 'x-axis axis').call(xAxis);
-      // chart.append('g').attr('class', 'y-axis axis').call(yAxis);
+    // const xAxis = (g) => {
+    //   return g.attr('transform', `translate(0,${height - margin.bottom})`).call(d3.axisBottom(xScale).tickSize(0));
+    // };
+    // const yAxis = (g) => g.attr('transform', `translate(${margin.left},0)`).call(d3.axisLeft(yScale).tickSize(0));
+    // chart.append('g').attr('class', 'x-axis axis').call(xAxis);
+    // chart.append('g').attr('class', 'y-axis axis').call(yAxis);
+    const yScale = calcYDataRange(YAxis.key[yMaxIndex]);
 
-      if (yDataRange.min < 0) {
-        chart
-          .append('line')
-          .style('stroke', '#EE8625')
-          .style('stroke-width', 3)
-          .attr('x1', 0)
-          .attr('y1', yScale(0))
-          .attr('x2', width)
-          .attr('y2', yScale(0));
+    if (yScale.min < 0) {
+      chart
+        .append('line')
+        .style('stroke', '#EE8625')
+        .style('stroke-width', 3)
+        .attr('x1', 0)
+        .attr('y1', yScale(0))
+        .attr('x2', width)
+        .attr('y2', yScale(0));
 
-        const y = yScale(0);
+      const y = calcYScale(YAxis.key[yMaxIndex]);
 
-        chart
-          .append('text')
-          .attr('y', y - 10)
-          .attr('x', 70)
-          .attr('text-anchor', 'middle')
-          .attr('class', 'line__label')
-          .text('0');
-      }
+      chart
+        .append('text')
+        .attr('y', y - 10)
+        .attr('x', 70)
+        .attr('text-anchor', 'middle')
+        .attr('class', 'line__label')
+        .text('0');
+    }
 
-      if (goal.display) {
-        displayGoalLine(chart);
-      }
-  
-      if (trendline.display && data.length) {
-        addTrendLine(chart);
-      }
-  
-      // delete axis values
-      chart.selectAll('.axis').selectAll('text').remove();
-  
-      displayAxesLabels(chart);
-  
-      if (YAxis.key.length > 1) {
-        showLegend(chart);
-      }
+    if (goal.display) {
+      displayGoalLine(chart);
+    }
+
+    if (trendline.display && data.length) {
+      addTrendLine(chart);
+    }
+
+    // delete axis values
+    chart.selectAll('.axis').selectAll('text').remove();
+
+    displayAxesLabels(chart);
+
+    if (YAxis.key.length > 1) {
+      showLegend(chart);
+    }
     // };
 
     // YAxis.key.forEach((YKey, index) => drawLine(YKey, index));
@@ -325,7 +339,6 @@ function LineChart({ settings, data, chart: chartSize }) {
     //     .attr('text-anchor', 'middle')
     //     .text(XAxis.label);
     // }
-
   };
 
   const onResize = () => {

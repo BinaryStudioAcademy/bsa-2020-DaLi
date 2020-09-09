@@ -7,6 +7,8 @@ import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 import TextField from '@material-ui/core/TextField';
+import Snackbar from '@material-ui/core/Snackbar';
+import Alert from '@material-ui/lab/Alert';
 
 import { MuiPickersUtilsProvider, DateTimePicker } from '@material-ui/pickers';
 import MomentUtils from '@date-io/moment';
@@ -23,6 +25,7 @@ const useStyles = makeStyles(() => ({
   },
   textField: {
     margin: '20px 0',
+    marginRight: 5,
   },
 }));
 
@@ -35,27 +38,50 @@ function DateFilterForm({ filter, openFiltersList, setActiveFilter }) {
   //     lessThan: max date value,
   //   }
 
-  const [dateFormatPicker, setDateFormatPicker] = useState('next');
+  const [notificationMessage, setNotificationMessage] = useState('');
+
+  const [dateFormatPicker, setDateFormatPicker] = useState('between');
   const [dateUnitType, setDateUnitType] = useState('days');
   const [dateUnitCount, setDateUnitCount] = useState(10);
 
-  const [greaterThan, setGreaterThen] = useState(filter.greaterThan ? new Date(filter.greaterThan) : null);
+  const [greaterThan, setGreaterThan] = useState(filter.greaterThan ? new Date(filter.greaterThan) : null);
   const [lessThan, setLessThan] = useState(filter.lessThan ? new Date(filter.lessThan) : null);
+
+  const onBetweenSelectLessThanHandler = (date) => {
+    if (!greaterThan || new Date(date) > greaterThan) {
+      setLessThan(date);
+    } else {
+      setNotificationMessage('the upper limit cannot be lower than the lower');
+    }
+  };
+
+  const onBetweenSelectGreaterThanHandler = (date) => {
+    if (!lessThan || new Date(date) < lessThan) {
+      setGreaterThan(date);
+    } else {
+      setNotificationMessage('the lower limit cannot be higher than the upper one');
+    }
+  };
 
   const chooseDatePickerForm = (datePickerFormat) => {
     switch (datePickerFormat) {
       case 'between':
         return (
           <MuiPickersUtilsProvider utils={MomentUtils}>
-            <DateTimePicker clearable value={greaterThan} onChange={setGreaterThen} helperText="FROM" />
-            <DateTimePicker clearable value={lessThan} onChange={setLessThan} helperText="TO" />
+            <DateTimePicker
+              clearable
+              value={greaterThan}
+              onChange={onBetweenSelectGreaterThanHandler}
+              helperText="FROM"
+            />
+            <DateTimePicker clearable value={lessThan} onChange={onBetweenSelectLessThanHandler} helperText="TO" />
           </MuiPickersUtilsProvider>
         );
 
       case 'previous':
       case 'next':
         return (
-          <>
+          <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', marginTop: 20 }}>
             <TextField
               value={dateUnitCount}
               onInput={(e) => {
@@ -65,13 +91,11 @@ function DateFilterForm({ filter, openFiltersList, setActiveFilter }) {
 
                 setDateUnitCount(value);
               }}
-              helperText="date unit number"
               type="number"
               className={classes.textField}
             />
             <FormControl variant="outlined" className={classes.formControl}>
               <Select value={dateUnitType} onChange={(e) => setDateUnitType(e.target.value)}>
-                <MenuItem value="hours">hours</MenuItem>
                 <MenuItem value="days">days</MenuItem>
                 <MenuItem value="weeks">weeks</MenuItem>
                 <MenuItem value="months">months</MenuItem>
@@ -79,7 +103,7 @@ function DateFilterForm({ filter, openFiltersList, setActiveFilter }) {
                 <MenuItem value="years">years</MenuItem>
               </Select>
             </FormControl>
-          </>
+          </div>
         );
 
       default:
@@ -98,7 +122,7 @@ function DateFilterForm({ filter, openFiltersList, setActiveFilter }) {
         const startToday = currentDate.clone().startOf('day').utc();
         const finishToday = currentDate.clone().endOf('day').utc();
 
-        setGreaterThen(startToday);
+        setGreaterThan(startToday);
         setLessThan(finishToday);
         break;
       }
@@ -107,7 +131,7 @@ function DateFilterForm({ filter, openFiltersList, setActiveFilter }) {
         const startOfThisWeek = currentDate.clone().startOf('isoWeek').utc();
         const finishOfThisWeek = currentDate.clone().endOf('isoWeek').utc();
 
-        setGreaterThen(startOfThisWeek);
+        setGreaterThan(startOfThisWeek);
         setLessThan(finishOfThisWeek);
         break;
       }
@@ -116,7 +140,7 @@ function DateFilterForm({ filter, openFiltersList, setActiveFilter }) {
         const startOfThisMonth = currentDate.clone().startOf('month').utc();
         const finishOfThisMonth = currentDate.clone().endOf('month').utc();
 
-        setGreaterThen(startOfThisMonth);
+        setGreaterThan(startOfThisMonth);
         setLessThan(finishOfThisMonth);
         break;
       }
@@ -125,7 +149,7 @@ function DateFilterForm({ filter, openFiltersList, setActiveFilter }) {
         const startOfThisQuarter = currentDate.clone().startOf('quarter').utc();
         const finishOfThisQuarter = currentDate.clone().endOf('quarter').utc();
 
-        setGreaterThen(startOfThisQuarter);
+        setGreaterThan(startOfThisQuarter);
         setLessThan(finishOfThisQuarter);
         break;
       }
@@ -134,7 +158,7 @@ function DateFilterForm({ filter, openFiltersList, setActiveFilter }) {
         const startOfThisYear = currentDate.clone().startOf('year').utc();
         const finishOfThisYear = currentDate.clone().endOf('year').utc();
 
-        setGreaterThen(startOfThisYear);
+        setGreaterThan(startOfThisYear);
         setLessThan(finishOfThisYear);
         break;
       }
@@ -146,7 +170,7 @@ function DateFilterForm({ filter, openFiltersList, setActiveFilter }) {
         const start = currentDate.clone().endOf(unitType).utc();
         const finish = nextDateUnit.clone().endOf(unitType).utc();
 
-        setGreaterThen(start);
+        setGreaterThan(start);
         setLessThan(finish);
         break;
       }
@@ -158,7 +182,7 @@ function DateFilterForm({ filter, openFiltersList, setActiveFilter }) {
         const start = prevDateUnit.clone().startOf(unitType).utc();
         const finish = currentDate.clone().startOf(unitType).utc();
 
-        setGreaterThen(start);
+        setGreaterThan(start);
         setLessThan(finish);
         break;
       }
@@ -186,6 +210,17 @@ function DateFilterForm({ filter, openFiltersList, setActiveFilter }) {
         </Select>
       </FormControl>
       {chooseDatePickerForm(dateFormatPicker)}
+      <Snackbar
+        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+        open={!!notificationMessage}
+        autoHideDuration={4000}
+        transitionDuration={0}
+        onClose={() => setNotificationMessage('')}
+      >
+        <Alert elevation={6} variant="filled" severity="error" onClose={() => setNotificationMessage('')}>
+          {notificationMessage}
+        </Alert>
+      </Snackbar>
     </>
   );
 }

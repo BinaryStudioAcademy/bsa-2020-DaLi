@@ -95,7 +95,7 @@ const BarChartSettings = ({ updateConfig, config: oldConfig }) => {
     labelXAxis: false,
     labelYAxis: false,
   });
-
+  const isSummarize = oldConfig.isSummarize || false;
   const validateField = (name, value) => {
     if (name === 'labelXAxis' || name === 'labelYAxis') {
       setErrors({ ...errors, [name]: value.length > 20 });
@@ -165,16 +165,24 @@ const BarChartSettings = ({ updateConfig, config: oldConfig }) => {
     setYAxis(newYAxes);
   };
 
-  const valuesX = XAxis.availableKeys.map((value) => (
-    <option value={value} key={value}>
-      {value}
-    </option>
-  ));
-  const valuesY = YAxis.availableKeys.map((value) => (
-    <option value={value} key={value}>
-      {value}
-    </option>
-  ));
+  const valuesX = !isSummarize ? (
+    XAxis.availableKeys.map((value) => (
+      <option value={value} key={value}>
+        {value}
+      </option>
+    ))
+  ) : (
+    <option key={XAxis.label}>{XAxis.label}</option>
+  );
+  const valuesY = !isSummarize ? (
+    YAxis.availableKeys.map((value) => (
+      <option value={value} key={value}>
+        {value}
+      </option>
+    ))
+  ) : (
+    <option key={YAxis.label}>{YAxis.label}</option>
+  );
 
   return (
     <div className={classes.root}>
@@ -200,6 +208,7 @@ const BarChartSettings = ({ updateConfig, config: oldConfig }) => {
           <NativeSelect
             className={classes.select}
             value={xAxis}
+            disabled={isSummarize}
             onChange={(event) => {
               setXAxis(event.target.value);
               setLabelXAxis(event.target.value);
@@ -222,6 +231,7 @@ const BarChartSettings = ({ updateConfig, config: oldConfig }) => {
                 key={`line${index}`}
                 className={classes.select}
                 value={value}
+                disabled={isSummarize}
                 onChange={(event) => {
                   const newYAxes = [...yAxis];
                   newYAxes[index] = event.target.value;
@@ -241,7 +251,7 @@ const BarChartSettings = ({ updateConfig, config: oldConfig }) => {
             </div>
           </FormControl>
         ))}
-        <Button variant="contained" className={classes.addSeriesBtn} onClick={addChart}>
+        <Button variant="contained" disabled={isSummarize} className={classes.addSeriesBtn} onClick={addChart}>
           Add another series
         </Button>
       </TabPanel>
@@ -387,6 +397,7 @@ const BarChartSettings = ({ updateConfig, config: oldConfig }) => {
           <TextField
             id="XAxis"
             label="X-axis label"
+            disabled={isSummarize}
             className={classes.input}
             InputLabelProps={{
               shrink: true,
@@ -409,6 +420,7 @@ const BarChartSettings = ({ updateConfig, config: oldConfig }) => {
             id="YAxis"
             label="Y-axis label"
             className={classes.input}
+            disabled={isSummarize}
             InputLabelProps={{
               shrink: true,
             }}

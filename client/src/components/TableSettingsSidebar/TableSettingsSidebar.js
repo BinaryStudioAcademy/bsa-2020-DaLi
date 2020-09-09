@@ -26,7 +26,7 @@ const testConfig = {
 
 const TableSettingsSidebar = ({ config, updateConfig, userNotificationError }) => {
   config = config || testConfig;
-
+  const isSummarize = config.isSummarize || false;
   const [tableConfig, setTableConfig] = useState(config);
   const [isEditColumn, setIsEditColumn] = useState(false);
   const [currentColumnId, setCurrentColumnId] = useState('');
@@ -40,7 +40,11 @@ const TableSettingsSidebar = ({ config, updateConfig, userNotificationError }) =
 
   const updateColumnConfig = (columns) => {
     const newTableConfig = { ...tableConfig };
-    newTableConfig.columns = updateOrder(columns);
+    if (isSummarize) {
+      newTableConfig.summarizeColumns = updateOrder(columns);
+    } else {
+      newTableConfig.columns = updateOrder(columns);
+    }
     setTableConfig(newTableConfig);
   };
 
@@ -56,7 +60,9 @@ const TableSettingsSidebar = ({ config, updateConfig, userNotificationError }) =
       return;
     }
 
-    const items = reorder(tableConfig.columns, result.source.index, result.destination.index);
+    const items = isSummarize
+      ? reorder(tableConfig.summarizeColumns, result.source.index, result.destination.index)
+      : reorder(tableConfig.columns, result.source.index, result.destination.index);
 
     updateColumnConfig(items);
   };
@@ -111,7 +117,7 @@ const TableSettingsSidebar = ({ config, updateConfig, userNotificationError }) =
         {isEditColumn ? (
           <EditItem
             closeEditColumn={closeEditColumn}
-            columns={config.columns}
+            columns={isSummarize ? tableConfig.summarizeColumns : config.config.columns}
             currentColumnId={currentColumnId}
             updateColumnConfig={updateColumnConfig}
           />
@@ -130,19 +136,36 @@ const TableSettingsSidebar = ({ config, updateConfig, userNotificationError }) =
                     className="property-item-container"
                     style={getListStyle(snapshot.isDraggingOver)}
                   >
-                    {tableConfig.columns.map(
-                      (column, index) =>
-                        column.visible && (
-                          <PropertyItem
-                            name={column.title}
-                            id={column.id}
-                            key={column.id}
-                            index={index}
-                            deleteColumn={deleteColumn}
-                            editColumn={editColumn}
-                          />
-                        )
-                    )}
+                    {!isSummarize &&
+                      tableConfig.columns.map(
+                        (column, index) =>
+                          column.visible && (
+                            <PropertyItem
+                              name={column.title}
+                              id={column.id}
+                              key={column.id}
+                              index={index}
+                              isSummarize={isSummarize}
+                              deleteColumn={deleteColumn}
+                              editColumn={editColumn}
+                            />
+                          )
+                      )}
+                    {isSummarize &&
+                      tableConfig.summarizeColumns.map(
+                        (column, index) =>
+                          column.visible && (
+                            <PropertyItem
+                              name={column.title}
+                              id={column.id}
+                              key={column.id}
+                              index={index}
+                              isSummarize={isSummarize}
+                              deleteColumn={deleteColumn}
+                              editColumn={editColumn}
+                            />
+                          )
+                      )}
                   </div>
                 )}
               </Droppable>

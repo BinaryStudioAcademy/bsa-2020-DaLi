@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import Snackbar from '@material-ui/core/Snackbar';
 import Alert from '@material-ui/lab/Alert';
-import Backdrop from '@material-ui/core/Backdrop';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
@@ -75,13 +74,10 @@ const PeopleList = ({
     }
   }, [people]);
 
-  return (
+  return isLoading ? (
+    <CircularProgress size={40} style={{ marginLeft: '50%', marginTop: '35%' }} />
+  ) : (
     <>
-      {isLoading && (
-        <Backdrop className={classes.backdrop} open>
-          <CircularProgress color="inherit" />
-        </Backdrop>
-      )}
       <div className={classes.root}>
         {!isInactiveUsers ? (
           <>

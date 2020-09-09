@@ -139,35 +139,36 @@ function LineChart({ settings, data, chart: chartSize }) {
           .attr('class', 'line__label')
           .text(goal.label);
       }
+
+      if (trendline.display && data.length && YAxis.key.length === 1) {
+        const xDataRange = {
+          min: data[0][XAxis.key],
+          max: data[data.length - 1][XAxis.key],
+        };
+        const xScaleForTrendline = d3
+          .scaleLinear()
+          .domain([xDataRange.min, xDataRange.max])
+          .range([margin.left, width - margin.right]);
+        const { polynomial, trendlineType } = trendline;
+  
+        const trendlineData = data.map((item) => [item[XAxis.key], item[YAxis.key[0]]]);
+        const barUnitWidth = (xDataRange.max - xDataRange.min) / data.length;
+        const domain = [xDataRange.min, xDataRange.max - barUnitWidth];
+        const config = {
+          xOffset: xScale.bandwidth() / 2,
+          order: polynomial.order,
+        };
+  
+        const trendlineCreator = new TrendlineCreator(trendlineType, chart, xScaleForTrendline, yScale);
+        trendlineCreator.render(domain, trendlineData, config);
+      }
+
     };
 
     YAxis.key.forEach((YKey, index) => drawLine(YKey, index));
 
     // delete axis values
     chart.selectAll('.axis').selectAll('text').remove();
-
-    if (trendline.display && data.length && YAxis.key.length === 1) {
-      const xDataRange = {
-        min: data[0][XAxis.key],
-        max: data[data.length - 1][XAxis.key],
-      };
-      const xScaleForTrendline = d3
-        .scaleLinear()
-        .domain([xDataRange.min, xDataRange.max])
-        .range([margin.left, width - margin.right]);
-      const { polynomial, trendlineType } = trendline;
-
-      const trendlineData = data.map((item) => [item[XAxis.key], item[YAxis.key[0]]]);
-      const barUnitWidth = (xDataRange.max - xDataRange.min) / data.length;
-      const domain = [xDataRange.min, xDataRange.max - barUnitWidth];
-      const config = {
-        xOffset: xScale.bandwidth() / 2,
-        order: polynomial.order,
-      };
-
-      const trendlineCreator = new TrendlineCreator(trendlineType, chart, xScaleForTrendline, yScale);
-      trendlineCreator.render(domain, trendlineData, config);
-    }
 
     if (YAxis.displayLabel) {
       chart

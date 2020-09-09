@@ -24,7 +24,6 @@ function BarChart(props) {
 
     const drawLine = (YKey, index) => {
     const data = props.data;
-    console.log('data',data)
     data.forEach(item => item[YKey] = Number(item[YKey]));
     const yDataRange = {
       min: calcMinYDataValue(
@@ -164,7 +163,6 @@ function BarChart(props) {
           min: data[0][XAxis.key],
           max: data[data.length - 1][XAxis.key],
         };
-        console.log(xDataRange);
         const barUnitWidth = (xDataRange.max - xDataRange.min) / data.length;
         const xScaleForLines = d3
           .scaleLinear()
@@ -179,7 +177,6 @@ function BarChart(props) {
         };
   
         const trendlineCreator = new TrendlineCreator(trendlineType, chart, xScaleForLines, yScale);
-        console.log(trendlineCreator);
         trendlineCreator.render(domain, trendlineData, config);
       }
 
@@ -252,7 +249,6 @@ function BarChart(props) {
   };
 
   useEffect(() => {
-    console.log('effect')
     setHeight(svgRef.current.parentElement.offsetHeight);
     setWidth(svgRef.current.parentElement.offsetWidth);
     draw();

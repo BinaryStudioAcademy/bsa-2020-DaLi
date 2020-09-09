@@ -145,7 +145,7 @@ function LineChartSettings({ updateConfig, config: oldConfig, schema }) {
         lineType,
         color,
         trendline: {
-          display: showTrendline,
+          display: isTrendlineDisabledCheck() ? false : showTrendline,
           trendlineType,
           availableTrendlineTypes: ['linear', 'polynomial', 'exponential', 'logarithmical'],
           polynomial: {
@@ -303,7 +303,7 @@ function LineChartSettings({ updateConfig, config: oldConfig, schema }) {
             <FormControlLabel
               control={(() => (
                 <PrettySwitch
-                  checked={showTrendline}
+                  checked={showTrendline && !isTrendlineDisabledCheck()}
                   onChange={(event) => {
                     setShowTrendline(event.target.checked);
                   }}
@@ -314,7 +314,7 @@ function LineChartSettings({ updateConfig, config: oldConfig, schema }) {
             />
           </Tooltip>
         ) : null}
-        {showTrendline && yAxis.length < 2 ? (
+        {!isTrendlineDisabledCheck() && showTrendline && yAxis.length < 2 ? (
           <FormControl component="fieldset">
             <FormLabel component="legend" className={classes.legend}>
               Trendline type
@@ -359,7 +359,7 @@ function LineChartSettings({ updateConfig, config: oldConfig, schema }) {
             </ToggleButtonGroup>
           </FormControl>
         ) : null}
-        {showTrendline && trendlineType === 'polynomial' ? (
+        {!isTrendlineDisabledCheck() && showTrendline && trendlineType === 'polynomial' ? (
           <FormControl component="fieldset">
             <FormLabel component="legend" className={classes.legend}>
               Order

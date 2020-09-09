@@ -248,7 +248,7 @@ function LineChart({ settings, data, chart: chartSize }) {
 
       if (showDataPointsValues) {
         chart
-          .selectAll(`.dot__value-${d.key}`)
+          .selectAll(`.dot__value-${YKey}`)
           .data(data)
           .enter()
           .append('text')

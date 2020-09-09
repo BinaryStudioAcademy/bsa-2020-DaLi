@@ -13,7 +13,7 @@ function createInitBarChartConfig(schema, getYKeys, getXKeys) {
       YAxis: {
         availableKeys: YKeys,
         key: [YKeys[0]],
-        label: YKeys[0],
+        label: [YKeys[0]],
         displayLabel: true,
       },
     },

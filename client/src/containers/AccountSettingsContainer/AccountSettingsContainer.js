@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Avatar, Grid, Typography, Tab, Tabs, Box, Snackbar } from '@material-ui/core';
+import { Avatar, Grid, Typography, Tab, Tabs, Box, Snackbar, TextField, Button } from '@material-ui/core';
 import Alert from '@material-ui/lab/Alert';
 import * as Yup from 'yup';
 import { Formik, Form, Field, ErrorMessage, getIn } from 'formik';
@@ -10,7 +10,7 @@ import { updateUser, hideUserUpdateMessage, updateUserError } from './actions';
 
 import { mockProfile, getUserInitials } from './helper';
 
-import useStyles from './styles';
+import './styles.css';
 
 const ProfileSchema = Yup.object().shape({
   firstName: Yup.string().max(30).required('Required'),
@@ -36,7 +36,9 @@ const PasswordSchema = Yup.object().shape({
 });
 
 const getStyles = (errors, touched, fieldName) => {
-  return getIn(errors, fieldName) && getIn(touched, fieldName) ? { border: '1px solid red' } : {};
+  return getIn(errors, fieldName) && getIn(touched, fieldName)
+    ? { borderRadius: '5px', backgroundColor: 'rgba(255, 0, 0, 0.3)' }
+    : {};
 };
 
 const AccountSettingsContainer = ({
@@ -52,7 +54,6 @@ const AccountSettingsContainer = ({
   updateUserError,
 }) => {
   const [activeTab, setActiveTab] = useState(0);
-  const classes = useStyles();
   const userInitials = getUserInitials(mockProfile);
   const initialPasswordValues = {
     currentPassword: '',
@@ -81,149 +82,137 @@ const AccountSettingsContainer = ({
   };
 
   return (
-    <Grid className={classes.accountSettingsContainer} container direction="column">
-      <Grid className={classes.accountSettingsHeader} item container direction="column" alignItems="center">
-        <Avatar className={classes.accountSettingsAvatar}>{userInitials}</Avatar>
-        <Typography className={classes.accountSettingsTitle}> Account settings </Typography>
-        <Tabs
-          classes={{
-            root: classes.accountSettingsTabs,
-            indicator: classes.accountSettingsTabsIndicator,
-          }}
-          value={activeTab}
-          onChange={handleTabChange}
-        >
-          <Tab
-            classes={{
-              root: classes.accountSettingsTab,
-              selected: classes.accountSettingsTabSelected,
-            }}
-            label="Profile"
-          />
-          <Tab
-            classes={{
-              root: classes.accountSettingsTab,
-              selected: classes.accountSettingsTabSelected,
-            }}
-            label="Password"
-          />
+    <Grid container direction="column">
+      <Grid item container direction="column" alignItems="center">
+        <Avatar style={{ margin: '15px 0' }}>{userInitials}</Avatar>
+        <Typography variant="h3" color="textPrimary">
+          Account settings
+        </Typography>
+        <Tabs value={activeTab} onChange={handleTabChange}>
+          <Tab label="Profile" />
+          <Tab label="Password" />
         </Tabs>
       </Grid>
-      <Grid className={classes.accountSettingsContent} xs item container direction="column" alignItems="center">
-        <Box className={classes.accountSettingsTabPanel} hidden={activeTab !== 0}>
-          <Typography component="span">
-            <Formik
-              initialValues={{ email, firstName, lastName }}
-              validationSchema={ProfileSchema}
-              onSubmit={(values) => onUpdateClick(values)}
-            >
-              {({ errors, touched, isValid, dirty }) => (
-                <Form>
-                  <div className={classes.relative}>
-                    <label htmlFor="firstName" className={classes.label}>
-                      First name
-                    </label>
-                    <Field
-                      type="text"
-                      name="firstName"
-                      id="firstName"
-                      className={` textInput ${classes.field}`}
-                      style={getStyles(errors, touched, 'firstName')}
-                    />
-                    <ErrorMessage name="firstName" component="div" className={classes.error} />
-                  </div>
-                  <div className={classes.relative}>
-                    <label htmlFor="lastName" className={classes.label}>
-                      Last name
-                    </label>
-                    <Field
-                      type="text"
-                      name="lastName"
-                      id="lastName"
-                      className={` textInput ${classes.field}`}
-                      style={getStyles(errors, touched, 'lastName')}
-                    />
-                    <ErrorMessage name="lastName" component="div" className={classes.error} />
-                  </div>
-                  <div className={classes.relative}>
-                    <label htmlFor="email" className={classes.label}>
-                      Email
-                    </label>
-                    <Field
-                      type="email"
-                      name="email"
-                      id="email"
-                      className={` textInput ${classes.field}`}
-                      style={getStyles(errors, touched, 'email')}
-                    />
-                    <ErrorMessage name="email" component="div" className={classes.error} />
-                  </div>
-                  <button type="submit" className={`btn btn-submit ${classes.update}`} disabled={!(isValid && dirty)}>
+      <Grid xs item container direction="column" alignItems="center">
+        <Box hidden={activeTab !== 0} className="edit-profile-form-wrapper">
+          <Formik
+            initialValues={{ email, firstName, lastName }}
+            validationSchema={ProfileSchema}
+            onSubmit={(values) => onUpdateClick(values)}
+          >
+            {({ errors, touched, isValid, dirty }) => (
+              <Form className="edit-profile-form">
+                <Typography variant="subtitle2" htmlFor="firstName">
+                  First name
+                </Typography>
+                <Field
+                  name="firstName"
+                  as={TextField}
+                  id="firstName"
+                  variant="outlined"
+                  style={getStyles(errors, touched, 'firstName')}
+                />
+                <ErrorMessage name="firstName" component="div" className="error" />
+                <Typography variant="subtitle2" htmlFor="lastName">
+                  Last name
+                </Typography>
+                <Field
+                  name="lastName"
+                  as={TextField}
+                  id="lastName"
+                  variant="outlined"
+                  style={getStyles(errors, touched, 'lastName')}
+                />
+                <ErrorMessage name="lastName" component="div" className="error" />
+                <Typography variant="subtitle2" htmlFor="email">
+                  Email
+                </Typography>
+                <Field
+                  name="email"
+                  as={TextField}
+                  id="email"
+                  variant="outlined"
+                  style={getStyles(errors, touched, 'email')}
+                />
+                <ErrorMessage name="email" component="div" className="error" />
+                <div className="edit-profile-btn-container">
+                  <Button
+                    size="large"
+                    variant="contained"
+                    color="primary"
+                    type="submit"
+                    style={{ marginTop: '25px' }}
+                    disabled={!(isValid && dirty)}
+                  >
                     Update
-                  </button>
-                </Form>
-              )}
-            </Formik>
-          </Typography>
+                  </Button>
+                </div>
+              </Form>
+            )}
+          </Formik>
         </Box>
-        <Box className={classes.accountSettingsTabPanel} hidden={activeTab !== 1}>
-          <Typography component="span">
-            <Formik
-              initialValues={{ ...initialPasswordValues }}
-              validationSchema={PasswordSchema}
-              onSubmit={(values) => onSaveClick(values)}
-            >
-              {({ errors, touched, isValid, dirty }) => (
-                <Form>
-                  <div className={classes.relative}>
-                    <label htmlFor="currentPassword" className={classes.label}>
-                      Current password
-                    </label>
-                    <Field
-                      type="password"
-                      name="currentPassword"
-                      id="currentPassword"
-                      placeholder="Shhh..."
-                      className={` textInput ${classes.field}`}
-                      style={getStyles(errors, touched, 'currentPassword')}
-                    />
-                    <ErrorMessage name="currentPassword" component="div" className={classes.error} />
-                  </div>
-                  <div className={classes.relative}>
-                    <label htmlFor="newPassword" className={classes.label}>
-                      Create a password
-                    </label>
-                    <Field
-                      type="password"
-                      name="newPassword"
-                      id="newPassword"
-                      placeholder="Shhh..."
-                      className={` textInput ${classes.field}`}
-                      style={getStyles(errors, touched, 'newPassword')}
-                    />
-                    <ErrorMessage name="newPassword" component="div" className={classes.error} />
-                  </div>
-                  <div className={classes.relative}>
-                    <label htmlFor="confirmedPassword" className={classes.label}>
-                      Confirm your password
-                    </label>
-                    <Field
-                      type="password"
-                      name="confirmedPassword"
-                      id="confirmedPassword"
-                      placeholder="Shhh..."
-                      className={` textInput ${classes.field}`}
-                      style={getStyles(errors, touched, 'confirmedPassword')}
-                    />
-                    <ErrorMessage name="confirmedPassword" component="div" className={classes.error} />
-                  </div>
-                  <button type="submit" className={`btn btn-submit ${classes.save}`} disabled={!(isValid && dirty)}>
+        <Box hidden={activeTab !== 1} className="edit-profile-form-wrapper">
+          <Formik
+            initialValues={{ ...initialPasswordValues }}
+            validationSchema={PasswordSchema}
+            onSubmit={(values) => onSaveClick(values)}
+          >
+            {({ errors, touched, isValid, dirty }) => (
+              <Form className="edit-profile-form">
+                <Typography variant="subtitle2" htmlFor="currentPassword">
+                  Current password
+                </Typography>
+                <Field
+                  name="currentPassword"
+                  as={TextField}
+                  id="currentPassword"
+                  type="password"
+                  placeholder="Shhh..."
+                  variant="outlined"
+                  style={getStyles(errors, touched, 'currentPassword')}
+                />
+                <ErrorMessage name="currentPassword" component="div" className="error" />
+                <Typography variant="subtitle2" htmlFor="newPassword">
+                  Create a password
+                </Typography>
+                <Field
+                  name="newPassword"
+                  as={TextField}
+                  id="newPassword"
+                  type="password"
+                  placeholder="Shhh..."
+                  variant="outlined"
+                  style={getStyles(errors, touched, 'newPassword')}
+                />
+                <ErrorMessage name="newPassword" component="div" className="error" />
+                <Typography variant="subtitle2" htmlFor="confirmedPassword">
+                  Confirm your password
+                </Typography>
+                <Field
+                  name="confirmedPassword"
+                  as={TextField}
+                  id="confirmedPassword"
+                  type="password"
+                  placeholder="Shhh..."
+                  variant="outlined"
+                  style={getStyles(errors, touched, 'confirmedPassword')}
+                />
+                <ErrorMessage name="confirmedPassword" component="div" className="error" />
+                <div className="edit-profile-btn-container">
+                  <Button
+                    size="large"
+                    variant="contained"
+                    color="primary"
+                    type="submit"
+                    style={{ marginTop: '25px' }}
+                    disabled={!(isValid && dirty)}
+                  >
                     Save
-                  </button>
-                </Form>
-              )}
-            </Formik>
-          </Typography>
+                  </Button>
+                </div>
+              </Form>
+            )}
+          </Formik>
         </Box>
         <Snackbar
           anchorOrigin={{ vertical: 'top', horizontal: 'center' }}

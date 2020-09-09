@@ -4,8 +4,7 @@
 
   padding: 40px;
   overflow-x: hidden;
-
-} 
+}
 
 .dashboard-container .react-grid-layout {
   position: relative;
@@ -13,18 +12,18 @@
   min-height: calc(100vh - 215px);
 }
 
-.dashboard-container--edit .react-grid-layout{
+.dashboard-container--edit .react-grid-layout {
   min-height: calc(100vh - 320px);
   background-image: linear-gradient(to bottom, transparent 50%, #f9fbfc 50%),
-  linear-gradient(to right, #f3f4f4 50%, #f9fbfc 50%);
+    linear-gradient(to right, #f3f4f4 50%, #f9fbfc 50%);
   background-size: 30px 30px, 30px 30px;
 }
 
-.dashboard-container--full-screen .react-grid-layout{
+.dashboard-container--full-screen .react-grid-layout {
   min-height: calc(100vh - 135px);
 }
 
-.dashboard-container .dashboard-layout-item__header{
+.dashboard-container .dashboard-layout-item__header {
   height: 50px;
   display: flex;
   justify-content: space-between;
@@ -34,11 +33,11 @@
   border-bottom: 1px solid #f3f4f4;
 }
 
-.dashboard-container .dashboard-layout-item__title{
+.dashboard-container .dashboard-layout-item__title {
   font-size: 15px;
 }
 
-.dashboard-container .dashboard-layout-item__delete{
+.dashboard-container .dashboard-layout-item__delete {
   font-size: 19px;
   color: gray;
   border: none;
@@ -52,7 +51,7 @@
   background: #f9fbfc;
 }
 
-.dashboard-container--edit .dashboard-layout-item__delete{
+.dashboard-container--edit .dashboard-layout-item__delete {
   display: flex;
 }
 
@@ -65,24 +64,24 @@
   outline-width: 1px;
 }
 
-.dashboard-container .dashboard-layout-item__visualization{
-  height:calc(100% - 50px);
+.dashboard-container .dashboard-layout-item__visualization {
+  height: calc(100% - 50px);
   width: 100%;
   padding: 10px;
   box-sizing: border-box;
 }
 
-.dashboard-container .react-grid-item{
-  box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
-  transition: all 0.3s cubic-bezier(.25,.8,.25,1);
+.dashboard-container .react-grid-item {
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
   background: #fff;
   box-sizing: border-box;
   transition: all 200ms ease;
   transition-property: left, top;
 }
 
-.dashboard-container--edit .react-grid-item:hover{
-  cursor: move; 
+.dashboard-container--edit .react-grid-item:hover {
+  cursor: move;
   cursor: grab;
   cursor: -webkit-grab;
 }
@@ -101,8 +100,8 @@
   transition: none;
   z-index: 3;
   will-change: transform;
-  
-  cursor: move; 
+
+  cursor: move;
   cursor: grab;
   cursor: -webkit-grab;
 }
@@ -137,4 +136,3 @@
 .dashboard-container .react-grid-item.static {
   background: #cce;
 }
-

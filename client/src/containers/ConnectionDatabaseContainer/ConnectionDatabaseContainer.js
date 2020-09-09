@@ -1,16 +1,28 @@
 import React from 'react';
-import { Grid, Typography, Snackbar } from '@material-ui/core';
+import {
+  Grid,
+  Typography,
+  Snackbar,
+  Breadcrumbs,
+  Box,
+  TextField,
+  Button,
+  FormControl,
+  NativeSelect,
+} from '@material-ui/core';
 import Alert from '@material-ui/lab/Alert';
 import * as Yup from 'yup';
 import { Formik, Form, Field, ErrorMessage, getIn } from 'formik';
-import { Link, useHistory } from 'react-router-dom';
-import NativeSelect from '@material-ui/core/NativeSelect';
+import { useHistory, NavLink } from 'react-router-dom';
+import NavigateNextIcon from '@material-ui/icons/NavigateNext';
 
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import useStyles from './styles';
+import StyledNavLink from '../../theme/StyledNavLink';
 import { addDatabase } from '../DatabasesPageContainer/actions';
 import { hideNotification } from './actions';
+
+import './styles.css';
 
 const AddDatabaseSchema = Yup.object().shape({
   type: Yup.string().required('Required'),
@@ -23,13 +35,14 @@ const AddDatabaseSchema = Yup.object().shape({
 });
 
 const getStyles = (errors, touched, fieldName) => {
-  return getIn(errors, fieldName) && getIn(touched, fieldName) ? { border: '1px solid red' } : {};
+  return getIn(errors, fieldName) && getIn(touched, fieldName)
+    ? { borderRadius: '5px', backgroundColor: 'rgba(255, 0, 0, 0.3)' }
+    : {};
 };
 
 const ConnectionDatabaseContainer = ({ addDatabase, isNotification, message, status, hideNotification }) => {
   const availableDatabases = { PostgreSQL: 5432, MySQL: 3306, MongoDB: 27017 };
 
-  const classes = useStyles();
   const initialDatabaseValues = {
     type: Object.keys(availableDatabases)[0],
     name: '',
@@ -63,148 +76,149 @@ const ConnectionDatabaseContainer = ({ addDatabase, isNotification, message, sta
   };
 
   return (
-    <Grid className={classes.content} xs item container direction="column" alignItems="center">
-      <Typography className={classes.titleName}>
-        <div>
-          <Link
+    <div className="wrapper">
+      <Breadcrumbs separator={<NavigateNextIcon />} aria-label="breadcrumb" style={{ marginTop: '10px' }}>
+        <StyledNavLink>
+          <NavLink
             to={{
               pathname: '/admin/databases',
             }}
-            className={classes.breadcrumbs}
           >
-            DATABASES
-          </Link>
-          <span className={classes.emptySpace}> &gt; </span>
-          <span style={{ color: '#2e353b' }}>ADD DATABASE</span>
-        </div>
-      </Typography>
-      <div className={classes.wrapper}>
-        <Formik
-          initialValues={{ ...initialDatabaseValues }}
-          validationSchema={AddDatabaseSchema}
-          onSubmit={(values) => onSaveClick(values)}
-        >
-          {({ errors, touched, setFieldValue, values, isValid, dirty }) => (
-            <Form>
-              <div className={classes.relative}>
-                <label htmlFor="type" className={classes.label}>
-                  Database type
-                </label>
-                <NativeSelect
-                  onChange={(event) => {
-                    setFieldValue('port', availableDatabases[event.target.value]);
-                    setFieldValue('type', event.target.value);
-                  }}
-                  value={values.type}
-                  name="type"
-                  id="type"
-                  className={classes.nativeSelect}
-                >
-                  {databaseOptions}
-                </NativeSelect>
-              </div>
-              <div className={classes.relative}>
-                <label htmlFor="name" className={classes.label}>
+            Databases
+          </NavLink>
+        </StyledNavLink>
+        <Typography variant="body2" color="primary">
+          Add database
+        </Typography>
+      </Breadcrumbs>
+      <Grid xs item container direction="column" alignItems="center">
+        <Box className="add-database-form-wrapper">
+          <Formik
+            initialValues={{ ...initialDatabaseValues }}
+            validationSchema={AddDatabaseSchema}
+            onSubmit={(values) => onSaveClick(values)}
+          >
+            {({ errors, touched, setFieldValue, values, isValid, dirty }) => (
+              <Form>
+                <FormControl>
+                  <Typography variant="subtitle2" htmlFor="type">
+                    Database type
+                  </Typography>
+                  <NativeSelect
+                    className="add-database-select"
+                    variant="outlined"
+                    onChange={(event) => {
+                      setFieldValue('port', availableDatabases[event.target.value]);
+                      setFieldValue('type', event.target.value);
+                    }}
+                    value={values.type}
+                    name="type"
+                    id="type"
+                  >
+                    {databaseOptions}
+                  </NativeSelect>
+                </FormControl>
+                <Typography variant="subtitle2" htmlFor="name">
                   Name
-                </label>
+                </Typography>
                 <Field
-                  type="text"
+                  as={TextField}
                   name="name"
                   id="name"
+                  variant="outlined"
                   placeholder="How would you like to refer to this database?"
-                  className={` textInput ${classes.field}`}
                   style={getStyles(errors, touched, 'name')}
                 />
-                <ErrorMessage name="name" component="div" className={classes.error} />
-              </div>
-              <div className={classes.relative}>
-                <label htmlFor="host" className={classes.label}>
+                <ErrorMessage name="name" component="div" className="error" />
+                <Typography variant="subtitle2" htmlFor="host">
                   Host
-                </label>
+                </Typography>
                 <Field
-                  type="host"
+                  as={TextField}
                   name="host"
                   id="host"
+                  variant="outlined"
                   placeholder="localhost"
-                  className={` textInput ${classes.field}`}
                   style={getStyles(errors, touched, 'host')}
                 />
-                <ErrorMessage name="host" component="div" className={classes.error} />
-              </div>
-              <div className={classes.relative}>
-                <label htmlFor="port" className={classes.label}>
+                <ErrorMessage name="host" component="div" className="error" />
+                <Typography variant="subtitle2" htmlFor="port">
                   Port
-                </label>
+                </Typography>
                 <Field
-                  type="text"
+                  as={TextField}
                   name="port"
                   id="port"
+                  variant="outlined"
                   placeholder="5432"
-                  className={` textInput ${classes.field}`}
                   style={getStyles(errors, touched, 'port')}
                 />
-                <ErrorMessage name="port" component="div" className={classes.error} />
-              </div>
-              <div className={classes.relative}>
-                <label htmlFor="databaseName" className={classes.label}>
+                <ErrorMessage name="port" component="div" className="error" />
+                <Typography variant="subtitle2" htmlFor="databaseName">
                   Database name
-                </label>
+                </Typography>
                 <Field
-                  type="text"
+                  as={TextField}
                   name="databaseName"
                   id="databaseName"
+                  variant="outlined"
                   placeholder="Your database name"
-                  className={` textInput ${classes.field}`}
                   style={getStyles(errors, touched, 'databaseName')}
                 />
-                <ErrorMessage name="databaseName" component="div" className={classes.error} />
-              </div>
-              <div className={classes.relative}>
-                <label htmlFor="username" className={classes.label}>
+                <ErrorMessage name="databaseName" component="div" className="error" />
+                <Typography variant="subtitle2" htmlFor="username">
                   User name
-                </label>
+                </Typography>
                 <Field
-                  type="text"
+                  as={TextField}
                   name="username"
                   id="username"
+                  variant="outlined"
                   placeholder="What username do you use to login to the database"
-                  className={` textInput ${classes.field}`}
                   style={getStyles(errors, touched, 'username')}
                 />
-                <ErrorMessage name="username" component="div" className={classes.error} />
-              </div>
-              <div className={classes.relative}>
-                <label htmlFor="password" className={classes.label}>
+                <ErrorMessage name="username" component="div" className="error" />
+                <Typography variant="subtitle2" htmlFor="password">
                   Password
-                </label>
+                </Typography>
                 <Field
+                  as={TextField}
                   type="password"
                   name="password"
                   id="password"
+                  variant="outlined"
                   placeholder="Shhh..."
-                  className={` textInput ${classes.field}`}
                   style={getStyles(errors, touched, 'password')}
                 />
-                <ErrorMessage name="password" component="div" className={classes.error} />
-              </div>
-              <button type="submit" className={`btn btn-submit ${classes.save}`} disabled={!(isValid && dirty)}>
-                Save
-              </button>
-            </Form>
-          )}
-        </Formik>
-      </div>
-      <Snackbar
-        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
-        open={isNotification}
-        autoHideDuration={6000}
-        onClose={hideNotification}
-      >
-        <Alert elevation={6} variant="filled" severity={status} onClose={hideNotification}>
-          {message}
-        </Alert>
-      </Snackbar>
-    </Grid>
+                <ErrorMessage name="password" component="div" className="error" />
+                <div className="add-database-btn-container">
+                  <Button
+                    size="large"
+                    variant="contained"
+                    color="primary"
+                    type="submit"
+                    style={{ margin: '25px 0' }}
+                    disabled={!(isValid && dirty)}
+                  >
+                    Save
+                  </Button>
+                </div>
+              </Form>
+            )}
+          </Formik>
+        </Box>
+        <Snackbar
+          anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+          open={isNotification}
+          autoHideDuration={6000}
+          onClose={hideNotification}
+        >
+          <Alert elevation={6} variant="filled" severity={status} onClose={hideNotification}>
+            {message}
+          </Alert>
+        </Snackbar>
+      </Grid>
+    </div>
   );
 };
 

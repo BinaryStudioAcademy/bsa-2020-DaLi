@@ -36,3 +36,44 @@
     transform: rotate(360deg);
   }
 }
+
+.wrapper {
+  width: 95%;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.sc-AxjAm {
+  width: max-content;
+}
+
+.sc-AxjAm a {
+  color: #858585;
+  text-decoration: none;
+  display: flex;
+  font-size: 14px;
+  align-items: center;
+}
+
+.sc-AxjAm:hover {
+  cursor: pointer;
+}
+
+.sc-AxjAm:hover a {
+  text-decoration: underline;
+}
+
+.sc-AxjAm svg.MuiSvgIcon-root {
+  color: #1cd1a1;
+  margin-right: 10px;
+}
+
+.paper-collection-outlined::before {
+  content: "";
+}
+
+.error {
+  color: red;
+  position: absolute;
+  font-size: 12px;
+}

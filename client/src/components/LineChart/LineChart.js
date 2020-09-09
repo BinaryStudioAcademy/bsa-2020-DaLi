@@ -130,7 +130,7 @@ function LineChart({ settings, data, chart: chartSize }) {
       if (goal.display && index === 1) {
         const y = yScale(goal.value);
         chart.append('line').attr('id', 'goal').attr('x1', 0).attr('y1', y).attr('x2', width).attr('y2', y);
-  
+
         chart
           .append('text')
           .attr('y', y - 10)
@@ -195,34 +195,34 @@ function LineChart({ settings, data, chart: chartSize }) {
     const legendRectSize = 18;
     const legendSpacing = 4;
 
-    if(YAxis.key.length>1){
-    const legend = legendContainer
-      .selectAll('.legend')
-      .data(YAxis.key)
-      .enter()
-      .append('g')
-      .attr('class', 'legend')
-      .attr('transform', function (d, i) {
-        const width = legendRectSize + legendSpacing + 40;
-        // const offset = (width * color.length) / 2;
-        const offset = (width * 3) / 2;
-        const horz = i*offset;
-        const vert = 0;
-        return 'translate(' + horz + ',' + vert + ')';
-      });
+    if (YAxis.key.length > 1) {
+      const legend = legendContainer
+        .selectAll('.legend')
+        .data(YAxis.key)
+        .enter()
+        .append('g')
+        .attr('class', 'legend')
+        .attr('transform', function (d, i) {
+          const width = legendRectSize + legendSpacing + 40;
+          // const offset = (width * color.length) / 2;
+          const offset = (width * 3) / 2;
+          const horz = i * offset;
+          const vert = 0;
+          return 'translate(' + horz + ',' + vert + ')';
+        });
 
-    legend
-      .append('rect')
-      .attr('width', legendRectSize)
-      .attr('height', legendRectSize)
-      .style('fill', (d, i) => color[i])
-      .style('stroke', (d, i) => color[i]);
+      legend
+        .append('rect')
+        .attr('width', legendRectSize)
+        .attr('height', legendRectSize)
+        .style('fill', (d, i) => color[i])
+        .style('stroke', (d, i) => color[i]);
 
-    legend
-      .append('text')
-      .attr('x', legendRectSize + legendSpacing)
-      .attr('y', legendRectSize - legendSpacing)
-      .text((d) => d);
+      legend
+        .append('text')
+        .attr('x', legendRectSize + legendSpacing)
+        .attr('y', legendRectSize - legendSpacing)
+        .text((d) => d);
     }
   };
 

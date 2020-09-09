@@ -2,14 +2,20 @@ import React from 'react';
 import TableCell from '@material-ui/core/TableCell';
 import TableRow from '@material-ui/core/TableRow';
 import * as Yup from 'yup';
-import { Formik, Form, Field } from 'formik';
+import { Formik, Form, Field, ErrorMessage, getIn } from 'formik';
 import PropTypes from 'prop-types';
-import Button from '@material-ui/core/Button';
+import { Button, TextField } from '@material-ui/core';
 import { useStyles } from './styles';
 
 const ValidationSchema = Yup.object({
   name: Yup.string().required('Name is required').max(30, 'Name must be at most 30 characters'),
 });
+
+const getStyles = (errors, touched, fieldName) => {
+  return getIn(errors, fieldName) && getIn(touched, fieldName)
+    ? { borderRadius: '5px', backgroundColor: 'rgba(255, 0, 0, 0.3)' }
+    : {};
+};
 
 const UserGroupForm = ({ initialName, submit, closeForm, submitTitle }) => {
   return (
@@ -21,7 +27,7 @@ const UserGroupForm = ({ initialName, submit, closeForm, submitTitle }) => {
           onSubmit={(values) => submit(values)}
         >
           {/* eslint-disable-next-line */}
-          {(props) => <CreateUserGroupForm cancel={closeForm} submitTitle={submitTitle} {...props}/>}
+          {(props) => <CreateUserGroupForm cancel={closeForm} submitTitle={submitTitle} {...props} />}
         </Formik>
       </TableCell>
     </TableRow>
@@ -32,33 +38,20 @@ const CreateUserGroupForm = ({ handleSubmit, resetForm, isValid, dirty, cancel, 
   const classes = useStyles();
   return (
     <>
-      <span style={{ color: 'red' }}>{touched.name && errors.name}</span>
-      <Form
-        className={touched.name && errors.name ? `${classes.form} ${classes.formError}` : classes.form}
-        onSubmit={handleSubmit}
-      >
+      <Form className={classes.form} onSubmit={handleSubmit}>
         <Field
           name="name"
-          as="input"
+          as={TextField}
+          variant="outlined"
           placeholder='Something like "Marketing"'
-          style={touched.name && errors.name ? { borderColor: 'red' } : {}}
-          id="admin-createGroup-groupName"
+          style={getStyles(errors, touched, 'name')}
         />
+        <ErrorMessage name="name" component="div" className="error" />
         <div>
-          <Button
-            onClick={cancel(resetForm)}
-            style={{ textTransform: 'none', fontSize: 12, color: '#3ca1de' }}
-            id="admin-createGroup-cancel"
-          >
+          <Button onClick={cancel(resetForm)} variant="outlined">
             Cancel
           </Button>
-          <Button
-            type="submit"
-            variant="outlined"
-            disabled={!(isValid && dirty)}
-            style={{ textTransform: 'none', fontSize: 12 }}
-            id="admin-createGroup-add"
-          >
+          <Button type="submit" variant="contained" color="primary" disabled={!(isValid && dirty)}>
             {submitTitle}
           </Button>
         </div>

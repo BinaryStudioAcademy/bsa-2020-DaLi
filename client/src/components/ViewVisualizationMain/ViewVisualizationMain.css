@@ -13,7 +13,6 @@
   box-sizing: border-box;
 }
 
-
 .view-visualization-footer {
   position: relative;
   display: flex;
@@ -23,12 +22,11 @@
   border-top: 2px solid #f4f4f4;
 }
 
-.view-visualization__visualization-button{
+.view-visualization__visualization-button {
   color: white !important;
   text-transform: none !important;
   background: #3ca1de !important;
   border-radius: 5px !important;
-  
 }
 
 .view-visualization__setting-button {
@@ -48,7 +46,7 @@
 
   background: #ecf2f5 !important;
   border-radius: 20px !important;
-  box-shadow: none!important;
+  box-shadow: none !important;
   transform: translate(-50%, -50%);
 }
 
@@ -60,7 +58,7 @@
   border-radius: 20px !important;
 }
 .view-visualization__switcher-item:hover {
-  box-shadow: none!important;
+  box-shadow: none !important;
 }
 
 .view-visualization__switcher-item--active {

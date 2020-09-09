@@ -6,6 +6,7 @@ import FilterFieldsList from './FilterFieldsList';
 import useStyles from './styles';
 import DateFilterForm from './FilterForms/DateFilterForm';
 import StringFilterForm from './FilterForms/StringFilterForm';
+import NumberFilterForm from './FilterForms/NumberFilterForm';
 
 const chooseFilterForm = (type, props) => {
   switch (type) {
@@ -18,6 +19,8 @@ const chooseFilterForm = (type, props) => {
     }
 
     case 'number':
+      return <NumberFilterForm {...props} />;
+
     default:
       return null;
   }

@@ -46,7 +46,7 @@ export default class DBPostgresManager {
 
   createRegexOperator(checkType, caseSensitive) {
     let operator = '';
-    if (checkType === 'notEqual' || checkType === 'notIncludes') {
+    if (checkType.startsWith('not')) {
       operator += '!';
     }
     operator += '~';
@@ -95,6 +95,17 @@ export default class DBPostgresManager {
 
         query += ` ${isFirstOption ? '' : 'AND'} "${columnName}" ${operator} '${regex}' `;
         isFirstOption = false;
+      } else if (columnType === 'number') {
+        const greaterThan = setting.greaterThan ? setting.greaterThan : false;
+        const lessThan = setting.lessThan ? setting.lessThan : false;
+        if (greaterThan) {
+          query += ` ${isFirstOption ? '' : 'AND'} "${columnName}" >= '${greaterThan}' `;
+          isFirstOption = false;
+        }
+        if (lessThan) {
+          query += ` ${isFirstOption ? '' : 'AND'} "${columnName}" <= '${lessThan}' `;
+          isFirstOption = false;
+        }
       }
     });
     return query;

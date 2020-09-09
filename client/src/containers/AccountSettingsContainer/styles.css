@@ -1,0 +1,17 @@
+.edit-profile-form-wrapper {
+  width: 95%;
+  max-width: 450px;
+}
+
+.edit-profile-form-wrapper .error {
+  max-width: 430px;
+  line-height: 12px;
+}
+
+.edit-profile-form .MuiTypography-subtitle2 {
+  margin: 25px 0 10px;
+}
+
+.edit-profile-btn-container {
+  text-align: center;
+}

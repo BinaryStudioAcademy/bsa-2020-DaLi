@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { useHistory } from 'react-router-dom';
-import Grid from '@material-ui/core/Grid';
+import { Paper, Typography } from '@material-ui/core';
 import { FaDatabase } from 'react-icons/fa';
 
 import './styles.css';
@@ -14,15 +14,19 @@ const DataSourcesViewItem = ({ dataset }) => {
   };
 
   return (
-    <Grid
-      item
+    <Paper
+      variant="outlined"
+      square
       className="data-source-item dataset-item"
       onClick={() => handleDatasetClick(dataset)}
-      id={`dataset-${dataset.dbNickname}`}
     >
-      <FaDatabase style={{ color: '#7073a9', fontSize: 30 }} />
-      <p>{dataset.dbNickname}</p>
-    </Grid>
+      <div className="paper-data-icon">
+        <FaDatabase />
+      </div>
+      <div className="paper-data-text">
+        <Typography variant="h3">{dataset.dbNickname}</Typography>
+      </div>
+    </Paper>
   );
 };
 

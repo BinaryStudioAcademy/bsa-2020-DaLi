@@ -9,13 +9,13 @@ import TableRow from '@material-ui/core/TableRow';
 import Backdrop from '@material-ui/core/Backdrop';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
+import { Breadcrumbs, Typography } from '@material-ui/core';
+import NavigateNextIcon from '@material-ui/icons/NavigateNext';
 import DatabaseListItem from './DatabaseListItem';
 import DatabaseListHeader from '../DatabaseListHeader/DatabaseListHeader';
 import DeleteDatabaseModal from '../DeleteDatabaseModal/DeleteDatabaseModal';
-import { useStyles } from './styles';
 
 const DatabaseList = ({ deleteDatabase, databases, isLoading }) => {
-  const classes = useStyles();
   const [deleteDbModalVisible, setDeleteDbModalVisible] = useState(false);
   const [databaseIdForDelete, setDatabaseIdForDelete] = useState('');
 
@@ -33,7 +33,12 @@ const DatabaseList = ({ deleteDatabase, databases, isLoading }) => {
       <CircularProgress color="inherit" />
     </Backdrop>
   ) : (
-    <div className={classes.root}>
+    <div className="wrapper">
+      <Breadcrumbs separator={<NavigateNextIcon />} aria-label="breadcrumb" style={{ marginTop: '10px' }}>
+        <Typography variant="body2" color="primary">
+          Databases
+        </Typography>
+      </Breadcrumbs>
       <DatabaseListHeader />
       <TableContainer>
         <Table aria-label="simple table">

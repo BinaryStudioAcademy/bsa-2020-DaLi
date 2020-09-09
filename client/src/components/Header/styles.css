@@ -1,69 +1,91 @@
 header {
-  background-color: #519ee3;
-  display: flex;
-  justify-content: space-between;
-  padding: 0px 35px;
+  height: 83px;
+  background: #ffffff;
+  border-bottom: 2px solid #f7f7f7;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+.header-container {
+  display: grid;
+  grid-template-columns: max-content 1fr max-content max-content;
+  height: 100%;
   align-items: center;
-  box-sizing: border-box;
-  height: 55px;
 }
 
-.admin-header {
-  background-color: #7073a9;
-  justify-content: flex-start;
+.header-logo-container {
+  display: grid;
   align-items: center;
-  padding-left: 20px;
-  color: #fff;
-}
-
-.admin-header-icon {
-  margin-right: 10px;
-}
-
-.admin-header-nav {
-  display: flex;
-  margin-left: 25px;
-}
-
-.admin-header-nav .MuiTabs-indicator {
-  display: none;
+  grid-template-columns: max-content 1fr;
 }
 
 .header-logo {
-  background-image: url("./logo.png");
-  background-position: center;
-  background-color: #fff;
-  width: 35px;
-  height: 35px;
-  background-repeat: no-repeat;
-  background-size: cover;
-  font-size: 0;
+  background: #1cd1a1;
+  width: 48px;
+  height: 48px;
+  position: relative;
+  border-radius: 60%;
+}
+
+.header-logo:before {
+  content: url(logo.svg);
+  display: block;
+  width: 80px;
+  height: 26px;
+  position: relative;
+  right: 25px;
 }
 
 .header-logo:hover {
   cursor: pointer;
 }
 
+.header-logo:focus {
+  outline: none;
+}
+
+.header-logo-text {
+  font-family: "Poppins";
+  font-weight: bold;
+  font-size: 24px;
+  line-height: 36px;
+  color: #4e4e4e;
+  margin-left: 10px;
+}
+
 .header-controls {
-  display: flex;
-}
-
-.data-sources-btn {
-  display: flex;
-  align-items: center;
-  color: white;
-}
-
-.data-sources-btn:hover {
-  cursor: pointer;
+  grid-column: 3;
+  margin-right: 35px;
 }
 
 .header-icons {
-  color: #fff;
-  margin-left: 35px;
-  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
 }
 
-.MuiListItem-root.MuiMenuItem-root svg {
+.header-icon {
+  margin-left: 20px;
+}
+
+.admin-header {
+  background-color: #1cd1a1;
+  color: #fff;
+  border: none;
+}
+
+.admin-header-icon {
   margin-right: 10px;
+}
+
+.link {
+  color: #fff;
+  padding: 0 20px;
+  font-weight: 500;
+  text-decoration: none;
+  opacity: 0.7;
+}
+
+.admin-settings {
+  justify-self: end;
 }

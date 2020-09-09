@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Modal from '@material-ui/core/Modal';
+import { Dialog } from '@material-ui/core';
 import { connect } from 'react-redux';
 import {
   updateUser,
@@ -35,7 +35,7 @@ const PeopleListModal = ({
 
   if (modal.type === 'Add user' || modal.type === 'Edit user') {
     return (
-      <Modal className={classes.modal} open={isOpen || false} onClose={closeModal}>
+      <Dialog className={classes.modal} open={isOpen || false} onClose={closeModal}>
         <>
           <AddUserBody
             addUser={addUser}
@@ -48,23 +48,23 @@ const PeopleListModal = ({
             currentUserId={currentUserId}
           />
         </>
-      </Modal>
+      </Dialog>
     );
   }
 
   if (modal.type === 'Deactivate user') {
     return (
-      <Modal className={classes.modal} open={isOpen || false} onClose={closeModal}>
+      <Dialog className={classes.modal} open={isOpen || false} onClose={closeModal}>
         <>
           <DeactivateUserBody closeModal={closeModal} deactivateUser={toggleUserStatus} user={modal.user} />
         </>
-      </Modal>
+      </Dialog>
     );
   }
 
   if (modal.type === 'Reset password') {
     return (
-      <Modal className={classes.modal} open={isOpen || false} onClose={closeModal}>
+      <Dialog className={classes.modal} open={isOpen || false} onClose={closeModal}>
         <>
           <ResetPasswordBody
             closeModal={closeModal}
@@ -73,17 +73,17 @@ const PeopleListModal = ({
             resetPassword={resetPassword}
           />
         </>
-      </Modal>
+      </Dialog>
     );
   }
 
   if (modal.type === 'Password') {
     return (
-      <Modal className={classes.modal} open={isOpen || false} onClose={closeModal}>
+      <Dialog className={classes.modal} open={isOpen || false} onClose={closeModal}>
         <>
           <TemporaryPasswordBody closeModal={closeModal} user={modal.user} openModal={openModal} password={password} />
         </>
-      </Modal>
+      </Dialog>
     );
   }
 

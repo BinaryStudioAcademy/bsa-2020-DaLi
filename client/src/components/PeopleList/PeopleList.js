@@ -2,17 +2,18 @@ import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import Snackbar from '@material-ui/core/Snackbar';
 import Alert from '@material-ui/lab/Alert';
-import Button from '@material-ui/core/Button';
 import Backdrop from '@material-ui/core/Backdrop';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import Box from '@material-ui/core/Box';
 import Grid from '@material-ui/core/Grid';
-import Typography from '@material-ui/core/Typography';
+import { Typography, Button } from '@material-ui/core';
 import { useStyles } from './styles';
 import PeopleTable from './PeopleTable';
 import PeopleListModal from '../PeopleListModal/PeopleListModal';
+
+import './styles.css';
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -84,13 +85,11 @@ const PeopleList = ({
       <div className={classes.root}>
         {!isInactiveUsers ? (
           <>
-            <Grid className={classes.peopleListHeader}>
-              <Typography className={classes.peopleListTitle}>People</Typography>
-              <Button
-                className={classes.addPersonButton}
-                variant="contained"
-                onClick={() => openModal({ type: 'Add user' })}
-              >
+            <Grid className="people-list-header-container">
+              <Typography variant="h1" color="textPrimary">
+                People
+              </Typography>
+              <Button size="large" variant="contained" color="primary" onClick={() => openModal({ type: 'Add user' })}>
                 Add someone
               </Button>
             </Grid>

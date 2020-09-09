@@ -20,6 +20,12 @@ export const useStyles = makeStyles({
     display: 'flex',
     alignItems: 'center',
   },
+  groupLink: {
+    color: '#1cd1a1 !important',
+    '&:hover': {
+      textDecoration: 'underline !important',
+    },
+  },
   avatar: {
     marginRight: '20px',
     backgroundColor: '#3ca1de',
@@ -35,6 +41,9 @@ export const useStyles = makeStyles({
     borderRadius: ' 5px',
     fontSize: '15px',
     fontFamily: 'Roboto',
+    '& .MuiFormControl-root': {
+      width: '75%',
+    },
     '&:focus-within': {
       border: '1px solid #33a1de',
     },
@@ -56,9 +65,6 @@ export const useStyles = makeStyles({
     '& button': {
       marginLeft: '10px',
     },
-  },
-  formError: {
-    border: '1px solid red !important',
   },
   select: {
     flexGrow: 4,

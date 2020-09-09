@@ -1,11 +1,11 @@
 .modal-container {
   z-index: 999;
   position: absolute;
-  top:0;
+  top: 0;
   left: 0;
   width: 100vw;
   height: 100vh;
-  
+
   display: flex;
   justify-content: center;
   align-items: center;
@@ -49,12 +49,10 @@
 
 .modal-body {
   flex-grow: 1;
-  /* border-top: solid 1px #d8dce3; */
   padding: 14px 29px 14px 19px;
 }
 
 .modal-footer {
-  /* border-top: solid 1px #d8dce3; */
   padding: 10px 20px;
   display: flex;
   justify-content: center;

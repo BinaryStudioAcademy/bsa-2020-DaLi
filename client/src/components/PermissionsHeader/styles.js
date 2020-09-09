@@ -15,11 +15,13 @@ const useStyles = makeStyles(() => ({
     fontSize: '15px',
     color: '#f6f6f9',
   },
+
   permissionsEditingHeaderButtons: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
   },
+
   permissionsEditingHeaderButton: {
     padding: '0px 15px',
     fontSize: '14px',
@@ -28,10 +30,12 @@ const useStyles = makeStyles(() => ({
     textTransform: 'none',
     marginLeft: '20px',
   },
+
   permissionsEditingHeaderButtonCancel: {
     color: '#faf7fa',
     background: '#9294bd',
   },
+
   permissionsEditingHeaderButtonSave: {
     color: '#4e4f50',
     background: '#ffffff',

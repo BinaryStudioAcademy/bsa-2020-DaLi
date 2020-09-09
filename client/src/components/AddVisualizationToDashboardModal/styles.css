@@ -1,4 +1,4 @@
-/* .visualizationToDashboardModalForm {
+.visualizationToDashboardModalForm {
     display: flex;
     flex-direction: column;
 }
@@ -64,4 +64,4 @@
     position: absolute;
     top: 2px;
     left: 0;
-} */
+}

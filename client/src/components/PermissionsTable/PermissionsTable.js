@@ -18,9 +18,27 @@ const PermissionsTable = (props) => {
   const classes = useStyles();
 
   const userGroups = data[0].groups;
-  const dataNameProperty = dataType === 'tables' ? 'tableName' : 'dbNickname';
-  const dataIdProperty = dataType === 'tables' ? 'tableId' : 'databaseId';
-  const linkClassName = dataType === 'tables' ? classes.permissionsTableLink : classes.permissionsTableLinkActive;
+  let dataNameProperty;
+  let dataIdProperty;
+  let linkClassName;
+
+  switch (dataType) {
+    case 'tables':
+      dataNameProperty = 'tableName';
+      dataIdProperty = 'tableId';
+      linkClassName = classes.permissionsTableLink;
+      break;
+    case 'collections':
+      dataNameProperty = 'name';
+      dataIdProperty = 'id';
+      linkClassName = classes.permissionsTableLinkActive;
+      break;
+    default:
+      dataNameProperty = 'dbNickname';
+      dataIdProperty = 'databaseId';
+      linkClassName = classes.permissionsTableLinkActive;
+      break;
+  }
 
   return (
     <>
@@ -28,7 +46,7 @@ const PermissionsTable = (props) => {
         <NavLink className={linkClassName} to="/admin/permissions">
           Permissions
         </NavLink>
-        {dataType === 'tables' && <Typography>{currentDatabaseName}</Typography>}
+        {dataType === 'tables' && <Typography color="textPrimary">{currentDatabaseName}</Typography>}
       </Breadcrumbs>
       <Grid className={classes.permissionsTableContainer} container>
         <Table style={{ width: '100%', tableLayout: 'fixed' }} aria-label="permissions table">

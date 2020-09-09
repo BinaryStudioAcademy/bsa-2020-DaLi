@@ -5,7 +5,7 @@ import Marker from './Marker';
 import config from '../../config/index';
 import './styles.css';
 
-const MapVisualizationGoogle = ({ data, settings }) => {
+const MapVisualizationGoogle = ({ updateConfig, data, settings }) => {
   const [locationNameForInfo, setLocationNameForInfo] = useState('');
 
   const API_GOOGLE_KEY = config.api.google;
@@ -37,12 +37,20 @@ const MapVisualizationGoogle = ({ data, settings }) => {
 
   const options = settings.isSatellite ? { mapTypeId: 'satellite' } : { mapTypeId: 'roadmap' };
 
+  const onChange = ({ center, zoom }) => {
+    if (updateConfig) {
+      updateConfig({ ...settings, mapCenter: center, zoom });
+    }
+  };
+
   return (
     <GoogleMapReact
       options={options}
-      defaultCenter={{ lat: 40.71274, lng: -74.005974 }}
-      defaultZoom={4}
-      bootstrapURLKeys={{ key: API_GOOGLE_KEY }}
+      center={settings.mapCenter}
+      zoom={settings.zoom}
+      bootstrapURLKeys={{ key: API_GOOGLE_KEY, libraries: 'visualization' }}
+      heatmapLibrary
+      onChange={onChange}
     >
       {settings.longitude && settings.latitude ? displayMarkers() : null}
     </GoogleMapReact>
@@ -50,6 +58,7 @@ const MapVisualizationGoogle = ({ data, settings }) => {
 };
 
 MapVisualizationGoogle.propTypes = {
+  updateConfig: PropTypes.func,
   data: PropTypes.array,
   settings: PropTypes.object,
 };

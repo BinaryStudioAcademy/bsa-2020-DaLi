@@ -22,8 +22,10 @@ const PermissionsModal = (props) => {
         <DialogContentText id="alert-dialog-description">Are you sure you want to save changes?</DialogContentText>
       </DialogContent>
       <DialogActions>
-        <Button onClick={onSaveChanges}>Save</Button>
-        <Button onClick={onClose} autoFocus>
+        <Button onClick={onSaveChanges} color="primary">
+          Save
+        </Button>
+        <Button onClick={onClose} color="primary" autoFocus>
           Cancel
         </Button>
       </DialogActions>

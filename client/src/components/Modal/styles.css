@@ -2,29 +2,36 @@
   z-index: 999;
   position: absolute;
   top: 0;
+  left: 0;
   width: 100vw;
   height: 100vh;
+
   display: flex;
   justify-content: center;
   align-items: center;
   background-color: rgba(255, 255, 255, 0.7);
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #62626e;
 }
 
 .modal-content {
+  /* width: 80%;
+  height: 90%; */
   padding: 50px;
+  position: relative;
   display: flex;
   flex-direction: column;
   border: 1px solid #d8dce3;
   border-radius: 5px;
   box-shadow: 0 2px 5px #bbb;
-  background-color: #ffffff;
+  background-color: #f7f8fa;
 }
 
 .modal-header {
   padding: 9px 10px;
   padding-left: 20px;
   height: 38px;
-  text-align: center;
   font-size: 15px;
   position: relative;
 }
@@ -49,4 +56,19 @@
   padding: 10px 20px;
   display: flex;
   justify-content: center;
+}
+
+.close-btn {
+  font-weight: 600;
+  box-shadow: 0 2px 5px #bbb;
+  background-color: rgb(77, 144, 255);
+  color: rgb(247, 248, 250);
+  height: 35px;
+  width: 117px;
+  font-size: 14px;
+  border-radius: 3px;
+  border-width: 1px;
+  border-style: solid;
+  border-color: rgb(43, 123, 255);
+  cursor: pointer;
 }

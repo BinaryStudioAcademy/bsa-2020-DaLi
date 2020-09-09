@@ -16,6 +16,7 @@ import ColorPicker from 'material-ui-color-picker';
 import ToggleButton from '@material-ui/lab/ToggleButton';
 import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup';
 import FormLabel from '@material-ui/core/FormLabel';
+import CloseIcon from '@material-ui/icons/Close';
 import { useStyles, switchStyles } from './styles';
 
 const PrettySwitch = (props) => {
@@ -77,7 +78,7 @@ const BarChartSettings = ({ updateConfig, config: oldConfig }) => {
 
   const [value, setValue] = useState(0);
   const [xAxis, setXAxis] = useState(XAxis.key || XAxis.availableKeys[0]);
-  const [yAxis, setYAxis] = useState(YAxis.key || YAxis.availableKeys[0]);
+  const [yAxis, setYAxis] = useState(YAxis.key || [YAxis.availableKeys[0]]);
   const [isGoalLine, setIsGoalLine] = useState(goal.display);
   const [goalLine, setGoalLine] = useState(goal.value);
   const [color, setColor] = useState(barColor);
@@ -90,6 +91,18 @@ const BarChartSettings = ({ updateConfig, config: oldConfig }) => {
   const [trendlineType, setTrendlineType] = useState(trendline.trendlineType);
   const [polynomialOrder, setPolynomialOrder] = useState(trendline.polynomial.order);
   const [config, setConfig] = useState(oldConfig);
+  const [errors, setErrors] = useState({
+    labelXAxis: false,
+    labelYAxis: false,
+  });
+
+  const validateField = (name, value) => {
+    if (name === 'labelXAxis' || name === 'labelYAxis') {
+      setErrors({ ...errors, [name]: value.length > 20 });
+    }
+  };
+
+  const isError = () => Object.values(errors).includes(true);
 
   useEffect(() => {
     updateConfig(config);
@@ -136,6 +149,22 @@ const BarChartSettings = ({ updateConfig, config: oldConfig }) => {
     });
   };
 
+  const colorList = ['blue', 'red', 'green', 'orange', 'purple', 'indigo', 'cyan', 'teal', 'lime', 'yellow'];
+
+  const addChart = () => {
+    if (yAxis.length < YAxis.availableKeys.length) {
+      const availableKeys = [...YAxis.availableKeys].filter((item) => !yAxis.includes(item));
+      setYAxis([...yAxis, availableKeys[0]]);
+      setColor([...color, colorList[yAxis.length % 10]]);
+    }
+  };
+
+  const deleteChart = (id) => {
+    const newYAxes = [...yAxis];
+    newYAxes.splice(id, 1);
+    setYAxis(newYAxes);
+  };
+
   const valuesX = XAxis.availableKeys.map((value) => (
     <option value={value} key={value}>
       {value}
@@ -148,8 +177,9 @@ const BarChartSettings = ({ updateConfig, config: oldConfig }) => {
   ));
 
   return (
-    <div>
+    <div className={classes.root}>
       <Tabs
+        className={classes.tabs}
         value={value}
         onChange={handleChange}
         aria-label="simple tabs example"
@@ -158,16 +188,17 @@ const BarChartSettings = ({ updateConfig, config: oldConfig }) => {
           indicator: classes.indicator,
         }}
       >
-        <Tab label="Data" {...a11yProps(0)} />
-        <Tab label="Display" {...a11yProps(1)} />
-        <Tab label="Labels" {...a11yProps(2)} />
+        <Tab className={classes.tab} label="Data" {...a11yProps(0)} />
+        <Tab className={classes.tab} label="Display" {...a11yProps(1)} />
+        <Tab className={classes.tab} label="Labels" {...a11yProps(2)} />
       </Tabs>
       <TabPanel value={value} index={0}>
-        <FormControl>
-          <InputLabel shrink id="xAxis-native-helper">
+        <FormControl className={classes.formControl}>
+          <InputLabel className={classes.label} shrink id="xAxis-native-helper">
             X-Axis
           </InputLabel>
           <NativeSelect
+            className={classes.select}
             value={xAxis}
             onChange={(event) => {
               setXAxis(event.target.value);
@@ -181,24 +212,38 @@ const BarChartSettings = ({ updateConfig, config: oldConfig }) => {
             {valuesX}
           </NativeSelect>
         </FormControl>
-        <FormControl>
-          <InputLabel shrink htmlFor="yAxis-native-helper">
-            Y-Axis
-          </InputLabel>
-          <NativeSelect
-            value={yAxis}
-            onChange={(event) => {
-              setYAxis(event.target.value);
-              setLabelYAxis(event.target.value);
-            }}
-            inputProps={{
-              id: 'yAxis-native-helper',
-              name: 'yAxis',
-            }}
-          >
-            {valuesY}
-          </NativeSelect>
-        </FormControl>
+        <InputLabel className={classes.label} shrink htmlFor="yAxis-native-helper">
+          Y-Axis
+        </InputLabel>
+        {yAxis.map((value, index) => (
+          <FormControl className={classes.ySelectControl}>
+            <div className={classes.ySelectItem}>
+              <NativeSelect
+                key={`line${index}`}
+                className={classes.select}
+                value={value}
+                onChange={(event) => {
+                  const newYAxes = [...yAxis];
+                  newYAxes[index] = event.target.value;
+                  setYAxis(newYAxes);
+                  if (yAxis.length === 1) {
+                    setLabelYAxis(event.target.value);
+                  }
+                }}
+                inputProps={{
+                  id: 'yAxis-native-helper',
+                  name: 'yAxis',
+                }}
+              >
+                {valuesY}
+              </NativeSelect>
+              {yAxis.length > 1 ? <CloseIcon fontSize="default" onClick={() => deleteChart(index)} /> : null}
+            </div>
+          </FormControl>
+        ))}
+        <Button variant="contained" className={classes.addSeriesBtn} onClick={addChart}>
+          Add another series
+        </Button>
       </TabPanel>
       <TabPanel value={value} index={1}>
         <FormControlLabel
@@ -209,6 +254,7 @@ const BarChartSettings = ({ updateConfig, config: oldConfig }) => {
           <TextField
             id="standard-basic"
             label="Goal line"
+            className={classes.input}
             type="number"
             InputLabelProps={{
               shrink: true,
@@ -230,21 +276,26 @@ const BarChartSettings = ({ updateConfig, config: oldConfig }) => {
           ))()}
           label="Show values on data points"
         />
-        <FormControlLabel
-          control={(() => (
-            <PrettySwitch
-              checked={showTrendline}
-              onChange={(event) => {
-                setShowTrendline(event.target.checked);
-              }}
-            />
-          ))()}
-          label="Show trendline"
-        />
-        {showTrendline ? (
+        {yAxis.length < 2 ? (
+          <FormControlLabel
+            control={(() => (
+              <PrettySwitch
+                checked={showTrendline}
+                onChange={(event) => {
+                  setShowTrendline(event.target.checked);
+                }}
+              />
+            ))()}
+            label="Show trendline"
+          />
+        ) : null}
+        {showTrendline && yAxis.length < 2 ? (
           <FormControl component="fieldset">
-            <FormLabel component="legend">Trendline type</FormLabel>
+            <FormLabel component="legend" className={classes.legend}>
+              Trendline type
+            </FormLabel>
             <ToggleButtonGroup
+              className={classes.btnGroup}
               value={trendlineType}
               exclusive
               onChange={(event, newTrendLineType) => {
@@ -285,8 +336,11 @@ const BarChartSettings = ({ updateConfig, config: oldConfig }) => {
         ) : null}
         {showTrendline && trendlineType === 'polynomial' ? (
           <FormControl component="fieldset">
-            <FormLabel component="legend">Order</FormLabel>
+            <FormLabel component="legend" className={classes.legend}>
+              Order
+            </FormLabel>
             <ToggleButtonGroup
+              className={classes.btnGroup}
               value={polynomialOrder.toString()}
               exclusive
               onChange={(event, order) => {
@@ -309,12 +363,20 @@ const BarChartSettings = ({ updateConfig, config: oldConfig }) => {
             </ToggleButtonGroup>
           </FormControl>
         ) : null}
-        <ColorPicker
-          name="color"
-          defaultValue="Сhoose your color"
-          value={color}
-          onChange={(color) => setColor(color)}
-        />
+        {yAxis.map((value, index) => (
+          <ColorPicker
+            key={`color-${index}`}
+            className={classes.colorPicker}
+            name="color"
+            defaultValue={`${value} color`}
+            value={color[index]}
+            onChange={(newColor) => {
+              const newColors = [...color];
+              newColors[index] = newColor;
+              setColor(newColors);
+            }}
+          />
+        ))}
       </TabPanel>
       <TabPanel value={value} index={2}>
         <FormControlLabel
@@ -325,13 +387,17 @@ const BarChartSettings = ({ updateConfig, config: oldConfig }) => {
           <TextField
             id="XAxis"
             label="X-axis label"
+            className={classes.input}
             InputLabelProps={{
               shrink: true,
             }}
             value={labelXAxis}
             onChange={(event) => {
               setLabelXAxis(event.target.value);
+              validateField('labelXAxis', event.target.value);
             }}
+            helperText={errors.labelXAxis ? '20 characters is max' : null}
+            error={errors.labelXAxis}
           />
         ) : null}
         <FormControlLabel
@@ -342,21 +408,27 @@ const BarChartSettings = ({ updateConfig, config: oldConfig }) => {
           <TextField
             id="YAxis"
             label="Y-axis label"
+            className={classes.input}
             InputLabelProps={{
               shrink: true,
             }}
             value={labelYAxis}
             onChange={(event) => {
               setLabelYAxis(event.target.value);
+              validateField('labelYAxis', event.target.value);
             }}
+            helperText={errors.labelYAxis ? '20 characters is max' : null}
+            error={errors.labelYAxis}
           />
         ) : null}
       </TabPanel>
-      <div>
+      <div className={classes.btnWrapper}>
         <Button
+          className={classes.btn}
           onClick={() => {
             onDoneButton();
           }}
+          disabled={isError()}
         >
           Done
         </Button>

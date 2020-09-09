@@ -1,12 +1,39 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { makeStyles } from '@material-ui/core/styles';
+import AppBar from '@material-ui/core/AppBar';
 import Tabs from '@material-ui/core/Tabs';
 
+const useStyles = makeStyles(() => ({
+  tabsHeader: {
+    boxShadow: 'none',
+    backgroundColor: 'inherit',
+    color: '#509ee3',
+    fontWeight: 900,
+    paddingBottom: 0,
+  },
+  tabsContainer: {
+    width: '100%',
+  },
+  selected: {},
+  indicator: {
+    backgroundColor: '#509ee3',
+  },
+}));
+
 const TabsHeader = ({ value, children, onChange }) => {
+  const classes = useStyles();
   return (
-    <Tabs value={value} onChange={onChange}>
-      {children}
-    </Tabs>
+    <AppBar className={classes.tabsHeader} position="static" color="default">
+      <Tabs
+        className={classes.tabsContainer}
+        value={value}
+        onChange={onChange}
+        classes={{ indicator: classes.indicator }}
+      >
+        {children}
+      </Tabs>
+    </AppBar>
   );
 };
 

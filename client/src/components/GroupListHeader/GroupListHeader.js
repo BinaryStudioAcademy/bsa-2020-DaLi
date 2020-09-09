@@ -21,6 +21,7 @@ GroupListHeader.propTypes = {
   openForm: PropTypes.func,
   title: PropTypes.string,
   buttonTitle: PropTypes.string,
+  id: PropTypes.string,
 };
 
 export default GroupListHeader;

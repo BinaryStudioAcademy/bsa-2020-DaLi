@@ -1,55 +1,72 @@
-/* eslint-disable no-console */
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { Grid, Snackbar } from '@material-ui/core';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 import Alert from '@material-ui/lab/Alert';
 
 import * as actions from './actions';
-import { visualizationsAPIService } from '../../services/api/visualizationsAPI.service';
 
 import {
   ViewVisualizationSidebar,
   ViewVisualizationMain,
   ViewVisualizationHeader,
   SaveVisualizationModal,
+  FilterBar,
+  SummarizeBar,
 } from '../../components';
 import InitialTable from '../InitialTableContainer/InitialTableContainer';
 
 import {
-  getVisualization,
   getVisualizationComponent,
   getVisualizationSettings,
   getVisualizationIcon,
+  getSelectVisualizationSidebar,
   checkIsVisualizationNew,
   createInitVisualization,
   createNewVisualization,
   createUpdatedVisualization,
+  checkIsVisualizationTypeChangedDuringCreation,
 } from './helpers';
 import './ViewVisualizationContainer.css';
 
 const ViewVisualizationContainer = (props) => {
   const {
-    id,
-    visualizations,
-    userId,
+    visualizationId,
     currentVisualization,
+    userId,
     setVisualization,
     updateVisualizationConfig,
     updateVisualizationName,
-    location: { data, schema, tableId },
+    location: { prevPath },
     fetchVisualization,
+    createVisualization,
+    history,
+    fetchDataAndSchema,
+    data,
+    schema,
+    updateVisualizationData,
+    tableId,
+    visualizationType,
   } = props;
 
   const [currentView, setCurrentView] = useState('table');
-  const [isSideBarOpen, setIsSideBarOpen] = useState(false);
-  const [isVisualizationExist, setIsVisualizationExist] = useState(false);
+  const [isLeftSideBarOpen, setIsLeftSideBarOpen] = useState(false);
+  const [isRightSideBarOpen, setIsRightSideBarOpen] = useState(false);
+
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isNotificationVisible, setIsNotificationVisible] = useState(false);
   const [notificationMessage, setNotificationMessage] = useState('');
+  const [leftSideBarPage, setLeftSideBarPage] = useState(0);
+  const [rightSideBarPage, setRightSideBarPage] = useState(0);
   const [notificationType, setNotificationType] = useState('success');
+  const [datasetSettings, setDatasetSettings] = useState([]);
+  const [isVisualizationExist] = useState(() => {
+    return !!visualizationId;
+  });
 
   const userNotificationError = (notification) => {
     setIsNotificationVisible(true);
@@ -57,23 +74,25 @@ const ViewVisualizationContainer = (props) => {
     setNotificationType('error');
   };
 
+  const isNewVisualization = checkIsVisualizationNew(visualizationType);
+  const isSameData = checkIsVisualizationTypeChangedDuringCreation(prevPath, tableId);
+
   useEffect(() => {
-    let visualization;
-    const isNewVisualization = checkIsVisualizationNew(id);
-    if (isNewVisualization) {
-      setIsVisualizationExist(false);
-      visualization = createInitVisualization(id, userId, schema);
-      setVisualization(visualization);
-    } else if (visualizations.length) {
-      visualization = getVisualization(visualizations, id);
-      setIsVisualizationExist(true);
-      setVisualization(visualization);
-    } else {
-      fetchVisualization(id);
-      setIsVisualizationExist(true);
+    if (isNewVisualization && tableId && !isSameData) {
+      fetchDataAndSchema(tableId);
     }
-    setVisualization(visualization);
-  }, [id, visualizations, userId, setVisualization, data, schema, fetchVisualization]);
+    if (!isNewVisualization) {
+      fetchVisualization(visualizationId);
+    }
+  }, [visualizationType]);
+
+  useEffect(() => {
+    setDatasetSettings(currentVisualization.datasetSettings);
+    if (isNewVisualization && 'data' in currentVisualization && (!currentVisualization.created || isSameData)) {
+      const visualization = createInitVisualization(visualizationType, userId, schema);
+      setVisualization(visualization);
+    }
+  }, [data, visualizationType]);
 
   const visualizationComponent = getVisualizationComponent(
     currentVisualization.type,
@@ -88,14 +107,41 @@ const ViewVisualizationContainer = (props) => {
     updateVisualizationConfig,
     userNotificationError
   );
-
   const visualizationIcon = getVisualizationIcon(currentVisualization.type);
 
-  const contentViewComponent = currentView === 'table' ? <InitialTable data={data} /> : visualizationComponent;
+  const contentViewComponent =
+    // eslint-disable-next-line no-nested-ternary
+    schema && data ? (
+      currentView === 'table' ? (
+        <InitialTable data={data} config={currentVisualization.config} />
+      ) : (
+        visualizationComponent
+      )
+    ) : null;
 
   const onSwitchContentView = (viewType) => setCurrentView(viewType);
 
-  const onToggleSideBar = () => setIsSideBarOpen(!isSideBarOpen);
+  const onToggleLeftSideBar = (newLeftSideBarPage) => {
+    if (newLeftSideBarPage !== leftSideBarPage && isLeftSideBarOpen) {
+      setLeftSideBarPage(newLeftSideBarPage);
+    } else if (newLeftSideBarPage === leftSideBarPage && isLeftSideBarOpen) {
+      setIsLeftSideBarOpen(false);
+    } else {
+      setIsLeftSideBarOpen(true);
+      setLeftSideBarPage(newLeftSideBarPage);
+    }
+  };
+
+  const onToggleRightSideBar = (newRightSideBarPage) => () => {
+    if (newRightSideBarPage !== rightSideBarPage && isRightSideBarOpen) {
+      setRightSideBarPage(newRightSideBarPage);
+    } else if (newRightSideBarPage === rightSideBarPage && isRightSideBarOpen) {
+      setIsRightSideBarOpen(false);
+    } else {
+      setIsRightSideBarOpen(true);
+      setRightSideBarPage(newRightSideBarPage);
+    }
+  };
 
   const openModal = () => setIsModalOpen(true);
 
@@ -105,18 +151,15 @@ const ViewVisualizationContainer = (props) => {
 
   const hideNotification = () => setIsNotificationVisible(false);
 
-  const createVisualization = ({ name, description }) => {
-    updateVisualizationName({ name, description });
+  const onVisualizationCreate = ({ name, description }) => {
     const newVisualization = createNewVisualization(currentVisualization, name, description, tableId);
-    visualizationsAPIService.createVisualization(newVisualization);
+    createVisualization(newVisualization, history);
     closeModal();
-    setIsVisualizationExist(true);
-    props.history.push('/');
   };
 
-  const updateVisualization = () => {
-    const updatedVisualization = createUpdatedVisualization(currentVisualization);
-    visualizationsAPIService.updateVisualization(id, updatedVisualization);
+  const updateVisualization = (newConfig, newDatasetSettings) => {
+    const updatedVisualization = createUpdatedVisualization(currentVisualization, newConfig, newDatasetSettings);
+    updateVisualizationData(visualizationId, updatedVisualization);
     setNotificationMessage('Visualization has been successfully updated');
     setNotificationType('success');
     displayNotification(true);
@@ -139,7 +182,13 @@ const ViewVisualizationContainer = (props) => {
     closeModal();
   };
 
-  return (
+  const selectVisualizationSidebar = getSelectVisualizationSidebar(tableId, schema);
+
+  return !currentVisualization.created || !schema || !data ? (
+    <div style={{ position: 'relative' }}>
+      <CircularProgress size={40} left={-20} top={10} style={{ marginLeft: '50%' }} />
+    </div>
+  ) : (
     <>
       <ViewVisualizationHeader
         onVisualizationSave={onVisualizationSave}
@@ -147,12 +196,21 @@ const ViewVisualizationContainer = (props) => {
         isVisualizationExist={isVisualizationExist}
         name={currentVisualization.name}
         description={currentVisualization.description}
-        visualizationType={id}
+        onToggleRightSideBar={onToggleRightSideBar}
+        tableId={tableId}
+        visualizationType={visualizationType}
+        updateVisualization={updateVisualization}
+        datasetSettings={datasetSettings}
+        onChipCloseRemoveSidebar={() => {
+          if (rightSideBarPage === 0 && isRightSideBarOpen) {
+            setIsRightSideBarOpen(false);
+          }
+        }}
       />
       <Grid container className="view-visualization-container">
         <SaveVisualizationModal
           closeModal={closeModal}
-          saveVisualization={isVisualizationExist ? editVisualizationName : createVisualization}
+          saveVisualization={isVisualizationExist ? editVisualizationName : onVisualizationCreate}
           isVisible={isModalOpen}
           title={isVisualizationExist ? 'Edit visualization name' : 'Save visualization'}
           name={currentVisualization.name}
@@ -168,14 +226,33 @@ const ViewVisualizationContainer = (props) => {
             {notificationMessage}
           </Alert>
         </Snackbar>
-        {isSideBarOpen && <ViewVisualizationSidebar component={visualizationSettings} />}
+        {isLeftSideBarOpen && (
+          <ViewVisualizationSidebar
+            components={[visualizationSettings, selectVisualizationSidebar]}
+            sideBarPage={leftSideBarPage}
+          />
+        )}
         <ViewVisualizationMain
           contentViewComponent={contentViewComponent}
           currentContentView={currentView}
           visualizationIcon={visualizationIcon}
-          onToggleSideBar={onToggleSideBar}
+          onToggleSideBar={onToggleLeftSideBar}
           onSwitchContentView={onSwitchContentView}
+          isVisualizationExist={isVisualizationExist}
         />
+        {isRightSideBarOpen && (
+          <ViewVisualizationSidebar
+            components={[
+              <FilterBar
+                currentVisualization={currentVisualization}
+                closeSidebar={() => setIsRightSideBarOpen(false)}
+                updateVisualization={updateVisualization}
+              />,
+              <SummarizeBar currentVisualization={currentVisualization} updateVisualization={updateVisualization} />,
+            ]}
+            sideBarPage={rightSideBarPage}
+          />
+        )}
       </Grid>
     </>
   );
@@ -184,8 +261,9 @@ const ViewVisualizationContainer = (props) => {
 const mapStateToProps = (state) => {
   return {
     currentVisualization: state.currentVisualization,
-    visualizations: state.analytics.visualizations,
     userId: state.currentUser.user.id,
+    data: state.currentVisualization.data,
+    schema: state.currentVisualization.schema,
   };
 };
 
@@ -194,7 +272,7 @@ const mapDispatchToProps = {
 };
 
 ViewVisualizationContainer.propTypes = {
-  id: PropTypes.string,
+  visualizationId: PropTypes.string,
   visualizations: PropTypes.array,
   userId: PropTypes.string,
   currentVisualization: PropTypes.object,
@@ -202,12 +280,17 @@ ViewVisualizationContainer.propTypes = {
   fetchVisualization: PropTypes.func,
   updateVisualizationConfig: PropTypes.func,
   updateVisualizationName: PropTypes.func,
+  fetchDataAndSchema: PropTypes.func,
+  data: PropTypes.array,
+  schema: PropTypes.array,
   history: PropTypes.object,
   location: PropTypes.shape({
-    data: PropTypes.array,
-    schema: PropTypes.array,
-    tableId: PropTypes.string,
+    prevPath: PropTypes.string,
   }),
+  createVisualization: PropTypes.func,
+  updateVisualizationData: PropTypes.func,
+  tableId: PropTypes.string,
+  visualizationType: PropTypes.string,
 };
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(ViewVisualizationContainer));

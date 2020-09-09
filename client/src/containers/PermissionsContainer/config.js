@@ -1,4 +1,4 @@
-export const DATABASE_ACCESS_TYPES = [
+export const DEFAULT_ACCESS_TYPES = [
   { type: 'granted', title: 'Grant access' },
   { type: 'limited', title: 'Limit access' },
   { type: 'denied', title: 'Revoke access' },

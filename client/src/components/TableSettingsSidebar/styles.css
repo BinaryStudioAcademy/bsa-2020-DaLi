@@ -1,60 +1,89 @@
-/* .table-settings-sidebar-container {
-    width: 100%;
+.table-settings-sidebar-container {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.table-settings-sidebar-content {
+  flex: 1;
 }
 
 .property-item {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-    border: 1px solid #f0f0f0;
-    padding: 10px 20px;
-    margin-bottom: 10px;
-    border-radius: 5px;
-    box-shadow: 0 3px 3px #e6e6e6;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  border: 1px solid #f0f0f0;
+  padding: 10px 20px;
+  margin-bottom: 10px;
+  border-radius: 5px;
+  box-shadow: 0 3px 3px #e6e6e6;
 }
 
 .property-item h4 {
-    margin: 0;
+  margin: 0;
 }
 
 .property-item_buttons-container svg {
-    margin-left: 7px;
-    cursor: pointer;
+  margin-left: 7px;
+  cursor: pointer;
 }
 
 .table-settings-sidebar-footer {
-    text-align: center;
-    padding-top: 20px;
-    position: relative;
-    margin-top: 50px;
+  text-align: center;
+  padding-top: 20px;
+  position: relative;
+  margin-top: 50px;
 }
 
 .table-settings-sidebar-footer:before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    height: 2px;
-    background-color: #f4f4f4;
-    right: 0;
-    display: block;
-    width: 100%;
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 2px;
+  background-color: #f4f4f4;
+  right: 0;
+  display: block;
+  width: 100%;
 }
 
 .table-settings-sidebar-footer button {
-    color: white !important;
-    text-transform: none !important;
-    background: #3ca1de !important;
-    border-radius: 100px !important;
-    width: 50%;
-    padding: 10px 0;
+  color: white !important;
+  text-transform: none !important;
+  background: #3ca1de !important;
+  border-radius: 100px !important;
+  width: 50%;
+  padding: 10px 0;
 }
 
-.columns-restore-icon{
-    font-size: 15px !important;
+.columns-restore-icon {
+  font-size: 15px !important;
 }
 
-.columns-restore-icon:hover{
-    cursor: pointer;
-} */
+.columns-restore-icon:hover {
+  cursor: pointer;
+}
+
+.edit-menu-title {
+  color: #2e353b;
+  font-size: 16px;
+  font-weight: bold;
+  margin-top: 15px;
+  margin-bottom: 5px;
+}
+.edit-menu-back-button {
+  color: #2e353b;
+  font-style: normal;
+  font-size: 20px;
+  font-weight: 900;
+  cursor: pointer;
+  margin-bottom: 20px;
+  text-transform: uppercase;
+  display: flex;
+  align-items: center;
+}
+
+.edit-menu-back-button span {
+  font-size: 22px;
+}

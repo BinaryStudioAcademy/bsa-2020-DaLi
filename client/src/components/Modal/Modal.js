@@ -3,7 +3,6 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
 import './styles.css';
-import { Button } from '@material-ui/core';
 
 const modalContext = React.createContext();
 
@@ -79,17 +78,7 @@ Modal.Footer = function ModalFooter(props) {
 
 Modal.Footer.CloseBtn = function CloseBtn(props) {
   const { onModalClose } = React.useContext(modalContext);
-  return (
-    <Button
-      {...props}
-      className="close-btn"
-      title="close modal"
-      variant="contained"
-      size="large"
-      color="primary"
-      onClick={onModalClose}
-    />
-  );
+  return <button type="button" {...props} className="close-btn" title="close modal" onClick={onModalClose} />;
 };
 
 Modal.propTypes = {

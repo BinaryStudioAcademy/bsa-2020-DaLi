@@ -13,8 +13,7 @@ import './styles.css';
 import chooseIcon from '../../helpers/chooseIcon';
 
 // eslint-disable-next-line
-const AddVisualizationToDashboardModal = ({closeModal, addVisualization, isVisible, visualizations}) => {
-
+const AddVisualizationToDashboardModal = ({ closeModal, addVisualization, isVisible, visualizations }) => {
   const [visibleVisualizations, setVisibleVisualizations] = useState(visualizations);
 
   useEffect(() => {
@@ -22,7 +21,8 @@ const AddVisualizationToDashboardModal = ({closeModal, addVisualization, isVisib
   }, [visualizations]);
 
   const addNewVisualization = (id, tableId) => () => {
-    dbTableAPIService.getTable(tableId).then((data) => {
+    const { config, datasetSettings } = visualizations.find((vis) => vis.id === id);
+    dbTableAPIService.getTableData(tableId, { settings: datasetSettings, config }).then((data) => {
       addVisualization(id, data);
       closeModal();
     });
@@ -49,10 +49,10 @@ const AddVisualizationToDashboardModal = ({closeModal, addVisualization, isVisib
 
       <Formik initialValues={{ search: '' }} onSubmit={(values) => searchVisualizations(values)}>
         {/* eslint-disable-next-line */}
-        {(props) => <SearchVisualizationForm {...props}/>}
+        {(props) => <SearchVisualizationForm {...props} />}
       </Formik>
       {visibleVisualizations && (
-        <div>
+        <div className="visualizationToDashboardModalFooter">
           {visibleVisualizations.map((visualization) => {
             return (
               <button
@@ -72,9 +72,9 @@ const AddVisualizationToDashboardModal = ({closeModal, addVisualization, isVisib
 };
 
 const SearchVisualizationForm = ({ handleSubmit }) => (
-  <Form onSubmit={handleSubmit}>
-    <DialogContent>
-      <div>
+  <Form className="visualizationToDashboardModalForm" onSubmit={handleSubmit}>
+    <DialogContent className="MyFieldContainer">
+      <div className="search-field">
         <Field name="search" as="input" placeholder="Search..." />
         <SearchIcon style={{ color: '#c6cfd4', cursor: 'pointer' }} onClick={handleSubmit} />
       </div>

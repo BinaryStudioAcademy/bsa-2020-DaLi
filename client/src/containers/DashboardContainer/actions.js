@@ -1,5 +1,5 @@
 import { GET_DASHBOARD, UPDATE_DASHBOARD } from './actionsTypes';
-import { FETCH_VISUALIZATIONS } from '../AnalyticsTabsContainer/actionsTypes';
+import { FETCH_VISUALIZATIONS } from '../AnalyticsContainer/actionsTypes';
 
 export const getDashboard = (id) => {
   return {

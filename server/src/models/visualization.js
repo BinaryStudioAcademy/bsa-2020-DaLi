@@ -16,6 +16,10 @@ export default (sequelize, DataTypes) => {
         onDelete: 'cascade',
         hooks: true,
       });
+      Visualization.belongsTo(models.Collection, {
+        foreignKey: 'collections_id',
+        sourceKey: models.Collection.id,
+      });
     }
   }
   Visualization.init(
@@ -41,6 +45,10 @@ export default (sequelize, DataTypes) => {
       config: {
         type: DataTypes.JSON,
         allowNull: false,
+      },
+      datasetSettings: {
+        type: DataTypes.ARRAY(DataTypes.JSON),
+        defaultValue: [],
       },
       tableId: {
         type: DataTypes.UUID,

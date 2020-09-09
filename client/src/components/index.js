@@ -13,16 +13,14 @@ import LineChartSettings from './LineChartSettings';
 import MapSettingsSidebar from './MapSettingsSidebar/MapSettingsSidebar';
 import EnhancedTable from './EnhancedTable/EnhancedTable';
 import InitialTable from './InitialTable/InitialTable';
-import SelectVisualization from './SelectVisualization/SelectVisualization';
 import ViewVisualizationSidebar from './ViewVisualizationSidebar';
 import ViewVisualizationMain from './ViewVisualizationMain';
 import ViewVisualizationHeader from './ViewVisualizationHeader/ViewVisualizationHeader';
 import TableSettingsSidebar from './TableSettingsSidebar/TableSettingsSidebar';
 import BarChartSettings from './BarChartSettings';
 import PeopleList from './PeopleList';
-import PeopleListHeader from './PeopleListHeader';
+import PeopleListModal from './PeopleListModal/PeopleListModal';
 import GroupList from './GroupList';
-import AddUserModal from './AddUserModal';
 import AddVisualizationToDashboardModal from './AddVisualizationToDashboardModal/AddVisualizationToDashboardModal';
 import AnalyticsTabs from './AnalyticsTabs/AnalyticsTabs';
 import DashboardHeader from './DashboardHeader/DashboardHeader';
@@ -35,6 +33,11 @@ import DeleteVisualizationWarning from './DeleteVisualizationWarning/DeleteVisua
 import PermissionsHeader from './PermissionsHeader/PermissionsHeader';
 import PermissionsTable from './PermissionsTable/PermissionsTable';
 import PermissionsModal from './PermissionsModal/PermissionsModal';
+import SelectVisualizationSidebar from './SelectVisualizationSidebar/SelectVisualizationSidebar';
+import CollectionList from './CollectionList/CollectionList';
+import CollectionModal from './CollectionModal/CollectionModal';
+import FilterBar from './FilterBar/FilterBar';
+import SummarizeBar from './SummarizeBar/SummarizeBar';
 
 export {
   BarChart,
@@ -47,7 +50,6 @@ export {
   SignUp,
   EnhancedTable,
   InitialTable,
-  SelectVisualization,
   ViewVisualizationSidebar,
   ViewVisualizationMain,
   ViewVisualizationHeader,
@@ -59,9 +61,8 @@ export {
   LineChartSettings,
   BarChartSettings,
   PeopleList,
-  PeopleListHeader,
+  PeopleListModal,
   GroupList,
-  AddUserModal,
   AddVisualizationToDashboardModal,
   AnalyticsTabs,
   DashboardHeader,
@@ -74,4 +75,9 @@ export {
   PermissionsHeader,
   PermissionsTable,
   PermissionsModal,
+  SelectVisualizationSidebar,
+  CollectionList,
+  CollectionModal,
+  SummarizeBar,
+  FilterBar,
 };

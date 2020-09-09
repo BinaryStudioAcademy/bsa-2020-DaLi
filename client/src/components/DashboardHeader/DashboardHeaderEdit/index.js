@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 import { Grid, Typography, Button, TextField } from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
 
+import useStyles from './styles';
+
 const DashboardHeaderEdit = (props) => {
   const {
     name,
@@ -13,21 +15,36 @@ const DashboardHeaderEdit = (props) => {
     onNameChange,
     onDescriptionChange,
   } = props;
+  const classes = useStyles();
   return (
-    <Grid container>
-      <Grid item container>
-        <Typography>You are editing a dashboard</Typography>
-        <Grid>
-          <Button onClick={onCancelChanges}>Cancel</Button>
-          <Button onClick={onSaveChanges}>Save</Button>
+    <Grid className={classes.dashboardEditingHeader} container>
+      <Grid className={classes.dashboardEditingHeaderTop} item container>
+        <Typography className={classes.dashboardEditingHeaderTitle}>You are editing a dashboard</Typography>
+        <Grid className={classes.dashboardEditingHeaderButtons}>
+          <Button
+            className={`${classes.dashboardEditingHeaderButton} ${classes.dashboardEditingHeaderButtonCancel}`}
+            onClick={onCancelChanges}
+          >
+            Cancel
+          </Button>
+          <Button
+            className={`${classes.dashboardEditingHeaderButton} ${classes.dashboardEditingHeaderButtonSave}`}
+            onClick={onSaveChanges}
+          >
+            Save
+          </Button>
         </Grid>
       </Grid>
-      <Grid item container>
-        <Grid item container>
+      <Grid className={classes.dashboardEditingHeaderBottom} item container>
+        <Grid className={classes.dashboardEditingHeaderInputs} item container>
           <TextField
             inputProps={{
               style: { fontSize: 15 },
             }}
+            FormHelperTextProps={{
+              className: classes.dashboardEditingHeaderHelperText,
+            }}
+            className={classes.dashboardEditingHeaderInput}
             helperText={!name.length && 'Dashboard name is required'}
             error={!name.length}
             id="outlined-error-helper-text"
@@ -41,6 +58,7 @@ const DashboardHeaderEdit = (props) => {
             inputProps={{
               style: { fontSize: 15 },
             }}
+            className={classes.dashboardEditingHeaderInput}
             defaultValue={description}
             variant="outlined"
             size="small"
@@ -48,7 +66,7 @@ const DashboardHeaderEdit = (props) => {
             onChange={onDescriptionChange}
           />
         </Grid>
-        <AddIcon fontSize="large" onClick={onVisualizationAdd} />
+        <AddIcon fontSize="large" onClick={onVisualizationAdd} className={classes.dashboardAddVisualisationBtn} />
       </Grid>
     </Grid>
   );

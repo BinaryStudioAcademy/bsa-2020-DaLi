@@ -10,9 +10,9 @@ const DashboardHeaderFullScreen = (props) => {
   const { name, description, onSetDefaultViewMode } = props;
   const classes = useStyles();
   return (
-    <Grid>
-      <Grid item container>
-        <Typography>{name}</Typography>
+    <Grid className={classes.dashboardFullScreenHeader}>
+      <Grid className={classes.dashboardFullScreenTitle} item container>
+        <Typography className={classes.dashboardFullScreenName}>{name}</Typography>
         {description?.length ? (
           <Tooltip
             classes={{
@@ -20,11 +20,11 @@ const DashboardHeaderFullScreen = (props) => {
             }}
             title={description}
           >
-            <InfoIcon />
+            <InfoIcon className={classes.dashboardFullScreenDescriptionIcon} />
           </Tooltip>
         ) : null}
       </Grid>
-      <FullscreenExitIcon onClick={onSetDefaultViewMode} />
+      <FullscreenExitIcon className={classes.dashboardFullScreenButton} onClick={onSetDefaultViewMode} />
     </Grid>
   );
 };

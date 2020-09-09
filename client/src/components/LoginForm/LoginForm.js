@@ -33,7 +33,7 @@ const LoginForm = ({ setIsModalVisible, login }) => {
             name="email"
             as={TextField}
             required
-            id="outlined-required"
+            id="login-email"
             variant="outlined"
             placeholder="youlooknicetoday@email.com"
             style={getStyles(errors, touched, 'email')}
@@ -47,13 +47,14 @@ const LoginForm = ({ setIsModalVisible, login }) => {
               variant="caption"
               color="primary"
               className="forgot-pswd"
+              id="login-forgot-pswd"
               onClick={() => setIsModalVisible(true)}
             >
               Forgot password?
             </Typography>
           </div>
           <Field
-            id="outlined-password-input"
+            id="login-password"
             type="password"
             name="password"
             as={TextField}
@@ -71,10 +72,18 @@ const LoginForm = ({ setIsModalVisible, login }) => {
               as={Checkbox}
               inputProps={{ 'aria-label': 'primary checkbox' }}
               name="rememberMe"
+              id="login-rememberMe"
               className="login-checkbox"
             />
           </div>
-          <Button type="submit" size="large" variant="contained" color="primary" disabled={!(isValid && dirty)}>
+          <Button
+            type="submit"
+            size="large"
+            variant="contained"
+            color="primary"
+            id="login-signIn"
+            disabled={!(isValid && dirty)}
+          >
             Sign in
           </Button>
         </Form>

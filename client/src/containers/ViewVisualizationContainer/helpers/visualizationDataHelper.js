@@ -9,21 +9,30 @@ import BarChart from '../../BarChartContainer/BarChartContainer';
 import LineChart from '../../LineChartContainer/LineChartContainer';
 import TableVisualization from '../../TableVisualizationContainer/TableVisualizationContainer';
 import MapVisualization from '../../MapVisualizationContainer/MapVisualizationContainer';
-
-import { BarChartSettings, LineChartSettings, TableSettingsSidebar, MapSettingsSidebar } from '../../../components';
+import {
+  BarChartSettings,
+  LineChartSettings,
+  TableSettingsSidebar,
+  SelectVisualizationSidebar,
+  MapSettingsSidebar,
+} from '../../../components';
 
 export const getVisualizationComponent = (visualizationType, config, updateConfig, data) => {
-  switch (visualizationType) {
-    case 'BAR_CHART':
-      return <BarChart config={config} data={data} />;
-    case 'LINE_CHART':
-      return <LineChart config={config} data={data} />;
-    case 'TABLE':
-      return <TableVisualization config={config} updateConfig={updateConfig} data={data} />;
-    case 'MAP':
-      return <MapVisualization config={config} data={data} />;
-    default:
-      return null;
+  if (data?.length) {
+    switch (visualizationType) {
+      case 'BAR_CHART':
+        return <BarChart config={config} data={data} />;
+      case 'LINE_CHART':
+        return <LineChart config={config} data={data} />;
+      case 'TABLE':
+        return <TableVisualization config={config} updateConfig={updateConfig} data={data} />;
+      case 'MAP':
+        return <MapVisualization config={config} updateConfig={updateConfig} data={data} />;
+      default:
+        return null;
+    }
+  } else {
+    return 'There is no data to show';
   }
 };
 
@@ -61,4 +70,8 @@ export const getVisualizationSettings = (visualizationType, config, updateConfig
     default:
       return null;
   }
+};
+
+export const getSelectVisualizationSidebar = (tableId, schema) => {
+  return <SelectVisualizationSidebar tableId={tableId} schema={schema} />;
 };

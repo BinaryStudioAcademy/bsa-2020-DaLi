@@ -1,1 +1,1 @@
-export default ['/auth/login', '/auth/register'];
+export default ['/auth/login', '/auth/register', '/auth/isFirstLogIn'];

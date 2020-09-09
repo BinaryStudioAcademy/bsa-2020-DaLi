@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
@@ -52,14 +53,9 @@ const DashboardContainer = (props) => {
   };
 
   useEffect(() => {
-    if (!visualizations.length) {
-      fetchVisualizations();
-    }
-  }, [visualizations, fetchVisualizations]);
-
-  useEffect(() => {
     getDashboard(id);
-  }, [id, getDashboard]);
+    fetchVisualizations();
+  }, [id, getDashboard, fetchVisualizations]);
 
   useEffect(() => {
     const dashboardConfig = getDashboardConfig(currentDashboard);
@@ -179,7 +175,7 @@ const DashboardContainer = (props) => {
     setViewDashboardMode('default');
   };
 
-  return isLoading ? (
+  return isLoading || !currentDashboard || !visualizations.length ? (
     <div style={{ position: 'relative' }}>
       <CircularProgress size={40} left={-20} top={10} style={{ marginLeft: '50%' }} />
     </div>

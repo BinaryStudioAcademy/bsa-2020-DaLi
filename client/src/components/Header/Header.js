@@ -1,5 +1,5 @@
 /* eslint-disable jsx-a11y/control-has-associated-label */
-/* eslint-disable no-unused-vars */
+/* eslint-disable no-nested-ternary */
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
@@ -10,17 +10,15 @@ import AppsIcon from '@material-ui/icons/Apps';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import { IconButton } from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
-import EventIcon from '@material-ui/icons/Event';
 import ControlPointIcon from '@material-ui/icons/ControlPoint';
 import { logout } from '../../containers/LoginPageContainer/actions';
 import AddDashboardModal from '../AddDashboardModal/AddDashboardModal';
-import { addDashboard } from '../../containers/AnalyticsTabsContainer/actions';
+import { addDashboard } from '../../containers/AnalyticsContainer/actions';
 import StyledNavLink from '../../theme/StyledNavLink';
 
 import './styles.css';
 
-const Header = ({ logout, addDashboard }) => {
+const Header = ({ logout, addDashboard, isAdmin }) => {
   const history = useHistory();
   const location = useLocation();
   const [anchorEl, setAnchorEl] = useState(null);
@@ -47,10 +45,6 @@ const Header = ({ logout, addDashboard }) => {
   const onSignOut = () => {
     logout();
     handleClose();
-  };
-
-  const handleDataSourcesClick = () => {
-    history.push('/data-sources');
   };
 
   const onAccountSettings = () => {
@@ -104,6 +98,7 @@ const Header = ({ logout, addDashboard }) => {
                   pathname: '/admin/people',
                 }}
                 key="people"
+                id="header-people"
               >
                 People
               </NavLink>
@@ -116,6 +111,7 @@ const Header = ({ logout, addDashboard }) => {
                   pathname: '/admin/databases',
                 }}
                 key="databases"
+                id="header-databases"
               >
                 Databases
               </NavLink>
@@ -128,6 +124,7 @@ const Header = ({ logout, addDashboard }) => {
                   pathname: '/admin/permissions',
                 }}
                 key="permissions"
+                id="header-permissions"
               >
                 Permissions
               </NavLink>
@@ -148,7 +145,14 @@ const Header = ({ logout, addDashboard }) => {
         ) : (
           <>
             <div className="header-logo-container">
-              <div role="button" tabIndex="0" className="header-logo" onClick={onHomePage} aria-hidden="true" />
+              <div
+                role="button"
+                tabIndex="0"
+                className="header-logo"
+                onClick={onHomePage}
+                aria-hidden="true"
+                id="header-homepage"
+              />
               <span className="header-logo-text">DaLi</span>
             </div>
             <div className="header-controls">
@@ -162,6 +166,7 @@ const Header = ({ logout, addDashboard }) => {
                   }}
                   key="permissions"
                   aria-hidden="true"
+                  id="header-browseData"
                 >
                   <AppsIcon fontSize="small" />
                   Browse Data
@@ -169,7 +174,7 @@ const Header = ({ logout, addDashboard }) => {
               </StyledNavLink>
             </div>
             <div className="header-icons">
-              <IconButton size="small" aria-label="dashboard" onClick={handleAddMenuClick}>
+              <IconButton size="small" aria-label="dashboard" onClick={handleAddMenuClick} id="header-addMenu">
                 <ControlPointIcon fontSize="large" />
               </IconButton>
               <Menu
@@ -179,22 +184,40 @@ const Header = ({ logout, addDashboard }) => {
                 open={Boolean(addMenuAnchorEl)}
                 onClose={handleAddMenuClose}
               >
-                <MenuItem onClick={showAddDashboardModal}>Add dashboard</MenuItem>
+                <MenuItem onClick={showAddDashboardModal} id="header-addMenu-addDashboard">
+                  Add dashboard
+                </MenuItem>
               </Menu>
-              <IconButton size="small" aria-label="settings" style={{ marginLeft: '20px' }} onClick={handleClick}>
+              <IconButton
+                size="small"
+                id="header-gear"
+                aria-label="settings"
+                style={{ marginLeft: '20px' }}
+                onClick={handleClick}
+              >
                 <SettingsIcon fontSize="large" />
               </IconButton>
             </div>
           </>
         )}
         <Menu id="simple-menu" anchorEl={anchorEl} keepMounted open={Boolean(anchorEl)} onClose={handleClose}>
-          <MenuItem onClick={onAccountSettings}>Account Setting</MenuItem>
-          {isAdminPage ? (
-            <MenuItem onClick={handleClickOnExitAdmin}>Exit Admin</MenuItem>
-          ) : (
-            <MenuItem onClick={handleClickOnAdmin}>Admin</MenuItem>
-          )}
-          <MenuItem onClick={onSignOut}>Sign out</MenuItem>
+          <MenuItem onClick={onAccountSettings} id="header-gear-accSett">
+            Account Setting
+          </MenuItem>
+          {isAdmin ? (
+            isAdminPage ? (
+              <MenuItem onClick={handleClickOnExitAdmin} id="header-gear-exitAdmin">
+                Exit Admin
+              </MenuItem>
+            ) : (
+              <MenuItem onClick={handleClickOnAdmin} id="header-gear-admin">
+                Admin
+              </MenuItem>
+            )
+          ) : null}
+          <MenuItem onClick={onSignOut} id="header-gear-signOut">
+            Sign out
+          </MenuItem>
         </Menu>
         <AddDashboardModal
           isVisible={addDashboardModalVisible}
@@ -207,9 +230,14 @@ const Header = ({ logout, addDashboard }) => {
 };
 
 Header.propTypes = {
+  isAdmin: PropTypes.bool,
   logout: PropTypes.func,
   addDashboard: PropTypes.func,
 };
 
+const mapStateToProps = ({ currentUser }) => ({
+  isAdmin: currentUser.isAdmin,
+});
+
 const mapDispatchToProps = { logout, addDashboard };
-export default connect(null, mapDispatchToProps)(Header);
+export default connect(mapStateToProps, mapDispatchToProps)(Header);

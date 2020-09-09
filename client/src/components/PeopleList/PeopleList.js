@@ -7,13 +7,13 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import Box from '@material-ui/core/Box';
-import AddUserModal from '../AddUserModal';
-import DeactivateUserModal from './DeactivateUserModal';
-import PeopleListHeader from '../PeopleListHeader';
+import Grid from '@material-ui/core/Grid';
+import { Typography, Button } from '@material-ui/core';
 import { useStyles } from './styles';
-import { mockPeople } from './mockPeople';
-import PasswordModal from '../PasswordModal/PasswordModal';
 import PeopleTable from './PeopleTable';
+import PeopleListModal from '../PeopleListModal/PeopleListModal';
+
+import './styles.css';
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -38,14 +38,9 @@ TabPanel.propTypes = {
 };
 
 const PeopleList = ({
-  people = mockPeople,
-  addUser,
-  updateUser,
+  people,
   toggleUserStatus,
   isLoading,
-  temporaryPassword,
-  clearTemporaryPassword,
-  resetPassword,
   membership,
   addUserToGroup,
   deleteUserFromGroup,
@@ -53,20 +48,17 @@ const PeopleList = ({
   status,
   resetNotification,
   currentUserId,
+  openModal,
+  activeTabIndex,
+  setActiveTabIndex,
 }) => {
   const classes = useStyles();
-  const [addUserModalVisible, setAddUserModalVisible] = useState(false);
-  const [deactivateUserModalVisible, setDeactivateUserModalVisible] = useState(false);
-  const [user, setUser] = useState(null);
   const [isInactiveUsers, setIsInactiveUsers] = useState(false);
   const [inactiveUsers, setInactiveUsers] = useState([]);
   const [activeUsers, setActiveUsers] = useState([]);
-  const [isResetPasswordVisible, setIsResetPasswordVisible] = useState(false);
-
-  const [value, setValue] = useState(0);
 
   const handleChange = (event, newValue) => {
-    setValue(newValue);
+    setActiveTabIndex(newValue);
   };
 
   const hideNotification = () => {
@@ -83,143 +75,111 @@ const PeopleList = ({
     }
   }, [people]);
 
-  const hideAddUserModal = () => {
-    setAddUserModalVisible(false);
-  };
-
-  const hideDeactivateUserModal = () => {
-    setDeactivateUserModalVisible(false);
-  };
-
-  const showAddUserModal = (person) => {
-    setUser(person);
-    setAddUserModalVisible(true);
-  };
-
-  const showDeactivateUserModal = (person) => {
-    setUser(person);
-    setDeactivateUserModalVisible(true);
-  };
-
-  const showResetPasswordModal = (person) => {
-    setUser(person);
-    setIsResetPasswordVisible(true);
-  };
-
-  const hideResetPasswordModal = () => {
-    setIsResetPasswordVisible(false);
-  };
-
   return (
-    <div className={classes.root}>
-      <PeopleListHeader addUser={addUser} />
-      {!isInactiveUsers ? (
-        <>
-          <PeopleTable
-            active
-            people={people}
-            membership={membership}
-            showAddUserModal={showAddUserModal}
-            showDeactivateUserModal={showDeactivateUserModal}
-            showResetPasswordModal={showResetPasswordModal}
-            addUserToGroup={addUserToGroup}
-            deleteUserFromGroup={deleteUserFromGroup}
-            currentUserId={currentUserId}
-          />
-        </>
-      ) : (
-        <div className={classes.panel}>
-          <div className={classes.appbar}>
-            <Tabs value={value} onChange={handleChange} aria-label="simple tabs example" className={classes.tabs}>
-              <Tab label="Active" className={classes.tab} />
-              <Tab label="Deactivated" className={classes.tab} />
-            </Tabs>
-          </div>
-          <TabPanel value={value} index={0}>
-            <PeopleTable
-              active
-              people={activeUsers}
-              membership={membership}
-              showAddUserModal={showAddUserModal}
-              showDeactivateUserModal={showDeactivateUserModal}
-              showResetPasswordModal={showResetPasswordModal}
-              addUserToGroup={addUserToGroup}
-              deleteUserFromGroup={deleteUserFromGroup}
-              currentUserId={currentUserId}
-            />
-          </TabPanel>
-          <TabPanel value={value} index={1}>
-            <PeopleTable
-              active={false}
-              people={inactiveUsers}
-              membership={membership}
-              showAddUserModal={showAddUserModal}
-              showDeactivateUserModal={showDeactivateUserModal}
-              showResetPasswordModal={showResetPasswordModal}
-              addUserToGroup={addUserToGroup}
-              deleteUserFromGroup={deleteUserFromGroup}
-              toggleUserStatus={toggleUserStatus}
-              currentUserId={currentUserId}
-            />
-          </TabPanel>
-        </div>
-      )}
-
-      <Snackbar
-        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
-        open={!!message}
-        autoHideDuration={6000}
-        transitionDuration={0}
-        onClose={hideNotification}
-      >
-        <Alert elevation={6} variant="filled" severity={status} onClose={hideNotification}>
-          {message}
-        </Alert>
-      </Snackbar>
-      <AddUserModal
-        isVisible={addUserModalVisible}
-        closeModal={hideAddUserModal}
-        submitHandler={user ? updateUser : addUser}
-        user={user}
-      />
-      <PasswordModal
-        password={temporaryPassword}
-        clearPassword={clearTemporaryPassword}
-        resetPassword={resetPassword}
-        isReset={isResetPasswordVisible}
-        hideModal={hideResetPasswordModal}
-        user={user}
-      />
-      <DeactivateUserModal
-        isVisible={deactivateUserModalVisible}
-        closeModal={hideDeactivateUserModal}
-        confirmHandler={toggleUserStatus}
-        user={user}
-      />
+    <>
       {isLoading && (
         <Backdrop className={classes.backdrop} open>
           <CircularProgress color="inherit" />
         </Backdrop>
       )}
-    </div>
+      <div className={classes.root}>
+        {!isInactiveUsers ? (
+          <>
+            <Grid className="people-list-header-container">
+              <Typography variant="h1" color="textPrimary">
+                People
+              </Typography>
+              <Button size="large" variant="contained" color="primary" onClick={() => openModal({ type: 'Add user' })}>
+                Add someone
+              </Button>
+            </Grid>
+            <PeopleTable
+              active
+              people={people}
+              membership={membership}
+              addUserToGroup={addUserToGroup}
+              deleteUserFromGroup={deleteUserFromGroup}
+              currentUserId={currentUserId}
+              openModal={openModal}
+            />
+          </>
+        ) : (
+          <div className={classes.panel}>
+            <div className={classes.appbar}>
+              <Tabs
+                value={activeTabIndex}
+                onChange={handleChange}
+                aria-label="simple tabs example"
+                className={classes.tabs}
+              >
+                <Tab label="Active" className={classes.tab} />
+                <Tab label="Deactivated" className={classes.tab} />
+              </Tabs>
+              <Button
+                className={classes.addPersonButton}
+                onClick={() => openModal({ type: 'Add user' })}
+                variant="contained"
+              >
+                Add someone
+              </Button>
+            </div>
+            <TabPanel value={activeTabIndex} index={0}>
+              <PeopleTable
+                active
+                people={activeUsers}
+                membership={membership}
+                addUserToGroup={addUserToGroup}
+                deleteUserFromGroup={deleteUserFromGroup}
+                currentUserId={currentUserId}
+                openModal={openModal}
+              />
+            </TabPanel>
+            <TabPanel value={activeTabIndex} index={1}>
+              <PeopleTable
+                active={false}
+                people={inactiveUsers}
+                membership={membership}
+                addUserToGroup={addUserToGroup}
+                deleteUserFromGroup={deleteUserFromGroup}
+                toggleUserStatus={toggleUserStatus}
+                currentUserId={currentUserId}
+                openModal={openModal}
+              />
+            </TabPanel>
+          </div>
+        )}
+
+        <Snackbar
+          anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+          open={!!message}
+          autoHideDuration={6000}
+          transitionDuration={0}
+          onClose={hideNotification}
+        >
+          <Alert elevation={6} variant="filled" severity={status} onClick={hideNotification}>
+            {message}
+          </Alert>
+        </Snackbar>
+        <PeopleListModal />
+      </div>
+    </>
   );
 };
+
 PeopleList.propTypes = {
   people: PropTypes.array,
-  addUser: PropTypes.func,
-  updateUser: PropTypes.func,
   toggleUserStatus: PropTypes.func,
-  resetNotification: PropTypes.func,
   isLoading: PropTypes.bool,
   message: PropTypes.string,
   status: PropTypes.string,
-  temporaryPassword: PropTypes.string,
-  clearTemporaryPassword: PropTypes.func,
-  resetPassword: PropTypes.func,
   membership: PropTypes.array,
   addUserToGroup: PropTypes.func,
   deleteUserFromGroup: PropTypes.func,
+  resetNotification: PropTypes.func,
+  openModal: PropTypes.func,
   currentUserId: PropTypes.string,
+  activeTabIndex: PropTypes.number,
+  setActiveTabIndex: PropTypes.func,
 };
 
 export default PeopleList;

@@ -18,6 +18,7 @@ const PeoplePageMenu = () => {
               pathname: '/admin/people',
             }}
             key="people"
+            id="admin-sideBar-people"
           >
             People
           </NavLink>
@@ -30,6 +31,7 @@ const PeoplePageMenu = () => {
               pathname: '/admin/people/groups',
             }}
             key="groups"
+            id="admin-sideBar-groups"
           >
             Groups
           </NavLink>

@@ -78,7 +78,7 @@ function LineChart({ settings, data, chart: chartSize }) {
 
     // chart.selectAll('.tick')
     // .call(wrap);
-    
+
 
     // function wrap(text) {
     //   text.each(function() {
@@ -220,7 +220,7 @@ function LineChart({ settings, data, chart: chartSize }) {
     YAxis.key.map((YKey, index) => {
       const line = d3
         .line()
-        .curve(d3[lineType[index]]) 
+        .curve(d3[lineType[index]])
         .x((d) => xScale(d[XAxis.key]) + xScale.bandwidth() / 2)
         .y((d) => calcYScale(YAxis.key[yMaxIndex])(d[YKey]));
       chart
@@ -228,9 +228,9 @@ function LineChart({ settings, data, chart: chartSize }) {
         .datum(data.sort((a, b) => a[XAxis.key] - b[XAxis.key]))
         .attr('class', 'line')
         .attr('d', line)
-        .style('stroke', color[index]); 
+        .style('stroke', color[index]);
       chart
-        .selectAll(`.dot-${YAxis.key[index]}`) 
+        .selectAll(`.dot-${YAxis.key[index]}`)
         .data(data.map(
            (d) => {
             return { key: YKey, value: d[YKey], index: index, [XAxis.key]: d[XAxis.key] };
@@ -242,10 +242,10 @@ function LineChart({ settings, data, chart: chartSize }) {
         .attr('cx', (d) => xScale(d[XAxis.key]) + xScale.bandwidth() / 2)
         .attr('cy', (d) => calcYScale(YAxis.key[yMaxIndex])(d.value))
         .attr('r', 5)
-        .style('stroke', color[index]) 
+        .style('stroke', color[index])
         .on('mouseover', (d, index, elem) => tips.show(d, elem[index]))
         .on('mouseout', (d, index, elem) => tips.hide(d, elem[index]));
-        
+
       if (showDataPointsValues) {
         chart
           .selectAll(`.dot__value-${d.key}`)

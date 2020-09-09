@@ -1,0 +1,26 @@
+.add-database-form-wrapper {
+  width: 95%;
+  max-width: 450px;
+}
+
+.add-database-form-wrapper .MuiTypography-subtitle2 {
+  margin: 20px 0 10px;
+}
+
+.add-database-form-wrapper .MuiInputBase-root::before,
+.add-database-form-wrapper .MuiInputBase-root::after {
+  display: none;
+}
+
+.add-database-select select {
+  height: 50px;
+  box-sizing: border-box;
+}
+
+.add-database-select.Mui-focused select {
+  border-radius: 4px;
+}
+
+.add-database-btn-container {
+  text-align: center;
+}

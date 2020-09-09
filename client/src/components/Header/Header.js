@@ -1,47 +1,26 @@
+/* eslint-disable jsx-a11y/control-has-associated-label */
 /* eslint-disable no-nested-ternary */
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { useHistory, NavLink, useLocation } from 'react-router-dom';
-import AddIcon from '@material-ui/icons/Add';
 import SettingsIcon from '@material-ui/icons/Settings';
 import Typography from '@material-ui/core/Typography';
-import DashboardIcon from '@material-ui/icons/Dashboard';
 import AppsIcon from '@material-ui/icons/Apps';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
-import { makeStyles } from '@material-ui/core/styles';
+import { IconButton } from '@material-ui/core';
+import ControlPointIcon from '@material-ui/icons/ControlPoint';
 import { logout } from '../../containers/LoginPageContainer/actions';
 import AddDashboardModal from '../AddDashboardModal/AddDashboardModal';
 import { addDashboard } from '../../containers/AnalyticsContainer/actions';
+import StyledNavLink from '../../theme/StyledNavLink';
 
 import './styles.css';
-
-const useStyles = makeStyles({
-  typography: {
-    fontSize: '15px',
-    marginRight: '25px',
-  },
-  link: {
-    color: 'white',
-    padding: '0 20px',
-    minHeight: '26px',
-    fontWeight: '300',
-    textDecoration: 'none',
-    opacity: '0.7',
-  },
-  settingBtn: {
-    marginLeft: 'auto',
-  },
-  tabs: {
-    minHeight: '35px',
-  },
-});
 
 const Header = ({ logout, addDashboard, isAdmin }) => {
   const history = useHistory();
   const location = useLocation();
-  const classes = useStyles();
   const [anchorEl, setAnchorEl] = useState(null);
   const [addMenuAnchorEl, setAddMenuAnchorEl] = useState(null);
   const [addDashboardModalVisible, setAddDashboardModalVisible] = useState(false);
@@ -55,6 +34,10 @@ const Header = ({ logout, addDashboard, isAdmin }) => {
     setAddMenuAnchorEl(event.currentTarget);
   };
 
+  const handleAddMenuClose = () => {
+    setAddMenuAnchorEl(null);
+  };
+
   const handleClose = () => {
     setAnchorEl(null);
   };
@@ -62,10 +45,6 @@ const Header = ({ logout, addDashboard, isAdmin }) => {
   const onSignOut = () => {
     logout();
     handleClose();
-  };
-
-  const handleDataSourcesClick = () => {
-    history.push('/data-sources');
   };
 
   const onAccountSettings = () => {
@@ -104,117 +83,148 @@ const Header = ({ logout, addDashboard, isAdmin }) => {
 
   return (
     <header className={isAdminPage ? 'admin-header' : ''}>
-      {isAdminPage ? (
-        <>
-          <SettingsIcon className="admin-header-icon" fontSize="large" />
-          <Typography variant="h6" className={classes.typography}>
-            DaLi Admin
-          </Typography>
-          <NavLink
-            activeStyle={{
-              opacity: '1',
-            }}
-            className={classes.link}
-            to={{
-              pathname: '/admin/people',
-            }}
-            key="people"
-            id="header-people"
-          >
-            People
-          </NavLink>
-          <NavLink
-            activeStyle={{
-              opacity: '1',
-            }}
-            className={classes.link}
-            to={{
-              pathname: '/admin/databases',
-            }}
-            key="databases"
-            id="header-databases"
-          >
-            Databases
-          </NavLink>
-          <NavLink
-            activeStyle={{
-              opacity: '1',
-            }}
-            className={classes.link}
-            to={{
-              pathname: '/admin/permissions',
-            }}
-            key="permissions"
-            id="header-permissions"
-          >
-            Permissions
-          </NavLink>
-          <SettingsIcon className={`${classes.settingBtn} header-icons`} fontSize="large" onClick={handleClick} />
-        </>
-      ) : (
-        <>
-          <div
-            role="button"
-            tabIndex="0"
-            className="header-logo"
-            onClick={onHomePage}
-            aria-hidden="true"
-            id="header-homepage"
-          >
-            Home page
-          </div>
-          <div className="header-controls">
-            <div
-              className="data-sources-btn"
-              onClick={handleDataSourcesClick}
-              onKeyDown={handleDataSourcesClick}
-              aria-hidden="true"
-              id="header-browseData"
-            >
-              <AppsIcon className="header-icons" fontSize="large" />
-              Browse Data
+      <div className="wrapper header-container">
+        {isAdminPage ? (
+          <>
+            <SettingsIcon className="admin-header-icon" fontSize="large" />
+            <Typography variant="h3">DaLi Admin</Typography>
+            <div className="admin-header-links">
+              <NavLink
+                activeStyle={{
+                  opacity: '1',
+                }}
+                className="link"
+                to={{
+                  pathname: '/admin/people',
+                }}
+                key="people"
+                id="header-people"
+              >
+                People
+              </NavLink>
+              <NavLink
+                activeStyle={{
+                  opacity: '1',
+                }}
+                className="link"
+                to={{
+                  pathname: '/admin/databases',
+                }}
+                key="databases"
+                id="header-databases"
+              >
+                Databases
+              </NavLink>
+              <NavLink
+                activeStyle={{
+                  opacity: '1',
+                }}
+                className="link"
+                to={{
+                  pathname: '/admin/permissions',
+                }}
+                key="permissions"
+                id="header-permissions"
+              >
+                Permissions
+              </NavLink>
             </div>
-            <AddIcon className="header-icons" fontSize="large" onClick={handleAddMenuClick} id="header-addMenu" />
-            <Menu
-              id="add-menu"
-              anchorEl={addMenuAnchorEl}
-              keepMounted
-              open={Boolean(addMenuAnchorEl)}
-              onClose={() => setAddMenuAnchorEl(null)}
+            <IconButton
+              className="admin-settings header-icons"
+              size="small"
+              aria-label="settings"
+              style={{
+                marginLeft: '20px',
+                color: '#ffffff',
+              }}
+              onClick={handleClick}
             >
-              <MenuItem onClick={showAddDashboardModal} id="header-addMenu-addDashboard">
-                <DashboardIcon />
-                Add Dashboard
+              <SettingsIcon fontSize="large" />
+            </IconButton>
+          </>
+        ) : (
+          <>
+            <div className="header-logo-container">
+              <div
+                role="button"
+                tabIndex="0"
+                className="header-logo"
+                onClick={onHomePage}
+                aria-hidden="true"
+                id="header-homepage"
+              />
+              <span className="header-logo-text">DaLi</span>
+            </div>
+            <div className="header-controls">
+              <StyledNavLink style={{ height: 'max-content' }}>
+                <NavLink
+                  activeStyle={{
+                    opacity: '1',
+                  }}
+                  to={{
+                    pathname: '/data-sources',
+                  }}
+                  key="permissions"
+                  aria-hidden="true"
+                  id="header-browseData"
+                >
+                  <AppsIcon fontSize="small" />
+                  Browse Data
+                </NavLink>
+              </StyledNavLink>
+            </div>
+            <div className="header-icons">
+              <IconButton size="small" aria-label="dashboard" onClick={handleAddMenuClick} id="header-addMenu">
+                <ControlPointIcon fontSize="large" />
+              </IconButton>
+              <Menu
+                id="simple-menu"
+                anchorEl={addMenuAnchorEl}
+                keepMounted
+                open={Boolean(addMenuAnchorEl)}
+                onClose={handleAddMenuClose}
+              >
+                <MenuItem onClick={showAddDashboardModal} id="header-addMenu-addDashboard">
+                  Add dashboard
+                </MenuItem>
+              </Menu>
+              <IconButton
+                size="small"
+                id="header-gear"
+                aria-label="settings"
+                style={{ marginLeft: '20px' }}
+                onClick={handleClick}
+              >
+                <SettingsIcon fontSize="large" />
+              </IconButton>
+            </div>
+          </>
+        )}
+        <Menu id="simple-menu" anchorEl={anchorEl} keepMounted open={Boolean(anchorEl)} onClose={handleClose}>
+          <MenuItem onClick={onAccountSettings} id="header-gear-accSett">
+            Account Setting
+          </MenuItem>
+          {isAdmin ? (
+            isAdminPage ? (
+              <MenuItem onClick={handleClickOnExitAdmin} id="header-gear-exitAdmin">
+                Exit Admin
               </MenuItem>
-            </Menu>
-            <SettingsIcon className="header-icons" fontSize="large" onClick={handleClick} id="header-gear" />
-          </div>
-        </>
-      )}
-      <Menu id="header-gear-menu" anchorEl={anchorEl} keepMounted open={Boolean(anchorEl)} onClose={handleClose}>
-        <MenuItem onClick={onAccountSettings} id="header-gear-accSett">
-          Account Setting
-        </MenuItem>
-        {isAdmin ? (
-          isAdminPage ? (
-            <MenuItem onClick={handleClickOnExitAdmin} id="header-gear-exitAdmin">
-              Exit Admin
-            </MenuItem>
-          ) : (
-            <MenuItem onClick={handleClickOnAdmin} id="header-gear-admin">
-              Admin
-            </MenuItem>
-          )
-        ) : null}
-        <MenuItem onClick={onSignOut} id="header-gear-signOut">
-          Sign out
-        </MenuItem>
-      </Menu>
-      <AddDashboardModal
-        isVisible={addDashboardModalVisible}
-        closeModal={hideAddDashboardModal}
-        addDashboard={addDashboard}
-      />
+            ) : (
+              <MenuItem onClick={handleClickOnAdmin} id="header-gear-admin">
+                Admin
+              </MenuItem>
+            )
+          ) : null}
+          <MenuItem onClick={onSignOut} id="header-gear-signOut">
+            Sign out
+          </MenuItem>
+        </Menu>
+        <AddDashboardModal
+          isVisible={addDashboardModalVisible}
+          closeModal={hideAddDashboardModal}
+          addDashboard={addDashboard}
+        />
+      </div>
     </header>
   );
 };

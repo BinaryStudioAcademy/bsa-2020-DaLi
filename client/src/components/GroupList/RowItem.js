@@ -51,7 +51,7 @@ const RowItem = ({ item, deleteGroup, updateUserGroup, isTheGroup, deleteUser, i
             {!isTheGroup && (
               <>
                 <Avatar className={classes.avatar}>{item.name[0]}</Avatar>
-                <NavLink to={`/admin/people/groups/${item.id}`} id={`admin-groups-${item.name}`}>
+                <NavLink to={`/admin/people/groups/${item.id}`} className={classes.groupLink}>
                   {item.name}
                 </NavLink>
               </>

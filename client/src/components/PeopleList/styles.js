@@ -46,16 +46,6 @@ export const useStyles = makeStyles((theme) => ({
     textTransform: 'none',
     color: '#000',
   },
-  addPersonButton: {
-    color: 'white',
-    textTransform: 'none',
-    background: '#3ca1de',
-    padding: '6px 16px',
-    '&:hover': {
-      background: '#3ca1de',
-    },
-    borderRadius: '5px',
-  },
   select: {
     width: '100%',
     fontSize: 14,
@@ -63,10 +53,10 @@ export const useStyles = makeStyles((theme) => ({
       borderBottom: 'none',
     },
     '&:after': {
-      borderBottom: '3px solid #7073a9',
+      borderBottom: '3px solid #1CD1A1',
     },
     '&:hover:not(.Mui-disabled):not(.Mui-focused):not(.Mui-error):before': {
-      borderBottom: '3px solid grey',
+      borderBottom: '3px solid #1CD1A1',
     },
     '&.Mui-disabled:before': {
       border: 'none',

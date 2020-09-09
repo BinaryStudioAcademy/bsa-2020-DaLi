@@ -3,7 +3,9 @@ import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import { getDashboard, updateDashboard, fetchVisualizations } from './actions';
+import Snackbar from '@material-ui/core/Snackbar';
+import Alert from '@material-ui/lab/Alert';
+import { getDashboard, updateDashboard, fetchVisualizations, resetNotification } from './actions';
 
 import { DashboardHeader, DashboardLayout, AddVisualizationToDashboardModal } from '../../components';
 import {
@@ -23,7 +25,18 @@ import {
 } from './helper';
 
 const DashboardContainer = (props) => {
-  const { id, currentDashboard, isLoading, getDashboard, visualizations, updateDashboard, fetchVisualizations } = props;
+  const {
+    id,
+    currentDashboard,
+    isLoading,
+    getDashboard,
+    visualizations,
+    updateDashboard,
+    fetchVisualizations,
+    message,
+    status,
+    resetNotification,
+  } = props;
 
   const [oldName, setOldName] = useState('');
   const [name, setName] = useState(null);
@@ -175,6 +188,13 @@ const DashboardContainer = (props) => {
     setViewDashboardMode('default');
   };
 
+  const hideNotification = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    resetNotification();
+  };
+
   return isLoading || !currentDashboard || !visualizations.length ? (
     <div style={{ position: 'relative' }}>
       <CircularProgress size={40} left={-20} top={10} style={{ marginLeft: '50%' }} />
@@ -211,6 +231,17 @@ const DashboardContainer = (props) => {
         getDashboardItems={getDashboardItems}
         onVisualizationDelete={onVisualizationDelete}
       />
+      <Snackbar
+        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+        open={!!message}
+        autoHideDuration={2000}
+        transitionDuration={0}
+        onClose={hideNotification}
+      >
+        <Alert elevation={6} variant="filled" severity={status} onClose={hideNotification}>
+          {message}
+        </Alert>
+      </Snackbar>
     </>
   );
 };
@@ -223,14 +254,19 @@ DashboardContainer.propTypes = {
   getDashboard: PropTypes.func,
   updateDashboard: PropTypes.func,
   fetchVisualizations: PropTypes.func,
+  resetNotification: PropTypes.func,
+  message: PropTypes.string,
+  status: PropTypes.string,
 };
 
 const mapStateToProps = ({ currentDashboard, analytics }) => ({
   currentDashboard: currentDashboard.dashboard,
   isLoading: currentDashboard.isLoading,
   visualizations: analytics.visualizations,
+  message: currentDashboard.message,
+  status: currentDashboard.status,
 });
 
-const mapDispatchToProps = { getDashboard, updateDashboard, fetchVisualizations };
+const mapDispatchToProps = { getDashboard, updateDashboard, fetchVisualizations, resetNotification };
 
 export default connect(mapStateToProps, mapDispatchToProps)(DashboardContainer);

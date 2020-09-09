@@ -196,11 +196,10 @@ function LineChart({ settings, data, chart: chartSize }) {
         .style('stroke', color[index]); // TODO: add index
       chart
         .selectAll(`.dot-${YAxis.key[index]}`) //YKey replace
-        .data(
-          data //(d) => d
-          // YAxis.key.map((key, index) => {
-          //   return { key: key, value: d[key], index: index, [XAxis.key]: d[XAxis.key] };
-          // })
+        .data(data.map(
+           (d) => YAxis.key.map((key, index) => {
+            return { key: key, value: d[key], index: index, [XAxis.key]: d[XAxis.key] };
+          }))
         )
         .enter()
         .append('circle')
@@ -208,15 +207,16 @@ function LineChart({ settings, data, chart: chartSize }) {
         .attr('cx', (d) => xScale(d[XAxis.key]) + xScale.bandwidth() / 2)
         .attr('cy', (d) => {
           console.log(d);
-          return calcYScale(YAxis.key[yMaxIndex])(d[YKey]);
+          return calcYScale(YAxis.key[yMaxIndex])(d.key);
         })
         .attr('r', 5)
         .style('stroke', color[index]) // TODO: add index
         .on('mouseover', tips.show)
         .on('mouseout', tips.hide);
+        
       if (showDataPointsValues) {
         chart
-          .selectAll(`.dot__value-${YKey}`)
+          .selectAll(`.dot__value-${d.key}`)
           .data(data)
           .enter()
           .append('text')

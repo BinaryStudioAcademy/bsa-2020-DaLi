@@ -105,7 +105,8 @@ const ViewVisualizationContainer = (props) => {
     currentVisualization.type,
     currentVisualization.config,
     updateVisualizationConfig,
-    userNotificationError
+    userNotificationError,
+    schema
   );
   const visualizationIcon = getVisualizationIcon(currentVisualization.type);
 

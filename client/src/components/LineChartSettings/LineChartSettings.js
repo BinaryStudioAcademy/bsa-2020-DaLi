@@ -15,6 +15,7 @@ import ColorPicker from 'material-ui-color-picker';
 import ToggleButton from '@material-ui/lab/ToggleButton';
 import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup';
 import CloseIcon from '@material-ui/icons/Close';
+import Tooltip from '@material-ui/core/Tooltip';
 import { useStyles, switchStyles } from './styles';
 
 const PrettySwitch = (props) => {
@@ -64,7 +65,7 @@ function a11yProps(index) {
   };
 }
 
-function LineChartSettings({ updateConfig, config: oldConfig }) {
+function LineChartSettings({ updateConfig, config: oldConfig, schema }) {
   const classes = useStyles();
 
   const { XAxis, YAxis } = oldConfig.axisData;
@@ -104,6 +105,12 @@ function LineChartSettings({ updateConfig, config: oldConfig }) {
   };
 
   const isError = () => Object.values(errors).includes(true);
+
+  const isTrendlineDisabledCheck = () => {
+    const isXAxisTypeNumber = schema.find((elem) => elem.column_name === xAxis).data_type === 'number';
+    const isYAxisTypeNumber = schema.find((elem) => elem.column_name === xAxis).data_type === 'number';
+    return !(isXAxisTypeNumber && isYAxisTypeNumber);
+  };
 
   useEffect(() => {
     updateConfig(config);
@@ -287,17 +294,25 @@ function LineChartSettings({ updateConfig, config: oldConfig }) {
           label="Show values on data points"
         />
         {yAxis.length < 2 ? (
-          <FormControlLabel
-            control={(() => (
-              <PrettySwitch
-                checked={showTrendline}
-                onChange={(event) => {
-                  setShowTrendline(event.target.checked);
-                }}
-              />
-            ))()}
-            label="Show trendline"
-          />
+          <Tooltip
+            title={isTrendlineDisabledCheck() ? 'Both axis should be of type number' : ''}
+            placement="left"
+            className={classes.description}
+            interactive={false}
+          >
+            <FormControlLabel
+              control={(() => (
+                <PrettySwitch
+                  checked={showTrendline}
+                  onChange={(event) => {
+                    setShowTrendline(event.target.checked);
+                  }}
+                  disabled={isTrendlineDisabledCheck()}
+                />
+              ))()}
+              label="Show trendline"
+            />
+          </Tooltip>
         ) : null}
         {showTrendline && yAxis.length < 2 ? (
           <FormControl component="fieldset">
@@ -492,6 +507,7 @@ function LineChartSettings({ updateConfig, config: oldConfig }) {
 LineChartSettings.propTypes = {
   config: PropTypes.object,
   updateConfig: PropTypes.func,
+  schema: PropTypes.array,
 };
 
 export default LineChartSettings;

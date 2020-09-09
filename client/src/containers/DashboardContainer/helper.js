@@ -18,12 +18,12 @@ export const getLayoutItem = (layout, i) => {
   return layoutItem;
 };
 
-export const getVisualizationComponent = (visualizationType, config, data) => {
+export const getVisualizationComponent = (visualizationType, config, data, schema) => {
   switch (visualizationType) {
     case 'BAR_CHART':
-      return <BarChart config={config} data={data} />;
+      return <BarChart config={config} data={data} schema={schema} />;
     case 'LINE_CHART':
-      return <LineChart config={config} data={data} />;
+      return <LineChart config={config} data={data} schema={schema} />;
     case 'TABLE':
       return <TableVisualization config={config} updateConfig={() => {}} data={data} />;
     case 'MAP':

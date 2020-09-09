@@ -23,7 +23,8 @@ function BarChart(props) {
     chart.selectAll('*').remove();
 
     const drawLine = (YKey, index) => {
-    const { data } = props;
+    const data = props.data;
+    console.log('data',data)
     data.forEach(item => item[YKey] = Number(item[YKey]));
     const yDataRange = {
       min: calcMinYDataValue(
@@ -159,7 +160,8 @@ function BarChart(props) {
     }
     YAxis.key.forEach((YKey,index) => drawLine(YKey, index));
 
-    if (trendline.display && data.length && YAxis.key.length === 1) {
+    if (props.data.length) {
+    if (trendline.display  && YAxis.key.length === 1) {
       const { polynomial, trendlineType } = trendline;
       const xDataRange = {
         min: data[0][XAxis.key],
@@ -181,6 +183,7 @@ function BarChart(props) {
       const trendlineCreator = new TrendlineCreator(trendlineType, chart, xScaleForLines, yScale);
       trendlineCreator.render(domain, trendlineData, config);
     }
+  }
 
     
     // delete axis values
@@ -249,10 +252,10 @@ function BarChart(props) {
   };
 
   useEffect(() => {
+    console.log('effect')
     setHeight(svgRef.current.parentElement.offsetHeight);
     setWidth(svgRef.current.parentElement.offsetWidth);
     draw();
-
     window.addEventListener('resize', onResize);
     return ()=>window.removeEventListener('resize', onResize);
   }, [JSON.stringify(props), props.chart, props.data,width, height]);

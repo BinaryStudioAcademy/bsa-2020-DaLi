@@ -51,12 +51,12 @@ export const getVisualizationIcon = (visualizationType) => {
   }
 };
 
-export const getVisualizationSettings = (visualizationType, config, updateConfig, userNotificationError) => {
+export const getVisualizationSettings = (visualizationType, config, updateConfig, userNotificationError, schema) => {
   switch (visualizationType) {
     case 'BAR_CHART':
-      return <BarChartSettings config={config} updateConfig={updateConfig} />;
+      return <BarChartSettings config={config} updateConfig={updateConfig} schema={schema} />;
     case 'LINE_CHART':
-      return <LineChartSettings config={config} updateConfig={updateConfig} />;
+      return <LineChartSettings config={config} updateConfig={updateConfig} schema={schema} />;
     case 'TABLE':
       return (
         <TableSettingsSidebar

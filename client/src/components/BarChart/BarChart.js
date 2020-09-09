@@ -297,7 +297,7 @@ function BarChart(props) {
         .append('text')
         .attr('class', 'label')
         .attr('x', -(height / 2))
-        .attr('y', margin.left - 10)
+        .attr('y', margin.left - 40)
         .attr('transform', 'rotate(-90)')
         .attr('text-anchor', 'middle')
         .text(YAxis.label);
@@ -308,7 +308,7 @@ function BarChart(props) {
         .append('text')
         .attr('class', 'label')
         .attr('x', width / 2)
-        .attr('y', height - margin.bottom + 30)
+        .attr('y', height - margin.bottom + 60)
         .attr('text-anchor', 'middle')
         .text(XAxis.label);
     }

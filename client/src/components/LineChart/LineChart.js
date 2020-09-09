@@ -68,8 +68,43 @@ function LineChart({ settings, data, chart: chartSize }) {
       g.attr('transform', `translate(0,${height - margin.bottom})`).call(d3.axisBottom(xScale).tickSize(0));
     const yAxis = (g) => g.attr('transform', `translate(${margin.left},0)`).call(d3.axisLeft(yScale).tickSize(0));
 
-    chart.append('g').attr('class', 'x-axis axis').call(xAxis);
+    chart.append('g').attr('class', 'x-axis axis').call(xAxis).selectAll("text")
+    .attr("y", 0)
+    .attr("x", -9)
+    .attr("dy", ".35em")
+    .attr("transform", "rotate(-45)")
+    .style("text-anchor", "end");
     chart.append('g').attr('class', 'y-axis axis').call(yAxis);
+
+    // chart.selectAll('.tick')
+    // .call(wrap);
+    
+
+    // function wrap(text) {
+    //   text.each(function() {
+    //     const text = d3.select(this);
+    //     const words = text.text().split(/\s+/).reverse();
+    //     let word;
+    //     let line = [];
+    //     let lineNumber = 0;
+    //     const lineHeight = 1.1; // ems
+    //     const y = text.attr("y");
+    //     const dy = 10;//parseFloat(text.attr("dy")),
+    //     let tspan = text.text(null).append("tspan").attr("x", 0).attr("y", y).attr("dy", dy + "em");
+    //     while (word = words.pop()) {
+    //       line.push(word);
+    //       tspan.text(line.join(" "));
+    //       console.log(tspan.node().innerHTML.includes(' '));
+    //       if (tspan.node().innerHTML.includes(' ')) {
+    //         line.pop();
+    //         tspan.text(line.join(" "));
+    //         line = [word];
+    //         console.log(line);
+    //         tspan = text.append("tspan").attr("x", 0).attr("y", y).attr("dy", ++lineNumber * lineHeight + dy + "em").text(word);
+    //       }
+    //     }
+    //   });
+    // }
   };
 
   const showLegend = (chart) => {
@@ -111,12 +146,12 @@ function LineChart({ settings, data, chart: chartSize }) {
       .attr('class', 'd3-tip')
       .offset([-10, 0])
       .html(
-        (d) => {console.log(d); return`
+        (d) => `
   <div><span>${XAxis.label}:</span> <span style='color:white'>${d[XAxis.key]}</span></div>
-  <div><span>${YKey}:</span> <span style='color:white'>${d[YKey]}</span></div>
-`}
+  <div><span>${d.key}:</span> <span style='color:white'>${d.value}</span></div>
+`
       );
-
+      chart.call(tips).attr('height', '100%').attr('width', '100%');
     return tips;
   };
 
@@ -151,7 +186,7 @@ function LineChart({ settings, data, chart: chartSize }) {
         .append('text')
         .attr('class', 'label')
         .attr('x', -(height / 2))
-        .attr('y', margin.left - 10)
+        .attr('y', margin.left - 40)
         .attr('transform', 'rotate(-90)')
         .attr('text-anchor', 'middle')
         .text(YAxis.label);
@@ -162,7 +197,7 @@ function LineChart({ settings, data, chart: chartSize }) {
         .append('text')
         .attr('class', 'label')
         .attr('x', width / 2)
-        .attr('y', height - margin.bottom + 30)
+        .attr('y', height - margin.bottom + 60)
         .attr('text-anchor', 'middle')
         .text(XAxis.label);
     }
@@ -185,34 +220,31 @@ function LineChart({ settings, data, chart: chartSize }) {
     YAxis.key.map((YKey, index) => {
       const line = d3
         .line()
-        .curve(d3[lineType[index]]) // TODO: Add index
+        .curve(d3[lineType[index]]) 
         .x((d) => xScale(d[XAxis.key]) + xScale.bandwidth() / 2)
-        .y((d) => calcYScale(YAxis.key[yMaxIndex]));
+        .y((d) => calcYScale(YAxis.key[yMaxIndex])(d[YKey]));
       chart
         .append('path')
         .datum(data.sort((a, b) => a[XAxis.key] - b[XAxis.key]))
         .attr('class', 'line')
         .attr('d', line)
-        .style('stroke', color[index]); // TODO: add index
+        .style('stroke', color[index]); 
       chart
-        .selectAll(`.dot-${YAxis.key[index]}`) //YKey replace
+        .selectAll(`.dot-${YAxis.key[index]}`) 
         .data(data.map(
-           (d) => YAxis.key.map((key, index) => {
-            return { key: key, value: d[key], index: index, [XAxis.key]: d[XAxis.key] };
-          }))
+           (d) => {
+            return { key: YKey, value: d[YKey], index: index, [XAxis.key]: d[XAxis.key] };
+          })
         )
         .enter()
         .append('circle')
         .attr('class', 'dot')
         .attr('cx', (d) => xScale(d[XAxis.key]) + xScale.bandwidth() / 2)
-        .attr('cy', (d) => {
-          console.log(d);
-          return calcYScale(YAxis.key[yMaxIndex])(d.key);
-        })
+        .attr('cy', (d) => calcYScale(YAxis.key[yMaxIndex])(d.value))
         .attr('r', 5)
-        .style('stroke', color[index]) // TODO: add index
-        .on('mouseover', tips.show)
-        .on('mouseout', tips.hide);
+        .style('stroke', color[index]) 
+        .on('mouseover', (d, index, elem) => tips.show(d, elem[index]))
+        .on('mouseout', (d, index, elem) => tips.hide(d, elem[index]));
         
       if (showDataPointsValues) {
         chart
@@ -230,7 +262,6 @@ function LineChart({ settings, data, chart: chartSize }) {
   };
 
   const draw = () => {
-    // setConfig(settings);
     const chart = initChart(svgRef.current);
     chart.selectAll('*').remove();
 
@@ -247,12 +278,6 @@ function LineChart({ settings, data, chart: chartSize }) {
 
     drawLineChart(chart, data, xScale, tips, yMaxIndex);
 
-    // const xAxis = (g) => {
-    //   return g.attr('transform', `translate(0,${height - margin.bottom})`).call(d3.axisBottom(xScale).tickSize(0));
-    // };
-    // const yAxis = (g) => g.attr('transform', `translate(${margin.left},0)`).call(d3.axisLeft(yScale).tickSize(0));
-    // chart.append('g').attr('class', 'x-axis axis').call(xAxis);
-    // chart.append('g').attr('class', 'y-axis axis').call(yAxis);
     const yScale = calcYDataRange(YAxis.key[yMaxIndex]);
 
     if (yScale.min < 0) {
@@ -285,60 +310,13 @@ function LineChart({ settings, data, chart: chartSize }) {
     }
 
     // delete axis values
-    chart.selectAll('.axis').selectAll('text').remove();
+    // chart.selectAll('.axis').selectAll('text').remove();
 
     displayAxesLabels(chart);
 
     if (YAxis.key.length > 1) {
       showLegend(chart);
     }
-    // };
-
-    // YAxis.key.forEach((YKey, index) => drawLine(YKey, index));
-
-    // if (trendline.display && data.length && YAxis.key.length === 1) {
-    //   const xDataRange = {
-    //     min: data[0][XAxis.key],
-    //     max: data[data.length - 1][XAxis.key],
-    //   };
-    //   const xScaleForTrendline = d3
-    //     .scaleLinear()
-    //     .domain([xDataRange.min, xDataRange.max])
-    //     .range([margin.left, width - margin.right]);
-    //   const { polynomial, trendlineType } = trendline;
-
-    //   const trendlineData = data.map((item) => [item[XAxis.key], item[YAxis.key[0]]]);
-    //   const barUnitWidth = (xDataRange.max - xDataRange.min) / data.length;
-    //   const domain = [xDataRange.min, xDataRange.max - barUnitWidth];
-    //   const config = {
-    //     xOffset: xScale.bandwidth() / 2,
-    //     order: polynomial.order,
-    //   };
-
-    //   const trendlineCreator = new TrendlineCreator(trendlineType, chart, xScaleForTrendline, yScale);
-    //   trendlineCreator.render(domain, trendlineData, config);
-    // }
-
-    // if (YAxis.displayLabel) {
-    //   chart
-    //     .append('text')
-    //     .attr('class', 'label')
-    //     .attr('x', -height / 2)
-    //     .attr('y', margin.left - 10)
-    //     .attr('transform', 'rotate(-90)')
-    //     .attr('text-anchor', 'middle')
-    //     .text(YAxis.label);
-    // }
-
-    // if (XAxis.displayLabel) {
-    //   chart
-    //     .append('text')
-    //     .attr('class', 'label')
-    //     .attr('x', width / 2)
-    //     .attr('y', height - margin.bottom + 30)
-    //     .attr('text-anchor', 'middle')
-    //     .text(XAxis.label);
-    // }
   };
 
   const onResize = () => {

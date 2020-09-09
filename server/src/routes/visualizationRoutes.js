@@ -2,6 +2,7 @@ import { Router } from 'express';
 import asyncHandler from 'express-async-handler';
 import createError from 'http-errors';
 import * as VisualizationService from '../services/visualizationService';
+import { userAccessForVisualizationMiddleware } from '../middlewares/userAccessMiddleware';
 
 const router = Router();
 
@@ -46,6 +47,7 @@ router.post(
 
 router.patch(
   '/:id',
+  userAccessForVisualizationMiddleware,
   asyncHandler(async (req, res, next) => {
     let result = null;
     if (req.query.collection) {
@@ -69,6 +71,7 @@ router.patch(
 
 router.delete(
   '/:id',
+  userAccessForVisualizationMiddleware,
   asyncHandler(async (req, res, next) => {
     const result = await VisualizationService.deleteVisualization({
       id: req.params.id,

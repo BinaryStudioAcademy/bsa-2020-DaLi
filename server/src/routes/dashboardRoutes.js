@@ -2,6 +2,7 @@ import { Router } from 'express';
 import asyncHandler from 'express-async-handler';
 import createError from 'http-errors';
 import * as DashboardService from '../services/dashboardService';
+import { userAccessForDashboardMiddleware } from '../middlewares/userAccessMiddleware';
 
 const router = Router();
 
@@ -46,8 +47,10 @@ router.post(
 
 router.patch(
   '/:id',
+  userAccessForDashboardMiddleware,
   asyncHandler(async (req, res, next) => {
     let result = null;
+    console.log(req.params.id, req.body);
     if (req.query.collection) {
       result = await DashboardService.updateDashboard(req.params.id, {
         collections_id: req.query.collection,
@@ -68,6 +71,7 @@ router.patch(
 
 router.delete(
   '/:id',
+  userAccessForDashboardMiddleware,
   asyncHandler(async (req, res, next) => {
     let result = null;
     if (req.query.dashboardVisualizationsId) {
@@ -94,6 +98,7 @@ router.delete(
 
 router.post(
   '/:id',
+  userAccessForDashboardMiddleware,
   asyncHandler(async (req, res, next) => {
     const data = {
       visualizations_id: req.body.visualizationId,

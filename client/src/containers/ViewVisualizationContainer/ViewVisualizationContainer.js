@@ -197,7 +197,6 @@ const ViewVisualizationContainer = (props) => {
         name={currentVisualization.name}
         description={currentVisualization.description}
         onToggleRightSideBar={onToggleRightSideBar}
-        tableId={tableId}
         visualizationType={visualizationType}
         updateVisualization={updateVisualization}
         datasetSettings={datasetSettings}

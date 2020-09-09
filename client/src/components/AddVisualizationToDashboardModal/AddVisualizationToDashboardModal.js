@@ -13,8 +13,7 @@ import './styles.css';
 import chooseIcon from '../../helpers/chooseIcon';
 
 // eslint-disable-next-line
-const AddVisualizationToDashboardModal = ({closeModal, addVisualization, isVisible, visualizations}) => {
-
+const AddVisualizationToDashboardModal = ({ closeModal, addVisualization, isVisible, visualizations }) => {
   const [visibleVisualizations, setVisibleVisualizations] = useState(visualizations);
 
   useEffect(() => {
@@ -22,7 +21,8 @@ const AddVisualizationToDashboardModal = ({closeModal, addVisualization, isVisib
   }, [visualizations]);
 
   const addNewVisualization = (id, tableId) => () => {
-    dbTableAPIService.getTable(tableId).then((data) => {
+    const { config, datasetSettings } = visualizations.find((vis) => vis.id === id);
+    dbTableAPIService.getTableData(tableId, { settings: datasetSettings, config }).then((data) => {
       addVisualization(id, data);
       closeModal();
     });
@@ -49,7 +49,7 @@ const AddVisualizationToDashboardModal = ({closeModal, addVisualization, isVisib
 
       <Formik initialValues={{ search: '' }} onSubmit={(values) => searchVisualizations(values)}>
         {/* eslint-disable-next-line */}
-        {(props) => <SearchVisualizationForm {...props}/>}
+        {(props) => <SearchVisualizationForm {...props} />}
       </Formik>
       {visibleVisualizations && (
         <div className="visualizationToDashboardModalFooter">

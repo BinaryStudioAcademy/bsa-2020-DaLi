@@ -1,6 +1,7 @@
 function createInitLineChartConfig(schema, getYKeys, getXKeys) {
   const YKeys = getYKeys(schema);
   const XKeys = getXKeys(schema);
+
   return {
     axisData: {
       XAxis: {
@@ -11,8 +12,8 @@ function createInitLineChartConfig(schema, getYKeys, getXKeys) {
       },
       YAxis: {
         availableKeys: YKeys,
-        key: [YKeys[1]],
-        label: YKeys[1],
+        key: [YKeys[0]],
+        label: YKeys[0],
         displayLabel: true,
       },
     },
@@ -34,6 +35,11 @@ function createInitLineChartConfig(schema, getYKeys, getXKeys) {
       },
       showDataPointsValues: false,
       lineType: ['curveNatural'],
+    },
+    isSummarize: false,
+    summarize: {
+      select: {},
+      groupBy: {},
     },
   };
 }

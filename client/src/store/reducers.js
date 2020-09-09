@@ -4,7 +4,7 @@ import viewVisualizationReducer from '../containers/ViewVisualizationContainer/r
 import usersListReducer from '../containers/PeoplePageContainer/reducer';
 import databasesListReducer from '../containers/DatabasesPageContainer/reducer';
 import accountSettingsReducer from '../containers/AccountSettingsContainer/reducer';
-import analyticsReducer from '../containers/AnalyticsTabsContainer/reducer';
+import analyticsReducer from '../containers/AnalyticsContainer/reducer';
 import currentDashboardReducer from '../containers/DashboardContainer/reducer';
 import permissionsReducer from '../containers/PermissionsContainer/reducer';
 import datasetsListReducer from '../containers/DataSourcesDatasetsContainer/reducer';

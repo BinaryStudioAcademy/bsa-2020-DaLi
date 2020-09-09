@@ -60,7 +60,7 @@ function BarChart(props) {
   };
 
   const drawAxes = (chart, xScale, yMaxIndex) => {
-    const yScale = calcYScale(YAxis.key[yMaxIndex]); 
+    const yScale = calcYScale(YAxis.key[yMaxIndex]);
     const xAxis = (g) =>
       g.attr('transform', `translate(0,${height - margin.bottom})`).call(d3.axisBottom(xScale).tickSize(0));
     const yAxis = (g) => g.attr('transform', `translate(${margin.left},0)`).call(d3.axisLeft(yScale).tickSize(0));
@@ -207,7 +207,7 @@ function BarChart(props) {
         .attr('x', (a) => xScale(a.data[XAxis.key]) + xScale.bandwidth() / 2)
         .attr('y', (a, index) => {
           return yScale(maxValues[index]) - 10;
-        }) 
+        })
         // .attr('transform', d => (YAxis.key.length > 1 && !stacked)?`translate(${xPosGrouped(d,index)},${yPosGrouped(d,key,index)}), rotate(-90)`:'rotate(0)')
         .attr('text-anchor', 'middle')
         .text((a, index) => maxValues[index]);

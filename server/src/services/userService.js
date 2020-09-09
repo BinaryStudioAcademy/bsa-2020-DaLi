@@ -1,7 +1,9 @@
 import createError from 'http-errors';
 import UserRepository from '../repositories/userRepository';
+import CollectionRepository from '../repositories/collectionRepository';
 import { compare, encryptSync } from '../helpers/cryptoHelper';
 import { generatePassword } from '../helpers/generatePassword';
+import { PRIVATE_COLLECTIONS } from '../config/types';
 
 export const getUsers = async () => {
   const result = await UserRepository.getAll();
@@ -16,6 +18,11 @@ export const createUser = async (user) => {
   const result = await UserRepository.createUsersWithDefaultGroups({
     ...user,
     password: encryptSync(user.password),
+  });
+
+  await CollectionRepository.create({
+    name: PRIVATE_COLLECTIONS,
+    users_id: result.id,
   });
 
   if (password) result.password = password;

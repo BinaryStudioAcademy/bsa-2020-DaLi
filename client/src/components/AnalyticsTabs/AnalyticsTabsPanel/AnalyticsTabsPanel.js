@@ -10,22 +10,20 @@ import DashboardIcon from '@material-ui/icons/Dashboard';
 import Tooltip from '@material-ui/core/Tooltip';
 import InfoIcon from '@material-ui/icons/Info';
 import DeleteIcon from '@material-ui/icons/Delete';
+import MoveToInboxIcon from '@material-ui/icons/MoveToInbox';
 import { Link, useHistory } from 'react-router-dom';
-import { dbTableAPIService } from '../../../services/api/dbTableAPI.service';
 
 import { useStyles } from './styles';
 
-const AnalyticsTabsPanel = ({ value, index, data, deleteVisualization, deleteDashboard }) => {
+const AnalyticsTabsPanel = ({ value, index, data, deleteVisualization, deleteDashboard, openModal, collectionId }) => {
   const classes = useStyles();
   const history = useHistory();
 
-  const onVisualizationsClick = (id, tableId) => {
-    dbTableAPIService.getTable(tableId).then((data) =>
-      history.push({
-        pathname: `/visualizations/${id}`,
-        data,
-      })
-    );
+  const onVisualizationsClick = (id) => {
+    history.push({
+      pathname: `/visualizations/${id}`,
+      data,
+    });
   };
 
   const chooseIcon = (type) => {
@@ -48,6 +46,13 @@ const AnalyticsTabsPanel = ({ value, index, data, deleteVisualization, deleteDas
     }
   };
 
+  const handleMoveVisualization = (visualization) => {
+    openModal({ visualization, type: 'Move collection' });
+  };
+  const handleMoveDashboard = (dashboard) => {
+    openModal({ dashboard, type: 'Move collection' });
+  };
+
   return (
     <Typography component="div" hidden={value !== index}>
       <Box className={classes.root}>
@@ -65,10 +70,11 @@ const AnalyticsTabsPanel = ({ value, index, data, deleteVisualization, deleteDas
                       <InfoIcon id={`analytics-${item.id}-info`} />
                     </Tooltip>
                   ) : null}
+                  <MoveToInboxIcon className={classes.moveIcon} onClick={() => handleMoveDashboard(item)} />
                   <DeleteIcon
                     className={classes.menuIcon}
                     id={`analytics-${item.id}-delete`}
-                    onClick={deleteDashboard(item.id)}
+                    onClick={deleteDashboard({ id: item.id, collectionId })}
                   />
                 </>
               ) : (
@@ -81,7 +87,12 @@ const AnalyticsTabsPanel = ({ value, index, data, deleteVisualization, deleteDas
                     {chooseIcon(item.type)}
                     <span>{item.name}</span>
                   </div>
-                  <DeleteIcon className={classes.menuIcon} id={item.id} onClick={deleteVisualization(item.id)} />
+                  <MoveToInboxIcon className={classes.moveIcon} onClick={() => handleMoveVisualization(item)} />
+                  <DeleteIcon
+                    className={classes.menuIcon}
+                    id={item.id}
+                    onClick={deleteVisualization({ id: item.id, collectionId })}
+                  />
                 </>
               )}
             </div>
@@ -98,6 +109,8 @@ AnalyticsTabsPanel.propTypes = {
   deleteDashboard: PropTypes.func,
   index: PropTypes.any.isRequired,
   value: PropTypes.any.isRequired,
+  openModal: PropTypes.func,
+  collectionId: PropTypes.string,
 };
 
 export default AnalyticsTabsPanel;

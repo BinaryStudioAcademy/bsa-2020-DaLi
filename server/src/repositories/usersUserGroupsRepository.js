@@ -9,7 +9,7 @@ class UsersUserGroupsRepository extends BaseRepository {
       include: [
         {
           model: models.UserGroups,
-          attributes: ['name'],
+          attributes: ['name', 'id'],
         },
       ],
     });

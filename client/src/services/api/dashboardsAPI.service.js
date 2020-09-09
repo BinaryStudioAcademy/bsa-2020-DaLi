@@ -20,6 +20,9 @@ class DashboardsAPIService extends baseAPIService {
 
   addVisualizationToDashboard = (dashboardId, visualizationId) => this.postData(`/${dashboardId}`, { visualizationId });
 
+  addToCollection = (dashboardId, collectionId) =>
+    this.patchDataWithParams(`/${dashboardId}`, { collection: collectionId });
+
   deleteVisualizationFromDashboard = (dashboardId, dashboardVisualizationsId) => {
     this.deleteData(`${dashboardId}`, { dashboardVisualizationsId });
   };

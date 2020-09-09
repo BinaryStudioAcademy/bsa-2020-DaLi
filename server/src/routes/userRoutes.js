@@ -3,6 +3,7 @@ import asyncHandler from 'express-async-handler';
 import createError from 'http-errors';
 import * as UserService from '../services/userService';
 import { generatePassword } from '../helpers/generatePassword';
+import { denyAccessForNonAdmins, secureUserUpdate } from '../middlewares/denyAccesForNonAdminsMiddleware';
 
 const router = Router();
 
@@ -33,6 +34,7 @@ router.get(
 
 router.post(
   '/',
+  denyAccessForNonAdmins,
   asyncHandler(async (req, res, next) => {
     if (!req.body.password) {
       req.body.password = generatePassword();
@@ -50,6 +52,7 @@ router.post(
 
 router.patch(
   '/:id',
+  secureUserUpdate,
   asyncHandler(async (req, res, next) => {
     const result = await UserService.updateUser(
       {
@@ -69,6 +72,7 @@ router.patch(
 
 router.delete(
   '/:id',
+  denyAccessForNonAdmins,
   asyncHandler(async (req, res, next) => {
     const result = await UserService.deleteUser({
       id: req.params.id,

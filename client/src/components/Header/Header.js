@@ -1,3 +1,4 @@
+/* eslint-disable no-nested-ternary */
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
@@ -12,7 +13,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import { makeStyles } from '@material-ui/core/styles';
 import { logout } from '../../containers/LoginPageContainer/actions';
 import AddDashboardModal from '../AddDashboardModal/AddDashboardModal';
-import { addDashboard } from '../../containers/AnalyticsTabsContainer/actions';
+import { addDashboard } from '../../containers/AnalyticsContainer/actions';
 
 import './styles.css';
 
@@ -37,7 +38,7 @@ const useStyles = makeStyles({
   },
 });
 
-const Header = ({ logout, addDashboard }) => {
+const Header = ({ logout, addDashboard, isAdmin }) => {
   const history = useHistory();
   const location = useLocation();
   const classes = useStyles();
@@ -194,15 +195,17 @@ const Header = ({ logout, addDashboard }) => {
         <MenuItem onClick={onAccountSettings} id="header-gear-accSett">
           Account Setting
         </MenuItem>
-        {isAdminPage ? (
-          <MenuItem onClick={handleClickOnExitAdmin} id="header-gear-exitAdmin">
-            Exit Admin
-          </MenuItem>
-        ) : (
-          <MenuItem onClick={handleClickOnAdmin} id="header-gear-admin">
-            Admin
-          </MenuItem>
-        )}
+        {isAdmin ? (
+          isAdminPage ? (
+            <MenuItem onClick={handleClickOnExitAdmin} id="header-gear-exitAdmin">
+              Exit Admin
+            </MenuItem>
+          ) : (
+            <MenuItem onClick={handleClickOnAdmin} id="header-gear-admin">
+              Admin
+            </MenuItem>
+          )
+        ) : null}
         <MenuItem onClick={onSignOut} id="header-gear-signOut">
           Sign out
         </MenuItem>
@@ -217,9 +220,14 @@ const Header = ({ logout, addDashboard }) => {
 };
 
 Header.propTypes = {
+  isAdmin: PropTypes.bool,
   logout: PropTypes.func,
   addDashboard: PropTypes.func,
 };
 
+const mapStateToProps = ({ currentUser }) => ({
+  isAdmin: currentUser.isAdmin,
+});
+
 const mapDispatchToProps = { logout, addDashboard };
-export default connect(null, mapDispatchToProps)(Header);
+export default connect(mapStateToProps, mapDispatchToProps)(Header);

@@ -18,9 +18,27 @@ const PermissionsTable = (props) => {
   const classes = useStyles();
 
   const userGroups = data[0].groups;
-  const dataNameProperty = dataType === 'tables' ? 'tableName' : 'dbNickname';
-  const dataIdProperty = dataType === 'tables' ? 'tableId' : 'databaseId';
-  const linkClassName = dataType === 'tables' ? classes.permissionsTableLink : classes.permissionsTableLinkActive;
+  let dataNameProperty;
+  let dataIdProperty;
+  let linkClassName;
+
+  switch (dataType) {
+    case 'tables':
+      dataNameProperty = 'tableName';
+      dataIdProperty = 'tableId';
+      linkClassName = classes.permissionsTableLink;
+      break;
+    case 'collections':
+      dataNameProperty = 'name';
+      dataIdProperty = 'id';
+      linkClassName = classes.permissionsTableLinkActive;
+      break;
+    default:
+      dataNameProperty = 'dbNickname';
+      dataIdProperty = 'databaseId';
+      linkClassName = classes.permissionsTableLinkActive;
+      break;
+  }
 
   return (
     <>

@@ -98,6 +98,18 @@ const BarChartSettings = ({ updateConfig, config: oldConfig }) => {
   const [trendlineType, setTrendlineType] = useState(trendline.trendlineType);
   const [polynomialOrder, setPolynomialOrder] = useState(trendline.polynomial.order);
   const [config, setConfig] = useState(oldConfig);
+  const [errors, setErrors] = useState({
+    labelXAxis: false,
+    labelYAxis: false,
+  });
+
+  const validateField = (name, value) => {
+    if (name === 'labelXAxis' || name === 'labelYAxis') {
+      setErrors({ ...errors, [name]: value.length > 20 });
+    }
+  };
+
+  const isError = () => Object.values(errors).includes(true);
 
   useEffect(() => {
     updateConfig(config);
@@ -403,7 +415,10 @@ const BarChartSettings = ({ updateConfig, config: oldConfig }) => {
             value={labelXAxis}
             onChange={(event) => {
               setLabelXAxis(event.target.value);
+              validateField('labelXAxis', event.target.value);
             }}
+            helperText={errors.labelXAxis ? '20 characters is max' : null}
+            error={errors.labelXAxis}
           />
         ) : null}
         <FormControlLabel
@@ -421,7 +436,10 @@ const BarChartSettings = ({ updateConfig, config: oldConfig }) => {
             value={labelYAxis}
             onChange={(event) => {
               setLabelYAxis(event.target.value);
+              validateField('labelYAxis', event.target.value);
             }}
+            helperText={errors.labelYAxis ? '20 characters is max' : null}
+            error={errors.labelYAxis}
           />
         ) : null}
       </TabPanel>
@@ -431,6 +449,7 @@ const BarChartSettings = ({ updateConfig, config: oldConfig }) => {
           onClick={() => {
             onDoneButton();
           }}
+          disabled={isError()}
         >
           Done
         </Button>

@@ -48,6 +48,17 @@ class baseAPIService {
     return response;
   };
 
+  patchDataWithParams = async (endpoint, params) => {
+    const response = await baseRequest({
+      method: 'patch',
+      url: `${this.baseURL}${endpoint}`,
+      headers: { Authorization: `Bearer ${getToken()}` },
+      params,
+    });
+
+    return response;
+  };
+
   putData = async (endpoint, data) => {
     const response = await baseRequest({
       method: 'put',

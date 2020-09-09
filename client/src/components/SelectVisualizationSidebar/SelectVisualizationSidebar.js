@@ -5,13 +5,18 @@ import TimelineOutlinedIcon from '@material-ui/icons/TimelineOutlined';
 import MapOutlinedIcon from '@material-ui/icons/MapOutlined';
 import AppsIcon from '@material-ui/icons/Apps';
 import { useHistory } from 'react-router-dom';
+import { Tooltip } from '@material-ui/core';
+
 import PropTypes from 'prop-types';
 
 import useStyles from './styles';
+import { canTableBeDisplayed } from '../../containers/ViewVisualizationContainer/helpers/initVisualizationHelper';
 
-const SelectVisualizationSidebar = ({ tableId }) => {
+const SelectVisualizationSidebar = ({ tableId, schema }) => {
   const history = useHistory();
   const classes = useStyles();
+
+  const chartVisualizations = ['line-chart', 'bar-chart'];
 
   const myVisualizations = [
     {
@@ -50,11 +55,34 @@ const SelectVisualizationSidebar = ({ tableId }) => {
   return (
     <div className={classes.basicContainer}>
       {myVisualizations.map((item, index) => {
-        return (
-          <Button key={index} onClick={() => onButtonClick(item.type)} className={classes.buttonStyle} id={item.id}>
+        const disabled = canTableBeDisplayed(schema) && chartVisualizations.includes(item.type);
+
+        const visButton = (
+          <Button
+            disabled={disabled}
+            key={index}
+            onClick={() => onButtonClick(item.type)}
+            className={classes.buttonStyle}
+            id={item.id}
+          >
             {item.icon}
             <span className={classes.visName}>{item.name}</span>
           </Button>
+        );
+
+        return disabled ? (
+          <Tooltip
+            key={index + Date.now()}
+            style={{ display: 'inline' }}
+            classes={{
+              tooltip: classes.invalidDataTooltip,
+            }}
+            title={`This table has no valid data to display ${item.type}`}
+          >
+            <div>{visButton}</div>
+          </Tooltip>
+        ) : (
+          visButton
         );
       })}
     </div>
@@ -63,6 +91,7 @@ const SelectVisualizationSidebar = ({ tableId }) => {
 
 SelectVisualizationSidebar.propTypes = {
   tableId: PropTypes.string,
+  schema: PropTypes.array,
 };
 
 export default SelectVisualizationSidebar;

@@ -3,7 +3,7 @@ import { makeStyles } from '@material-ui/core/styles';
 const useStyles = makeStyles(() => ({
   permissionsTableBreadcrumbs: {
     padding: '0 50px',
-    paddingTop: '60px',
+    paddingTop: '30px',
   },
   permissionsTableLink: {
     color: '#8cb7e6',

@@ -28,6 +28,10 @@ export const getYKeys = (schema) => {
   return availableKeys.map((obj) => obj.column_name);
 };
 
+export const canTableBeDisplayed = (schema) => {
+  return !getYKeys(schema).length;
+};
+
 export const getXKeys = (schema) => {
   const availableKeys = schema.filter(({ data_type }) => {
     const isNum = data_type === 'number';
@@ -40,13 +44,15 @@ export const getXKeys = (schema) => {
   return availableKeys.map((obj) => obj.column_name);
 };
 
-export const createInitVisualization = (visualizationType, userId, schema) => {
+export const createInitVisualization = (visualizationType, userId, schema, tableId) => {
   const newVisualization = {
     name: '',
     description: '',
     config: '',
     type: '',
     UserId: userId,
+    tableId,
+    datasetSettings: [],
   };
   switch (visualizationType) {
     case 'bar-chart':

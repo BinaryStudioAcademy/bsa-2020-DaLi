@@ -10,7 +10,7 @@ const EnhancedTableBody = (props) => {
 
   const calcWidthInPercent = (maxColumnsValue, columnName, cellValue) => {
     const currentColumn = maxColumnsValue.filter(({ column }) => column === columnName)[0];
-    const numericCellValue = parseFloat(cellValue.replace(/\s/g, ''));
+    const numericCellValue = parseFloat(cellValue.toString().replace(/\s/g, ''));
     const width = (100 / currentColumn.maxValue) * numericCellValue;
     return `${width}%`;
   };

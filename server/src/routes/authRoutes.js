@@ -4,7 +4,6 @@ import * as AuthService from '../services/authService';
 import * as UserService from '../services/userService';
 import authenticationMiddleware from '../middlewares/authenticationMiddleware';
 import registrationMiddleware from '../middlewares/registrationMiddleware';
-import isFirstLogInMiddleware from '../middlewares/isFirstLogInMiddleware';
 
 const router = Router();
 

@@ -28,8 +28,6 @@ routes(app);
 
 app.use(errorHandlerMiddleware);
 
-sequelize.sync();
-
 sequelize
   .authenticate()
   .then(() => {

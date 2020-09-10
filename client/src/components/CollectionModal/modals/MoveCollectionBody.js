@@ -5,7 +5,7 @@ import Button from '@material-ui/core/Button';
 import CollectionsIcon from '@material-ui/icons/Collections';
 import StarIcon from '@material-ui/icons/Star';
 import { useStyles } from '../styles';
-import { PERSONAL_COLLECTIONS } from '../../constants';
+import { PRIVATE_COLLECTIONS } from '../../../constants';
 
 const AddUserBody = ({
   closeModal,
@@ -78,7 +78,7 @@ const AddUserBody = ({
                   key={id}
                   aria-hidden="true"
                 >
-                  {name === PERSONAL_COLLECTIONS ? (
+                  {name === PRIVATE_COLLECTIONS ? (
                     <StarIcon className={classes.icon} />
                   ) : (
                     <CollectionsIcon className={classes.icon} />

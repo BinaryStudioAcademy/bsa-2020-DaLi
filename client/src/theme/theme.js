@@ -254,7 +254,10 @@ export const theme = createMuiTheme({
           },
         },
         '& .paper-analitics-text': {
-          marginLeft: '15px',
+          marginLeft: '40px',
+        },
+        '& .paper-data-text': {
+          marginLeft: '20px',
         },
         '& .paper-data-icon': {
           boxSizing: 'border-box',

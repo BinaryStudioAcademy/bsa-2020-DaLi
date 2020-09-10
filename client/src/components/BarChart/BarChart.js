@@ -61,7 +61,6 @@ function BarChart(props) {
   };
 
   const drawAxes = (chart, xScale, yScale) => {
-    // const yScale = calcYScale(YAxis.key[yMaxIndex]);
     const xAxis = (g) =>
       g.attr('transform', `translate(0,${height - margin.bottom})`).call(d3.axisBottom(xScale).tickSize(0));
     const yAxis = (g) => g.attr('transform', `translate(${margin.left},0)`).call(d3.axisLeft(yScale).tickSize(0));
@@ -144,7 +143,6 @@ function BarChart(props) {
         .attr('class', 'bar__value')
         .attr('x', (a) => xPosGrouped(a, index))
         .attr('y', (a, barIndex) => yPosGrouped(a, key, index))
-        // .attr('transform', d => (YAxis.key.length > 1 && !stacked)?`translate(${xPosGrouped(d,index)},${yPosGrouped(d,key,index)}), rotate(-90)`:'rotate(0)')
         .attr('text-anchor', 'middle')
         .text((a) => pointText(a, key))
       )
@@ -230,7 +228,6 @@ function BarChart(props) {
         .attr('y', (a, index) => {
           return yScale(maxValues[index]) - 10;
         })
-        // .attr('transform', d => (YAxis.key.length > 1 && !stacked)?`translate(${xPosGrouped(d,index)},${yPosGrouped(d,key,index)}), rotate(-90)`:'rotate(0)')
         .attr('text-anchor', 'middle')
         .text((a, index) => maxValues[index]);
     }
@@ -310,8 +307,6 @@ function BarChart(props) {
       order: polynomial.order,
     };
 
-    // const yScale = calcYScale(YAxis.key[yMaxIndex]);
-
     const trendlineCreator = new TrendlineCreator(trendlineType, chart, xScaleForLines, yScale);
     trendlineCreator.render(domain, trendlineData, config);
   };
@@ -365,10 +360,8 @@ function BarChart(props) {
     const yMinValues = YAxis.key.map((key) => calcYDataRange(key).min);
     const yMax = Math.max(...yMaxValues);
     const yMin = Math.min(...yMinValues);
-    // const yMaxIndex = yMaxValues.findIndex((item) => item === yMax);
-    const yScale = calcYScale(yMin, yMax);
 
-    
+    const yScale = calcYScale(yMin, yMax);
 
     // Another scale for subgroup position?
     const xSubgroup = d3.scaleBand().domain(YAxis.key).range([0, xScale.bandwidth()]).padding([0.05]);
@@ -379,9 +372,6 @@ function BarChart(props) {
     // draw chart
     stacked ? drawStackedChart(chart, xScale, tips) : drawGroupedChart(chart, data, xScale, xSubgroup, colors, tips, yScale, yMin);
 
-    // let barsInfo = null;
-
-    // const yRange = calcYDataRange(YAxis.key[yMaxIndex]);
     const yRange = {min:yMin,max:yMax};
     if (yRange.min < 0) {
       chart
@@ -389,11 +379,9 @@ function BarChart(props) {
         .style('stroke', '#EE8625')
         .style('stroke-width', 3)
         .attr('x1', 0)
-        .attr('y1', yRange(0))
+        .attr('y1', yScale(0))
         .attr('x2', width)
-        .attr('y2', yRange(0));
-
-      // const y = calcYScale(YAxis.key[yMaxIndex]);
+        .attr('y2', yScale(0));
 
       chart
         .append('text')
@@ -409,9 +397,6 @@ function BarChart(props) {
     if (trendline.display && data.length) {
       addTrendLine(chart,yScale);
     }
-
-    // delete axis values
-    // chart.selectAll('.axis').selectAll('text').remove();
 
     displayAxesLabels(chart);
 

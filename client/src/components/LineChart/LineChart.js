@@ -14,13 +14,11 @@ function LineChart({ settings, data, chart: chartSize }) {
   const XAxis = settings.axisData.XAxis;
   const YAxis = settings.axisData.YAxis;
 
-  // const [config, setConfig] = useState({});
   const svgRef = useRef();
   const [width, setWidth] = useState(chartSize.width);
   const [height, setHeight] = useState(chartSize.height);
   const { margin } = chartSize;
 
-  // const chart = d3.select(svgRef.current);
   const initChart = (ref) => {
     const chart = d3.select(ref).attr('width', '100%').attr('height', '100%');
     return chart;
@@ -63,7 +61,6 @@ function LineChart({ settings, data, chart: chartSize }) {
   };
 
   const drawAxes = (chart, xScale, yScale) => {
-    // const yScale = calcYScale(YAxis.key[yMaxIndex]);
     const xAxis = (g) =>
       g.attr('transform', `translate(0,${height - margin.bottom})`).call(d3.axisBottom(xScale).tickSize(0));
     const yAxis = (g) => g.attr('transform', `translate(${margin.left},0)`).call(d3.axisLeft(yScale).tickSize(0));
@@ -75,36 +72,6 @@ function LineChart({ settings, data, chart: chartSize }) {
     .attr("transform", "rotate(-45)")
     .style("text-anchor", "end");
     chart.append('g').attr('class', 'y-axis axis').call(yAxis);
-
-    // chart.selectAll('.tick')
-    // .call(wrap);
-
-
-    // function wrap(text) {
-    //   text.each(function() {
-    //     const text = d3.select(this);
-    //     const words = text.text().split(/\s+/).reverse();
-    //     let word;
-    //     let line = [];
-    //     let lineNumber = 0;
-    //     const lineHeight = 1.1; // ems
-    //     const y = text.attr("y");
-    //     const dy = 10;//parseFloat(text.attr("dy")),
-    //     let tspan = text.text(null).append("tspan").attr("x", 0).attr("y", y).attr("dy", dy + "em");
-    //     while (word = words.pop()) {
-    //       line.push(word);
-    //       tspan.text(line.join(" "));
-    //       console.log(tspan.node().innerHTML.includes(' '));
-    //       if (tspan.node().innerHTML.includes(' ')) {
-    //         line.pop();
-    //         tspan.text(line.join(" "));
-    //         line = [word];
-    //         console.log(line);
-    //         tspan = text.append("tspan").attr("x", 0).attr("y", y).attr("dy", ++lineNumber * lineHeight + dy + "em").text(word);
-    //       }
-    //     }
-    //   });
-    // }
   };
 
   const showLegend = (chart) => {
@@ -176,8 +143,6 @@ function LineChart({ settings, data, chart: chartSize }) {
       xOffset: calcXScale(data, XAxis.key).bandwidth() / 2,
       order: polynomial.order,
     };
-
-    // const yScale = calcYScale(YAxis.key[0]);
 
     const trendlineCreator = new TrendlineCreator(trendlineType, chart, xScaleForLines, yScale);
     trendlineCreator.render(domain, trendlineData, config);
@@ -277,35 +242,13 @@ function LineChart({ settings, data, chart: chartSize }) {
     const yMinValues = YAxis.key.map((key) => calcYDataRange(key).min);
     const yMax = Math.max(...yMaxValues);
     const yMin = Math.min(...yMinValues);
-    // const yMaxIndex = yMaxValues.findIndex((item) => item === yMax);
+
     const yScale = calcYScale(yMin, yMax);
 
     drawAxes(chart, xScale, yScale);
 
     drawLineChart(chart, data, xScale, tips, yScale);
 
-    // const yScale = calcYDataRange(YAxis.key[yMaxIndex]);
-
-    // if (yScale.min < 0) {
-    //   chart
-    //     .append('line')
-    //     .style('stroke', '#EE8625')
-    //     .style('stroke-width', 3)
-    //     .attr('x1', 0)
-    //     .attr('y1', yScale(0))
-    //     .attr('x2', width)
-    //     .attr('y2', yScale(0));
-
-    //   const y = calcYScale(YAxis.key[yMaxIndex]);
-
-    //   chart
-    //     .append('text')
-    //     .attr('y', y - 10)
-    //     .attr('x', 70)
-    //     .attr('text-anchor', 'middle')
-    //     .attr('class', 'line__label')
-    //     .text('0');
-    // }
 
     if (goal.display) {
       displayGoalLine(chart, yScale);
@@ -314,9 +257,6 @@ function LineChart({ settings, data, chart: chartSize }) {
     if (trendline.display && data.length) {
       addTrendLine(chart, yScale);
     }
-
-    // delete axis values
-    // chart.selectAll('.axis').selectAll('text').remove();
 
     displayAxesLabels(chart);
 

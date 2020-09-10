@@ -11,7 +11,7 @@ const validationSchema = Yup.object({
     .required('Name is required')
     .min(3, 'Name must be at least 3 characters')
     .max(30, 'Name must be at most 30 characters'),
-  description: Yup.string().max(100, 'Description must be at most 100 characters'),
+  description: Yup.string().max(100, 'Description must be at most 100 characters').nullable(),
 });
 
 const AddUserBody = ({ closeModal, editableCollection, setFormData, formData, addCollection, updateCollection }) => {

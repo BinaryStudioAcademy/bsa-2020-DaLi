@@ -57,9 +57,6 @@ router.post(
   '/',
   denyAccessForNonAdmins,
   asyncHandler(async (req, res, next) => {
-    console.log();
-    console.log(req.user);
-    console.log();
     const result = await DatabaseService.createDatabase(req.body);
     if (result) {
       res.status(201).json(result);

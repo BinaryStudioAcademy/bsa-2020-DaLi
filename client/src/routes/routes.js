@@ -33,7 +33,7 @@ const Routes = ({ fetchUser, isAuthorized, isLoading }) => {
   }, [fetchUser, hasToken, isAuthorized, isLoading]);
 
   return isLoading || (hasToken && !isAuthorized) ? (
-    <CircularProgress size={40} left={-20} top={-40} style={{ marginLeft: '50%', marginTop: '50%' }} />
+    <CircularProgress size={40} left={-20} top={-40} style={{ marginLeft: '50%', marginTop: '35%' }} />
   ) : (
     <Switch>
       <PublicRoute exact path="/login" component={LoginPage} />

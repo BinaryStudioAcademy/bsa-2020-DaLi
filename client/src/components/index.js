@@ -38,9 +38,11 @@ import CollectionList from './CollectionList/CollectionList';
 import CollectionModal from './CollectionModal/CollectionModal';
 import FilterBar from './FilterBar/FilterBar';
 import SummarizeBar from './SummarizeBar/SummarizeBar';
+import ColorPicker from './ColorPicker/ColorPicker';
 
 export {
   BarChart,
+  ColorPicker,
   Header,
   SaveVisualizationModal,
   AddDashboardModal,

@@ -4,6 +4,7 @@ import createError from 'http-errors';
 import * as CollectionService from '../services/collectionService';
 import { collectionPermissionsMiddleware } from '../middlewares/collectionPermissionsMiddleware';
 import { defaultCollectionsMiddleware } from '../middlewares/defaultCollectionsMiddleware';
+import { userAccessForCollectionMiddleware } from '../middlewares/userAccessMiddleware';
 
 const router = Router();
 
@@ -52,6 +53,7 @@ router.post(
 router.patch(
   '/:id',
   defaultCollectionsMiddleware,
+  userAccessForCollectionMiddleware,
   asyncHandler(async (req, res, next) => {
     const result = await CollectionService.updateCollections(req.params.id, req.body);
     if (result) {
@@ -67,6 +69,7 @@ router.patch(
 router.delete(
   '/:id',
   defaultCollectionsMiddleware,
+  userAccessForCollectionMiddleware,
   asyncHandler(async (req, res, next) => {
     const result = await CollectionService.deleteCollection(req.params.id);
     if (result) {

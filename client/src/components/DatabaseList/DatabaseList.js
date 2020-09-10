@@ -6,7 +6,6 @@ import TableCell from '@material-ui/core/TableCell';
 import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
-import Backdrop from '@material-ui/core/Backdrop';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
 import { Breadcrumbs, Typography } from '@material-ui/core';
@@ -29,9 +28,7 @@ const DatabaseList = ({ deleteDatabase, databases, isLoading }) => {
   };
 
   return isLoading ? (
-    <Backdrop style={{ color: '#fff', zIndex: 1 }} open>
-      <CircularProgress color="inherit" />
-    </Backdrop>
+    <CircularProgress size={40} style={{ marginLeft: '50%', marginTop: '35%' }} />
   ) : (
     <div className="wrapper">
       <Breadcrumbs separator={<NavigateNextIcon />} aria-label="breadcrumb" style={{ marginTop: '10px' }}>

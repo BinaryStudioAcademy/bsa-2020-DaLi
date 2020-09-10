@@ -13,7 +13,7 @@ function createInitBarChartConfig(schema, getYKeys, getXKeys) {
       YAxis: {
         availableKeys: YKeys,
         key: [YKeys[0]],
-        label: YKeys[0],
+        label: [YKeys[0]],
         displayLabel: true,
       },
     },
@@ -23,7 +23,7 @@ function createInitBarChartConfig(schema, getYKeys, getXKeys) {
         value: 0,
         label: 'our goal',
       },
-      color: ['#4aa1de'],
+      color: ['rgb(80, 158, 227)'],
       trendline: {
         display: false,
         trendlineType: 'linear',
@@ -35,6 +35,7 @@ function createInitBarChartConfig(schema, getYKeys, getXKeys) {
       },
       showDataPointsValues: false,
       lineType: '',
+      stacked: false,
     },
     isSummarize: false,
     summarize: {

@@ -112,6 +112,8 @@ function LineChart({ settings, data, chart: chartSize }) {
     const legendRectSize = 18;
     const legendSpacing = 4;
 
+    let lengthOffset = 0;
+
     const legend = legendContainer
       .selectAll('.legend')
       .data(YAxis.key)
@@ -119,10 +121,11 @@ function LineChart({ settings, data, chart: chartSize }) {
       .append('g')
       .attr('class', 'legend')
       .attr('transform', function (d, i) {
-        const width = legendRectSize + legendSpacing + 40;
+        const width = legendRectSize + legendSpacing + 30;
         const offset = (width * 3) / 2;
-        const horz = i * offset;
+        const horz = i * offset + lengthOffset;
         const vert = 0;
+        lengthOffset += d.length * 5;
         return 'translate(' + horz + ',' + vert + ')';
       });
 

@@ -441,10 +441,11 @@ function LineChartSettings({ updateConfig, config: oldConfig }) {
       </TabPanel>
       <TabPanel value={value} index={2}>
         <FormControlLabel
-          control={<PrettySwitch checked={isLabelXAxis} onChange={(event) => setIsLabelXAxis(event.target.checked)} />}
+          control={<PrettySwitch checked={isSummarize ? true : isLabelXAxis} onChange={(event) => setIsLabelXAxis(event.target.checked)} />}
           label="Show label on x-axis"
+          disabled={isSummarize}
         />
-        {isLabelXAxis ? (
+        {isLabelXAxis && !isSummarize ? (
           <TextField
             id="XAxis"
             label="X-axis label"
@@ -463,10 +464,11 @@ function LineChartSettings({ updateConfig, config: oldConfig }) {
           />
         ) : null}
         <FormControlLabel
-          control={<PrettySwitch checked={isLabelYAxis} onChange={(event) => setIsLabelYAxis(event.target.checked)} />}
+          control={<PrettySwitch checked={isSummarize ? true : isLabelYAxis} onChange={(event) => setIsLabelYAxis(event.target.checked)} />}
           label="Show label on y-axis"
+          disabled={isSummarize}
         />
-        {isLabelYAxis ? (
+        {isLabelYAxis && !isSummarize ? (
           <TextField
             id="YAxis"
             label="Y-axis label"

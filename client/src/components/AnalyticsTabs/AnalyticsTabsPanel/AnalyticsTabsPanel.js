@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Typography from '@material-ui/core/Typography';
-import Box from '@material-ui/core/Box';
 import EqualizerOutlinedIcon from '@material-ui/icons/EqualizerOutlined';
 import TimelineOutlinedIcon from '@material-ui/icons/TimelineOutlined';
 import TableChartOutlinedIcon from '@material-ui/icons/TableChartOutlined';
@@ -11,13 +10,10 @@ import Tooltip from '@material-ui/core/Tooltip';
 import InfoIcon from '@material-ui/icons/Info';
 import DeleteIcon from '@material-ui/icons/Delete';
 import MoveToInboxIcon from '@material-ui/icons/MoveToInbox';
-import { Icon } from '@material-ui/core';
-import { Link, useHistory } from 'react-router-dom';
+import { Grid, Paper } from '@material-ui/core';
+import { useHistory } from 'react-router-dom';
 
-import { useStyles } from './styles';
-
-const AnalyticsTabsPanel = ({ value, index, data, deleteVisualization, deleteDashboard, openModal, collectionId }) => {
-  const classes = useStyles();
+const AnalyticsTabsPanel = ({ data, deleteVisualization, deleteDashboard, openModal, collectionId }) => {
   const history = useHistory();
 
   const onVisualizationsClick = (id) => {
@@ -30,19 +26,19 @@ const AnalyticsTabsPanel = ({ value, index, data, deleteVisualization, deleteDas
   const chooseIcon = (type) => {
     switch (type) {
       case 'LINE_CHART': {
-        return <TimelineOutlinedIcon /* className={classes.icon} */ />;
+        return <TimelineOutlinedIcon />;
       }
       case 'BAR_CHART': {
-        return <EqualizerOutlinedIcon /* className={classes.icon} */ />;
+        return <EqualizerOutlinedIcon />;
       }
       case 'TABLE': {
-        return <TableChartOutlinedIcon /* className={classes.icon} */ />;
+        return <TableChartOutlinedIcon />;
       }
       case 'MAP': {
-        return <MapOutlinedIcon /* className={classes.icon} */ />;
+        return <MapOutlinedIcon />;
       }
       default: {
-        return <DashboardIcon /* className={classes.icon} */ />;
+        return <DashboardIcon />;
       }
     }
   };
@@ -54,70 +50,68 @@ const AnalyticsTabsPanel = ({ value, index, data, deleteVisualization, deleteDas
     openModal({ dashboard, type: 'Move collection' });
   };
 
+  const handleClickOnDashboardItem = (id) => {
+    history.push(`/dashboards/${id}`);
+  };
+
   return (
-    <Typography component="div" hidden={value !== index}>
-      <Box className={classes.root}>
+    <>
+      <Grid>
         {data.map((item, dataIndex) => {
           return (
-            <div className={classes.itemContainer} key={dataIndex}>
+            <Paper key={dataIndex} variant="outlined" className="paper-collection-outlined">
               {!item.type ? (
                 <>
-                  <Link to={`/dashboards/${item.id}`} className={classes.item}>
-                    <Icon aria-label="delete" size="small">
-                      {chooseIcon(item.type)}
-                    </Icon>
-                    <span id={`analytics-dashboard-${item.id}-name`}>{item.name}</span>
-                  </Link>
-                  {item.description.length ? (
-                    <Tooltip title={item.description} placement="left" className={classes.description}>
-                      <InfoIcon id={`analytics-dashboard-${item.id}-info`} />
-                    </Tooltip>
-                  ) : null}
-                  <MoveToInboxIcon
-                    className={classes.moveIcon}
-                    onClick={() => handleMoveDashboard(item)}
-                    id={`analytics-dashboard-${item.id}-moveToCollections`}
-                  />
-                  <DeleteIcon
-                    className={classes.menuIcon}
-                    id={`analytics-dashboard-${item.id}-delete`}
-                    onClick={deleteDashboard({ id: item.id, collectionId })}
-                  />
+                  <div className="paper-collection-icon">{chooseIcon(item.type)}</div>
+                  {/* eslint-disable-next-line */}
+                  <div className="paper-collection-text" onClick={() => handleClickOnDashboardItem(item.id)}>
+                    <Typography variant="h3">{item.name}</Typography>
+                  </div>
+                  <div className="paper-collection-btns">
+                    {item.description.length ? (
+                      <Tooltip title={item.description} placement="left">
+                        <InfoIcon id={`analytics-dashboard-${item.id}-info`} />
+                      </Tooltip>
+                    ) : null}
+                    <MoveToInboxIcon
+                      onClick={() => handleMoveDashboard(item)}
+                      id={`analytics-dashboard-${item.id}-moveToCollections`}
+                    />
+                    <DeleteIcon
+                      id={`analytics-dashboard-${item.id}-delete`}
+                      onClick={deleteDashboard({ id: item.id, collectionId })}
+                    />
+                  </div>
                 </>
               ) : (
                 <>
-                  <div
-                    className={classes.item}
-                    onClick={() => onVisualizationsClick(item.id, item.tableId)}
-                    aria-hidden="true"
-                  >
-                    <Icon aria-label="delete" size="large">
-                      {chooseIcon(item.type)}
-                    </Icon>
-                    <span id={`analytics-visualization-${item.id}-name`}>{item.name}</span>
+                  <div className="paper-collection-icon">{chooseIcon(item.type)}</div>
+                  {/* eslint-disable-next-line */}
+                  <div className="paper-collection-text" onClick={() => onVisualizationsClick(item.id, item.tableId)}>
+                    <Typography variant="h3">{item.name}</Typography>
                   </div>
-                  {item.description.length ? (
-                    <Tooltip title={item.description} placement="left" className={classes.description}>
-                      <InfoIcon id={`analytics-visualization-${item.id}-info`} />
-                    </Tooltip>
-                  ) : null}
-                  <MoveToInboxIcon
-                    className={classes.moveIcon}
-                    onClick={() => handleMoveVisualization(item)}
-                    id={`analytics-visualization-${item.id}-moveToCollections`}
-                  />
-                  <DeleteIcon
-                    className={classes.menuIcon}
-                    id={`analytics-visualization-${item.id}-delete`}
-                    onClick={deleteVisualization({ id: item.id, collectionId })}
-                  />
+                  <div className="paper-collection-btns">
+                    {item.description.length ? (
+                      <Tooltip title={item.description} placement="left">
+                        <InfoIcon id={`analytics-visualization-${item.id}-info`} />
+                      </Tooltip>
+                    ) : null}
+                    <MoveToInboxIcon
+                      onClick={() => handleMoveVisualization(item)}
+                      id={`analytics-visualization-${item.id}-moveToCollections`}
+                    />
+                    <DeleteIcon
+                      id={`analytics-visualization-${item.id}-delete`}
+                      onClick={deleteVisualization({ id: item.id, collectionId })}
+                    />
+                  </div>
                 </>
               )}
-            </div>
+            </Paper>
           );
         })}
-      </Box>
-    </Typography>
+      </Grid>
+    </>
   );
 };
 

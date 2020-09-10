@@ -273,7 +273,7 @@ function LineChart({ settings, data, chart: chartSize }) {
     const yMaxValues = YAxis.key.map((key) => calcYDataRange(key).max);
     const yMinValues = YAxis.key.map((key) => calcYDataRange(key).min);
     const yMax = Math.max(...yMaxValues);
-    const yMin = Math.max(...yMinValues);
+    const yMin = Math.min(...yMinValues);
     // const yMaxIndex = yMaxValues.findIndex((item) => item === yMax);
     const yScale = calcYScale(yMin, yMax);
 

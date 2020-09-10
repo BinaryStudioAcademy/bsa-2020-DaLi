@@ -41,7 +41,6 @@ function FilterFieldsList({ schema, chooseFilterHandler, activeFilterName }) {
             key={index}
             className={isActive ? 'active' : ''}
             classes={{
-              label: classes.choseFilterButtonLabel,
               root: classes.choseFilterButtonContainer,
             }}
             variant="contained"
@@ -50,7 +49,7 @@ function FilterFieldsList({ schema, chooseFilterHandler, activeFilterName }) {
             startIcon={icon}
             onClick={() => chooseFilterHandler(name, type)}
           >
-            {name}
+            {name.replace('_', ' ')}
           </Button>
         );
 

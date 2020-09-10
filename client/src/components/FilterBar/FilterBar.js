@@ -73,13 +73,13 @@ const FilterBar = ({ currentVisualization, closeSidebar, updateVisualization }) 
       )}
       {!FilterForm ? (
         <div className={classes.btnWrapper}>
-          <Button className={classes.btn} onClick={closeSidebar}>
+          <Button variant="contained" color="primary" onClick={closeSidebar}>
             Cancel
           </Button>
         </div>
       ) : (
         <div className={classes.btnWrapper}>
-          <Button className={classes.btn} onClick={setNewFilters}>
+          <Button variant="contained" color="primary" onClick={setNewFilters}>
             {activeFilter.isNew ? 'Apply filter' : 'Update filter'}
           </Button>
         </div>

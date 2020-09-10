@@ -7,6 +7,7 @@ import ButtonGroup from '@material-ui/core/ButtonGroup';
 import Button from '@material-ui/core/Button';
 import SettingsIcon from '@material-ui/icons/Settings';
 import AppsIcon from '@material-ui/icons/Apps';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 import { getButtonClasses } from './helper';
 import './ViewVisualizationMain.css';
@@ -19,11 +20,18 @@ const ViewVisualizationMain = (props) => {
     onSwitchContentView,
     isVisualizationExist,
     onToggleSideBar,
+    visualizationLoading,
   } = props;
   return (
     <Grid className="view-visualization-main" container item xs direction="column" justify="center" alignItems="center">
       <Grid className="view-visualization-content" item xs id="visualizationContent">
-        {contentViewComponent}
+        {visualizationLoading ? (
+          <div style={{ position: 'relative' }}>
+            <CircularProgress size={40} left={-20} top={10} style={{ marginLeft: '50%', marginTop: '35%' }} />
+          </div>
+        ) : (
+          contentViewComponent
+        )}
       </Grid>
       <Grid item className="view-visualization-footer">
         <Button
@@ -79,6 +87,7 @@ ViewVisualizationMain.propTypes = {
   isVisualizationExist: PropTypes.bool,
   onVisualizationButtonClick: PropTypes.func,
   onToggleSideBar: PropTypes.func,
+  visualizationLoading: PropTypes.bool,
 };
 
 export default ViewVisualizationMain;

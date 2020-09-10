@@ -41,37 +41,8 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: 'flex-end',
   },
 
-  viewVisualizationSaveButton: {
-    color: 'white',
-    textTransform: 'none',
-    background: '#3ca1de',
-    '&:hover': {
-      background: '#3ca1de',
-    },
-    borderRadius: '5px',
-    marginLeft: '10px',
-  },
-
-  viewVisualizationFilterButton: {
-    color: 'rgb(113, 114, 173)',
-    backgroundColor: 'rgba(113, 114, 173, 0.2)',
-    textTransform: 'none',
-    '&:hover': {
-      backgroundColor: 'rgba(113, 114, 173, 0.5)',
-    },
-    borderRadius: '5px',
-    marginLeft: '10px',
-  },
-
-  viewVisualizationSummarizeButton: {
-    color: 'white',
-    backgroundColor: 'rgba(136, 191, 77, 0.8)',
-    textTransform: 'none',
-    '&:hover': {
-      backgroundColor: 'rgba(136, 191, 77, 1)',
-    },
-    borderRadius: '5px',
-    marginLeft: '10px',
+  mr10: {
+    marginRight: 10,
   },
 
   viewVisualizationDeleteButton: {

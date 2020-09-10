@@ -1,7 +1,7 @@
 import { Op } from 'sequelize';
 import models from '../models/index';
 import BaseRepository from './baseRepository';
-import { DEFAULT_COLLECTIONS } from '../config/types';
+import { DEFAULT_COLLECTIONS, ACCESS_GRANTED, ACCESS_LIMITED } from '../config/types';
 
 class CollectionRepository extends BaseRepository {
   getCollection(id) {
@@ -54,6 +54,42 @@ class CollectionRepository extends BaseRepository {
     return this.model.findAll({
       where: { [Op.or]: [{ users_id: null }, { users_id: id || null }] },
     });
+  }
+
+  getCollectionAccess(id, userId) {
+    return this.model
+      .findOne({
+        where: { id },
+        attributes: ['id'],
+        include: [
+          {
+            model: models.PermissionCollections,
+            attributes: ['permissionGranted'],
+            where: {
+              [Op.or]: [{ permissionGranted: ACCESS_GRANTED }, { permissionGranted: ACCESS_LIMITED }],
+            },
+            include: [
+              {
+                model: models.UserGroups,
+                as: 'userGroups',
+                attributes: ['id'],
+                include: [
+                  {
+                    model: models.User,
+                    where: { id: userId },
+                    attributes: [],
+                  },
+                ],
+              },
+            ],
+          },
+        ],
+      })
+      .then((result) =>
+        result.PermissionCollections.map((accessType) => {
+          return accessType.userGroups !== null ? accessType.permissionGranted : null;
+        })
+      );
   }
 
   getInitialCollectionId() {

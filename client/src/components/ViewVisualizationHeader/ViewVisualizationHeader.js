@@ -54,7 +54,7 @@ const ViewVisualizationHeader = (props) => {
                 <Chip
                   className={classes.toggleFiltersChip}
                   size="small"
-                  label="Toggle"
+                  label="Filters"
                   icon={<FilterListIcon style={{ fill: '#E2E3EF' }} />}
                 />
               )) ||

@@ -68,11 +68,14 @@ const CollectionContainer = ({
               <Link to="/" className={classes.link}>
                 Our analytics
               </Link>
-              <h1 className={classes.collectionName}>
+              <h1 className={classes.collectionName} id={`collections-${currentCollection.id}-name`}>
                 {currentCollection.name || 'Collection not found'}
                 {currentCollection.description && (
                   <Tooltip title={currentCollection.description} placement="right">
-                    <InfoIcon className={classes.collectionDescription} />
+                    <InfoIcon
+                      className={classes.collectionDescription}
+                      id={`collections-${currentCollection.id}-info`}
+                    />
                   </Tooltip>
                 )}
               </h1>
@@ -80,8 +83,13 @@ const CollectionContainer = ({
             <EditIcon
               className={classes.icon}
               onClick={() => openModal({ collection: currentCollection, type: 'Add collection' })}
+              id={`collections-${currentCollection.id}-edit`}
             />
-            <DeleteIcon className={classes.icon} onClick={handleDeleteCollection} />
+            <DeleteIcon
+              className={classes.icon}
+              onClick={handleDeleteCollection}
+              id={`collections-${currentCollection.id}-delete`}
+            />
           </div>
           <AnalyticsTabs
             visualizations={visualizations}

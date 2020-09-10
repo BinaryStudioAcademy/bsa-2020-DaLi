@@ -75,7 +75,7 @@ function LineChartSettings({ updateConfig, config: oldConfig }) {
     showDataPointsValues: incomingShowDataPointsValues,
     trendline,
   } = oldConfig.display;
-
+  const isSummarize = oldConfig.isSummarize || false;
   const [value, setValue] = useState(0);
   const [xAxis, setXAxis] = useState(XAxis.key || XAxis.availableKeys[0]);
   const [yAxis, setYAxis] = useState(YAxis.key || [YAxis.availableKeys[0]]);
@@ -174,16 +174,24 @@ function LineChartSettings({ updateConfig, config: oldConfig }) {
     setLineType(newLineTypes);
   };
 
-  const valuesX = XAxis.availableKeys.map((value) => (
-    <option value={value} key={value}>
-      {value}
-    </option>
-  ));
-  const valuesY = YAxis.availableKeys.map((value) => (
-    <option value={value} key={value}>
-      {value}
-    </option>
-  ));
+  const valuesX = !isSummarize ? (
+    XAxis.availableKeys.map((value) => (
+      <option value={value} key={value}>
+        {value}
+      </option>
+    ))
+  ) : (
+    <option key={XAxis.label}>{XAxis.label}</option>
+  );
+  const valuesY = !isSummarize ? (
+    YAxis.availableKeys.map((value) => (
+      <option value={value} key={value}>
+        {value}
+      </option>
+    ))
+  ) : (
+    <option key={YAxis.label}>{YAxis.label}</option>
+  );
 
   return (
     <div className={classes.root}>
@@ -209,6 +217,7 @@ function LineChartSettings({ updateConfig, config: oldConfig }) {
           <NativeSelect
             className={classes.select}
             value={xAxis}
+            disabled={isSummarize}
             onChange={(event) => {
               setXAxis(event.target.value);
               setLabelXAxis(event.target.value);
@@ -231,6 +240,7 @@ function LineChartSettings({ updateConfig, config: oldConfig }) {
               <NativeSelect
                 className={classes.select}
                 value={value}
+                disabled={isSummarize}
                 onChange={(event) => {
                   const newYAxes = [...yAxis];
                   newYAxes[index] = event.target.value;
@@ -250,7 +260,7 @@ function LineChartSettings({ updateConfig, config: oldConfig }) {
             </div>
           </FormControl>
         ))}
-        <Button variant="contained" className={classes.addSeriesBtn} onClick={addLine}>
+        <Button variant="contained" disabled={isSummarize} className={classes.addSeriesBtn} onClick={addLine}>
           Add another series
         </Button>
       </TabPanel>
@@ -439,6 +449,7 @@ function LineChartSettings({ updateConfig, config: oldConfig }) {
             id="XAxis"
             label="X-axis label"
             className={classes.input}
+            disabled={isSummarize}
             InputLabelProps={{
               shrink: true,
             }}
@@ -460,6 +471,7 @@ function LineChartSettings({ updateConfig, config: oldConfig }) {
             id="YAxis"
             label="Y-axis label"
             className={classes.input}
+            disabled={isSummarize}
             InputLabelProps={{
               shrink: true,
             }}

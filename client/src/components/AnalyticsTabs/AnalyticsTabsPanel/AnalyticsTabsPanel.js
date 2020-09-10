@@ -63,17 +63,21 @@ const AnalyticsTabsPanel = ({ value, index, data, deleteVisualization, deleteDas
                 <>
                   <Link to={`/dashboards/${item.id}`} className={classes.item}>
                     {chooseIcon(item.type)}
-                    <span id={`analytics-${item.id}-name`}>{item.name}</span>
+                    <span id={`analytics-dashboard-${item.id}-name`}>{item.name}</span>
                   </Link>
                   {item.description.length ? (
                     <Tooltip title={item.description} placement="left" className={classes.description}>
-                      <InfoIcon id={`analytics-${item.id}-info`} />
+                      <InfoIcon id={`analytics-dashboard-${item.id}-info`} />
                     </Tooltip>
                   ) : null}
-                  <MoveToInboxIcon className={classes.moveIcon} onClick={() => handleMoveDashboard(item)} />
+                  <MoveToInboxIcon
+                    className={classes.moveIcon}
+                    onClick={() => handleMoveDashboard(item)}
+                    id={`analytics-dashboard-${item.id}-moveToCollections`}
+                  />
                   <DeleteIcon
                     className={classes.menuIcon}
-                    id={`analytics-${item.id}-delete`}
+                    id={`analytics-dashboard-${item.id}-delete`}
                     onClick={deleteDashboard({ id: item.id, collectionId })}
                   />
                 </>
@@ -85,12 +89,21 @@ const AnalyticsTabsPanel = ({ value, index, data, deleteVisualization, deleteDas
                     aria-hidden="true"
                   >
                     {chooseIcon(item.type)}
-                    <span>{item.name}</span>
+                    <span id={`analytics-visualization-${item.id}-name`}>{item.name}</span>
                   </div>
-                  <MoveToInboxIcon className={classes.moveIcon} onClick={() => handleMoveVisualization(item)} />
+                  {item.description.length ? (
+                    <Tooltip title={item.description} placement="left" className={classes.description}>
+                      <InfoIcon id={`analytics-visualization-${item.id}-info`} />
+                    </Tooltip>
+                  ) : null}
+                  <MoveToInboxIcon
+                    className={classes.moveIcon}
+                    onClick={() => handleMoveVisualization(item)}
+                    id={`analytics-visualization-${item.id}-moveToCollections`}
+                  />
                   <DeleteIcon
                     className={classes.menuIcon}
-                    id={item.id}
+                    id={`analytics-visualization-${item.id}-delete`}
                     onClick={deleteVisualization({ id: item.id, collectionId })}
                   />
                 </>

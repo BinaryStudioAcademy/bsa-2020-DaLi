@@ -25,6 +25,8 @@ import {
   DELETE_COLLECTION_ERROR,
   UPDATE_COLLECTION_SUCCESS,
   UPDATE_COLLECTION_ERROR,
+  DELETE_DASHBOARD_ERROR,
+  DELETE_VISUALIZATION_ERROR,
 } from './actionsTypes';
 import { visualizationsAPIService } from '../../services/api/visualizationsAPI.service';
 import { dashboardsAPIService } from '../../services/api/dashboardsAPI.service';
@@ -66,11 +68,15 @@ export function* watchFetchVisualizationsSaga() {
 }
 
 export function* deleteVisualizationSaga(payload) {
-  yield call(visualizationsAPIService.deleteVisualization, payload.id);
-  if (payload.collectionId) {
-    yield put({ type: GET_CURRENT_COLLECTION, id: payload.collectionId });
-  } else {
-    yield put({ type: GET_COLLECTIONS });
+  try {
+    yield call(visualizationsAPIService.deleteVisualization, payload.id);
+    if (payload.collectionId) {
+      yield put({ type: GET_CURRENT_COLLECTION, id: payload.collectionId });
+    } else {
+      yield put({ type: GET_COLLECTIONS });
+    }
+  } catch (error) {
+    yield put({ type: DELETE_VISUALIZATION_ERROR, payload: error });
   }
 }
 
@@ -88,11 +94,15 @@ export function* watchAddDashboardSaga() {
 }
 
 export function* deleteDashboardSaga(payload) {
-  yield call(dashboardsAPIService.deleteDashboard, payload.id);
-  if (payload.collectionId) {
-    yield put({ type: GET_CURRENT_COLLECTION, id: payload.collectionId });
-  } else {
-    yield put({ type: GET_COLLECTIONS });
+  try {
+    yield call(dashboardsAPIService.deleteDashboard, payload.id);
+    if (payload.collectionId) {
+      yield put({ type: GET_CURRENT_COLLECTION, id: payload.collectionId });
+    } else {
+      yield put({ type: GET_COLLECTIONS });
+    }
+  } catch (error) {
+    yield put({ type: DELETE_DASHBOARD_ERROR, payload: error });
   }
 }
 
@@ -134,6 +144,7 @@ export function* moveToCollectionSaga({ payload }) {
     }
   } catch (error) {
     yield put({ type: MOVE_TO_COLLECTION_ERROR, payload: error });
+    yield put({ type: CLOSE_MODAL });
   }
 }
 

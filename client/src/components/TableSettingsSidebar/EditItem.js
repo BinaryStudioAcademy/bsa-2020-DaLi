@@ -10,7 +10,7 @@ import RadioGroup from '@material-ui/core/RadioGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
 
-const EditItem = ({ closeEditColumn, currentColumnId, columns, updateColumnConfig }) => {
+const EditItem = ({ closeEditColumn, currentColumnId, columns, updateColumnConfig, validateField, errors }) => {
   const [open, setOpen] = useState(false);
   const currentColumn = columns.filter((column) => column.id === currentColumnId)[0];
   const [separatorType, setSeparatorType] = useState(currentColumn?.separatorType || '');
@@ -39,6 +39,7 @@ const EditItem = ({ closeEditColumn, currentColumnId, columns, updateColumnConfi
 
   const handleChangeColumnTitle = (event) => {
     editColumn('title', event.target.value);
+    validateField('title', event.target.value);
   };
 
   const handleChangeSeparatorType = (event) => {
@@ -91,6 +92,8 @@ const EditItem = ({ closeEditColumn, currentColumnId, columns, updateColumnConfi
         autoComplete="current-password"
         variant="outlined"
         fullWidth
+        helperText={errors.title ? 'Column name should be at most 30 characters' : null}
+        error={errors.title}
       />
       {currentColumn.type === 'number' && (
         <>
@@ -209,6 +212,8 @@ EditItem.propTypes = {
   currentColumnId: PropTypes.string,
   columns: PropTypes.array,
   updateColumnConfig: PropTypes.func,
+  validateField: PropTypes.func,
+  errors: PropTypes.object,
 };
 
 export default EditItem;

@@ -30,6 +30,17 @@ const TableSettingsSidebar = ({ config, updateConfig, userNotificationError }) =
   const [tableConfig, setTableConfig] = useState(config);
   const [isEditColumn, setIsEditColumn] = useState(false);
   const [currentColumnId, setCurrentColumnId] = useState('');
+  const [errors, setErrors] = useState({
+    title: false,
+  });
+
+  const validateField = (name, value) => {
+    if (name === 'title') {
+      setErrors({ ...errors, [name]: value.length > 30 });
+    }
+  };
+
+  const isError = () => Object.values(errors).includes(true);
 
   const updateOrder = (list) => {
     return list.map((item, i) => {
@@ -114,6 +125,8 @@ const TableSettingsSidebar = ({ config, updateConfig, userNotificationError }) =
             columns={config.columns}
             currentColumnId={currentColumnId}
             updateColumnConfig={updateColumnConfig}
+            validateField={validateField}
+            errors={errors}
           />
         ) : (
           <>
@@ -152,7 +165,12 @@ const TableSettingsSidebar = ({ config, updateConfig, userNotificationError }) =
       </div>
 
       <div className="table-settings-sidebar-footer">
-        <Button onClick={saveConfig} className="view-visualization__setting-button" variant="contained">
+        <Button
+          onClick={saveConfig}
+          className="view-visualization__setting-button"
+          variant="contained"
+          disabled={isError()}
+        >
           Done
         </Button>
       </div>

@@ -73,7 +73,7 @@ const AddUserBody = ({
               currentCollection.id !== id && (
                 <div
                   className={activeCollection === id ? classes.active : classes.collectionItem}
-                  id={`collection-${id}`}
+                  id={id}
                   onClick={handleClick}
                   key={id}
                   aria-hidden="true"
@@ -92,14 +92,15 @@ const AddUserBody = ({
         <div className={classes.buttonContainer}>
           <Button
             onClick={closeModal}
-            variant="outlined"
+            variant="contained"
             style={{ textTransform: 'none', fontSize: 12 }}
             id={`${currentCollection?.id} moveCollectionModalButton-cancel`}
           >
             Cancel
           </Button>
           <Button
-            variant="outlined"
+            variant="contained"
+            color="primary"
             className={classes.moveButton}
             onClick={handleSubmit}
             style={{ textTransform: 'none', fontSize: 12, marginLeft: 5 }}

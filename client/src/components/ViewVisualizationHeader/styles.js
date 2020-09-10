@@ -2,8 +2,7 @@ import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles((theme) => ({
   viewVisualizationHeader: {
-    minHeight: '60px',
-    height: 'fit-content',
+    height: '60px',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'space-between',

@@ -3,7 +3,7 @@ import { makeStyles } from '@material-ui/core/styles';
 const useStyles = makeStyles(() => ({
   dashboardEditingHeader: {
     display: 'flex',
-    flexDirection: 'column',
+    flexDirection: 'row',
     borderBottom: '1px solid #f3f4f4',
   },
 
@@ -12,7 +12,7 @@ const useStyles = makeStyles(() => ({
     height: '50px',
     alignItems: 'center',
     justifyContent: 'space-between',
-    background: '#52afe3',
+    background: '#1CD1A1',
     padding: '0 40px',
     width: '100%',
     boxSizing: 'border-box',
@@ -41,20 +41,17 @@ const useStyles = makeStyles(() => ({
 
   dashboardEditingHeaderButtonCancel: {
     color: '#faf7fa',
-    background: '#63b7e5',
+    background: '#1CD1A1',
   },
 
   dashboardEditingHeaderButtonSave: {
-    color: '#3ca1de',
-    background: '#ffffff',
-    '&:hover': {
-      background: '#eee',
-    },
+    color: '#faf7fa',
+    background: '#5dc194',
   },
 
   dashboardEditingHeaderBottom: {
     flexDirection: 'row',
-    height: '130px',
+    height: 100,
     alignItems: 'center',
     justifyContent: 'space-between',
     background: '#fffff',
@@ -64,8 +61,9 @@ const useStyles = makeStyles(() => ({
   },
   dashboardEditingHeaderInputs: {
     flexDirection: 'column',
+    alignItems: 'center',
     width: '250px',
-    height: '90px',
+    height: 50,
     justifyContent: 'space-between',
   },
 

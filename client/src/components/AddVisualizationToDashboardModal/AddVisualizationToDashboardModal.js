@@ -7,6 +7,8 @@ import SearchIcon from '@material-ui/icons/Search';
 import IconButton from '@material-ui/core/IconButton';
 import { Formik, Form, Field } from 'formik';
 import PropTypes from 'prop-types';
+import Button from '@material-ui/core/Button';
+
 import { dbTableAPIService } from '../../services/api/dbTableAPI.service';
 
 import './styles.css';
@@ -15,12 +17,14 @@ import chooseIcon from '../../helpers/chooseIcon';
 // eslint-disable-next-line
 const AddVisualizationToDashboardModal = ({ closeModal, addVisualization, isVisible, visualizations }) => {
   const [visibleVisualizations, setVisibleVisualizations] = useState(visualizations);
+  const [activeVisualization, setActiveVisualization] = useState({});
 
   useEffect(() => {
     setVisibleVisualizations(visualizations);
   }, [visualizations]);
 
-  const addNewVisualization = (id, tableId) => () => {
+  const addNewVisualization = () => {
+    const { id, tableId } = activeVisualization;
     const { config, datasetSettings } = visualizations.find((vis) => vis.id === id);
     dbTableAPIService.getTableData(tableId, { settings: datasetSettings, config }).then((data) => {
       addVisualization(id, data);
@@ -34,7 +38,7 @@ const AddVisualizationToDashboardModal = ({ closeModal, addVisualization, isVisi
   };
 
   return (
-    <Dialog open={isVisible || false} maxWidth="sm" fullWidth>
+    <Dialog className="add-visualization-container" open={isVisible || false} maxWidth="sm" fullWidth>
       <DialogTitle>
         Pick a visualization to add
         <IconButton
@@ -53,20 +57,36 @@ const AddVisualizationToDashboardModal = ({ closeModal, addVisualization, isVisi
       </Formik>
       {visibleVisualizations && (
         <div className="visualizationToDashboardModalFooter">
-          {visibleVisualizations.map((visualization) => {
+          {visibleVisualizations.map(({ id, tableId, type, name }) => {
             return (
-              <button
-                key={visualization.id}
-                type="button"
-                onClick={addNewVisualization(visualization.id, visualization.tableId)}
+              <div
+                className={activeVisualization.id === id ? 'visualization-item-active' : 'visualization-item'}
+                onClick={() => setActiveVisualization({ id, tableId })}
+                key={id}
+                aria-hidden="true"
               >
-                {chooseIcon(visualization.type, { color: 'inherit', fontSize: 25 })}
-                {visualization.name}
-              </button>
+                {chooseIcon(type, { color: 'rgb(199, 207, 212)', marginRight: 5 })}
+                <span>{name}</span>
+              </div>
             );
           })}
         </div>
       )}
+      <div className="add-visualization-modal-action">
+        <Button onClick={closeModal} variant="contained" style={{ textTransform: 'none', fontSize: 12 }}>
+          Cancel
+        </Button>
+        <Button
+          variant="contained"
+          color="primary"
+          className="add-visualization-btn"
+          onClick={addNewVisualization}
+          style={{ textTransform: 'none', fontSize: 12, marginLeft: 5 }}
+          disabled={!activeVisualization.id}
+        >
+          Add
+        </Button>
+      </div>
     </Dialog>
   );
 };

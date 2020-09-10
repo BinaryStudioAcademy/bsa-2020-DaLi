@@ -22,7 +22,6 @@ const ViewVisualizationHeader = (props) => {
     onToggleRightSideBar,
     datasetSettings,
     updateVisualization,
-    tableId,
     onChipCloseRemoveSidebar,
   } = props;
   const classes = useStyles();
@@ -34,7 +33,7 @@ const ViewVisualizationHeader = (props) => {
           <span className={classes.viewVisualizationTitleSection}>
             {isVisualizationExist ? 'Visualizations / ' : 'Create Visualization / '}
           </span>
-          {isVisualizationExist ? name : `${tableId} / ${visualizationType}`}
+          {isVisualizationExist ? name : ` ${visualizationType}`}
         </Typography>
         {isVisualizationExist && (
           <>
@@ -126,7 +125,6 @@ ViewVisualizationHeader.propTypes = {
   description: PropTypes.string,
   visualizationType: PropTypes.string,
   onToggleRightSideBar: PropTypes.func,
-  tableId: PropTypes.string,
   datasetSettings: PropTypes.array,
   updateVisualization: PropTypes.func,
   onChipCloseRemoveSidebar: PropTypes.func,

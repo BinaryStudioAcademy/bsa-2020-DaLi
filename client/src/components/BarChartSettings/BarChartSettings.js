@@ -24,7 +24,8 @@ const PrettySwitch = (props) => {
   return (
     <Switch
       focusVisibleClassName={classes.focusVisible}
-      disableRipple
+      size="normal"
+      // disableRipple
       classes={{
         root: classes.root,
         switchBase: classes.switchBase,
@@ -225,14 +226,14 @@ const BarChartSettings = ({ updateConfig, config: oldConfig }) => {
         value={value}
         onChange={handleChange}
         aria-label="simple tabs example"
-        variant="fullWidth"
-        classes={{
-          indicator: classes.indicator,
-        }}
+        // variant="fullWidth"
+        // classes={{
+        //   indicator: classes.indicator,
+        // }}
       >
-        <Tab className={classes.tab} label="Data" {...a11yProps(0)} />
-        <Tab className={classes.tab} label="Display" {...a11yProps(1)} />
-        <Tab className={classes.tab} label="Labels" {...a11yProps(2)} />
+        <Tab label="Data" className={classes.tab} />
+        <Tab label="Display" className={classes.tab} />
+        <Tab label="Labels" className={classes.tab} />
       </Tabs>
       <TabPanel value={value} index={0}>
         <FormControl className={classes.formControl}>
@@ -262,7 +263,7 @@ const BarChartSettings = ({ updateConfig, config: oldConfig }) => {
           <FormControl key={`line${index}`} className={classes.ySelectControl}>
             <div className={classes.ySelectItem}>
               <NativeSelect
-                className={classes.select}
+                // className={classes.select}
                 value={value}
                 disabled={isSummarize}
                 onChange={(event) => {
@@ -295,6 +296,7 @@ const BarChartSettings = ({ updateConfig, config: oldConfig }) => {
           />
           {isGoalLine ? (
             <TextField
+              variant="outlined"
               id="standard-basic"
               label="Goal line"
               className={classes.input}
@@ -477,7 +479,10 @@ const BarChartSettings = ({ updateConfig, config: oldConfig }) => {
       </TabPanel>
       <div className={classes.btnWrapper}>
         <Button
-          className={classes.btn}
+          // className={classes.btn}
+          size="large"
+          variant="contained"
+          color="primary"
           onClick={() => {
             onDoneButton();
           }}

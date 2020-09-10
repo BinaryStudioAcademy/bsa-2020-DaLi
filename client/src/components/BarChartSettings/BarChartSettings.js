@@ -24,7 +24,7 @@ const PrettySwitch = (props) => {
   return (
     <Switch
       focusVisibleClassName={classes.focusVisible}
-      size="normal"
+      size="medium"
       // disableRipple
       classes={{
         root: classes.root,

@@ -90,6 +90,23 @@ export const theme = createMuiTheme({
         height: '50px',
       },
     },
+    MuiIcon: {
+      root: {
+        width: '34px',
+        height: '34px',
+        border: '1px solid #1CD1A1',
+        borderRadius: '60%',
+        textAlign: 'center',
+        boxSizing: 'border-box',
+        color: '#1cd1a1',
+      },
+      sizeLarge: {
+        width: '20px',
+        height: '20px',
+        border: 'none',
+        color: '#858585',
+      },
+    },
     MuiIconButton: {
       root: {
         width: '34px',
@@ -108,6 +125,7 @@ export const theme = createMuiTheme({
     MuiSvgIcon: {
       root: {
         fontSize: '18px',
+        verticalAlign: 'center',
       },
       fontSizeLarge: {
         fontSize: '28px',
@@ -119,25 +137,30 @@ export const theme = createMuiTheme({
       },
     },
     MuiTab: {
-      wrapper: {
+      root: {
         color: '#858585',
         fontWeight: 500,
         textTransform: 'capitalize',
         fontSize: '14px',
+        maxWidth: `${100 / 3}%`,
+        width: '100%',
         lineHeight: '21px',
+      },
+      wrapper: {
+        color: '#858585',
       },
       textColorInherit: {
         opacity: 1,
-
         '&.Mui-selected .MuiTab-wrapper': {
-          color: '#1CD1A1',
+          color: '#1CD1A1;',
           fontWeight: 'normal',
+          borderBottom: '1px solid ##1CD1A1',
         },
       },
     },
     MuiTabs: {
       root: {
-        borderBottom: '1px solid #E0E0E0',
+        width: '100%',
       },
       indicator: {
         backgroundColor: '#1CD1A1',

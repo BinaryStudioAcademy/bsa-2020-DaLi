@@ -2,23 +2,22 @@ import { makeStyles } from '@material-ui/core/styles';
 
 export const useStyles = makeStyles(() => ({
   root: {
-    backgroundColor: 'white',
+    backgroundColor: 'inherit',
     marginTop: 8,
     boxShadow: 'rgba(0, 0, 0, 0.08) 0px 7px 20px',
     transition: 'all 0.2s linear 0s',
     alignItems: 'start',
     padding: 0,
-    borderRadius: 10,
   },
   itemContainer: {
     display: 'flex',
     alignItems: 'center',
     padding: 16,
     color: '',
-    borderBottom: '1px solid rgb(237, 242, 245)',
-    '&:last-child': {
-      borderRadius: 10,
-    },
+    border: '1px solid rgb(237, 242, 245)',
+    borderLeft: '4px solid #F9A9C6;',
+    borderRadius: 10,
+    marginBottom: 10,
     '&:hover': {
       color: 'rgb(80, 158, 227)',
       backgroundColor: '#f9fbfc',
@@ -33,7 +32,7 @@ export const useStyles = makeStyles(() => ({
       },
       '& $icon': {
         opacity: 1,
-        color: 'rgb(80, 158, 227)',
+        color: '',
       },
     },
   },

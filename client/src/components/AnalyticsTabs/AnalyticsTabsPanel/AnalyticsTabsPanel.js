@@ -11,6 +11,7 @@ import Tooltip from '@material-ui/core/Tooltip';
 import InfoIcon from '@material-ui/icons/Info';
 import DeleteIcon from '@material-ui/icons/Delete';
 import MoveToInboxIcon from '@material-ui/icons/MoveToInbox';
+import { Icon } from '@material-ui/core';
 import { Link, useHistory } from 'react-router-dom';
 
 import { useStyles } from './styles';
@@ -29,19 +30,19 @@ const AnalyticsTabsPanel = ({ value, index, data, deleteVisualization, deleteDas
   const chooseIcon = (type) => {
     switch (type) {
       case 'LINE_CHART': {
-        return <TimelineOutlinedIcon className={classes.icon} />;
+        return <TimelineOutlinedIcon /* className={classes.icon} */ />;
       }
       case 'BAR_CHART': {
-        return <EqualizerOutlinedIcon className={classes.icon} />;
+        return <EqualizerOutlinedIcon /* className={classes.icon} */ />;
       }
       case 'TABLE': {
-        return <TableChartOutlinedIcon className={classes.icon} />;
+        return <TableChartOutlinedIcon /* className={classes.icon} */ />;
       }
       case 'MAP': {
-        return <MapOutlinedIcon className={classes.icon} />;
+        return <MapOutlinedIcon /* className={classes.icon} */ />;
       }
       default: {
-        return <DashboardIcon className={classes.icon} />;
+        return <DashboardIcon /* className={classes.icon} */ />;
       }
     }
   };
@@ -62,7 +63,9 @@ const AnalyticsTabsPanel = ({ value, index, data, deleteVisualization, deleteDas
               {!item.type ? (
                 <>
                   <Link to={`/dashboards/${item.id}`} className={classes.item}>
-                    {chooseIcon(item.type)}
+                    <Icon aria-label="delete" size="small">
+                      {chooseIcon(item.type)}
+                    </Icon>
                     <span id={`analytics-dashboard-${item.id}-name`}>{item.name}</span>
                   </Link>
                   {item.description.length ? (
@@ -88,7 +91,9 @@ const AnalyticsTabsPanel = ({ value, index, data, deleteVisualization, deleteDas
                     onClick={() => onVisualizationsClick(item.id, item.tableId)}
                     aria-hidden="true"
                   >
-                    {chooseIcon(item.type)}
+                    <Icon aria-label="delete" size="large">
+                      {chooseIcon(item.type)}
+                    </Icon>
                     <span id={`analytics-visualization-${item.id}-name`}>{item.name}</span>
                   </div>
                   {item.description.length ? (

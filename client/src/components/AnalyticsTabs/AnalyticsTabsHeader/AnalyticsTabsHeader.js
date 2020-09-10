@@ -11,26 +11,16 @@ const useStyles = makeStyles(() => ({
     color: '#509ee3',
     fontWeight: 900,
     paddingBottom: 0,
-  },
-  tabsContainer: {
-    width: '100%',
-  },
-  selected: {},
-  indicator: {
-    backgroundColor: '#509ee3',
+    height: 'inherit',
+    marginBottom: '10px',
   },
 }));
 
 const TabsHeader = ({ value, children, onChange }) => {
   const classes = useStyles();
   return (
-    <AppBar className={classes.tabsHeader} position="static" color="default">
-      <Tabs
-        className={classes.tabsContainer}
-        value={value}
-        onChange={onChange}
-        classes={{ indicator: classes.indicator }}
-      >
+    <AppBar position="static" className={classes.tabsHeader} color="default">
+      <Tabs value={value} onChange={onChange}>
         {children}
       </Tabs>
     </AppBar>

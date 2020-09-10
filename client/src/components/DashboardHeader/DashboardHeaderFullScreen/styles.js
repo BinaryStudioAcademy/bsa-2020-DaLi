@@ -12,6 +12,7 @@ const useStyles = makeStyles(() => ({
     background: '#f9fbfc',
     position: 'absolute',
     top: 0,
+    zIndex: 1000,
   },
 
   dashboardFullScreenTitle: {

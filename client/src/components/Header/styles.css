@@ -4,7 +4,7 @@ header {
   border-bottom: 2px solid #f7f7f7;
   position: sticky;
   top: 0;
-  z-index: 1000;
+  z-index: 999;
 }
 
 .header-container {

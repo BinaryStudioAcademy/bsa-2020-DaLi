@@ -71,17 +71,19 @@ const useStyles = makeStyles(() => ({
 
   dashboardEditingHeaderInput: {
     '&:hover': {
-      borderColor: '#52afe3',
+      borderColor: '#1CD1A1',
     },
     '& .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline': {
       borderColor: '#eeeee',
     },
     '&:hover .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline': {
-      borderColor: '#000000',
+      borderColor: '#1CD1A1',
+      opacity: '.8',
     },
     '& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline': {
-      borderColor: '#52afe3',
+      borderColor: '#1CD1A1',
     },
+    marginRight: 15,
   },
   dashboardEditingHeaderHelperText: {
     position: 'absolute',

@@ -8,7 +8,7 @@ const iconStyles = {
   color: '#c6cfd3',
 };
 
-const PropertyItem = ({ index, name, id, deleteColumn, editColumn }) => {
+const PropertyItem = ({ index, name, id, deleteColumn, editColumn, isSummarize }) => {
   return (
     <Draggable draggableId={id} index={index}>
       {(provided) => (
@@ -22,7 +22,7 @@ const PropertyItem = ({ index, name, id, deleteColumn, editColumn }) => {
           <h4>{name}</h4>
           <div className="property-item_buttons-container">
             <SettingsIcon fontSize="default" style={iconStyles} onClick={() => editColumn(id)} />
-            <CloseIcon fontSize="default" style={iconStyles} onClick={deleteColumn(id)} />
+            {!isSummarize && <CloseIcon fontSize="default" style={iconStyles} onClick={deleteColumn(id)} />}
           </div>
         </div>
       )}
@@ -36,6 +36,7 @@ PropertyItem.propTypes = {
   id: PropTypes.string,
   deleteColumn: PropTypes.func,
   editColumn: PropTypes.func,
+  isSummarize: PropTypes.bool,
 };
 
 export default PropertyItem;

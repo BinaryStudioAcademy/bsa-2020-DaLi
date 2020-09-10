@@ -44,6 +44,34 @@ export default class DBPostgresManager {
       });
   }
 
+  createRegexOperator(checkType, caseSensitive) {
+    let operator = '';
+    if (checkType.startsWith('not')) {
+      operator += '!';
+    }
+    operator += '~';
+    if (!caseSensitive) {
+      operator += '*';
+    }
+
+    return operator;
+  }
+
+  createRegex(substring, checkType) {
+    switch (checkType) {
+      case 'notEqual':
+      case 'equal':
+        return `^${substring}/?$`;
+
+      case 'includes':
+      case 'notIncludes':
+        return `(${substring})`;
+
+      default:
+        return '';
+    }
+  }
+
   formQueryFromSettings(settings) {
     let query = settings.length ? ' WHERE ' : '';
     let isFirstOption = true;
@@ -52,6 +80,24 @@ export default class DBPostgresManager {
       if (columnType === 'date') {
         const greaterThan = setting.greaterThan ? new Date(setting.greaterThan).toISOString() : '-infinity';
         const lessThan = setting.lessThan ? new Date(setting.lessThan).toISOString() : 'infinity';
+        if (greaterThan) {
+          query += ` ${isFirstOption ? '' : 'AND'} "${columnName}" >= '${greaterThan}' `;
+          isFirstOption = false;
+        }
+        if (lessThan) {
+          query += ` ${isFirstOption ? '' : 'AND'} "${columnName}" <= '${lessThan}' `;
+          isFirstOption = false;
+        }
+      } else if (columnType === 'string') {
+        const { substring, checkType, caseSensitive } = setting;
+        const regex = this.createRegex(substring, checkType);
+        const operator = this.createRegexOperator(checkType, caseSensitive);
+
+        query += ` ${isFirstOption ? '' : 'AND'} "${columnName}" ${operator} '${regex}' `;
+        isFirstOption = false;
+      } else if (columnType === 'number') {
+        const greaterThan = setting.greaterThan ? setting.greaterThan : false;
+        const lessThan = setting.lessThan ? setting.lessThan : false;
         if (greaterThan) {
           query += ` ${isFirstOption ? '' : 'AND'} "${columnName}" >= '${greaterThan}' `;
           isFirstOption = false;

@@ -365,7 +365,7 @@ LineChart.propTypes = {
       goal: PropTypes.shape({
         display: PropTypes.bool,
         value: PropTypes.number,
-        label: PropTypes.string,
+        label: PropTypes.array,
       }),
       lineType: PropTypes.array,
       trendline: PropTypes.shape({

@@ -19,7 +19,7 @@ const EnhancedTable = (props) => {
   const maxColumnsValue = activeColumns.map((column) => {
     const maxValue = Math.max(
       ...rows.map((row) => {
-        return parseFloat(row[column].replace(/\s/g, ''));
+        return parseFloat(row[column].toString().replace(/\s/g, ''));
       })
     );
 

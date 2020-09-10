@@ -8,6 +8,7 @@ import moment from 'moment';
 import { calcMaxYDataValue, calcMinYDataValue } from '../../utils/calcCriticalYAxisValue';
 import TrendlineCreator from '../../utils/Trendline';
 import './BarChart.css';
+import { display } from '@material-ui/system';
 
 function BarChart(props) {
   const svgRef = useRef();
@@ -62,15 +63,15 @@ function BarChart(props) {
       .padding(0.1);
   };
 
-  const calcYScale = (YKey, extent = null) => {
+  const calcYScale = (yMin,yMax) => {
     return d3
       .scaleLinear()
-      .domain(extent ? extent : [calcYDataRange(YKey).min, calcYDataRange(YKey).max])
+      .domain([yMin, yMax])
       .range([height - margin.bottom, margin.top]);
   };
 
-  const drawAxes = (chart, xScale, yMaxIndex) => {
-    const yScale = calcYScale(YAxis.key[yMaxIndex]);
+  const drawAxes = (chart, xScale, yScale) => {
+    // const yScale = calcYScale(YAxis.key[yMaxIndex]);
     const xAxis = (g) =>
       g.attr('transform', `translate(0,${height - margin.bottom})`).call(d3.axisBottom(xScale).tickSize(0));
     const yAxis = (g) => g.attr('transform', `translate(${margin.left},0)`).call(d3.axisLeft(yScale).tickSize(0));
@@ -103,7 +104,9 @@ function BarChart(props) {
     });
   };
 
-  const drawGroupedChart = (chart, data, xScale, xSubgroup, colors, tips, yMaxIndex) => {
+  const drawGroupedChart = (chart, data, xScale, xSubgroup, colors, tips, yScale, yMin) => {
+    drawAxes(chart, xScale, yScale);
+
     chart
       .append('g')
       .attr('class', 'bars')
@@ -123,17 +126,17 @@ function BarChart(props) {
       .attr('class', 'bar')
       .attr('x', (d) => xSubgroup(d.key))
       .attr('y', (d) => {
-        const zero = calcYScale(YAxis.key[yMaxIndex])(0);
-        const current = calcYScale(YAxis.key[yMaxIndex])(d.value);
+        const zero = yScale(0);
+        const current = yScale(d.value);
         const yPos = zero > current ? current : zero;
         return yPos;
       })
       .attr('width', xSubgroup.bandwidth())
       .attr('height', (d) => {
-        const zero = calcYScale(YAxis.key[yMaxIndex])(0);
-        const current = calcYScale(YAxis.key[yMaxIndex])(d.value);
+        const zero = yScale(0);
+        const current = yScale(d.value);
         let barHeight = Math.abs(zero - current);
-        if (calcYDataRange(YAxis.key[yMaxIndex]).min >= 0) {
+        if (yMin >= 0) {
           const chartElemY = chart.node().getBoundingClientRect().y;
           const xAxisElemY = chart.select('.x-axis').node().getBoundingClientRect().y;
           const xAxisY = xAxisElemY - chartElemY;
@@ -151,9 +154,14 @@ function BarChart(props) {
         resetFade();
       });
 
+      if (goal.display) {
+        displayGoalLine(chart,yScale);
+      }
+
+
     if (showDataPointsValues) {
     const xPosGrouped = (a, index) => xScale(a[XAxis.key]) + ((2 * index + 1) * xScale.bandwidth()) / (2 * YAxis.key.length);
-    const yPosGrouped = (a, key, index) => calcYScale(YAxis.key[yMaxIndex])(a[key]) - 10;
+    const yPosGrouped = (a, key, index) => yScale(a[key]) - 10;
     const pointText = (a, key) => `${a[key]}`;
 
       YAxis.key.forEach((key, index) =>
@@ -170,7 +178,10 @@ function BarChart(props) {
         .text((a) => pointText(a, key))
       )
     }
+
   };
+
+  
 
   const fade = (opacity, selectedBar) => {
     d3.selectAll('.bar')
@@ -191,8 +202,13 @@ function BarChart(props) {
     const stackGenerator = d3.stack().keys(YAxis.key).order(d3.stackOrderDescending);
     const layers = stackGenerator(data);
     const extent = [0, d3.max(layers, (layer) => d3.max(layer, (sequence) => sequence[1]))];
+    let [yMin,yMax] = extent;
 
-    const yScale = calcYScale(null, extent);
+    if (goal.display && goal.value>yMax){
+      yMax = goal.value;
+    } 
+
+    const yScale = calcYScale(yMin,yMax);
 
     // rendering
     chart
@@ -221,6 +237,12 @@ function BarChart(props) {
       })
       .on('mouseout', (d, index, elem) => { tips.hide(d, elem[index]); resetFade();});
 
+      drawAxes(chart, xScale,yScale);
+
+      if (goal.display) {
+        displayGoalLine(chart,yScale);
+      }
+
     if (showDataPointsValues) {
       const values = layers.map((a) => a.map((item) => item[1]));
       const maxValues = values.reduce((prev, current) =>
@@ -248,6 +270,8 @@ function BarChart(props) {
     const legendRectSize = 18;
     const legendSpacing = 4;
 
+    let lengthOffset = 0;
+
     const legend = legendContainer
       .selectAll('.legend')
       .data(YAxis.label)
@@ -255,10 +279,11 @@ function BarChart(props) {
       .append('g')
       .attr('class', 'legend')
       .attr('transform', function (d, i) {
-        const width = legendRectSize + legendSpacing + 40;
+        const width = legendRectSize + legendSpacing + 30;
         const offset = (width * 3) / 2;
-        const horz = i * offset;
+        const horz = i * offset + lengthOffset;
         const vert = 0;
+        lengthOffset += d.length * 5;
         return 'translate(' + horz + ',' + vert + ')';
       });
 
@@ -295,7 +320,7 @@ function BarChart(props) {
     return tips;
   };
 
-  const addTrendLine = (chart,yMaxIndex) => {
+  const addTrendLine = (chart,yScale) => {
     const { polynomial, trendlineType } = trendline;
     const xDataRange = {
       min: data[0][XAxis.key],
@@ -314,7 +339,7 @@ function BarChart(props) {
       order: polynomial.order,
     };
 
-    const yScale = calcYScale(YAxis.key[yMaxIndex]);
+    // const yScale = calcYScale(YAxis.key[yMaxIndex]);
 
     const trendlineCreator = new TrendlineCreator(trendlineType, chart, xScaleForLines, yScale);
     trendlineCreator.render(domain, trendlineData, config);
@@ -343,8 +368,8 @@ function BarChart(props) {
     }
   };
 
-  const displayGoalLine = (chart,yMaxIndex) => {
-    const y = calcYScale(YAxis.key[yMaxIndex])(goal.value);
+  const displayGoalLine = (chart,yScale) => {
+    const y = yScale(goal.value);
     chart.append('line').attr('id', 'goal').attr('x1', 0).attr('y1', y).attr('x2', width).attr('y2', y);
 
     chart
@@ -365,11 +390,14 @@ function BarChart(props) {
     const tips = createTips(chart);
 
     const xScale = calcXScale(data, XAxis.key);
-    const yMaxValues = YAxis.key.map(key => calcYDataRange(key).max);
+    const yMaxValues = YAxis.key.map((key) => calcYDataRange(key).max);
+    const yMinValues = YAxis.key.map((key) => calcYDataRange(key).min);
     const yMax = Math.max(...yMaxValues);
-    const yMaxIndex = yMaxValues.findIndex(item => item === yMax);
+    const yMin = Math.min(...yMinValues);
+    // const yMaxIndex = yMaxValues.findIndex((item) => item === yMax);
+    const yScale = calcYScale(yMin, yMax);
 
-    drawAxes(chart, xScale,yMaxIndex);
+    
 
     // Another scale for subgroup position?
     const xSubgroup = d3.scaleBand().domain(YAxis.key).range([0, xScale.bandwidth()]).padding([0.05]);
@@ -378,38 +406,37 @@ function BarChart(props) {
     const colors = d3.scaleOrdinal().domain(YAxis.key).range(color);
 
     // draw chart
-    stacked ? drawStackedChart(chart, xScale, tips) : drawGroupedChart(chart, data, xScale, xSubgroup, colors, tips, yMaxIndex);
+    stacked ? drawStackedChart(chart, xScale, tips) : drawGroupedChart(chart, data, xScale, xSubgroup, colors, tips, yScale, yMin);
 
     // let barsInfo = null;
 
-    const yScale = calcYDataRange(YAxis.key[yMaxIndex]);
-    if (yScale.min < 0) {
+    // const yRange = calcYDataRange(YAxis.key[yMaxIndex]);
+    const yRange = {min:yMin,max:yMax};
+    if (yRange.min < 0) {
       chart
         .append('line')
         .style('stroke', '#EE8625')
         .style('stroke-width', 3)
         .attr('x1', 0)
-        .attr('y1', yScale(0))
+        .attr('y1', yRange(0))
         .attr('x2', width)
-        .attr('y2', yScale(0));
+        .attr('y2', yRange(0));
 
-      const y = calcYScale(YAxis.key[yMaxIndex]);
+      // const y = calcYScale(YAxis.key[yMaxIndex]);
 
       chart
         .append('text')
-        .attr('y', y - 10)
+        .attr('y', yScale - 10)
         .attr('x', 70)
         .attr('text-anchor', 'middle')
         .attr('class', 'line__label')
         .text('0');
     }
 
-    if (goal.display) {
-      displayGoalLine(chart,yMaxIndex);
-    }
+    
 
     if (trendline.display && data.length) {
-      addTrendLine(chart,yMaxIndex);
+      addTrendLine(chart,yScale);
     }
 
     // delete axis values

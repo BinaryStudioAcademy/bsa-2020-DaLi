@@ -113,8 +113,8 @@ export function* watchDeleteDashboardSaga() {
 export function* addCollectionSaga({ payload }) {
   try {
     yield call(collectionsAPIService.addCollection, payload);
-    yield put({ type: ADD_COLLECTION_SUCCESS });
     yield put({ type: CLOSE_MODAL });
+    yield put({ type: ADD_COLLECTION_SUCCESS });
     yield put({ type: GET_COLLECTIONS });
   } catch (error) {
     yield put({ type: ADD_COLLECTION_ERROR, payload: error });

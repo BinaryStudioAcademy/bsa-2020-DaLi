@@ -68,15 +68,15 @@ function LineChart({ settings, data, chart: chartSize }) {
       .padding(0.1);
   };
 
-  const calcYScale = (YKey, extent = null) => {
+  const calcYScale = (yMin,yMax, extent = null) => {
     return d3
       .scaleLinear()
-      .domain(extent ? extent : [calcYDataRange(YKey).min, calcYDataRange(YKey).max])
+      .domain(extent ? extent : [yMin, yMax])
       .range([height - margin.bottom, margin.top]);
   };
 
-  const drawAxes = (chart, xScale, yMaxIndex) => {
-    const yScale = calcYScale(YAxis.key[yMaxIndex]);
+  const drawAxes = (chart, xScale, yScale) => {
+    // const yScale = calcYScale(YAxis.key[yMaxIndex]);
     const xAxis = (g) =>
       g.attr('transform', `translate(0,${height - margin.bottom})`).call(d3.axisBottom(xScale).tickSize(0));
     const yAxis = (g) => g.attr('transform', `translate(${margin.left},0)`).call(d3.axisLeft(yScale).tickSize(0));
@@ -114,6 +114,8 @@ function LineChart({ settings, data, chart: chartSize }) {
     const legendRectSize = 18;
     const legendSpacing = 4;
 
+    let lengthOffset = 0;
+
     const legend = legendContainer
       .selectAll('.legend')
       .data(YAxis.key)
@@ -121,10 +123,11 @@ function LineChart({ settings, data, chart: chartSize }) {
       .append('g')
       .attr('class', 'legend')
       .attr('transform', function (d, i) {
-        const width = legendRectSize + legendSpacing + 40;
+        const width = legendRectSize + legendSpacing + 30;
         const offset = (width * 3) / 2;
-        const horz = i * offset;
+        const horz = i * offset + lengthOffset;
         const vert = 0;
+        lengthOffset += d.length * 5;
         return 'translate(' + horz + ',' + vert + ')';
       });
 
@@ -157,7 +160,7 @@ function LineChart({ settings, data, chart: chartSize }) {
     return tips;
   };
 
-  const addTrendLine = (chart) => {
+  const addTrendLine = (chart, yScale) => {
     const { polynomial, trendlineType } = trendline;
     const xDataRange = {
       min: data[0][XAxis.key],
@@ -176,7 +179,7 @@ function LineChart({ settings, data, chart: chartSize }) {
       order: polynomial.order,
     };
 
-    const yScale = calcYScale(YAxis.key[0]);
+    // const yScale = calcYScale(YAxis.key[0]);
 
     const trendlineCreator = new TrendlineCreator(trendlineType, chart, xScaleForLines, yScale);
     trendlineCreator.render(domain, trendlineData, config);
@@ -205,8 +208,8 @@ function LineChart({ settings, data, chart: chartSize }) {
     }
   };
 
-  const displayGoalLine = (chart, tips) => {
-    const y = calcYScale(YAxis.key[0])(goal.value);
+  const displayGoalLine = (chart, yScale) => {
+    const y = yScale(goal.value);
     chart.append('line').attr('id', 'goal').attr('x1', 0).attr('y1', y).attr('x2', width).attr('y2', y);
 
     chart
@@ -218,13 +221,13 @@ function LineChart({ settings, data, chart: chartSize }) {
       .text(goal.label);
   };
 
-  const drawLineChart = (chart, data, xScale, tips, yMaxIndex) => {
+  const drawLineChart = (chart, data, xScale, tips, yScale) => {
     YAxis.key.map((YKey, index) => {
       const line = d3
         .line()
         .curve(d3[lineType[index]])
         .x((d) => xScale(d[XAxis.key]) + xScale.bandwidth() / 2)
-        .y((d) => calcYScale(YAxis.key[yMaxIndex])(d[YKey]));
+        .y((d) => yScale(d[YKey]));
       chart
         .append('path')
         .datum(data.sort((a, b) => a[XAxis.key] - b[XAxis.key]))
@@ -242,7 +245,7 @@ function LineChart({ settings, data, chart: chartSize }) {
         .append('circle')
         .attr('class', 'dot')
         .attr('cx', (d) => xScale(d[XAxis.key]) + xScale.bandwidth() / 2)
-        .attr('cy', (d) => calcYScale(YAxis.key[yMaxIndex])(d.value))
+        .attr('cy', (d) => yScale(d.value))
         .attr('r', 5)
         .style('stroke', color[index])
         .on('mouseover', (d, index, elem) => tips.show(d, elem[index]))
@@ -256,7 +259,7 @@ function LineChart({ settings, data, chart: chartSize }) {
           .append('text')
           .attr('class', 'dot__value')
           .attr('x', (d) => xScale(d[XAxis.key]) + xScale.bandwidth() / 2)
-          .attr('y', (d) => calcYScale(YAxis.key[yMaxIndex])(d[YKey]) - 20)
+          .attr('y', (d) => yScale(d[YKey]) - 20)
           .attr('text-anchor', 'middle')
           .text((d) => d[YKey]);
       }
@@ -273,42 +276,45 @@ function LineChart({ settings, data, chart: chartSize }) {
 
     const xScale = calcXScale(data, XAxis.key);
     const yMaxValues = YAxis.key.map((key) => calcYDataRange(key).max);
+    const yMinValues = YAxis.key.map((key) => calcYDataRange(key).min);
     const yMax = Math.max(...yMaxValues);
-    const yMaxIndex = yMaxValues.findIndex((item) => item === yMax);
+    const yMin = Math.min(...yMinValues);
+    // const yMaxIndex = yMaxValues.findIndex((item) => item === yMax);
+    const yScale = calcYScale(yMin, yMax);
 
-    drawAxes(chart, xScale, yMaxIndex);
+    drawAxes(chart, xScale, yScale);
 
-    drawLineChart(chart, data, xScale, tips, yMaxIndex);
+    drawLineChart(chart, data, xScale, tips, yScale);
 
-    const yScale = calcYDataRange(YAxis.key[yMaxIndex]);
+    // const yScale = calcYDataRange(YAxis.key[yMaxIndex]);
 
-    if (yScale.min < 0) {
-      chart
-        .append('line')
-        .style('stroke', '#EE8625')
-        .style('stroke-width', 3)
-        .attr('x1', 0)
-        .attr('y1', yScale(0))
-        .attr('x2', width)
-        .attr('y2', yScale(0));
+    // if (yScale.min < 0) {
+    //   chart
+    //     .append('line')
+    //     .style('stroke', '#EE8625')
+    //     .style('stroke-width', 3)
+    //     .attr('x1', 0)
+    //     .attr('y1', yScale(0))
+    //     .attr('x2', width)
+    //     .attr('y2', yScale(0));
 
-      const y = calcYScale(YAxis.key[yMaxIndex]);
+    //   const y = calcYScale(YAxis.key[yMaxIndex]);
 
-      chart
-        .append('text')
-        .attr('y', y - 10)
-        .attr('x', 70)
-        .attr('text-anchor', 'middle')
-        .attr('class', 'line__label')
-        .text('0');
-    }
+    //   chart
+    //     .append('text')
+    //     .attr('y', y - 10)
+    //     .attr('x', 70)
+    //     .attr('text-anchor', 'middle')
+    //     .attr('class', 'line__label')
+    //     .text('0');
+    // }
 
     if (goal.display) {
-      displayGoalLine(chart);
+      displayGoalLine(chart, yScale);
     }
 
     if (trendline.display && data.length) {
-      addTrendLine(chart);
+      addTrendLine(chart, yScale);
     }
 
     // delete axis values

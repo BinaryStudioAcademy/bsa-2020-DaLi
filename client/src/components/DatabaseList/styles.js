@@ -16,7 +16,6 @@ export const useStyles = makeStyles(() => ({
     },
   },
   databaseName: {
-    cursor: 'pointer',
     textDecoration: 'none',
     color: '#509ee3',
     fontWeight: 700,
@@ -35,9 +34,5 @@ export const useStyles = makeStyles(() => ({
   item: {
     textDecoration: 'none',
     color: '#1CD1A1',
-    '&:hover': {
-      textDecoration: 'underline',
-      textDecorationColor: '#1CD1A1',
-    },
   },
 }));

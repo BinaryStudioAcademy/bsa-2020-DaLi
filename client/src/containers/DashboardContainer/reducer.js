@@ -5,11 +5,14 @@ import {
   UPDATE_DASHBOARD,
   UPDATE_DASHBOARD_SUCCESS,
   UPDATE_DASHBOARD_ERROR,
+  RESET_NOTIFICATION,
 } from './actionsTypes';
 
 const initialState = {
   isLoading: false,
   error: false,
+  status: 'success',
+  message: '',
   success: null,
   dashboard: {},
 };
@@ -26,10 +29,19 @@ const currentDashboardReducer = (state = initialState, { type, payload }) => {
       return {
         ...state,
         isLoading: false,
-        error: payload,
+        error: true,
+        status: 'error',
+        message: payload.message,
       };
     }
-
+    case RESET_NOTIFICATION: {
+      return {
+        ...state,
+        message: '',
+        status: 'success',
+        error: false,
+      };
+    }
     case GET_DASHBOARD_SUCCESS: {
       const { dashboard } = payload;
       return {
@@ -60,7 +72,9 @@ const currentDashboardReducer = (state = initialState, { type, payload }) => {
       return {
         ...state,
         isLoading: false,
-        error: payload,
+        error: true,
+        status: 'error',
+        message: payload.message,
       };
     }
     default:

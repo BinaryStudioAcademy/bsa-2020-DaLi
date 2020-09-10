@@ -42,17 +42,8 @@ export const useStyles = makeStyles(() => ({
   },
 
   moveButton: {
-    color: 'white',
-    textTransform: 'none',
-    background: '#3ca1de',
-    float: 'right',
-    borderRadius: '5px',
-    '&:hover': {
-      background: '#3ca1de',
-    },
     '&:disabled': {
       opacity: 0.5,
-      color: 'white',
     },
   },
 
@@ -81,7 +72,7 @@ export const useStyles = makeStyles(() => ({
     },
     '&:focus': {
       outline: 'none',
-      border: '1px solid #33a1de',
+      border: '1px solid #1CD1A1',
     },
   },
 
@@ -131,7 +122,7 @@ export const useStyles = makeStyles(() => ({
   },
 
   active: {
-    backgroundColor: '#509ee3',
+    backgroundColor: '#1CD1A1',
     color: '#ffffff',
     display: 'flex',
     alignItems: 'center',

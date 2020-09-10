@@ -2,7 +2,7 @@
   background: #f9fbfc;
   box-sizing: border-box;
 
-  padding: 40px;
+  padding: 20px;
   overflow-x: hidden;
 }
 
@@ -21,6 +21,7 @@
 
 .dashboard-container--full-screen .react-grid-layout {
   min-height: calc(100vh - 135px);
+  z-index: 10000;
 }
 
 .dashboard-container .dashboard-layout-item__header {

@@ -1,4 +1,4 @@
-import { GET_DASHBOARD, UPDATE_DASHBOARD } from './actionsTypes';
+import { GET_DASHBOARD, UPDATE_DASHBOARD, RESET_NOTIFICATION } from './actionsTypes';
 import { FETCH_VISUALIZATIONS } from '../AnalyticsContainer/actionsTypes';
 
 export const getDashboard = (id) => {
@@ -26,5 +26,11 @@ export const updateDashboard = ({
     newVisualizationsId,
     deletedDashboardVisualizationsId,
     updatedDashboardData,
+  };
+};
+
+export const resetNotification = () => {
+  return {
+    type: RESET_NOTIFICATION,
   };
 };

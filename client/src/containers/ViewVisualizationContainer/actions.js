@@ -6,6 +6,7 @@ import {
   FETCH_VISUALIZATION_WITH_DATA_AND_SCHEMA,
   FETCH_DATA_AND_SCHEMA,
   UPDATE_VISUALIZATION,
+  RESET_NOTIFICATION,
 } from './actionTypes';
 
 export const setVisualization = (visualization) => {
@@ -56,5 +57,11 @@ export const updateVisualizationData = (visualizationId, updatedVisualization) =
     type: UPDATE_VISUALIZATION,
     visualizationId,
     updatedVisualization,
+  };
+};
+
+export const resetNotification = () => {
+  return {
+    type: RESET_NOTIFICATION,
   };
 };

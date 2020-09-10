@@ -51,6 +51,9 @@ const ViewVisualizationContainer = (props) => {
     updateVisualizationData,
     tableId,
     visualizationType,
+    status,
+    message,
+    resetNotification,
   } = props;
 
   const [currentView, setCurrentView] = useState('table');
@@ -149,7 +152,13 @@ const ViewVisualizationContainer = (props) => {
 
   const displayNotification = () => setIsNotificationVisible(true);
 
-  const hideNotification = () => setIsNotificationVisible(false);
+  const hideNotification = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    resetNotification();
+    setIsNotificationVisible(false);
+  };
 
   const onVisualizationCreate = ({ name, description }) => {
     const newVisualization = createNewVisualization(currentVisualization, name, description, tableId);
@@ -160,8 +169,6 @@ const ViewVisualizationContainer = (props) => {
   const updateVisualization = (newConfig, newDatasetSettings) => {
     const updatedVisualization = createUpdatedVisualization(currentVisualization, newConfig, newDatasetSettings);
     updateVisualizationData(visualizationId, updatedVisualization);
-    setNotificationMessage('Visualization has been successfully updated');
-    setNotificationType('success');
     displayNotification(true);
   };
 
@@ -186,7 +193,7 @@ const ViewVisualizationContainer = (props) => {
 
   return !currentVisualization.created || !schema || !data ? (
     <div style={{ position: 'relative' }}>
-      <CircularProgress size={40} left={-20} top={10} style={{ marginLeft: '50%' }} />
+      <CircularProgress size={40} left={-20} top={10} style={{ marginLeft: '50%', marginTop: '35%' }} />
     </div>
   ) : (
     <>
@@ -197,7 +204,6 @@ const ViewVisualizationContainer = (props) => {
         name={currentVisualization.name}
         description={currentVisualization.description}
         onToggleRightSideBar={onToggleRightSideBar}
-        tableId={tableId}
         visualizationType={visualizationType}
         updateVisualization={updateVisualization}
         datasetSettings={datasetSettings}
@@ -219,11 +225,11 @@ const ViewVisualizationContainer = (props) => {
         <Snackbar
           anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
           open={isNotificationVisible}
-          autoHideDuration={6000}
+          autoHideDuration={2000}
           onClose={hideNotification}
         >
-          <Alert elevation={6} variant="filled" severity={notificationType} onClose={hideNotification}>
-            {notificationMessage}
+          <Alert elevation={6} variant="filled" severity={status || notificationType} onClose={hideNotification}>
+            {message || notificationMessage}
           </Alert>
         </Snackbar>
         {isLeftSideBarOpen && (
@@ -264,6 +270,8 @@ const mapStateToProps = (state) => {
     userId: state.currentUser.user.id,
     data: state.currentVisualization.data,
     schema: state.currentVisualization.schema,
+    status: state.currentVisualization.status,
+    message: state.currentVisualization.message,
   };
 };
 
@@ -291,6 +299,9 @@ ViewVisualizationContainer.propTypes = {
   updateVisualizationData: PropTypes.func,
   tableId: PropTypes.string,
   visualizationType: PropTypes.string,
+  status: PropTypes.string,
+  message: PropTypes.string,
+  resetNotification: PropTypes.func,
 };
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(ViewVisualizationContainer));

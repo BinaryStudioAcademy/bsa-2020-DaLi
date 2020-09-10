@@ -26,10 +26,21 @@ const testConfig = {
 
 const TableSettingsSidebar = ({ config, updateConfig, userNotificationError }) => {
   config = config || testConfig;
-
+  const isSummarize = config.isSummarize || false;
   const [tableConfig, setTableConfig] = useState(config);
   const [isEditColumn, setIsEditColumn] = useState(false);
   const [currentColumnId, setCurrentColumnId] = useState('');
+  const [errors, setErrors] = useState({
+    title: false,
+  });
+
+  const validateField = (name, value) => {
+    if (name === 'title') {
+      setErrors({ ...errors, [name]: value.length > 30 });
+    }
+  };
+
+  const isError = () => Object.values(errors).includes(true);
 
   const updateOrder = (list) => {
     return list.map((item, i) => {
@@ -40,7 +51,11 @@ const TableSettingsSidebar = ({ config, updateConfig, userNotificationError }) =
 
   const updateColumnConfig = (columns) => {
     const newTableConfig = { ...tableConfig };
-    newTableConfig.columns = updateOrder(columns);
+    if (isSummarize) {
+      newTableConfig.summarizeColumns = updateOrder(columns);
+    } else {
+      newTableConfig.columns = updateOrder(columns);
+    }
     setTableConfig(newTableConfig);
   };
 
@@ -56,7 +71,9 @@ const TableSettingsSidebar = ({ config, updateConfig, userNotificationError }) =
       return;
     }
 
-    const items = reorder(tableConfig.columns, result.source.index, result.destination.index);
+    const items = isSummarize
+      ? reorder(tableConfig.summarizeColumns, result.source.index, result.destination.index)
+      : reorder(tableConfig.columns, result.source.index, result.destination.index);
 
     updateColumnConfig(items);
   };
@@ -111,9 +128,11 @@ const TableSettingsSidebar = ({ config, updateConfig, userNotificationError }) =
         {isEditColumn ? (
           <EditItem
             closeEditColumn={closeEditColumn}
-            columns={config.columns}
+            columns={isSummarize ? tableConfig.summarizeColumns : config.config.columns}
             currentColumnId={currentColumnId}
             updateColumnConfig={updateColumnConfig}
+            validateField={validateField}
+            errors={errors}
           />
         ) : (
           <>
@@ -130,19 +149,36 @@ const TableSettingsSidebar = ({ config, updateConfig, userNotificationError }) =
                     className="property-item-container"
                     style={getListStyle(snapshot.isDraggingOver)}
                   >
-                    {tableConfig.columns.map(
-                      (column, index) =>
-                        column.visible && (
-                          <PropertyItem
-                            name={column.title}
-                            id={column.id}
-                            key={column.id}
-                            index={index}
-                            deleteColumn={deleteColumn}
-                            editColumn={editColumn}
-                          />
-                        )
-                    )}
+                    {!isSummarize &&
+                      tableConfig.columns.map(
+                        (column, index) =>
+                          column.visible && (
+                            <PropertyItem
+                              name={column.title}
+                              id={column.id}
+                              key={column.id}
+                              index={index}
+                              isSummarize={isSummarize}
+                              deleteColumn={deleteColumn}
+                              editColumn={editColumn}
+                            />
+                          )
+                      )}
+                    {isSummarize &&
+                      tableConfig.summarizeColumns.map(
+                        (column, index) =>
+                          column.visible && (
+                            <PropertyItem
+                              name={column.title}
+                              id={column.id}
+                              key={column.id}
+                              index={index}
+                              isSummarize={isSummarize}
+                              deleteColumn={deleteColumn}
+                              editColumn={editColumn}
+                            />
+                          )
+                      )}
                   </div>
                 )}
               </Droppable>
@@ -152,7 +188,12 @@ const TableSettingsSidebar = ({ config, updateConfig, userNotificationError }) =
       </div>
 
       <div className="table-settings-sidebar-footer">
-        <Button onClick={saveConfig} className="view-visualization__setting-button" variant="contained">
+        <Button
+          onClick={saveConfig}
+          className="view-visualization__setting-button"
+          variant="contained"
+          disabled={isError()}
+        >
           Done
         </Button>
       </div>

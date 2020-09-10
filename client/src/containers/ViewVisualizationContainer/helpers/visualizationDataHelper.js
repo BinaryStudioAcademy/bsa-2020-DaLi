@@ -32,7 +32,7 @@ export const getVisualizationComponent = (visualizationType, config, updateConfi
         return null;
     }
   } else {
-    return 'There is no data to show';
+    return <img src="/no_data.png" style={{ height: '100%', margin: '0 auto' }} alt="no_data" />;
   }
 };
 

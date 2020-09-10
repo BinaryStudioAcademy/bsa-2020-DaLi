@@ -5,28 +5,10 @@ const useStyles = makeStyles(() => ({
     width: '100%',
     borderRadius: '5px',
     margin: '5px 0',
-    '&:hover': {
+    '&:hover, &.active': {
       color: '#FFF',
-      backgroundColor: '#7172AD',
+      backgroundColor: '#1CD1A1',
     },
-    '& svg:hover': {
-      color: 'gray',
-    },
-    '&.active': {
-      color: '#FFF',
-      backgroundColor: '#7172AD',
-    },
-  },
-
-  choseFilterButtonLabel: {
-    color: '#000',
-  },
-
-  btn: {
-    backgroundColor: '#7172AD',
-    color: 'white',
-    borderRadius: '2rem',
-    padding: '1rem 4rem',
   },
 
   btnWrapper: {

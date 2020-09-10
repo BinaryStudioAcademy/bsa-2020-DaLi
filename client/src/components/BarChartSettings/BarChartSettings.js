@@ -12,11 +12,11 @@ import NativeSelect from '@material-ui/core/NativeSelect';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Switch from '@material-ui/core/Switch';
 import TextField from '@material-ui/core/TextField';
-import ColorPicker from 'material-ui-color-picker';
 import ToggleButton from '@material-ui/lab/ToggleButton';
 import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup';
 import FormLabel from '@material-ui/core/FormLabel';
 import CloseIcon from '@material-ui/icons/Close';
+import ColorPicker from '../ColorPicker/ColorPicker';
 import { useStyles, switchStyles } from './styles';
 
 const PrettySwitch = (props) => {
@@ -74,7 +74,13 @@ const BarChartSettings = ({ updateConfig, config: oldConfig }) => {
   const classes = useStyles();
 
   const { XAxis, YAxis } = oldConfig.axisData;
-  const { goal, color: barColor, showDataPointsValues: incomingShowDataPointsValues, trendline } = oldConfig.display;
+  const {
+    goal,
+    color: barColor,
+    showDataPointsValues: incomingShowDataPointsValues,
+    trendline,
+    stacked,
+  } = oldConfig.display;
 
   const [value, setValue] = useState(0);
   const [xAxis, setXAxis] = useState(XAxis.key || XAxis.availableKeys[0]);
@@ -88,6 +94,7 @@ const BarChartSettings = ({ updateConfig, config: oldConfig }) => {
   const [labelYAxis, setLabelYAxis] = useState(YAxis.label);
   const [showDataPointsValues, setShowDataPointsValues] = useState(incomingShowDataPointsValues);
   const [showTrendline, setShowTrendline] = useState(trendline.display);
+  const [showStacked, setShowStacked] = useState(stacked);
   const [trendlineType, setTrendlineType] = useState(trendline.trendlineType);
   const [polynomialOrder, setPolynomialOrder] = useState(trendline.polynomial.order);
   const [config, setConfig] = useState(oldConfig);
@@ -145,24 +152,51 @@ const BarChartSettings = ({ updateConfig, config: oldConfig }) => {
           },
         },
         showDataPointsValues,
+        stacked: showStacked,
       },
     });
   };
 
-  const colorList = ['blue', 'red', 'green', 'orange', 'purple', 'indigo', 'cyan', 'teal', 'lime', 'yellow'];
+  const colorList = [
+    'rgb(80, 158, 227)',
+    'rgb(136, 191, 77)',
+    'rgb(169, 137, 197)',
+    'rgb(239, 140, 140)',
+    'rgb(249, 212, 92)',
+    'rgb(242, 168, 111)',
+    'rgb(152, 217, 217)',
+    'rgb(113, 114, 173)',
+    'rgb(116, 131, 143)',
+  ];
 
   const addChart = () => {
     if (yAxis.length < YAxis.availableKeys.length) {
       const availableKeys = [...YAxis.availableKeys].filter((item) => !yAxis.includes(item));
       setYAxis([...yAxis, availableKeys[0]]);
-      setColor([...color, colorList[yAxis.length % 10]]);
+      setLabelYAxis([...labelYAxis, availableKeys[0]]);
+      setColor([...color, colorList[yAxis.length % 9]]);
     }
   };
 
   const deleteChart = (id) => {
     const newYAxes = [...yAxis];
+    const newYLabels = [...labelYAxis];
     newYAxes.splice(id, 1);
+    newYLabels.splice(id, 1);
     setYAxis(newYAxes);
+    setLabelYAxis(newYLabels);
+  };
+
+  const handleColorChange = (newColor, index) => {
+    const newColors = [...color];
+    newColors[index] = newColor;
+    setColor(newColors);
+  };
+
+  const handleLabelChange = (newLabel, index) => {
+    const newYAxes = [...labelYAxis];
+    newYAxes[index] = newLabel;
+    setLabelYAxis(newYAxes);
   };
 
   const valuesX = !isSummarize ? (
@@ -225,10 +259,9 @@ const BarChartSettings = ({ updateConfig, config: oldConfig }) => {
           Y-Axis
         </InputLabel>
         {yAxis.map((value, index) => (
-          <FormControl className={classes.ySelectControl}>
+          <FormControl key={`line${index}`} className={classes.ySelectControl}>
             <div className={classes.ySelectItem}>
               <NativeSelect
-                key={`line${index}`}
                 className={classes.select}
                 value={value}
                 disabled={isSummarize}
@@ -236,9 +269,8 @@ const BarChartSettings = ({ updateConfig, config: oldConfig }) => {
                   const newYAxes = [...yAxis];
                   newYAxes[index] = event.target.value;
                   setYAxis(newYAxes);
-                  if (yAxis.length === 1) {
-                    setLabelYAxis(event.target.value);
-                  }
+                  // if (yAxis.length === 1) {
+                  setLabelYAxis(newYAxes);
                 }}
                 inputProps={{
                   id: 'yAxis-native-helper',
@@ -256,135 +288,142 @@ const BarChartSettings = ({ updateConfig, config: oldConfig }) => {
         </Button>
       </TabPanel>
       <TabPanel value={value} index={1}>
-        <FormControlLabel
-          control={<PrettySwitch checked={isGoalLine} onChange={(event) => setIsGoalLine(event.target.checked)} />}
-          label="Goal line"
-        />
-        {isGoalLine ? (
-          <TextField
-            id="standard-basic"
+        <div className={classes.switches}>
+          <FormControlLabel
+            control={<PrettySwitch checked={isGoalLine} onChange={(event) => setIsGoalLine(event.target.checked)} />}
             label="Goal line"
-            className={classes.input}
-            type="number"
-            InputLabelProps={{
-              shrink: true,
-            }}
-            value={goalLine}
-            onChange={(event) => {
-              setGoalLine(event.target.value);
-            }}
           />
-        ) : null}
-        <FormControlLabel
-          control={(() => (
-            <PrettySwitch
-              checked={showDataPointsValues}
+          {isGoalLine ? (
+            <TextField
+              id="standard-basic"
+              label="Goal line"
+              className={classes.input}
+              type="number"
+              InputLabelProps={{
+                shrink: true,
+              }}
+              value={goalLine}
               onChange={(event) => {
-                setShowDataPointsValues(event.target.checked);
+                setGoalLine(event.target.value);
               }}
             />
-          ))()}
-          label="Show values on data points"
-        />
-        {yAxis.length < 2 ? (
+          ) : null}
+          {YAxis.key.length > 1 ? (
+            <FormControlLabel
+              control={
+                <PrettySwitch checked={showStacked} onChange={(event) => setShowStacked(event.target.checked)} />
+              }
+              label="Stack"
+            />
+          ) : null}
           <FormControlLabel
             control={(() => (
               <PrettySwitch
-                checked={showTrendline}
+                checked={showDataPointsValues}
                 onChange={(event) => {
-                  setShowTrendline(event.target.checked);
+                  setShowDataPointsValues(event.target.checked);
                 }}
               />
             ))()}
-            label="Show trendline"
+            label="Show values on data points"
           />
-        ) : null}
-        {showTrendline && yAxis.length < 2 ? (
-          <FormControl component="fieldset">
-            <FormLabel component="legend" className={classes.legend}>
-              Trendline type
-            </FormLabel>
-            <ToggleButtonGroup
-              className={classes.btnGroup}
-              value={trendlineType}
-              exclusive
-              onChange={(event, newTrendLineType) => {
-                setTrendlineType(newTrendLineType);
-              }}
-              aria-label="trendlineType"
-            >
-              <ToggleButton
-                classes={{ root: classes.btnItem, selected: classes.selected }}
-                value="linear"
-                aria-label="linear"
+          {yAxis.length < 2 ? (
+            <FormControlLabel
+              control={(() => (
+                <PrettySwitch
+                  checked={showTrendline}
+                  onChange={(event) => {
+                    setShowTrendline(event.target.checked);
+                  }}
+                />
+              ))()}
+              label="Show trendline"
+            />
+          ) : null}
+          {showTrendline && yAxis.length < 2 ? (
+            <FormControl component="fieldset">
+              <FormLabel component="legend" className={classes.legend}>
+                Trendline type
+              </FormLabel>
+              <ToggleButtonGroup
+                className={classes.btnGroup}
+                value={trendlineType}
+                exclusive
+                onChange={(event, newTrendLineType) => {
+                  setTrendlineType(newTrendLineType);
+                }}
+                aria-label="trendlineType"
               >
-                Line
-              </ToggleButton>
-              <ToggleButton
-                classes={{ root: classes.btnItem, selected: classes.selected }}
-                value="polynomial"
-                aria-label="polynomial"
+                <ToggleButton
+                  classes={{ root: classes.btnItem, selected: classes.selected }}
+                  value="linear"
+                  aria-label="linear"
+                >
+                  Line
+                </ToggleButton>
+                <ToggleButton
+                  classes={{ root: classes.btnItem, selected: classes.selected }}
+                  value="polynomial"
+                  aria-label="polynomial"
+                >
+                  Poly
+                </ToggleButton>
+                <ToggleButton
+                  classes={{ root: classes.btnItem, selected: classes.selected }}
+                  value="exponential"
+                  aria-label="exponential"
+                >
+                  Exp
+                </ToggleButton>
+                <ToggleButton
+                  classes={{ root: classes.btnItem, selected: classes.selected }}
+                  value="logarithmical"
+                  aria-label="logarithmical"
+                >
+                  Log
+                </ToggleButton>
+              </ToggleButtonGroup>
+            </FormControl>
+          ) : null}
+          {showTrendline && trendlineType === 'polynomial' ? (
+            <FormControl component="fieldset">
+              <FormLabel component="legend" className={classes.legend}>
+                Order
+              </FormLabel>
+              <ToggleButtonGroup
+                className={classes.btnGroup}
+                value={polynomialOrder.toString()}
+                exclusive
+                onChange={(event, order) => {
+                  setPolynomialOrder(parseInt(order));
+                }}
+                aria-label="trendlinePolynomialOrder"
               >
-                Poly
-              </ToggleButton>
-              <ToggleButton
-                classes={{ root: classes.btnItem, selected: classes.selected }}
-                value="exponential"
-                aria-label="exponential"
-              >
-                Exp
-              </ToggleButton>
-              <ToggleButton
-                classes={{ root: classes.btnItem, selected: classes.selected }}
-                value="logarithmical"
-                aria-label="logarithmical"
-              >
-                Log
-              </ToggleButton>
-            </ToggleButtonGroup>
-          </FormControl>
-        ) : null}
-        {showTrendline && trendlineType === 'polynomial' ? (
-          <FormControl component="fieldset">
-            <FormLabel component="legend" className={classes.legend}>
-              Order
-            </FormLabel>
-            <ToggleButtonGroup
-              className={classes.btnGroup}
-              value={polynomialOrder.toString()}
-              exclusive
-              onChange={(event, order) => {
-                setPolynomialOrder(parseInt(order));
-              }}
-              aria-label="trendlinePolynomialOrder"
-            >
-              <ToggleButton classes={{ root: classes.btnItem, selected: classes.selected }} value="2" aria-label="2">
-                2
-              </ToggleButton>
-              <ToggleButton classes={{ root: classes.btnItem, selected: classes.selected }} value="3" aria-label="3">
-                3
-              </ToggleButton>
-              <ToggleButton classes={{ root: classes.btnItem, selected: classes.selected }} value="4" aria-label="4">
-                4
-              </ToggleButton>
-              <ToggleButton classes={{ root: classes.btnItem, selected: classes.selected }} value="5" aria-label="5">
-                5
-              </ToggleButton>
-            </ToggleButtonGroup>
-          </FormControl>
-        ) : null}
+                <ToggleButton classes={{ root: classes.btnItem, selected: classes.selected }} value="2" aria-label="2">
+                  2
+                </ToggleButton>
+                <ToggleButton classes={{ root: classes.btnItem, selected: classes.selected }} value="3" aria-label="3">
+                  3
+                </ToggleButton>
+                <ToggleButton classes={{ root: classes.btnItem, selected: classes.selected }} value="4" aria-label="4">
+                  4
+                </ToggleButton>
+                <ToggleButton classes={{ root: classes.btnItem, selected: classes.selected }} value="5" aria-label="5">
+                  5
+                </ToggleButton>
+              </ToggleButtonGroup>
+            </FormControl>
+          ) : null}
+        </div>
         {yAxis.map((value, index) => (
           <ColorPicker
-            key={`color-${index}`}
-            className={classes.colorPicker}
-            name="color"
-            defaultValue={`${value} color`}
-            value={color[index]}
-            onChange={(newColor) => {
-              const newColors = [...color];
-              newColors[index] = newColor;
-              setColor(newColors);
-            }}
+            label={labelYAxis[index]}
+            key={index}
+            color={color[index]}
+            index={index}
+            multiline={yAxis.length > 1}
+            handleColorChange={handleColorChange}
+            handleLabelChange={handleLabelChange}
           />
         ))}
       </TabPanel>
@@ -424,10 +463,12 @@ const BarChartSettings = ({ updateConfig, config: oldConfig }) => {
             InputLabelProps={{
               shrink: true,
             }}
-            value={labelYAxis}
+            value={labelYAxis[0]}
             onChange={(event) => {
-              setLabelYAxis(event.target.value);
-              validateField('labelYAxis', event.target.value);
+              // validateField('labelYAxis', event.target.value);
+              const newYAxes = [...labelYAxis];
+              newYAxes[0] = event.target.value;
+              setLabelYAxis(newYAxes);
             }}
             helperText={errors.labelYAxis ? '20 characters is max' : null}
             error={errors.labelYAxis}

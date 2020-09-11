@@ -4,6 +4,7 @@ import TextFieldsIcon from '@material-ui/icons/TextFields';
 import EventIcon from '@material-ui/icons/Event';
 import AddIcon from '@material-ui/icons/Add';
 import CloseIcon from '@material-ui/icons/Close';
+import HelpOutlineIcon from '@material-ui/icons/HelpOutline';
 import Filter1Icon from '@material-ui/icons/Filter1';
 import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
@@ -22,7 +23,7 @@ const iconForType = (type) => {
       return <EventIcon />;
     }
     default:
-      return null;
+      return <HelpOutlineIcon />;
   }
 };
 

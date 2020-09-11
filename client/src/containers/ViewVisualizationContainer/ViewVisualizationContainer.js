@@ -54,6 +54,7 @@ const ViewVisualizationContainer = (props) => {
     status,
     message,
     resetNotification,
+    loading,
   } = props;
 
   const [currentView, setCurrentView] = useState('table');
@@ -204,7 +205,6 @@ const ViewVisualizationContainer = (props) => {
         name={currentVisualization.name}
         description={currentVisualization.description}
         onToggleRightSideBar={onToggleRightSideBar}
-        tableId={tableId}
         visualizationType={visualizationType}
         updateVisualization={updateVisualization}
         datasetSettings={datasetSettings}
@@ -240,6 +240,7 @@ const ViewVisualizationContainer = (props) => {
           />
         )}
         <ViewVisualizationMain
+          visualizationLoading={loading}
           contentViewComponent={contentViewComponent}
           currentContentView={currentView}
           visualizationIcon={visualizationIcon}
@@ -255,7 +256,11 @@ const ViewVisualizationContainer = (props) => {
                 closeSidebar={() => setIsRightSideBarOpen(false)}
                 updateVisualization={updateVisualization}
               />,
-              <SummarizeBar currentVisualization={currentVisualization} updateVisualization={updateVisualization} />,
+              <SummarizeBar
+                currentVisualization={currentVisualization}
+                closeSidebar={() => setIsRightSideBarOpen(false)}
+                updateVisualization={updateVisualization}
+              />,
             ]}
             sideBarPage={rightSideBarPage}
           />
@@ -273,6 +278,7 @@ const mapStateToProps = (state) => {
     schema: state.currentVisualization.schema,
     status: state.currentVisualization.status,
     message: state.currentVisualization.message,
+    loading: state.currentVisualization.loading,
   };
 };
 
@@ -281,6 +287,7 @@ const mapDispatchToProps = {
 };
 
 ViewVisualizationContainer.propTypes = {
+  loading: PropTypes.bool,
   visualizationId: PropTypes.string,
   visualizations: PropTypes.array,
   userId: PropTypes.string,

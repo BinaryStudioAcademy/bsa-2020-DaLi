@@ -254,7 +254,10 @@ export const theme = createMuiTheme({
           },
         },
         '& .paper-analitics-text': {
-          marginLeft: '15px',
+          marginLeft: '40px',
+        },
+        '& .paper-data-text': {
+          marginLeft: '20px',
         },
         '& .paper-data-icon': {
           boxSizing: 'border-box',
@@ -272,7 +275,15 @@ export const theme = createMuiTheme({
           },
         },
         '&.paper-collection-outlined': {
-          gridTemplateColumns: '6% 94%',
+          gridTemplateColumns: '6% 86% 8%;',
+          marginBottom: '10px',
+          '& .paper-collection-btns': {
+            display: 'flex',
+            justifyContent: 'space-between',
+            '& svg': {
+              color: '#1CD1A1',
+            },
+          },
         },
         '& .paper-collection-icon': {
           boxSizing: 'border-box',
@@ -313,6 +324,9 @@ export const theme = createMuiTheme({
               color: '#FFFFFF',
             },
           },
+          '& .paper-collection-btns svg': {
+            color: '#FFFFFF',
+          },
           '&::before': {
             backgroundColor: '#1CD1A1',
           },
@@ -321,10 +335,15 @@ export const theme = createMuiTheme({
       rounded: {
         backgroundColor: '#FFFFFF',
         borderRadius: '10px',
-        width: '975px',
+        width: '100%',
         height: '63px',
         boxSizing: 'border-box',
         position: 'relative',
+        '&:hover': {
+          '& svg': {
+            opacity: 1,
+          },
+        },
         '&::before': {
           display: 'block',
           borderRadius: '7px',

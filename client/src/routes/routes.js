@@ -17,6 +17,7 @@ import {
   DashboardPage,
   AdminPage,
   AnalyticsPage,
+  HomePage,
 } from '../pages';
 import { getToken } from '../helpers/jwtToken';
 import { fetchUser } from '../containers/LoginPageContainer/actions';
@@ -37,7 +38,8 @@ const Routes = ({ fetchUser, isAuthorized, isLoading }) => {
   ) : (
     <Switch>
       <PublicRoute exact path="/login" component={LoginPage} />
-      <ProtectedRoute exact path="/" component={AnalyticsPage} />
+      <ProtectedRoute exact path="/" component={HomePage} />
+      <ProtectedRoute exact path="/analytics" component={AnalyticsPage} />
       <ProtectedRoute path="/visualizations/:id" component={ViewVisualizationPage} />
       <ProtectedRoute exact path="/create-visualization/:tableId/:type" component={ViewVisualizationPage} />
       <ProtectedRoute exact path="/account-settings" component={AccountSettingsPage} />

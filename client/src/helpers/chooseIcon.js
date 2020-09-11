@@ -7,16 +7,16 @@ import MapOutlinedIcon from '@material-ui/icons/MapOutlined';
 const chooseIcon = (type, styles) => {
   switch (type) {
     case 'LINE_CHART': {
-      return <TimelineOutlinedIcon style={styles} />;
+      return <TimelineOutlinedIcon className="visualization-icon" style={styles} />;
     }
     case 'BAR_CHART': {
-      return <EqualizerOutlinedIcon style={styles} />;
+      return <EqualizerOutlinedIcon className="visualization-icon" style={styles} />;
     }
     case 'TABLE': {
-      return <TableChartOutlinedIcon style={styles} />;
+      return <TableChartOutlinedIcon className="visualization-icon" style={styles} />;
     }
     case 'MAP': {
-      return <MapOutlinedIcon style={styles} />;
+      return <MapOutlinedIcon className="visualization-icon" style={styles} />;
     }
     default: {
       return null;

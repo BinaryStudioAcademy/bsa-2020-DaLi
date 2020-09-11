@@ -22,7 +22,6 @@ const ViewVisualizationHeader = (props) => {
     onToggleRightSideBar,
     datasetSettings,
     updateVisualization,
-    tableId,
     onChipCloseRemoveSidebar,
   } = props;
   const classes = useStyles();
@@ -34,7 +33,7 @@ const ViewVisualizationHeader = (props) => {
           <span className={classes.viewVisualizationTitleSection}>
             {isVisualizationExist ? 'Visualizations / ' : 'Create Visualization / '}
           </span>
-          {isVisualizationExist ? name : `${tableId} / ${visualizationType}`}
+          {isVisualizationExist ? name : ` ${visualizationType}`}
         </Typography>
         {isVisualizationExist && (
           <>
@@ -85,8 +84,9 @@ const ViewVisualizationHeader = (props) => {
       </Grid>
       <Grid className={classes.viewVisualizationButtons} item container>
         <Button
-          className={classes.viewVisualizationSaveButton}
           variant="contained"
+          className={classes.mr10}
+          color="primary"
           startIcon={<SaveIcon />}
           onClick={onVisualizationSave}
           id="saveVisualization"
@@ -96,16 +96,18 @@ const ViewVisualizationHeader = (props) => {
         {isVisualizationExist && (
           <>
             <Button
-              className={classes.viewVisualizationFilterButton}
-              variant="contained"
+              variant="outlined"
+              color="primary"
+              className={classes.mr10}
               startIcon={<FilterListIcon />}
               onClick={onToggleRightSideBar(0)}
             >
               Filter
             </Button>
             <Button
-              className={classes.viewVisualizationSummarizeButton}
-              variant="contained"
+              variant="outlined"
+              color="primary"
+              className={classes.mr10}
               startIcon={<GamesOutlinedIcon />}
               onClick={onToggleRightSideBar(1)}
             >
@@ -126,7 +128,6 @@ ViewVisualizationHeader.propTypes = {
   description: PropTypes.string,
   visualizationType: PropTypes.string,
   onToggleRightSideBar: PropTypes.func,
-  tableId: PropTypes.string,
   datasetSettings: PropTypes.array,
   updateVisualization: PropTypes.func,
   onChipCloseRemoveSidebar: PropTypes.func,

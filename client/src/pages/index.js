@@ -5,6 +5,7 @@ import DashboardPage from './DashboardPage/DashboardPage';
 import AdminPage from './AdminPage/AdminPage';
 import AnalyticsPage from './AnalyticsPage/AnalyticsPage';
 import ConnectionDatabasePage from './ConnectionDatabasePage/ConnectionDatabasePage';
+import HomePage from './HomePage/HomePage';
 
 export {
   LoginPage,
@@ -14,4 +15,5 @@ export {
   AdminPage,
   AnalyticsPage,
   ConnectionDatabasePage,
+  HomePage,
 };

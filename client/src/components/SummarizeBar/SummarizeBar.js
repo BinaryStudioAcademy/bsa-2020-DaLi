@@ -13,7 +13,7 @@ const summarizes = [
   { id: 2, name: 'average_of', operation: 'AVG', isNeedArgument: true, argument: '' },
 ];
 
-const SummarizeBar = ({ currentVisualization, updateVisualization }) => {
+const SummarizeBar = ({ closeSidebar, currentVisualization, updateVisualization }) => {
   const classes = useStyles();
   const [currentSummarize, setCurrentSummarize] = useState(null);
   const [isSelectArgument, setIsSelectArgument] = useState(false);
@@ -121,6 +121,7 @@ const SummarizeBar = ({ currentVisualization, updateVisualization }) => {
       newConfig.isSummarize = false;
     }
     updateVisualization(newConfig);
+    closeSidebar();
   };
 
   const selectSummarize = (summarize) => () => {
@@ -152,15 +153,21 @@ const SummarizeBar = ({ currentVisualization, updateVisualization }) => {
         <h3>Summarize by</h3>
         {isSummarize && (
           <>
-            <Button className={classes.summarizeByButton} variant="contained" fullWidth onClick={handleMenuClick}>
-              {`${currentSummarize.name} ${currentSummarize.argument}`}
+            <Button
+              className={classes.summarizeByButton}
+              color="primary"
+              variant="outlined"
+              fullWidth
+              onClick={handleMenuClick}
+            >
+              {`${currentSummarize.name.replace('_', ' ')} ${currentSummarize.argument.replace('_', ' ')}`}
               <CloseIcon onClick={deleteSummarize} />
             </Button>
           </>
         )}
         {!isSummarize && (
           <>
-            <Button className={classes.addMetricButton} fullWidth onClick={handleMenuClick}>
+            <Button color="primary" variant="outlined" fullWidth onClick={handleMenuClick}>
               Add a metric
             </Button>
           </>
@@ -169,7 +176,7 @@ const SummarizeBar = ({ currentVisualization, updateVisualization }) => {
           {!isSelectArgument &&
             summarizes.map((summarize) => (
               <MenuItem key={summarize.id} onClick={selectSummarize(summarize)}>
-                {summarize.name}
+                {summarize.name.replace('_', ' ')}
               </MenuItem>
             ))}
           {isSelectArgument &&
@@ -178,7 +185,7 @@ const SummarizeBar = ({ currentVisualization, updateVisualization }) => {
               .map((column) => {
                 return (
                   <MenuItem key={column.column_name} onClick={selectArgument(column.column_name)}>
-                    {column.column_name}
+                    {column.column_name.replace('_', ' ')}
                   </MenuItem>
                 );
               })}
@@ -200,14 +207,18 @@ const SummarizeBar = ({ currentVisualization, updateVisualization }) => {
           ))}
         </div>
       )}
-      <Button
-        className={classes.summarizeDoneButton}
-        disabled={isSummarize && !currentGroupBy.name}
-        variant="contained"
-        onClick={updateConfig}
-      >
-        DONE
-      </Button>
+
+      <div className={classes.btnWrapper}>
+        <Button
+          color="primary"
+          variant="contained"
+          className={classes.summarizeDoneButton}
+          disabled={isSummarize && !currentGroupBy.name}
+          onClick={updateConfig}
+        >
+          Done
+        </Button>
+      </div>
     </div>
   );
 };
@@ -215,6 +226,7 @@ const SummarizeBar = ({ currentVisualization, updateVisualization }) => {
 SummarizeBar.propTypes = {
   currentVisualization: PropTypes.object,
   updateVisualization: PropTypes.func,
+  closeSidebar: PropTypes.func,
 };
 
 export default SummarizeBar;

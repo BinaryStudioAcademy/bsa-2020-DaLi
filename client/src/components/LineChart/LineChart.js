@@ -202,7 +202,7 @@ function LineChart({ settings, data, chart: chartSize }) {
         .attr('y', margin.left - 40)
         .attr('transform', 'rotate(-90)')
         .attr('text-anchor', 'middle')
-        .text(YAxis.label);
+        .text(YAxis.label[0]);
     }
 
     if (XAxis.displayLabel) {
@@ -210,7 +210,7 @@ function LineChart({ settings, data, chart: chartSize }) {
         .append('text')
         .attr('class', 'label')
         .attr('x', width / 2)
-        .attr('y', height - margin.bottom + 60)
+        .attr('y', height - margin.bottom + 50)
         .attr('text-anchor', 'middle')
         .text(XAxis.label);
     }
@@ -346,7 +346,11 @@ function LineChart({ settings, data, chart: chartSize }) {
     draw();
 
     window.addEventListener('resize', onResize);
-    return () => window.removeEventListener('resize', onResize);
+    return () => {
+      window.removeEventListener('resize', onResize);
+      const chart = initChart(svgRef.current);
+      chart.selectAll('*').remove();
+    }
   }, [JSON.stringify(settings), data, chartSize, width, height]);
 
   return <svg id="lineChartVisualization" ref={svgRef} />;

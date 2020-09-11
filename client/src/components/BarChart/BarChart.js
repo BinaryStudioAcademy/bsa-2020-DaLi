@@ -376,7 +376,7 @@ function BarChart(props) {
         .append('text')
         .attr('class', 'label')
         .attr('x', width / 2)
-        .attr('y', height - margin.bottom + 60)
+        .attr('y', height - margin.bottom + 50)
         .attr('text-anchor', 'middle')
         .text(XAxis.label);
     }
@@ -472,7 +472,11 @@ function BarChart(props) {
     draw();
 
     window.addEventListener('resize', onResize);
-    return () => window.removeEventListener('resize', onResize);
+    return () => {
+      window.removeEventListener('resize', onResize);
+      const chart = initChart(svgRef.current);
+      chart.selectAll('*').remove();
+    }
   }, [JSON.stringify(props), props.chart, props.data, width, height]);
 
   return <svg ref={svgRef} id="barChartVisualization" />;

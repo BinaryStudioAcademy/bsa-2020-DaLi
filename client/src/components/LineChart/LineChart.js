@@ -116,7 +116,7 @@ function LineChart({ settings, data, chart: chartSize }) {
 
     const legend = legendContainer
       .selectAll('.legend')
-      .data(YAxis.key)
+      .data(YAxis.label)
       .enter()
       .append('g')
       .attr('class', 'legend')

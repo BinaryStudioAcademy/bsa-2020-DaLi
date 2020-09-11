@@ -14,17 +14,10 @@ export const useStyles = makeStyles((theme) => ({
     alignSelf: 'flex-start',
   },
   tabs: {
-    display: 'flex',
-    justifyContent: 'center',
-    marginBottom: '3rem',
+    width: '360px',
   },
   tab: {
-    minWidth: 100,
-    backgroundColor: '#519ee3',
-    color: 'white',
-    borderRadius: '2rem',
-    marginRight: '1rem',
-    padding: '0.5rem',
+    minWidth: 120,
   },
   indicator: {
     display: 'none',
@@ -40,7 +33,7 @@ export const useStyles = makeStyles((theme) => ({
     marginBottom: '2rem',
     display: 'flex',
     justifyContent: 'center',
-    width: 300,
+    width: '100%',
   },
   formControl: {
     margin: theme.spacing(1),
@@ -50,20 +43,40 @@ export const useStyles = makeStyles((theme) => ({
     marginBottom: '3rem',
   },
   select: {
-    maxWidth: '300px',
-    width: 300,
+    height: '50px',
+    width: '300px',
+    boxSizing: 'border-box',
+    borderRadius: '4px',
+    '&:before': {
+      borderBottom: 'none',
+    },
+    '&:after': {
+      borderBottom: 'none',
+    },
+    '&:hover': {
+      borderBottom: 'none',
+    },
   },
   label: {
     fontSize: 'bold',
     fontWeight: '2rem',
   },
   input: {
-    display: 'flex',
-    margin: '25px 0px',
+    height: '40px',
+    width: '300px',
+    boxSizing: 'border-box',
+    borderRadius: '4px',
+    border: '1px solid rgba(0, 0, 0, 0.23)',
+    padding: '18.5px 14px',
+    fontFamily: 'Poppins, Arial, sans-serif',
+    fontSize: '16px',
   },
   colorPicker: {
     display: 'flex',
-    margin: '25px 25px 25px 0',
+    marginBottom: '25px',
+  },
+  lineStyle: {
+    marginTop: '25px',
   },
   btnGroup: {
     display: 'flex',
@@ -72,11 +85,15 @@ export const useStyles = makeStyles((theme) => ({
     flex: 1,
     marginTop: '5px',
     marginBottom: '10px',
-    borderColor: '#519ee3',
+    borderColor: 'rgba(0, 0, 0, 0.23)',
     color: 'black',
     textTransform: 'none',
     '&$selected': {
-      backgroundColor: '#86BBEB',
+      backgroundColor: '#1CD1A1',
+      color: 'white',
+    },
+    '&:hover': {
+      backgroundColor: 'rgb(19, 146, 112)',
       color: 'white',
     },
   },
@@ -90,10 +107,15 @@ export const useStyles = makeStyles((theme) => ({
     color: 'black',
     marginTop: '10px',
   },
+  removeItemBtn: {
+    marginLeft: '10px',
+    cursor: 'pointer',
+  },
   addSeriesBtn: {
     textTransform: 'none',
-    color: '#519ee3',
-    backgroundColor: '#eeeeee',
+    width: '300px',
+    boxSizing: 'border-box',
+    margin: '5px',
   },
   ySelectItem: {
     display: 'flex',
@@ -102,30 +124,32 @@ export const useStyles = makeStyles((theme) => ({
   ySelectControl: {
     margin: '5px',
   },
+  switches: {
+    display: 'flex',
+    flexDirection: 'column',
+  },
 }));
 
 export const switchStyles = makeStyles((theme) => ({
   root: {
-    width: 60,
-    height: 26,
-    padding: 0,
+    width: 70,
     margin: theme.spacing(1),
     overflow: 'unset',
   },
   switchBase: {
     padding: 1,
+    border: 'none',
     '&$checked': {
-      transform: 'translateX(34px)',
+      transform: 'translateX(44px)',
       color: theme.palette.common.white,
       '& + $track': {
-        backgroundColor: '#519EE3',
+        backgroundColor: '#1CD1A1',
         opacity: 1,
         border: 'none',
       },
     },
     '&$focusVisible $thumb': {
-      color: '#519EE3',
-      border: '6px solid #fff',
+      color: '#1CD1A1',
     },
   },
   thumb: {
@@ -133,9 +157,8 @@ export const switchStyles = makeStyles((theme) => ({
     height: 24,
   },
   track: {
-    borderRadius: 26 / 2,
-    border: `1px solid ${theme.palette.grey[400]}`,
-    backgroundColor: theme.palette.grey[50],
+    border: '1px solid #CFD7DF',
+    backgroundColor: '#F2F2F2',
     opacity: 1,
     transition: theme.transitions.create(['background-color', 'border']),
   },

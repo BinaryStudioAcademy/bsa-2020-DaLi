@@ -23,6 +23,7 @@ export const useStyles = makeStyles((theme) => ({
     border: '1px solid #f0f0f0',
   },
   colorSquare: {
+    boxSizing: 'border-box',
     width: '21px',
     height: '21px',
     cursor: 'pointer',
@@ -64,6 +65,14 @@ export const useStyles = makeStyles((theme) => ({
     paddingLeft: '0.75rem',
     paddingRight: '0.75rem',
     marginLeft: '0.5rem',
+    height: '40px',
+    // width: '300px',
+    boxSizing: 'border-box',
+    borderRadius: '4px',
+    border: '1px solid rgba(0, 0, 0, 0.23)',
+    // padding: '18.5px 14px',
+    fontFamily: 'Poppins, Arial, sans-serif',
+    fontSize: '16px',
   },
   btnParams: {
     boxSizing: 'border-box',

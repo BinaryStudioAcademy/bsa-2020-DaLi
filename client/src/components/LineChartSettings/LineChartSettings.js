@@ -11,18 +11,21 @@ import NativeSelect from '@material-ui/core/NativeSelect';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Switch from '@material-ui/core/Switch';
 import TextField from '@material-ui/core/TextField';
-import ColorPicker from 'material-ui-color-picker';
+// import ColorPicker from 'material-ui-color-picker';
+import Typography from '@material-ui/core/Typography';
 import ToggleButton from '@material-ui/lab/ToggleButton';
 import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup';
 import CloseIcon from '@material-ui/icons/Close';
+import ColorPicker from '../ColorPicker/ColorPicker';
 import { useStyles, switchStyles } from './styles';
 
 const PrettySwitch = (props) => {
   const classes = switchStyles();
   return (
     <Switch
+      size="medium"
       focusVisibleClassName={classes.focusVisible}
-      disableRipple
+      // disableRipple
       classes={{
         root: classes.root,
         switchBase: classes.switchBase,
@@ -151,13 +154,24 @@ function LineChartSettings({ updateConfig, config: oldConfig }) {
     });
   };
 
-  const colorList = ['blue', 'red', 'green', 'orange', 'purple', 'indigo', 'cyan', 'teal', 'lime', 'yellow'];
+  const colorList = [
+    'rgb(80, 158, 227)',
+    'rgb(169, 137, 197)',
+    'rgb(239, 140, 140)',
+    'rgb(136, 191, 77)',
+    'rgb(249, 212, 92)',
+    'rgb(242, 168, 111)',
+    'rgb(152, 217, 217)',
+    'rgb(113, 114, 173)',
+    'rgb(116, 131, 143)',
+  ];
 
   const addLine = () => {
     if (yAxis.length < YAxis.availableKeys.length) {
       const availableKeys = [...YAxis.availableKeys].filter((item) => !yAxis.includes(item));
       setYAxis([...yAxis, availableKeys[0]]);
-      setColor([...color, colorList[yAxis.length % 10]]);
+      setLabelYAxis([...labelYAxis, availableKeys[0]]);
+      setColor([...color, colorList[yAxis.length % 9]]);
       setLineType([...lineType, 'curveNatural']);
     }
   };
@@ -172,6 +186,18 @@ function LineChartSettings({ updateConfig, config: oldConfig }) {
     const newLineTypes = [...lineType];
     newLineTypes.splice(id, 1);
     setLineType(newLineTypes);
+  };
+
+  const handleColorChange = (newColor, index) => {
+    const newColors = [...color];
+    newColors[index] = newColor;
+    setColor(newColors);
+  };
+
+  const handleLabelChange = (newLabel, index) => {
+    const newYAxes = [...labelYAxis];
+    newYAxes[index] = newLabel;
+    setLabelYAxis(newYAxes);
   };
 
   const valuesX = !isSummarize ? (
@@ -200,22 +226,23 @@ function LineChartSettings({ updateConfig, config: oldConfig }) {
         value={value}
         onChange={handleChange}
         aria-label="simple tabs example"
-        variant="fullWidth"
-        classes={{
-          indicator: classes.indicator,
-        }}
+        // variant="fullWidth"
+        // classes={{
+        //   indicator: classes.indicator,
+        // }}
       >
-        <Tab className={classes.tab} label="Data" {...a11yProps(0)} />
-        <Tab className={classes.tab} label="Display" {...a11yProps(1)} />
-        <Tab className={classes.tab} label="Labels" {...a11yProps(2)} />
+        <Tab className={classes.tab} label="Data" />
+        <Tab className={classes.tab} label="Display" />
+        <Tab className={classes.tab} label="Labels" />
       </Tabs>
       <TabPanel value={value} index={0}>
         <FormControl className={classes.formControl}>
-          <InputLabel className={classes.label} shrink id="xAxis-native-helper">
+          <Typography variant="subtitle2" htmlFor="xAxis">
             X-Axis
-          </InputLabel>
+          </Typography>
           <NativeSelect
             className={classes.select}
+            variant="outlined"
             value={xAxis}
             disabled={isSummarize}
             onChange={(event) => {
@@ -231,23 +258,22 @@ function LineChartSettings({ updateConfig, config: oldConfig }) {
           </NativeSelect>
         </FormControl>
 
-        <InputLabel className={classes.label} shrink htmlFor="yAxis-native-helper">
+        <Typography variant="subtitle2" htmlFor="yAxis">
           Y-Axis
-        </InputLabel>
+        </Typography>
         {yAxis.map((value, index) => (
           <FormControl key={`line${index}`} className={classes.ySelectControl}>
             <div className={classes.ySelectItem}>
               <NativeSelect
                 className={classes.select}
+                variant="outlined"
                 value={value}
                 disabled={isSummarize}
                 onChange={(event) => {
                   const newYAxes = [...yAxis];
                   newYAxes[index] = event.target.value;
                   setYAxis(newYAxes);
-                  if (yAxis.length === 1) {
-                    setLabelYAxis(event.target.value);
-                  }
+                  setLabelYAxis(newYAxes);
                 }}
                 inputProps={{
                   id: 'yAxis-native-helper',
@@ -256,11 +282,18 @@ function LineChartSettings({ updateConfig, config: oldConfig }) {
               >
                 {valuesY}
               </NativeSelect>
-              {yAxis.length > 1 ? <CloseIcon fontSize="default" onClick={() => deleteLine(index)} /> : null}
+              {yAxis.length > 1 ? (
+                <CloseIcon
+                  fontSize="default"
+                  color="action"
+                  onClick={() => deleteLine(index)}
+                  className={classes.removeItemBtn}
+                />
+              ) : null}
             </div>
           </FormControl>
         ))}
-        <Button variant="contained" disabled={isSummarize} className={classes.addSeriesBtn} onClick={addLine}>
+        <Button variant="outlined" disabled={isSummarize} className={classes.addSeriesBtn} onClick={addLine}>
           Add another series
         </Button>
       </TabPanel>
@@ -270,14 +303,12 @@ function LineChartSettings({ updateConfig, config: oldConfig }) {
           label="Goal line"
         />
         {isGoalLine ? (
-          <TextField
+          <input
+            name="goal"
             id="standard-basic"
             label="Goal line"
             className={classes.input}
             type="number"
-            InputLabelProps={{
-              shrink: true,
-            }}
             value={goalLine}
             onChange={(event) => {
               setGoalLine(event.target.value);
@@ -385,19 +416,17 @@ function LineChartSettings({ updateConfig, config: oldConfig }) {
         {yAxis.map((value, index) => (
           <React.Fragment key={`color-line-${index}`}>
             <ColorPicker
+              label={labelYAxis[index]}
+              key={index}
+              color={color[index]}
+              index={index}
+              multiline={yAxis.length > 1}
+              handleColorChange={handleColorChange}
+              handleLabelChange={handleLabelChange}
               className={classes.colorPicker}
-              key={`color-${index}`}
-              name="color"
-              defaultValue={`${value} color`}
-              value={color[index]}
-              onChange={(newColor) => {
-                const newColors = [...color];
-                newColors[index] = newColor;
-                setColor(newColors);
-              }}
             />
 
-            <FormControl component="fieldset">
+            <FormControl component="fieldset" className={classes.lineStyle}>
               <FormLabel component="legend" className={classes.legend}>
                 Line style
               </FormLabel>
@@ -441,13 +470,19 @@ function LineChartSettings({ updateConfig, config: oldConfig }) {
       </TabPanel>
       <TabPanel value={value} index={2}>
         <FormControlLabel
-          control={<PrettySwitch checked={isSummarize ? true : isLabelXAxis} onChange={(event) => setIsLabelXAxis(event.target.checked)} />}
+          control={(
+            <PrettySwitch
+              checked={isSummarize ? true : isLabelXAxis}
+              onChange={(event) => setIsLabelXAxis(event.target.checked)}
+            />
+          )}
           label="Show label on x-axis"
           disabled={isSummarize}
         />
         {isLabelXAxis && !isSummarize ? (
-          <TextField
+          <input
             id="XAxis"
+            variant="outlined"
             label="X-axis label"
             className={classes.input}
             disabled={isSummarize}
@@ -464,13 +499,19 @@ function LineChartSettings({ updateConfig, config: oldConfig }) {
           />
         ) : null}
         <FormControlLabel
-          control={<PrettySwitch checked={isSummarize ? true : isLabelYAxis} onChange={(event) => setIsLabelYAxis(event.target.checked)} />}
+          control={(
+            <PrettySwitch
+              checked={isSummarize ? true : isLabelYAxis}
+              onChange={(event) => setIsLabelYAxis(event.target.checked)}
+            />
+          )}
           label="Show label on y-axis"
           disabled={isSummarize}
         />
         {isLabelYAxis && !isSummarize ? (
-          <TextField
+          <input
             id="YAxis"
+            variant="outlined"
             label="Y-axis label"
             className={classes.input}
             disabled={isSummarize}
@@ -479,8 +520,9 @@ function LineChartSettings({ updateConfig, config: oldConfig }) {
             }}
             value={labelYAxis}
             onChange={(event) => {
-              setLabelYAxis(event.target.value);
-              validateField('labelYAxis', event.target.value);
+              const newYAxes = [...labelYAxis];
+              newYAxes[0] = event.target.value;
+              setLabelYAxis(newYAxes);
             }}
             helperText={errors.labelYAxis ? '20 characters is max' : null}
             error={errors.labelYAxis}
@@ -489,7 +531,10 @@ function LineChartSettings({ updateConfig, config: oldConfig }) {
       </TabPanel>
       <div className={classes.btnWrapper}>
         <Button
-          className={classes.btn}
+          // className={classes.btn}
+          size="large"
+          variant="contained"
+          color="primary"
           onClick={() => {
             onDoneButton();
           }}

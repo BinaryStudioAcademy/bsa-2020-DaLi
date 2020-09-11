@@ -3,16 +3,17 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { useHistory, useLocation } from 'react-router-dom';
-import TextField from '@material-ui/core/TextField';
-import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
+// import TextField from '@material-ui/core/TextField';
+// import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
 // import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
-import EqualizerOutlinedIcon from '@material-ui/icons/EqualizerOutlined';
-import TimelineOutlinedIcon from '@material-ui/icons/TimelineOutlined';
+// import EqualizerOutlinedIcon from '@material-ui/icons/EqualizerOutlined';
+// import TimelineOutlinedIcon from '@material-ui/icons/TimelineOutlined';
 import Popover from '@material-ui/core/Popover';
-import ToggleButton from '@material-ui/lab/ToggleButton';
-import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup';
+// import ToggleButton from '@material-ui/lab/ToggleButton';
+// import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup';
 import ButtonBase from '@material-ui/core/ButtonBase';
 import { useStyles } from './styles';
+import './styles.css';
 
 const ColorPicker = ({ color: oldColor = 'red', label, index, multiline, handleColorChange, handleLabelChange }) => {
   const history = useHistory();
@@ -111,8 +112,9 @@ const ColorPicker = ({ color: oldColor = 'red', label, index, multiline, handleC
             </div>
           </Popover>
         </div>
-        <TextField
+        <input
           id={`color-picker ${index}`}
+          variant="outlined"
           label=""
           className={classes.input}
           type="text"

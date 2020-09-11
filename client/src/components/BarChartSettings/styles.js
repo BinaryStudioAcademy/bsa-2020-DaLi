@@ -15,17 +15,9 @@ export const useStyles = makeStyles((theme) => ({
   },
   tabs: {
     width: '360px',
-    // display: 'flex',
-    // justifyContent: 'center',
-    // marginBottom: '3rem',
   },
   tab: {
     minWidth: 120,
-    // backgroundColor: '#519ee3',
-    // color: 'white',
-    // borderRadius: '2rem',
-    // marginRight: '1rem',
-    // padding: '0.5rem',
   },
   indicator: {
     display: 'none',
@@ -75,6 +67,9 @@ export const useStyles = makeStyles((theme) => ({
     boxSizing: 'border-box',
     borderRadius: '4px',
     border: '1px solid rgba(0, 0, 0, 0.23)',
+    padding: '18.5px 14px',
+    fontFamily: 'Poppins, Arial, sans-serif',
+    fontSize: '16px',
   },
   colorPicker: {
     display: 'flex',
@@ -135,8 +130,6 @@ export const useStyles = makeStyles((theme) => ({
 export const switchStyles = makeStyles((theme) => ({
   root: {
     width: 70,
-    // height: 26,
-    // padding: 0,
     margin: theme.spacing(1),
     overflow: 'unset',
   },
@@ -154,19 +147,15 @@ export const switchStyles = makeStyles((theme) => ({
     },
     '&$focusVisible $thumb': {
       color: '#1CD1A1',
-      // border: '6px solid #fff',
     },
   },
   thumb: {
     width: 24,
     height: 24,
-    // backgroundColor: 'yellow',
-    // border: 'none',
   },
   track: {
-    // borderRadius: 26 / 2,
     border: '1px solid #CFD7DF',
-    backgroundColor: '#F2F2F2', // theme.palette.grey[50],
+    backgroundColor: '#F2F2F2',
     opacity: 1,
     transition: theme.transitions.create(['background-color', 'border']),
   },

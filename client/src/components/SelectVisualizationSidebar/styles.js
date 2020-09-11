@@ -6,15 +6,15 @@ const useStyles = makeStyles((theme) => ({
   },
   buttonStyle: {
     width: '25%',
-    borderRadius: '15%',
-    color: '#33A1DE',
-    backgroundColor: '#D1E8F7',
+    borderRadius: '4px',
+    color: '#ffffff',
+    backgroundColor: '#1CD1A1',
     margin: theme.spacing(0.5),
     marginBottom: '30px',
     '&:hover': {
       cursor: 'pointer',
       color: '#fff',
-      backgroundColor: '#33A1DE',
+      backgroundColor: 'background: rgb(19, 146, 112)',
     },
   },
   basicContainer: {
@@ -29,7 +29,7 @@ const useStyles = makeStyles((theme) => ({
   visName: {
     position: 'absolute',
     bottom: '-30px',
-    color: '#33A1DE',
+    color: '#4E4E4E',
   },
   invalidDataTooltip: {
     fontSize: '13px',

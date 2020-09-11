@@ -43,7 +43,6 @@ const WidgetsContainer = ({
             to={{
               pathname: '/analytics',
             }}
-            key="analytics"
           >
             <Typography variant="body2" color="primary">
               Brows all items {'>'}
@@ -60,7 +59,7 @@ const WidgetsContainer = ({
                 if (collection.name === DEFAULT_COLLECTIONS) return null;
                 count++;
                 return count < 6 ? (
-                  <Paper variant="outlined" square>
+                  <Paper variant="outlined" square key={collection.id}>
                     <div className="paper-analitics-icon">
                       <CheckBoxOutlineBlankIcon />
                     </div>
@@ -81,7 +80,6 @@ const WidgetsContainer = ({
                           to={{
                             pathname: `/collections/${collection.id}`,
                           }}
-                          key="collections"
                         >
                           <Typography variant="body2" color="primary">
                             More Details {'>'}
@@ -107,7 +105,6 @@ const WidgetsContainer = ({
             to={{
               pathname: '/data-sources',
             }}
-            key="data-sources"
           >
             <Typography variant="body2" color="primary">
               Brows all items {'>'}
@@ -128,7 +125,7 @@ const WidgetsContainer = ({
                     to={{
                       pathname: `/data-sources/${database.id}`,
                     }}
-                    key="data-sources"
+                    key={database.id}
                   >
                     <Paper variant="outlined" square>
                       <div className="paper-data-icon">

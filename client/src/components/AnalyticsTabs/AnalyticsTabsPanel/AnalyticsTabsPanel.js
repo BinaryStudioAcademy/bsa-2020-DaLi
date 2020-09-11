@@ -13,7 +13,7 @@ import MoveToInboxIcon from '@material-ui/icons/MoveToInbox';
 import { Grid, Paper } from '@material-ui/core';
 import { useHistory } from 'react-router-dom';
 
-const AnalyticsTabsPanel = ({ data, deleteVisualization, deleteDashboard, openModal, collectionId }) => {
+const AnalyticsTabsPanel = ({ value, index, data, deleteVisualization, deleteDashboard, openModal, collectionId }) => {
   const history = useHistory();
 
   const onVisualizationsClick = (id) => {
@@ -55,7 +55,7 @@ const AnalyticsTabsPanel = ({ data, deleteVisualization, deleteDashboard, openMo
   };
 
   return (
-    <>
+    <Typography component="div" hidden={value !== index}>
       <Grid>
         {data.map((item, dataIndex) => {
           return (
@@ -111,7 +111,7 @@ const AnalyticsTabsPanel = ({ data, deleteVisualization, deleteDashboard, openMo
           );
         })}
       </Grid>
-    </>
+    </Typography>
   );
 };
 

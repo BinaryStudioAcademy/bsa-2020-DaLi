@@ -312,6 +312,7 @@ const BarChartSettings = ({ updateConfig, config: oldConfig }) => {
                 Goal line
               </Typography>
               <input
+                style={{ marginTop: '10px' }}
                 name="goal"
                 variant="outlined"
                 id="standard-basic"

@@ -5,13 +5,13 @@ import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import Box from '@material-ui/core/Box';
 import Button from '@material-ui/core/Button';
-import InputLabel from '@material-ui/core/InputLabel';
+// import InputLabel from '@material-ui/core/InputLabel';
 import FormControl from '@material-ui/core/FormControl';
 import FormLabel from '@material-ui/core/FormLabel';
 import NativeSelect from '@material-ui/core/NativeSelect';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Switch from '@material-ui/core/Switch';
-import TextField from '@material-ui/core/TextField';
+// import TextField from '@material-ui/core/TextField';
 // import ColorPicker from 'material-ui-color-picker';
 import Typography from '@material-ui/core/Typography';
 import ToggleButton from '@material-ui/lab/ToggleButton';
@@ -306,17 +306,23 @@ function LineChartSettings({ updateConfig, config: oldConfig }) {
           label="Goal line"
         />
         {isGoalLine ? (
-          <input
-            name="goal"
-            id="standard-basic"
-            label="Goal line"
-            className={classes.input}
-            type="number"
-            value={goalLine}
-            onChange={(event) => {
-              setGoalLine(event.target.value);
-            }}
-          />
+          <>
+            <Typography variant="subtitle2" htmlFor="goal">
+              Goal line
+            </Typography>
+            <input
+              style={{ marginTop: '10px' }}
+              name="goal"
+              id="standard-basic"
+              label="Goal line"
+              className={classes.input}
+              type="number"
+              value={goalLine}
+              onChange={(event) => {
+                setGoalLine(event.target.value);
+              }}
+            />
+          </>
         ) : null}
         <FormControlLabel
           control={(() => (
@@ -473,12 +479,12 @@ function LineChartSettings({ updateConfig, config: oldConfig }) {
       </TabPanel>
       <TabPanel value={value} index={2}>
         <FormControlLabel
-          control={(
+          control={
             <PrettySwitch
               checked={isSummarize ? true : isLabelXAxis}
               onChange={(event) => setIsLabelXAxis(event.target.checked)}
             />
-          )}
+          }
           label="Show label on x-axis"
           disabled={isSummarize}
         />
@@ -502,12 +508,12 @@ function LineChartSettings({ updateConfig, config: oldConfig }) {
           />
         ) : null}
         <FormControlLabel
-          control={(
+          control={
             <PrettySwitch
               checked={isSummarize ? true : isLabelYAxis}
               onChange={(event) => setIsLabelYAxis(event.target.checked)}
             />
-          )}
+          }
           label="Show label on y-axis"
           disabled={isSummarize}
         />

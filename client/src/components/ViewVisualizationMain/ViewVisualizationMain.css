@@ -25,17 +25,27 @@
 .view-visualization__visualization-button {
   color: white !important;
   text-transform: none !important;
-  background: #3ca1de !important;
-  border-radius: 5px !important;
+  background: #1CD1A1 !important;
+  /* border-radius: 5px !important; */
+  padding: 0 10px !important;
+  width: 140px !important;
 }
 
 .view-visualization__setting-button {
   color: white !important;
   text-transform: none !important;
-  background: #3ca1de !important;
-  border-radius: 5px !important;
-  margin-left: 20px !important;
+  background: #1CD1A1 !important;
+  /* border-radius: 5px !important; */
+  margin: 10px !important;
+  padding: 0 10px !important;
+  width: 140px !important;
 }
+
+.view-visualization__visualization-button:hover,
+.view-visualization__setting-button:hover {
+  background: rgb(19, 146, 112) !important;
+}
+
 
 .view-visualization__switcher-container {
   position: absolute;
@@ -44,10 +54,11 @@
 
   padding: 5px;
 
-  background: #ecf2f5 !important;
+  /* background: #ecf2f5 !important; */
   border-radius: 20px !important;
-  box-shadow: none !important;
+  /* box-shadow: none !important; */
   transform: translate(-50%, -50%);
+
 }
 
 .view-visualization__switcher-item {
@@ -59,10 +70,17 @@
 }
 .view-visualization__switcher-item:hover {
   box-shadow: none !important;
+  
 }
 
 .view-visualization__switcher-item--active {
   color: white !important;
 
-  background: #3ca1de !important;
+  background: #1CD1A1 !important;
+}
+
+.view-visualization__switcher-item--active:hover {
+  color: white !important;
+
+  background: rgb(19, 146, 112) !important;
 }

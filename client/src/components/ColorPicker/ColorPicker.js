@@ -3,14 +3,15 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { useHistory, useLocation } from 'react-router-dom';
-import TextField from '@material-ui/core/TextField';
-import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
+// import TextField from '@material-ui/core/TextField';
+// import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
 // import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
-import EqualizerOutlinedIcon from '@material-ui/icons/EqualizerOutlined';
-import TimelineOutlinedIcon from '@material-ui/icons/TimelineOutlined';
+// import EqualizerOutlinedIcon from '@material-ui/icons/EqualizerOutlined';
+// import TimelineOutlinedIcon from '@material-ui/icons/TimelineOutlined';
 import Popover from '@material-ui/core/Popover';
-import ToggleButton from '@material-ui/lab/ToggleButton';
-import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup';
+// import ToggleButton from '@material-ui/lab/ToggleButton';
+// import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup';
+import { createMuiTheme, ThemeProvider } from '@material-ui/core';
 import ButtonBase from '@material-ui/core/ButtonBase';
 import { useStyles } from './styles';
 
@@ -20,6 +21,24 @@ const ColorPicker = ({ color: oldColor = 'red', label, index, multiline, handleC
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = useState(null);
   const [color, setColor] = useState(oldColor);
+
+  const theme = createMuiTheme({
+    // palette: {
+    //   primary: {
+    //     main: '#1CD1A1',
+    //   },
+    //   secondary: {
+    //     main: '#FAA9C6',
+    //   },
+    //   text: {
+    //     primary: '#4E4E4E',
+    //     secondary: '#858585',
+    //   },
+    //   background: {
+    //     default: '#FAFAFA',
+    //   },
+    // },
+  });
 
   const handleClose = () => {
     setAnchorEl(null);
@@ -63,55 +82,59 @@ const ColorPicker = ({ color: oldColor = 'red', label, index, multiline, handleC
             className={classes.colorSquare}
             style={{ backgroundColor: color }}
           />
-          <Popover
-            id={id}
-            open={open}
-            anchorEl={anchorEl}
-            onClose={handleClose}
-            anchorOrigin={{
-              vertical: 'bottom',
-              horizontal: 'center',
-            }}
-            transformOrigin={{
-              vertical: 'top',
-              horizontal: 'center',
-            }}
-          >
-            <div className={classes.colorPalette} onClick={(event) => pickColor(event)}>
-              <ol className={classes.colorPaletteInner}>
-                <li className={classes.colorItemWrapper}>
-                  <div className={classes.colorItem} style={{ backgroundColor: 'rgb(80, 158, 227)' }} />
-                </li>
-                <li className={classes.colorItemWrapper}>
-                  <div className={classes.colorItem} style={{ backgroundColor: 'rgb(136, 191, 77)' }} />
-                </li>
-                <li className={classes.colorItemWrapper}>
-                  <div className={classes.colorItem} style={{ backgroundColor: 'rgb(169, 137, 197)' }} />
-                </li>
-                <li className={classes.colorItemWrapper}>
-                  <div className={classes.colorItem} style={{ backgroundColor: 'rgb(239, 140, 140)' }} />
-                </li>
-                <li className={classes.colorItemWrapper}>
-                  <div className={classes.colorItem} style={{ backgroundColor: 'rgb(249, 212, 92)' }} />
-                </li>
-                <li className={classes.colorItemWrapper}>
-                  <div className={classes.colorItem} style={{ backgroundColor: 'rgb(242, 168, 111)' }} />
-                </li>
-                <li className={classes.colorItemWrapper}>
-                  <div className={classes.colorItem} style={{ backgroundColor: 'rgb(152, 217, 217)' }} />
-                </li>
-                <li className={classes.colorItemWrapper}>
-                  <div className={classes.colorItem} style={{ backgroundColor: 'rgb(113, 114, 173)' }} />
-                </li>
-                <li className={classes.colorItemWrapper}>
-                  <div className={classes.colorItem} style={{ backgroundColor: 'rgb(116, 131, 143)' }} />
-                </li>
-              </ol>
-            </div>
-          </Popover>
+          <ThemeProvider theme={theme}>
+            <Popover
+              id={id}
+              open={open}
+              anchorEl={anchorEl}
+              onClose={handleClose}
+              className={classes.popper}
+              anchorOrigin={{
+                vertical: 'bottom',
+                horizontal: 'center',
+              }}
+              transformOrigin={{
+                vertical: 'top',
+                horizontal: 'center',
+              }}
+            >
+              <div className={classes.colorPalette} onClick={(event) => pickColor(event)}>
+                <ol className={classes.colorPaletteInner}>
+                  <li className={classes.colorItemWrapper}>
+                    <div className={classes.colorItem} style={{ backgroundColor: '#1CD1A1' }} />
+                  </li>
+                  <li className={classes.colorItemWrapper}>
+                    <div className={classes.colorItem} style={{ backgroundColor: 'rgb(136, 191, 77)' }} />
+                  </li>
+                  <li className={classes.colorItemWrapper}>
+                    <div className={classes.colorItem} style={{ backgroundColor: 'rgb(169, 137, 197)' }} />
+                  </li>
+                  <li className={classes.colorItemWrapper}>
+                    <div className={classes.colorItem} style={{ backgroundColor: 'rgb(239, 140, 140)' }} />
+                  </li>
+                  <li className={classes.colorItemWrapper}>
+                    <div className={classes.colorItem} style={{ backgroundColor: 'rgb(249, 212, 92)' }} />
+                  </li>
+                  <li className={classes.colorItemWrapper}>
+                    <div className={classes.colorItem} style={{ backgroundColor: 'rgb(242, 168, 111)' }} />
+                  </li>
+                  <li className={classes.colorItemWrapper}>
+                    <div className={classes.colorItem} style={{ backgroundColor: 'rgb(152, 217, 217)' }} />
+                  </li>
+                  <li className={classes.colorItemWrapper}>
+                    <div className={classes.colorItem} style={{ backgroundColor: 'rgb(113, 114, 173)' }} />
+                  </li>
+                  <li className={classes.colorItemWrapper}>
+                    <div className={classes.colorItem} style={{ backgroundColor: 'rgb(116, 131, 143)' }} />
+                  </li>
+                </ol>
+              </div>
+            </Popover>
+          </ThemeProvider>
         </div>
-        <TextField
+        <input
           id={`color-picker ${index}`}
+          variant="outlined"
           label=""
           className={classes.input}
           type="text"
@@ -123,7 +146,7 @@ const ColorPicker = ({ color: oldColor = 'red', label, index, multiline, handleC
             changeLabel(event.target.value);
           }}
         />
-        {multiline ? (
+        {/* {multiline ? (
           <div className={classes.btnParams}>
             <KeyboardArrowDownIcon />
           </div>
@@ -152,7 +175,7 @@ const ColorPicker = ({ color: oldColor = 'red', label, index, multiline, handleC
               <EqualizerOutlinedIcon className={classes.iconStyles} />
             </ToggleButton>
           </ToggleButtonGroup>
-        )}
+        )} */}
       </div>
     </div>
   );

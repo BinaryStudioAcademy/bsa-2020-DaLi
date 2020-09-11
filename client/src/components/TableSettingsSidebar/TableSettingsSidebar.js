@@ -128,7 +128,7 @@ const TableSettingsSidebar = ({ config, updateConfig, userNotificationError }) =
         {isEditColumn ? (
           <EditItem
             closeEditColumn={closeEditColumn}
-            columns={isSummarize ? tableConfig.summarizeColumns : config.config.columns}
+            columns={isSummarize ? tableConfig.summarizeColumns : config.columns}
             currentColumnId={currentColumnId}
             updateColumnConfig={updateColumnConfig}
             validateField={validateField}
@@ -190,7 +190,9 @@ const TableSettingsSidebar = ({ config, updateConfig, userNotificationError }) =
       <div className="table-settings-sidebar-footer">
         <Button
           onClick={saveConfig}
-          className="view-visualization__setting-button"
+          // className="view-visualization__setting-button"
+          size="large"
+          color="primary"
           variant="contained"
           disabled={isError()}
         >

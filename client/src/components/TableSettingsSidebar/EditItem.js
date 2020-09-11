@@ -9,6 +9,62 @@ import Radio from '@material-ui/core/Radio';
 import RadioGroup from '@material-ui/core/RadioGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
+import { makeStyles } from '@material-ui/core/styles';
+
+export const switchStyles = makeStyles((theme) => ({
+  root: {
+    width: 70,
+    margin: theme.spacing(1),
+    overflow: 'unset',
+  },
+  switchBase: {
+    padding: 1,
+    border: 'none',
+    '&$checked': {
+      transform: 'translateX(44px)',
+      color: theme.palette.common.white,
+      '& + $track': {
+        backgroundColor: '#1CD1A1',
+        opacity: 1,
+        border: 'none',
+      },
+    },
+    '&$focusVisible $thumb': {
+      color: '#1CD1A1',
+    },
+  },
+  thumb: {
+    width: 24,
+    height: 24,
+  },
+  track: {
+    border: '1px solid #CFD7DF',
+    backgroundColor: '#F2F2F2',
+    opacity: 1,
+    transition: theme.transitions.create(['background-color', 'border']),
+  },
+  checked: {},
+  focusVisible: {},
+}));
+
+const PrettySwitch = (props) => {
+  const classes = switchStyles();
+  return (
+    <Switch
+      focusVisibleClassName={classes.focusVisible}
+      size="medium"
+      // disableRipple
+      classes={{
+        root: classes.root,
+        switchBase: classes.switchBase,
+        thumb: classes.thumb,
+        track: classes.track,
+        checked: classes.checked,
+      }}
+      {...props}
+    />
+  );
+};
 
 const EditItem = ({ closeEditColumn, currentColumnId, columns, updateColumnConfig, validateField, errors }) => {
   const [open, setOpen] = useState(false);
@@ -98,7 +154,7 @@ const EditItem = ({ closeEditColumn, currentColumnId, columns, updateColumnConfi
       {currentColumn.type === 'number' && (
         <>
           <div className="edit-menu-title">Show mini bar chart</div>
-          <Switch color="primary" value={isMiniBarChart} onChange={handleChangeMiniBarChart} />
+          <PrettySwitch color="primary" value={isMiniBarChart} onChange={handleChangeMiniBarChart} />
           <div className="edit-menu-title">Separator style</div>
           <FormControl fullWidth>
             <Select

@@ -1,8 +1,9 @@
 .group-list-header-container {
   position: sticky;
-  top: 93px;
+  top: 83px;
   background: white;
-  margin-top: 10px;
+  padding-top: 10px;
+  /* margin-top: 10px; */
   display: flex;
   justify-content: space-between;
 }

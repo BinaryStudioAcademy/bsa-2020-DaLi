@@ -249,6 +249,7 @@ export const theme = createMuiTheme({
           '& .MuiSvgIcon-root': {
             width: '20px',
             height: '20px',
+            margin: 0,
             transform: 'rotate(-45deg)',
             color: '#1CD1A1',
           },

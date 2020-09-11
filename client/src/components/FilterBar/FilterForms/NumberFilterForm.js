@@ -23,7 +23,7 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-function NumberFilterForm({ filter, openFiltersList, setActiveFilter }) {
+function NumberFilterForm({ filter, openFiltersList, setActiveFilter, setApplyButtonDisabled }) {
   const classes = useStyles();
   //   string filter model : {
   //     type: 'string',
@@ -45,18 +45,22 @@ function NumberFilterForm({ filter, openFiltersList, setActiveFilter }) {
 
   const onBetweenSelectLessThanHandler = (value) => {
     if (!greaterThan || +value > +greaterThan) {
-      setLessThan(value);
+      setApplyButtonDisabled(false);
     } else {
+      setApplyButtonDisabled(true);
       setNotificationMessage('the upper limit cannot be lower than the lower');
     }
+    setLessThan(value);
   };
 
   const onBetweenSelectGreaterThanHandler = (value) => {
     if (!lessThan || +value < +lessThan) {
-      setGreaterThan(value);
+      setApplyButtonDisabled(false);
     } else {
+      setApplyButtonDisabled(true);
       setNotificationMessage('the lower limit cannot be higher than the upper one');
     }
+    setGreaterThan(value);
   };
 
   const chooseNumberFilterForm = (numberFormatPicker) => {
@@ -126,7 +130,18 @@ function NumberFilterForm({ filter, openFiltersList, setActiveFilter }) {
         Back to filters list
       </Button>
       <FormControl variant="outlined" className={classes.formControl}>
-        <Select value={numberFormatPicker} onChange={(e) => setNumberFormatPicker(e.target.value)}>
+        <Select
+          value={numberFormatPicker}
+          onChange={(e) => {
+            const value = e.target.value;
+            setApplyButtonDisabled(false);
+            if (value === 'between') {
+              onBetweenSelectLessThanHandler(lessThan);
+              onBetweenSelectGreaterThanHandler(greaterThan);
+            }
+            setNumberFormatPicker(value);
+          }}
+        >
           <MenuItem value="between">between</MenuItem>
           <MenuItem value="greaterThan">greater equal than</MenuItem>
           <MenuItem value="lessThan">less equal than</MenuItem>
@@ -152,6 +167,7 @@ NumberFilterForm.propTypes = {
   filter: PropTypes.object,
   openFiltersList: PropTypes.func,
   setActiveFilter: PropTypes.func,
+  setApplyButtonDisabled: PropTypes.func,
 };
 
 export default NumberFilterForm;

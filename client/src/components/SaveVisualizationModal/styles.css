@@ -59,7 +59,6 @@ textarea::placeholder {
 .visualizationModalForm input:focus,
 textarea:focus {
   outline: none;
-  border: 1px solid #33a1de;
 }
 
 .visualizationModalFooter {

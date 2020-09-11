@@ -44,6 +44,17 @@ export const updateUser = async (id, dataToUpdate) => {
   if (!item) {
     throw createError(404, `User with id of ${id.id} not found`);
   }
+  if (dataToUpdate.password || dataToUpdate.password === null) {
+    dataToUpdate.password = dataToUpdate.password || generatePassword();
+    const password = dataToUpdate.password || '';
+    const result = await UserRepository.updateById(id, {
+      ...dataToUpdate,
+      password: encryptSync(dataToUpdate.password),
+    });
+    result.password = password;
+
+    return result;
+  }
   if (dataToUpdate.email && item.email !== dataToUpdate.email) {
     if (await UserRepository.getByEmail(dataToUpdate.email)) {
       throw createError(409, 'This email is assigned to another user');
@@ -60,18 +71,6 @@ export const updateUser = async (id, dataToUpdate) => {
     } else {
       delete dataToUpdate.oldPassword;
     }
-  }
-
-  if (dataToUpdate.password || dataToUpdate.password === null) {
-    dataToUpdate.password = dataToUpdate.password || generatePassword();
-    const password = dataToUpdate.password || '';
-    const result = await UserRepository.updateById(id, {
-      ...dataToUpdate,
-      password: encryptSync(dataToUpdate.password),
-    });
-    result.password = password;
-
-    return result;
   }
   const result = await UserRepository.updateById(id, dataToUpdate);
   return result;

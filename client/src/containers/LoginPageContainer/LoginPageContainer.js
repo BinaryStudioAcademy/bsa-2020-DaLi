@@ -40,10 +40,6 @@ const LoginPageContainer = ({ error }) => {
     });
   }, []);
 
-  if (register) {
-    return <SignUpContainer handleSubmitRegister={handleSubmitRegister} />;
-  }
-
   return (
     <div className="login-container">
       <div className="login-hero-container">
@@ -51,9 +47,13 @@ const LoginPageContainer = ({ error }) => {
       </div>
       <div className="form-wrapper">
         <Typography variant="h1" className="title" color="primary">
-          Sign in to DaLi
+          {register ? 'Sign up to DaLi' : 'Sign in to DaLi'}
         </Typography>
-        <LoginForm setIsModalVisible={setIsModalVisible} login={handleSubmit} />
+        {register ? (
+          <SignUpContainer handleSubmitRegister={handleSubmitRegister} />
+        ) : (
+          <LoginForm setIsModalVisible={setIsModalVisible} login={handleSubmit} />
+        )}
         {isModalVisible && (
           <Modal onModalClose={() => setIsModalVisible(false)}>
             <Modal.Body>

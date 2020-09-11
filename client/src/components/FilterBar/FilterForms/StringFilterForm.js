@@ -15,9 +15,8 @@ const useStyles = makeStyles(() => ({
     width: '100%',
   },
   goBackBtn: {
+    width: '100%',
     marginBottom: 20,
-    backgroundColor: '#E2E3EF',
-    color: '#7172AD',
   },
   textField: {
     margin: '20px 0',
@@ -49,7 +48,7 @@ function StringFilterForm({ filter, openFiltersList, setActiveFilter }) {
 
   return (
     <>
-      <Button className={classes.goBackBtn} onClick={openFiltersList}>
+      <Button variant="outlined" color="primary" className={classes.goBackBtn} onClick={openFiltersList}>
         Back to filters list
       </Button>
       <FormControl variant="outlined" className={classes.formControl}>

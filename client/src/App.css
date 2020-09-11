@@ -38,8 +38,7 @@
 }
 
 .wrapper {
-  width: 95%;
-  max-width: 1200px;
+  width: 95vw;
   margin: 0 auto;
 }
 

@@ -4,6 +4,7 @@ import AddIcon from '@material-ui/icons/Add';
 import { Link } from 'react-router-dom';
 import { useStyles } from './styles';
 import CollectionListItem from './CollectionListItem';
+import { DEFAULT_COLLECTIONS } from '../../constants';
 
 const CollectionList = ({ openModal, collections }) => {
   const classes = useStyles();
@@ -14,7 +15,7 @@ const CollectionList = ({ openModal, collections }) => {
       <div className={classes.collectionItemContainer}>
         {collections.map((collection) => {
           return (
-            collection.name !== 'Our analytics' && (
+            collection.name !== DEFAULT_COLLECTIONS && (
               <Link to={`/collections/${collection.id}`} key={collection.id} className={classes.link}>
                 <CollectionListItem name={collection.name} />
               </Link>

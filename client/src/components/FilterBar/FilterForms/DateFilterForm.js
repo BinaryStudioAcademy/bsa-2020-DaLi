@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 
 import { makeStyles } from '@material-ui/core/styles';
-import { Button } from '@material-ui/core';
+import { Button, createMuiTheme, ThemeProvider } from '@material-ui/core';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
@@ -14,17 +14,34 @@ import { MuiPickersUtilsProvider, DateTimePicker } from '@material-ui/pickers';
 import MomentUtils from '@date-io/moment';
 import moment from 'moment';
 
+export const theme = createMuiTheme({
+  palette: {
+    primary: {
+      main: '#1CD1A1',
+    },
+    secondary: {
+      main: '#FAA9C6',
+    },
+    text: {
+      primary: '#4E4E4E',
+      secondary: '#858585',
+    },
+    background: {
+      default: '#FAFAFA',
+    },
+  },
+});
+
 const useStyles = makeStyles(() => ({
   formControl: {
     width: '100%',
   },
   goBackBtn: {
+    width: '100%',
     marginBottom: 20,
-    backgroundColor: '#E2E3EF',
-    color: '#7172AD',
   },
-  textField: {
-    margin: '20px 0',
+  input: {
+    marginTop: 20,
     marginRight: 5,
   },
 }));
@@ -67,15 +84,24 @@ function DateFilterForm({ filter, openFiltersList, setActiveFilter }) {
     switch (datePickerFormat) {
       case 'between':
         return (
-          <MuiPickersUtilsProvider utils={MomentUtils}>
-            <DateTimePicker
-              clearable
-              value={greaterThan}
-              onChange={onBetweenSelectGreaterThanHandler}
-              helperText="FROM"
-            />
-            <DateTimePicker clearable value={lessThan} onChange={onBetweenSelectLessThanHandler} helperText="TO" />
-          </MuiPickersUtilsProvider>
+          <ThemeProvider theme={theme}>
+            <MuiPickersUtilsProvider utils={MomentUtils}>
+              <DateTimePicker
+                clearable
+                value={greaterThan}
+                onChange={onBetweenSelectGreaterThanHandler}
+                helperText="FROM"
+                className={classes.input}
+              />
+              <DateTimePicker
+                clearable
+                value={lessThan}
+                onChange={onBetweenSelectLessThanHandler}
+                helperText="TO"
+                className={classes.input}
+              />
+            </MuiPickersUtilsProvider>
+          </ThemeProvider>
         );
 
       case 'previous':
@@ -92,7 +118,6 @@ function DateFilterForm({ filter, openFiltersList, setActiveFilter }) {
                 setDateUnitCount(value);
               }}
               type="number"
-              className={classes.textField}
             />
             <FormControl variant="outlined" className={classes.formControl}>
               <Select value={dateUnitType} onChange={(e) => setDateUnitType(e.target.value)}>
@@ -194,7 +219,7 @@ function DateFilterForm({ filter, openFiltersList, setActiveFilter }) {
 
   return (
     <>
-      <Button className={classes.goBackBtn} onClick={openFiltersList}>
+      <Button variant="outlined" color="primary" className={classes.goBackBtn} onClick={openFiltersList}>
         Back to filters list
       </Button>
       <FormControl variant="outlined" className={classes.formControl}>

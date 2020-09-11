@@ -128,7 +128,7 @@ const TableSettingsSidebar = ({ config, updateConfig, userNotificationError }) =
         {isEditColumn ? (
           <EditItem
             closeEditColumn={closeEditColumn}
-            columns={isSummarize ? tableConfig.summarizeColumns : config.config.columns}
+            columns={isSummarize ? tableConfig.summarizeColumns : config.columns}
             currentColumnId={currentColumnId}
             updateColumnConfig={updateColumnConfig}
             validateField={validateField}

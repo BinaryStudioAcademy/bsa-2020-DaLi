@@ -2,11 +2,12 @@ import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles(() => ({
   permissionsEditingHeader: {
+    borderTop: '1px solid #FFF',
     display: 'flex',
     height: '60px',
     alignItems: 'center',
     borderBottom: '1px solid #f3f4f4',
-    backgroundColor: '#8588b6',
+    backgroundColor: '#1CD1A1',
     padding: '0 40px',
     boxSizing: 'border-box',
     justifyContent: 'space-between',
@@ -33,15 +34,12 @@ const useStyles = makeStyles(() => ({
 
   permissionsEditingHeaderButtonCancel: {
     color: '#faf7fa',
-    background: '#9294bd',
+    background: '#1CD1A1',
   },
 
   permissionsEditingHeaderButtonSave: {
-    color: '#4e4f50',
-    background: '#ffffff',
-    '&:hover': {
-      background: '#eee',
-    },
+    color: '#faf7fa',
+    background: '#5dc194',
   },
 }));
 

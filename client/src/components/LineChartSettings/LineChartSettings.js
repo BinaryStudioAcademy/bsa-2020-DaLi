@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-wrap-multilines */
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import Tabs from '@material-ui/core/Tabs';
@@ -151,6 +152,8 @@ function LineChartSettings({ updateConfig, config: oldConfig }) {
         },
         showDataPointsValues,
       },
+      schema: oldConfig.schema,
+      summarize: oldConfig.summarize,
     });
   };
 

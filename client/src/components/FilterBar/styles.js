@@ -5,6 +5,8 @@ const useStyles = makeStyles(() => ({
     width: '100%',
     borderRadius: '5px',
     margin: '5px 0',
+    display: 'flex',
+    justifyContent: 'start',
     '&:hover, &.active': {
       color: '#FFF',
       backgroundColor: '#1CD1A1',

@@ -42,6 +42,7 @@ function createInitBarChartConfig(schema, getYKeys, getXKeys) {
       select: {},
       groupBy: {},
     },
+    schema,
   };
 }
 

@@ -59,35 +59,35 @@ const WidgetsContainer = ({
                 if (collection.name === DEFAULT_COLLECTIONS) return null;
                 count++;
                 return count < 6 ? (
-                  <Paper variant="outlined" square key={collection.id}>
-                    <div className="paper-analitics-icon">
-                      <CheckBoxOutlineBlankIcon />
-                    </div>
-                    <div className="paper-analitics-text">
-                      <Typography variant="h3" className={classes.collectionName}>
-                        {collection.name}
-                      </Typography>
-                      {collection.description && (
-                        <Typography variant="body2" color="textSecondary" className={classes.collectionDescription}>
-                          {collection.description}
-                        </Typography>
-                      )}
-                      <StyledNavLink>
-                        <NavLink
-                          activeStyle={{
-                            opacity: '1',
-                          }}
-                          to={{
-                            pathname: `/collections/${collection.id}`,
-                          }}
-                        >
+                  <StyledNavLink>
+                    <NavLink
+                      activeStyle={{
+                        opacity: '1',
+                      }}
+                      to={{
+                        pathname: `/collections/${collection.id}`,
+                      }}
+                    >
+                      <Paper variant="outlined" square key={collection.id}>
+                        <div className="paper-analitics-icon">
+                          <CheckBoxOutlineBlankIcon />
+                        </div>
+                        <div className="paper-analitics-text">
+                          <Typography variant="h3" className={classes.collectionName}>
+                            {collection.name}
+                          </Typography>
+                          {collection.description && (
+                            <Typography variant="body2" color="textSecondary" className={classes.collectionDescription}>
+                              {collection.description}
+                            </Typography>
+                          )}
                           <Typography variant="body2" color="primary">
                             More Details {'>'}
                           </Typography>
-                        </NavLink>
-                      </StyledNavLink>
-                    </div>
-                  </Paper>
+                        </div>
+                      </Paper>
+                    </NavLink>
+                  </StyledNavLink>
                 ) : null;
               })}
             </div>

@@ -16,13 +16,6 @@ import { useHistory } from 'react-router-dom';
 const AnalyticsTabsPanel = ({ value, index, data, deleteVisualization, deleteDashboard, openModal, collectionId }) => {
   const history = useHistory();
 
-  const onVisualizationsClick = (id) => {
-    history.push({
-      pathname: `/visualizations/${id}`,
-      data,
-    });
-  };
-
   const chooseIcon = (type) => {
     switch (type) {
       case 'LINE_CHART': {
@@ -43,74 +36,104 @@ const AnalyticsTabsPanel = ({ value, index, data, deleteVisualization, deleteDas
     }
   };
 
-  const handleMoveVisualization = (visualization) => {
+  const handleMoveVisualization = (visualization, event) => {
     openModal({ visualization, type: 'Move collection' });
+    event.stopPropagation();
   };
-  const handleMoveDashboard = (dashboard) => {
+  const handleMoveDashboard = (dashboard, event) => {
     openModal({ dashboard, type: 'Move collection' });
+    event.stopPropagation();
   };
 
   const handleClickOnDashboardItem = (id) => {
     history.push(`/dashboards/${id}`);
   };
 
+  const onVisualizationsClick = (id) => {
+    history.push({
+      pathname: `/visualizations/${id}`,
+      data,
+    });
+  };
+
   return (
     <Typography component="div" hidden={value !== index}>
-      <Grid>
-        {data.map((item, dataIndex) => {
-          return (
-            <Paper key={dataIndex} variant="outlined" className="paper-collection-outlined">
-              {!item.type ? (
-                <>
-                  <div className="paper-collection-icon">{chooseIcon(item.type)}</div>
-                  {/* eslint-disable-next-line */}
-                  <div className="paper-collection-text" onClick={() => handleClickOnDashboardItem(item.id)}>
-                    <Typography variant="h3">{item.name}</Typography>
-                  </div>
-                  <div className="paper-collection-btns">
-                    {item.description.length ? (
-                      <Tooltip title={item.description} placement="left">
-                        <InfoIcon id={`analytics-dashboard-${item.id}-info`} />
-                      </Tooltip>
-                    ) : null}
-                    <MoveToInboxIcon
-                      onClick={() => handleMoveDashboard(item)}
-                      id={`analytics-dashboard-${item.id}-moveToCollections`}
-                    />
-                    <DeleteIcon
-                      id={`analytics-dashboard-${item.id}-delete`}
-                      onClick={deleteDashboard({ id: item.id, collectionId })}
-                    />
-                  </div>
-                </>
-              ) : (
-                <>
-                  <div className="paper-collection-icon">{chooseIcon(item.type)}</div>
-                  {/* eslint-disable-next-line */}
-                  <div className="paper-collection-text" onClick={() => onVisualizationsClick(item.id, item.tableId)}>
-                    <Typography variant="h3">{item.name}</Typography>
-                  </div>
-                  <div className="paper-collection-btns">
-                    {item.description.length ? (
-                      <Tooltip title={item.description} placement="left">
-                        <InfoIcon id={`analytics-visualization-${item.id}-info`} />
-                      </Tooltip>
-                    ) : null}
-                    <MoveToInboxIcon
-                      onClick={() => handleMoveVisualization(item)}
-                      id={`analytics-visualization-${item.id}-moveToCollections`}
-                    />
-                    <DeleteIcon
-                      id={`analytics-visualization-${item.id}-delete`}
-                      onClick={deleteVisualization({ id: item.id, collectionId })}
-                    />
-                  </div>
-                </>
-              )}
-            </Paper>
-          );
-        })}
-      </Grid>
+      {data.length === 0 ? (
+        <div style={{ width: '100%', display: 'flex', position: 'relative' }}>
+          <img
+            src="/no_data.png"
+            style={{ margin: 'auto', height: '100%', justifyContent: 'center', objectFit: 'contain' }}
+            alt="no_data"
+          />
+        </div>
+      ) : (
+        <Grid>
+          {data.map((item, dataIndex) => {
+            return (
+              <Paper
+                key={dataIndex}
+                variant="outlined"
+                className="paper-collection-outlined"
+                onClick={() => {
+                  if (item.type) {
+                    onVisualizationsClick(item.id, item.tableId);
+                  } else {
+                    handleClickOnDashboardItem(item.id);
+                  }
+                }}
+              >
+                {!item.type ? (
+                  <>
+                    <div className="paper-collection-icon">{chooseIcon(item.type)}</div>
+                    {/* eslint-disable-next-line */}
+                    <div className="paper-collection-text">
+                      <Typography variant="h3">{item.name}</Typography>
+                    </div>
+                    <div className="paper-collection-btns">
+                      {item.description.length ? (
+                        <Tooltip title={item.description} placement="left">
+                          <InfoIcon id={`analytics-dashboard-${item.id}-info`} />
+                        </Tooltip>
+                      ) : null}
+                      <MoveToInboxIcon
+                        onClick={(e) => handleMoveDashboard(item, e)}
+                        id={`analytics-dashboard-${item.id}-moveToCollections`}
+                      />
+                      <DeleteIcon
+                        id={`analytics-dashboard-${item.id}-delete`}
+                        onClick={deleteDashboard({ id: item.id, collectionId })}
+                      />
+                    </div>
+                  </>
+                ) : (
+                  <>
+                    <div className="paper-collection-icon">{chooseIcon(item.type)}</div>
+                    {/* eslint-disable-next-line */}
+                    <div className="paper-collection-text">
+                      <Typography variant="h3">{item.name}</Typography>
+                    </div>
+                    <div className="paper-collection-btns">
+                      {item.description.length ? (
+                        <Tooltip title={item.description} placement="left">
+                          <InfoIcon id={`analytics-visualization-${item.id}-info`} />
+                        </Tooltip>
+                      ) : null}
+                      <MoveToInboxIcon
+                        onClick={(e) => handleMoveVisualization(item, e)}
+                        id={`analytics-visualization-${item.id}-moveToCollections`}
+                      />
+                      <DeleteIcon
+                        id={`analytics-visualization-${item.id}-delete`}
+                        onClick={deleteVisualization({ id: item.id, collectionId })}
+                      />
+                    </div>
+                  </>
+                )}
+              </Paper>
+            );
+          })}
+        </Grid>
+      )}
     </Typography>
   );
 };

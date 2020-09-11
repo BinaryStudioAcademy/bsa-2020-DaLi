@@ -44,6 +44,7 @@ export const useStyles = makeStyles((theme) => ({
   },
   tab: {
     textTransform: 'none',
+    maxWidth: `${100 / 2}%`,
     color: '#000',
   },
   select: {

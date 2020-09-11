@@ -13,7 +13,7 @@ const ValidationSchema = Yup.object({
 
 const getStyles = (errors, touched, fieldName) => {
   return getIn(errors, fieldName) && getIn(touched, fieldName)
-    ? { borderRadius: '5px', backgroundColor: 'rgba(255, 0, 0, 0.3)' }
+    ? { borderRadius: '10px', backgroundColor: 'rgba(255, 0, 0, 0.3)' }
     : {};
 };
 
@@ -46,7 +46,7 @@ const CreateUserGroupForm = ({ handleSubmit, resetForm, isValid, dirty, cancel, 
           placeholder='Something like "Marketing"'
           style={getStyles(errors, touched, 'name')}
         />
-        <ErrorMessage name="name" component="div" className="error" />
+        <ErrorMessage name="name" component="div" className="errorGroup" />
         <div>
           <Button onClick={cancel(resetForm)} variant="outlined">
             Cancel

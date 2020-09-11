@@ -13,6 +13,8 @@ const ValidationSchema = Yup.object({
 });
 
 const UserForm = ({ submit, closeForm, submitTitle, usersLikeOptions }) => {
+  const classes = useStyles();
+
   return (
     <TableRow>
       <TableCell colSpan={3}>
@@ -24,6 +26,7 @@ const UserForm = ({ submit, closeForm, submitTitle, usersLikeOptions }) => {
               usersLikeOptions={usersLikeOptions}
               submitTitle={submitTitle}
               {...props}
+              className={classes}
             />
           )}
         </Formik>
@@ -81,12 +84,13 @@ const AddUserToGroupForm = ({
         />
       </div>
       <div>
-        <Button onClick={cancel(resetForm)} style={{ textTransform: 'none', fontSize: 12, color: '#3ca1de' }}>
+        <Button onClick={cancel(resetForm)} style={{ textTransform: 'none', fontSize: 12 }} variant="outlined">
           Cancel
         </Button>
         {/* eslint-disable-next-line */}
         <Button
           type="submit"
+          color="primary"
           variant="outlined"
           disabled={!(isValid && dirty)}
           style={{ textTransform: 'none', fontSize: 12 }}

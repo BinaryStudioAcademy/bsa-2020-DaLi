@@ -76,3 +76,10 @@
   position: absolute;
   font-size: 12px;
 }
+
+.errorGroup {
+  color: red;
+  position: absolute;
+  font-size: 16px;
+  top: -1em;
+}

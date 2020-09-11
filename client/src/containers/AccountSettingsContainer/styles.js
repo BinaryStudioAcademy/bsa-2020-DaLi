@@ -1,7 +1,14 @@
 import { makeStyles } from '@material-ui/core/styles';
 
-const useStyles = makeStyles((theme) => ({
-  accountSettingsContainer: {
+export const useStyles = makeStyles(() => ({
+  tabsRoot: {
+    width: '30%',
+  },
+  tabRoot: {
+    maxWidth: `${100 / 2}%`,
+  },
+
+  /* accountSettingsContainer: {
     minHeight: '100vh',
     width: '100%',
   },
@@ -116,7 +123,7 @@ const useStyles = makeStyles((theme) => ({
     position: 'relative',
     padding: '15px 0',
     height: '75px',
-  },
+  }, */
 }));
 
 export default useStyles;

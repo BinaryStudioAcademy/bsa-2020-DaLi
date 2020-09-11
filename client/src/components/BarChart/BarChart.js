@@ -19,15 +19,18 @@ function BarChart(props) {
   const { goal, trendline, showDataPointsValues, color, stacked } = props.settings.display;
   const XAxis = props.settings.axisData.XAxis;
   const YAxis = props.settings.axisData.YAxis;
-  const parseDate = (data) => {
-    data.map((elem) => {
-          if (moment(elem[XAxis.key], moment.ISO_8601, true).isValid()) {
-            const formatTime = moment(elem[XAxis.key],moment.ISO_8601).format('LLL');
-          elem[XAxis.key] = formatTime;
-          }
-        });
+  const parseDate = (schema, data) => {
+    const fieldsOfTypeDate = schema.filter((elem) => elem.data_type === 'date').map((elem) => elem.column_name);
+    data.forEach((elem) => {
+      if (fieldsOfTypeDate.includes(XAxis.key)) {
+        if (moment(elem[XAxis.key], moment.ISO_8601, true).isValid()) {
+        const formatTime = moment(elem[XAxis.key], moment.ISO_8601).format('LLL');
+        elem[XAxis.key] = formatTime;
+        }
+      }
+    });
   };
-  parseDate(data);
+  parseDate(props.settings.schema,data);
 
   const initChart = (ref) => {
     const chart = d3.select(ref).attr('width', '100%').attr('height', '100%');

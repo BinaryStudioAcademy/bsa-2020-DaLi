@@ -14,16 +14,18 @@ function LineChart({ settings, data, chart: chartSize }) {
   const { goal, trendline, showDataPointsValues, lineType = 'curveNatural', color } = settings.display;
   const XAxis = settings.axisData.XAxis;
   const YAxis = settings.axisData.YAxis;
-  const parseDate = (data) => {
-    data.map((elem) => {
-          if (moment(elem[XAxis.key], moment.ISO_8601, true).isValid()) {
-            const formatTime = moment(elem[XAxis.key],moment.ISO_8601).format('LLL');
-          elem[XAxis.key] = formatTime;
-          }
-        });
+  const parseDate = (schema, data) => {
+    const fieldsOfTypeDate = schema.filter((elem) => elem.data_type === 'date').map((elem) => elem.column_name);
+    data.forEach((elem) => {
+      if (fieldsOfTypeDate.includes(XAxis.key)) {
+        if (moment(elem[XAxis.key], moment.ISO_8601, true).isValid()) {
+        const formatTime = moment(elem[XAxis.key], moment.ISO_8601).format('LLL');
+        elem[XAxis.key] = formatTime;
+        }
+      }
+    });
   };
-  parseDate(data);
-
+  parseDate(settings.schema, data);
 
   // const [config, setConfig] = useState({});
   const svgRef = useRef();
@@ -32,7 +34,6 @@ function LineChart({ settings, data, chart: chartSize }) {
   const { margin } = chartSize;
 
   // const chart = d3.select(svgRef.current);
-
 
   const initChart = (ref) => {
     const chart = d3.select(ref).attr('width', '100%').attr('height', '100%');
@@ -68,7 +69,7 @@ function LineChart({ settings, data, chart: chartSize }) {
       .padding(0.1);
   };
 
-  const calcYScale = (yMin,yMax, extent = null) => {
+  const calcYScale = (yMin, yMax, extent = null) => {
     return d3
       .scaleLinear()
       .domain(extent ? extent : [yMin, yMax])
@@ -236,8 +237,8 @@ function LineChart({ settings, data, chart: chartSize }) {
         .style('stroke', color[index]);
       chart
         .selectAll(`.dot-${YAxis.key[index]}`)
-        .data(data.map(
-           (d) => {
+        .data(
+          data.map((d) => {
             return { key: YKey, value: d[YKey], index: index, [XAxis.key]: d[XAxis.key] };
           })
         )

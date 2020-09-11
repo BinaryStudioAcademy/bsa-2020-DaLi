@@ -28,24 +28,21 @@ export const useStyles = makeStyles({
   },
   avatar: {
     marginRight: '20px',
-    backgroundColor: '#3ca1de',
+    backgroundColor: '#1cd1a1',
   },
   dots: {
     cursor: 'pointer',
   },
   form: {
+    position: 'relative',
     display: 'flex',
     justifyContent: 'space-between',
-    border: '1px solid #dadada',
     padding: '10px',
     borderRadius: ' 5px',
     fontSize: '15px',
     fontFamily: 'Roboto',
     '& .MuiFormControl-root': {
       width: '75%',
-    },
-    '&:focus-within': {
-      border: '1px solid #33a1de',
     },
     '& input': {
       border: 'none',
@@ -68,5 +65,11 @@ export const useStyles = makeStyles({
   },
   select: {
     flexGrow: 4,
+  },
+  customError: {
+    color: 'red',
+    position: 'absolute',
+    fontSize: '14px',
+    top: '-1em',
   },
 });

@@ -5,14 +5,14 @@ import { useHistory } from 'react-router-dom';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import Box from '@material-ui/core/Box';
+import NavigateNextIcon from '@material-ui/icons/NavigateNext';
+import { Breadcrumbs, Typography } from '@material-ui/core';
 import { PermissionsHeader, PermissionsTable, PermissionsModal } from '../../components';
 import * as actions from './actions';
 import { checkIsTablePermissionExist, getCurrentDatabaseTablesPermissions, getCurrentDatabaseTitle } from './helpers';
 import { DEFAULT_ACCESS_TYPES, TABLE_ACCESS_TYPES } from './config';
 import { useStyles } from './styles';
 import { DEFAULT_COLLECTIONS, PRIVATE_COLLECTIONS } from '../../constants';
-import NavigateNextIcon from "@material-ui/icons/NavigateNext";
-import {Breadcrumbs, Typography} from "@material-ui/core";
 
 const PermissionsContainer = (props) => {
   const {
@@ -153,50 +153,46 @@ const PermissionsContainer = (props) => {
   return (
     <>
       {isEdit && <PermissionsHeader onModalOpen={onModalOpen} onCancelChanges={cancelChanges} />}
-  <div className="wrapper">
-      <Breadcrumbs separator={<NavigateNextIcon />} aria-label="breadcrumb" style={{ marginTop: '10px' }}>
-        <Typography variant="body2" color="primary">
+      <div className="wrapper">
+        <Breadcrumbs separator={<NavigateNextIcon />} aria-label="breadcrumb" style={{ marginTop: '10px' }}>
+          <Typography variant="body2" color="primary">
+            Permissions
+          </Typography>
+        </Breadcrumbs>
+        <Typography variant="h1" color="textPrimary">
           Permissions
         </Typography>
-      </Breadcrumbs>
-      <Typography variant="h1" color="textPrimary">
-        Permissions
-      </Typography>
-      <div className={classes.tabsHeader}>
-        <Tabs
-          value={value}
-          onChange={handleChange}
-          classes={{ indicator: classes.indicator }}
-        >
-          <Tab label="Database permissions" />
-          <Tab label="Collection permissions" />
-        </Tabs>
+        <div className={classes.tabsHeader}>
+          <Tabs value={value} onChange={handleChange} classes={{ indicator: classes.indicator }}>
+            <Tab label="Database permissions" classes={{ root: classes.tabsRoot }} />
+            <Tab label="Collection permissions" classes={{ root: classes.tabsRoot }} />
+          </Tabs>
+        </div>
+        {!!tableData?.length && (
+          <>
+            <PermissionsModal isVisible={isModalVisible} onClose={onModalClose} onSaveChanges={onSaveChanges} />
+            <Box hidden={value !== 0}>
+              <PermissionsTable
+                dataType={dataType}
+                data={tableData}
+                accessTypes={accessTypes}
+                currentDatabaseName={currentDatabaseName}
+                onAccessChange={onAccessChange}
+              />
+            </Box>
+            <Box hidden={value !== 1}>
+              <PermissionsTable
+                dataType={dataType}
+                data={tableData}
+                accessTypes={accessTypes}
+                currentDatabaseName={currentDatabaseName}
+                onAccessChange={onAccessChange}
+              />
+            </Box>
+          </>
+        )}
       </div>
-      {!!tableData?.length && (
-        <>
-          <PermissionsModal isVisible={isModalVisible} onClose={onModalClose} onSaveChanges={onSaveChanges} />
-          <Box hidden={value !== 0}>
-            <PermissionsTable
-              dataType={dataType}
-              data={tableData}
-              accessTypes={accessTypes}
-              currentDatabaseName={currentDatabaseName}
-              onAccessChange={onAccessChange}
-            />
-          </Box>
-          <Box hidden={value !== 1}>
-            <PermissionsTable
-              dataType={dataType}
-              data={tableData}
-              accessTypes={accessTypes}
-              currentDatabaseName={currentDatabaseName}
-              onAccessChange={onAccessChange}
-            />
-          </Box>
-        </>
-      )}
-    </div>
-      </>
+    </>
   );
 };
 

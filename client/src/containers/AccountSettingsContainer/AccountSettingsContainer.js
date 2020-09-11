@@ -11,6 +11,7 @@ import { updateUser, hideUserUpdateMessage, updateUserError } from './actions';
 import { getUserInitials } from './helper';
 
 import './styles.css';
+import { useStyles } from './styles';
 
 const ProfileSchema = Yup.object().shape({
   firstName: Yup.string().max(30).required('Required'),
@@ -60,6 +61,7 @@ const AccountSettingsContainer = ({
     newPassword: '',
     confirmedPassword: '',
   };
+  const classes = useStyles();
 
   const handleTabChange = (_event, tabIndex) => {
     setActiveTab(tabIndex);
@@ -83,14 +85,14 @@ const AccountSettingsContainer = ({
 
   return (
     <Grid container direction="column">
-      <Grid item container direction="column" alignItems="center">
-        <Avatar style={{ margin: '15px 0' }}>{userInitials}</Avatar>
+      <Grid item container direction="column" alignItems="center" style={{ margin: '15px 0' }}>
+        <Avatar style={{ margin: '15px 0', backgroundColor: '#1cd1a1' }}>{userInitials}</Avatar>
         <Typography variant="h3" color="textPrimary">
           Account settings
         </Typography>
-        <Tabs value={activeTab} onChange={handleTabChange}>
-          <Tab label="Profile" />
-          <Tab label="Password" />
+        <Tabs value={activeTab} onChange={handleTabChange} classes={{ root: classes.tabsRoot }}>
+          <Tab label="Profile" classes={{ root: classes.tabRoot }} />
+          <Tab label="Password" classes={{ root: classes.tabRoot }} />
         </Tabs>
       </Grid>
       <Grid xs item container direction="column" alignItems="center">

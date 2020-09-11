@@ -168,8 +168,8 @@ const Header = ({ logout, addDashboard, isAdmin }) => {
                   aria-hidden="true"
                   id="header-browseData"
                 >
-                  <AppsIcon fontSize="small" />
-                  Browse Data
+                  <AppsIcon fontSize="large" />
+                  <p style={{ fontSize: 20 }}>Browse Data</p>
                 </NavLink>
               </StyledNavLink>
             </div>

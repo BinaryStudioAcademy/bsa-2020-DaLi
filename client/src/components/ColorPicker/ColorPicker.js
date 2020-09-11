@@ -2,7 +2,7 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { useHistory, useLocation } from 'react-router-dom';
+// import { useHistory, useLocation } from 'react-router-dom';
 // import TextField from '@material-ui/core/TextField';
 // import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
 // import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
@@ -15,9 +15,16 @@ import { createMuiTheme, ThemeProvider } from '@material-ui/core';
 import ButtonBase from '@material-ui/core/ButtonBase';
 import { useStyles } from './styles';
 
-const ColorPicker = ({ color: oldColor = 'red', label, index, multiline, handleColorChange, handleLabelChange }) => {
-  const history = useHistory();
-  const location = useLocation();
+const ColorPicker = ({
+  color: oldColor = 'red',
+  label,
+  index,
+  // multiline,
+  handleColorChange,
+  handleLabelChange,
+}) => {
+  // const history = useHistory();
+  // const location = useLocation();
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = useState(null);
   const [color, setColor] = useState(oldColor);
@@ -61,13 +68,13 @@ const ColorPicker = ({ color: oldColor = 'red', label, index, multiline, handleC
     }
   };
 
-  const handleTypeChange = (event, type) => {
-    const tableId = location.pathname.match(/create-visualization\/(.*)\//)[1];
-    history.push({
-      pathname: `/create-visualization/${tableId}/${type}`,
-      prevPath: history.location.pathname,
-    });
-  };
+  // const handleTypeChange = (event, type) => {
+  //   const tableId = location.pathname.match(/create-visualization\/(.*)\//)[1];
+  //   history.push({
+  //     pathname: `/create-visualization/${tableId}/${type}`,
+  //     prevPath: history.location.pathname,
+  //   });
+  // };
 
   const open = Boolean(anchorEl);
   const id = open ? 'simple-popover' : undefined;

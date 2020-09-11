@@ -19,30 +19,34 @@ const PermissionsTable = (props) => {
   const userGroups = data[0].groups;
   let dataNameProperty;
   let dataIdProperty;
-  let linkClassName;
+  // let linkClassName;
 
   switch (dataType) {
     case 'tables':
       dataNameProperty = 'tableName';
       dataIdProperty = 'tableId';
-      linkClassName = classes.permissionsTableLink;
+      // linkClassName = classes.permissionsTableLink;
       break;
     case 'collections':
       dataNameProperty = 'name';
       dataIdProperty = 'id';
-      linkClassName = classes.permissionsTableLinkActive;
+      // linkClassName = classes.permissionsTableLinkActive;
       break;
     default:
       dataNameProperty = 'dbNickname';
       dataIdProperty = 'databaseId';
-      linkClassName = classes.permissionsTableLinkActive;
+      // linkClassName = classes.permissionsTableLinkActive;
       break;
   }
 
   return (
     <>
       <Breadcrumbs className={classes.permissionsTableBreadcrumbs} aria-label="breadcrumb">
-        {dataType === 'tables' && <Typography variant="h1" color="textPrimary">{currentDatabaseName}</Typography>}
+        {dataType === 'tables' && (
+          <Typography variant="h1" color="textPrimary">
+            {currentDatabaseName}
+          </Typography>
+        )}
       </Breadcrumbs>
       <Grid className={classes.permissionsTableContainer} container>
         <Table style={{ width: '100%', tableLayout: 'fixed' }} aria-label="permissions table">

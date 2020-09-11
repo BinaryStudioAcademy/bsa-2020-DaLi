@@ -41,7 +41,7 @@ function FilterFieldsList({ schema, chooseFilterHandler, activeFilterName }) {
             key={index}
             className={isActive ? 'active' : ''}
             classes={{
-              root: classes.choseFilterButtonContainer,
+              root: classes.chooseFilterButtonContainer,
             }}
             variant="contained"
             disabled={disabled}

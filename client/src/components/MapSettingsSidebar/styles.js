@@ -20,11 +20,6 @@ export const useStyles = makeStyles((theme) => ({
   },
   tab: {
     minWidth: 100,
-    backgroundColor: '#519ee3',
-    color: 'white',
-    borderRadius: '2rem',
-    marginRight: '1rem',
-    padding: '0.5rem',
   },
   indicator: {
     display: 'none',
@@ -40,7 +35,7 @@ export const useStyles = makeStyles((theme) => ({
     marginBottom: '2rem',
     display: 'flex',
     justifyContent: 'center',
-    width: 300,
+    width: '100%',
   },
   formControl: {
     margin: theme.spacing(1),
@@ -50,8 +45,19 @@ export const useStyles = makeStyles((theme) => ({
     marginBottom: '3rem',
   },
   select: {
-    maxWidth: '300px',
-    width: 300,
+    height: '50px',
+    width: '300px',
+    boxSizing: 'border-box',
+    borderRadius: '4px',
+    '&:before': {
+      borderBottom: 'none',
+    },
+    '&:after': {
+      borderBottom: 'none',
+    },
+    '&:hover': {
+      borderBottom: 'none',
+    },
   },
   label: {
     fontSize: 'bold',
@@ -94,26 +100,24 @@ export const useStyles = makeStyles((theme) => ({
 
 export const switchStyles = makeStyles((theme) => ({
   root: {
-    width: 60,
-    height: 26,
-    padding: 0,
+    width: 70,
     margin: theme.spacing(1),
     overflow: 'unset',
   },
   switchBase: {
     padding: 1,
+    border: 'none',
     '&$checked': {
-      transform: 'translateX(34px)',
+      transform: 'translateX(44px)',
       color: theme.palette.common.white,
       '& + $track': {
-        backgroundColor: '#519EE3',
+        backgroundColor: '#1CD1A1',
         opacity: 1,
         border: 'none',
       },
     },
     '&$focusVisible $thumb': {
-      color: '#519EE3',
-      border: '6px solid #fff',
+      color: '#1CD1A1',
     },
   },
   thumb: {
@@ -121,9 +125,8 @@ export const switchStyles = makeStyles((theme) => ({
     height: 24,
   },
   track: {
-    borderRadius: 26 / 2,
-    border: `1px solid ${theme.palette.grey[400]}`,
-    backgroundColor: theme.palette.grey[50],
+    border: '1px solid #CFD7DF',
+    backgroundColor: '#F2F2F2',
     opacity: 1,
     transition: theme.transitions.create(['background-color', 'border']),
   },

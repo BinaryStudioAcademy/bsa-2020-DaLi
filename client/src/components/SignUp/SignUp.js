@@ -1,131 +1,126 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Card from '@material-ui/core/Card';
-import CardContent from '@material-ui/core/CardContent';
-import CardActions from '@material-ui/core/CardActions';
+import { Field, ErrorMessage, getIn } from 'formik';
+import { Typography } from '@material-ui/core';
+
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
-import { makeStyles } from '@material-ui/core/styles';
 
-const useStyles = makeStyles(() => ({
-  card: {
-    maxWidth: 420,
-    marginTop: 50,
-  },
-  container: {
-    display: 'Flex',
-    justifyContent: 'center',
-  },
-  actions: {
-    float: 'right',
-  },
-  nameContainer: {
-    display: 'flex',
-    '& > :first-child': {
-      marginRight: 5,
-    },
-    cardHeader: {
-      color: 'grey',
-      paddingLeft: '15px',
-    },
-  },
-}));
-const SignUp = ({ values, touched, errors, handleChange, handleBlur, handleReset, handleSubmit, isValid, dirty }) => {
-  const classes = useStyles();
+const getStyles = (errors, touched, fieldName) => {
+  return getIn(errors, fieldName) && getIn(touched, fieldName)
+    ? { borderRadius: '5px', backgroundColor: 'rgba(255, 0, 0, 0.3)' }
+    : {};
+};
 
+const SignUp = ({ values, touched, errors, handleChange, handleReset, handleSubmit, isValid, dirty }) => {
   return (
-    <div className={classes.container}>
-      <form onSubmit={handleSubmit}>
-        <Card className={classes.card}>
-          <CardContent>
-            <p className={classes.cardHeader}>Setting up an admin account</p>
-            <div className={classes.nameContainer}>
-              <TextField
-                id="firstName"
-                label="First Name"
-                value={values.firstName}
-                onChange={handleChange}
-                onBlur={handleBlur}
-                helperText={touched.firstName ? errors.firstName : ''}
-                error={touched.firstName && Boolean(errors.firstName)}
-                margin="dense"
-                variant="outlined"
-              />
-              <TextField
-                id="lastName"
-                label="Last Name"
-                value={values.lastName}
-                onChange={handleChange}
-                onBlur={handleBlur}
-                helperText={touched.lastName ? errors.lastName : ''}
-                error={touched.lastName && Boolean(errors.lastName)}
-                margin="dense"
-                variant="outlined"
-              />
-            </div>
-            <TextField
-              id="email"
-              label="Email"
-              type="email"
-              value={values.email}
-              onChange={handleChange}
-              onBlur={handleBlur}
-              helperText={touched.email ? errors.email : ''}
-              error={touched.email && Boolean(errors.email)}
-              margin="dense"
-              variant="outlined"
-              fullWidth
-            />
-            <TextField
-              id="password"
-              label="Password"
-              type="password"
-              value={values.password}
-              onChange={handleChange}
-              onBlur={handleBlur}
-              helperText={touched.password ? errors.password : ''}
-              error={touched.password && Boolean(errors.password)}
-              margin="dense"
-              variant="outlined"
-              fullWidth
-            />
-            <TextField
-              id="confirmPassword"
-              label="Confirm Password"
-              type="password"
-              value={values.confirmPassword}
-              onChange={handleChange}
-              onBlur={handleBlur}
-              helperText={touched.confirmPassword ? errors.confirmPassword : ''}
-              error={touched.confirmPassword && Boolean(errors.confirmPassword)}
-              margin="dense"
-              variant="outlined"
-              fullWidth
-            />
-            <TextField
-              id="companyName"
-              label="Company Name"
-              value={values.companyName}
-              onChange={handleChange}
-              onBlur={handleBlur}
-              helperText={touched.companyName ? errors.companyName : ''}
-              error={touched.companyName && Boolean(errors.companyName)}
-              margin="dense"
-              variant="outlined"
-              fullWidth
-            />
-          </CardContent>
-          <CardActions className={classes.actions}>
-            <Button type="submit" color="primary" disabled={!(isValid && dirty)}>
-              SUBMIT
-            </Button>
-            <Button color="secondary" onClick={handleReset}>
-              CLEAR
-            </Button>
-          </CardActions>
-        </Card>
-      </form>
-    </div>
+    <form onSubmit={handleSubmit}>
+      <Typography variant="subtitle2" htmlFor="firstName">
+        First Name
+      </Typography>
+      <Field
+        id="firstName"
+        name="firstName"
+        placeholder="John"
+        as={TextField}
+        value={values.firstName}
+        onChange={handleChange}
+        style={getStyles(errors, touched, 'firstName')}
+        variant="outlined"
+      />
+      <ErrorMessage name="firstName" component="div" className="error" />
+
+      <Typography variant="subtitle2" htmlFor="lastName">
+        Last Name
+      </Typography>
+      <Field
+        id="lastName"
+        name="lastName"
+        placeholder="Doe"
+        as={TextField}
+        value={values.lastName}
+        onChange={handleChange}
+        style={getStyles(errors, touched, 'lastName')}
+        variant="outlined"
+      />
+      <ErrorMessage name="lastName" component="div" className="error" />
+
+      <Typography variant="subtitle2" htmlFor="email">
+        Email
+      </Typography>
+      <Field
+        id="email"
+        name="email"
+        placeholder="johndoe@gmail.com"
+        as={TextField}
+        value={values.email}
+        onChange={handleChange}
+        style={getStyles(errors, touched, 'email')}
+        variant="outlined"
+      />
+      <ErrorMessage name="email" component="div" className="error" />
+
+      <Typography variant="subtitle2" htmlFor="password">
+        Password
+      </Typography>
+      <Field
+        id="password"
+        name="password"
+        placeholder="P@55word"
+        as={TextField}
+        type="password"
+        value={values.password}
+        onChange={handleChange}
+        style={getStyles(errors, touched, 'password')}
+        variant="outlined"
+      />
+      <ErrorMessage name="password" component="div" className="error" />
+
+      <Typography variant="subtitle2" htmlFor="confirmPassword">
+        Confirm Password
+      </Typography>
+      <Field
+        id="confirmPassword"
+        name="confirmPassword"
+        placeholder="P@55word"
+        as={TextField}
+        type="password"
+        value={values.confirmPassword}
+        onChange={handleChange}
+        style={getStyles(errors, touched, 'confirmPassword')}
+        variant="outlined"
+      />
+      <ErrorMessage name="confirmPassword" component="div" className="error" />
+
+      <Typography variant="subtitle2" htmlFor="companyName">
+        Company Name
+      </Typography>
+      <Field
+        id="companyName"
+        name="companyName"
+        placeholder="BSA"
+        as={TextField}
+        value={values.companyName}
+        onChange={handleChange}
+        style={getStyles(errors, touched, 'companyName')}
+        variant="outlined"
+      />
+      <ErrorMessage name="companyName" component="div" className="error" />
+
+      <Button
+        style={{ marginTop: 15, marginRight: 10 }}
+        type="submit"
+        size="large"
+        variant="contained"
+        disabled={!(isValid && dirty)}
+        color="primary"
+      >
+        Sign up
+      </Button>
+      <Button style={{ marginTop: 15, marginRight: 10 }} size="large" variant="outlined" onClick={handleReset}>
+        Clear
+      </Button>
+    </form>
   );
 };
 
@@ -134,7 +129,6 @@ SignUp.propTypes = {
   touched: PropTypes.object,
   errors: PropTypes.object,
   handleChange: PropTypes.func,
-  handleBlur: PropTypes.func,
   handleSubmit: PropTypes.func,
   handleReset: PropTypes.func,
   isValid: PropTypes.bool,

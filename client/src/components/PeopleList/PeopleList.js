@@ -79,16 +79,16 @@ const PeopleList = ({
   ) : (
     <>
       <div className={classes.root}>
+        <Grid className="people-list-header-container">
+          <Typography variant="h1" color="textPrimary">
+            People
+          </Typography>
+          <Button size="large" variant="contained" color="primary" onClick={() => openModal({ type: 'Add user' })}>
+            Add someone
+          </Button>
+        </Grid>
         {!isInactiveUsers ? (
           <>
-            <Grid className="people-list-header-container">
-              <Typography variant="h1" color="textPrimary">
-                People
-              </Typography>
-              <Button size="large" variant="contained" color="primary" onClick={() => openModal({ type: 'Add user' })}>
-                Add someone
-              </Button>
-            </Grid>
             <PeopleTable
               active
               people={people}
@@ -111,13 +111,6 @@ const PeopleList = ({
                 <Tab label="Active" className={classes.tab} />
                 <Tab label="Deactivated" className={classes.tab} />
               </Tabs>
-              <Button
-                className={classes.addPersonButton}
-                onClick={() => openModal({ type: 'Add user' })}
-                variant="contained"
-              >
-                Add someone
-              </Button>
             </div>
             <TabPanel value={activeTabIndex} index={0}>
               <PeopleTable

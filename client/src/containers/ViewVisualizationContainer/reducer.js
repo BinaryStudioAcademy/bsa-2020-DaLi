@@ -8,9 +8,10 @@ import {
   FETCH_VISUALIZATION_WITH_DATA_AND_SCHEMA_START,
   FETCH_DATA_AND_SCHEMA_IN_PROGRESS,
   FETCH_DATA_AND_SCHEMA_SUCCESS,
+  RESET_NOTIFICATION,
+  UPDATE_VISUALIZATION,
   UPDATE_VISUALIZATION_ERROR,
   UPDATE_VISUALIZATION_SUCCESS,
-  RESET_NOTIFICATION,
 } from './actionTypes';
 
 const initialState = {
@@ -41,8 +42,6 @@ const viewVisualizationReducer = (state = initialState, { type, payload }) => {
         ...visualization,
         loading: false,
         created: true,
-        // status: '',
-        // message: '',
       };
     }
 
@@ -67,10 +66,12 @@ const viewVisualizationReducer = (state = initialState, { type, payload }) => {
       const { error } = payload;
       return {
         ...state,
+        isLoading: false,
         error,
       };
     }
 
+    case UPDATE_VISUALIZATION:
     case FETCH_VISUALIZATION_WITH_DATA_AND_SCHEMA_START: {
       return {
         ...state,

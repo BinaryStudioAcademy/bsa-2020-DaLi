@@ -84,8 +84,9 @@ const ViewVisualizationHeader = (props) => {
       </Grid>
       <Grid className={classes.viewVisualizationButtons} item container>
         <Button
-          className={classes.viewVisualizationSaveButton}
           variant="contained"
+          className={classes.mr10}
+          color="primary"
           startIcon={<SaveIcon />}
           onClick={onVisualizationSave}
           id="saveVisualization"
@@ -95,16 +96,18 @@ const ViewVisualizationHeader = (props) => {
         {isVisualizationExist && (
           <>
             <Button
-              className={classes.viewVisualizationFilterButton}
-              variant="contained"
+              variant="outlined"
+              color="primary"
+              className={classes.mr10}
               startIcon={<FilterListIcon />}
               onClick={onToggleRightSideBar(0)}
             >
               Filter
             </Button>
             <Button
-              className={classes.viewVisualizationSummarizeButton}
-              variant="contained"
+              variant="outlined"
+              color="primary"
+              className={classes.mr10}
               startIcon={<GamesOutlinedIcon />}
               onClick={onToggleRightSideBar(1)}
             >

@@ -17,10 +17,12 @@ import {
   DashboardPage,
   AdminPage,
   AnalyticsPage,
+  HomePage,
 } from '../pages';
 import { getToken } from '../helpers/jwtToken';
 import { fetchUser } from '../containers/LoginPageContainer/actions';
 import CollectionContainer from '../containers/CollectionContainer/CollectionContainer';
+import ComponentsExample from '../theme/example';
 
 const Routes = ({ fetchUser, isAuthorized, isLoading }) => {
   const hasToken = !!getToken();
@@ -36,7 +38,8 @@ const Routes = ({ fetchUser, isAuthorized, isLoading }) => {
   ) : (
     <Switch>
       <PublicRoute exact path="/login" component={LoginPage} />
-      <ProtectedRoute exact path="/" component={AnalyticsPage} />
+      <ProtectedRoute exact path="/" component={HomePage} />
+      <ProtectedRoute exact path="/analytics" component={AnalyticsPage} />
       <ProtectedRoute path="/visualizations/:id" component={ViewVisualizationPage} />
       <ProtectedRoute exact path="/create-visualization/:tableId/:type" component={ViewVisualizationPage} />
       <ProtectedRoute exact path="/account-settings" component={AccountSettingsPage} />
@@ -45,6 +48,7 @@ const Routes = ({ fetchUser, isAuthorized, isLoading }) => {
       <ProtectedRoute exact path="/data-sources" component={DataSourcesDatasetsContainer} />
       <ProtectedRoute exact path="/data-sources/:id" component={DataSourcesTablesContainer} />
       <ProtectedRoute exact path="/collections/:id" component={CollectionContainer} />
+      <ProtectedRoute exact path="/theme" component={ComponentsExample} />
       <Redirect to="/" />
     </Switch>
   );

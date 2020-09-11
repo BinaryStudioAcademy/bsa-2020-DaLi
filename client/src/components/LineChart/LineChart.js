@@ -88,7 +88,8 @@ function LineChart({ settings, data, chart: chartSize }) {
       .attr("x", -9)	
       .attr("dy", ".35em")	
       .attr("transform", "rotate(-45)")	
-      .style("text-anchor", "end");
+      .style("text-anchor", "end")
+      .style("font-size", "10px");
 
 
     chart.append('g').attr('class', 'y-axis axis').call(yAxis);

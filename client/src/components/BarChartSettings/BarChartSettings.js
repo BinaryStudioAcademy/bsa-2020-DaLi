@@ -344,7 +344,7 @@ const BarChartSettings = ({ updateConfig, config: oldConfig }) => {
             ))()}
             label="Show values on data points"
           />
-          {yAxis.length < 2 ? (
+          {/* {yAxis.length < 2 ? (
             <FormControlLabel
               control={(() => (
                 <PrettySwitch
@@ -430,7 +430,7 @@ const BarChartSettings = ({ updateConfig, config: oldConfig }) => {
                 </ToggleButton>
               </ToggleButtonGroup>
             </FormControl>
-          ) : null}
+          ) : null} */}
         </div>
         {yAxis.map((value, index) => (
           <ColorPicker

@@ -189,6 +189,9 @@ function LineChartSettings({ updateConfig, config: oldConfig }) {
     const newLineTypes = [...lineType];
     newLineTypes.splice(id, 1);
     setLineType(newLineTypes);
+    const newYLabels = [...labelYAxis];
+    newYAxes.splice(id, 1);
+    setLabelYAxis(newYLabels);
   };
 
   const handleColorChange = (newColor, index) => {
@@ -335,7 +338,7 @@ function LineChartSettings({ updateConfig, config: oldConfig }) {
           ))()}
           label="Show values on data points"
         />
-        {yAxis.length < 2 ? (
+        {/* {yAxis.length < 2 ? (
           <FormControlLabel
             control={(() => (
               <PrettySwitch
@@ -421,7 +424,7 @@ function LineChartSettings({ updateConfig, config: oldConfig }) {
               </ToggleButton>
             </ToggleButtonGroup>
           </FormControl>
-        ) : null}
+        ) : null} */}
         {yAxis.map((value, index) => (
           <React.Fragment key={`color-line-${index}`}>
             <ColorPicker
@@ -527,7 +530,7 @@ function LineChartSettings({ updateConfig, config: oldConfig }) {
             InputLabelProps={{
               shrink: true,
             }}
-            value={labelYAxis}
+            value={labelYAxis[0]}
             onChange={(event) => {
               const newYAxes = [...labelYAxis];
               newYAxes[0] = event.target.value;

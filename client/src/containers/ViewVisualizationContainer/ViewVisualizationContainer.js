@@ -225,8 +225,9 @@ const ViewVisualizationContainer = (props) => {
         />
         <Snackbar
           anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
-          open={isNotificationVisible}
+          open={isNotificationVisible && message}
           autoHideDuration={2000}
+          // transitionDuration={0}
           onClose={hideNotification}
         >
           <Alert elevation={6} variant="filled" severity={status || notificationType} onClose={hideNotification}>

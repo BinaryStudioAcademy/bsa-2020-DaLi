@@ -17,7 +17,7 @@ const CollectionList = ({ openModal, collections }) => {
           return (
             collection.name !== DEFAULT_COLLECTIONS && (
               <Link to={`/collections/${collection.id}`} key={collection.id} className={classes.link}>
-                <CollectionListItem name={collection.name} />
+                <CollectionListItem name={collection.name} id={collection.id} />
               </Link>
             )
           );

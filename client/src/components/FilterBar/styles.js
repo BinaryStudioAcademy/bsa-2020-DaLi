@@ -1,7 +1,7 @@
 import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles(() => ({
-  choseFilterButtonContainer: {
+  chooseFilterButtonContainer: {
     width: '100%',
     borderRadius: '5px',
     margin: '5px 0',

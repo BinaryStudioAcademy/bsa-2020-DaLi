@@ -2,7 +2,8 @@ import { makeStyles } from '@material-ui/core/styles';
 
 export const colorStyles = makeStyles({
   admin: {
-    backgroundColor: '#7073a9',
+    color: '#000',
+    backgroundColor: '#FAA9C6',
   },
   user: {
     backgroundColor: '#519ee3',

@@ -14,7 +14,14 @@ const validationSchema = Yup.object({
   description: Yup.string().max(100, 'Description must be at most 100 characters').nullable(),
 });
 
-const AddUserBody = ({ closeModal, editableCollection, setFormData, formData, addCollection, updateCollection }) => {
+const AddCollectionBody = ({
+  closeModal,
+  editableCollection,
+  setFormData,
+  formData,
+  addCollection,
+  updateCollection,
+}) => {
   const classes = useStyles();
 
   const formik = useFormik({
@@ -93,7 +100,7 @@ const AddUserBody = ({ closeModal, editableCollection, setFormData, formData, ad
   );
 };
 
-AddUserBody.propTypes = {
+AddCollectionBody.propTypes = {
   closeModal: PropTypes.func,
   editableCollection: PropTypes.object,
   setFormData: PropTypes.func,
@@ -102,4 +109,4 @@ AddUserBody.propTypes = {
   updateCollection: PropTypes.func,
 };
 
-export default AddUserBody;
+export default AddCollectionBody;

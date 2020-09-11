@@ -45,7 +45,11 @@ const AddUserBody = ({ currentUserId, closeModal, user, addUser, updateUser, set
     },
   });
   return (
-    <div className={classes.modalContainer} id={`${user?.id ? 'edit' : 'create'}UserModal`}>
+    <div
+      className={classes.modalContainer}
+      style={{ width: 550, height: 310 }}
+      id={`${user?.id ? 'edit' : 'create'}UserModal`}
+    >
       <div className={classes.modalHeader}>
         <h2 className={classes.modalTitle}>{user?.id ? 'Edit user' : 'Create user'}</h2>
         <CloseIcon className={classes.closeIcon} onClick={closeModal} />
@@ -99,7 +103,8 @@ const AddUserBody = ({ currentUserId, closeModal, user, addUser, updateUser, set
           </Button>
           <Button
             type="submit"
-            variant="outlined"
+            variant="contained"
+            color="primary"
             disabled={formik.isValid && !formik.dirty}
             style={{ textTransform: 'none', fontSize: 12, marginLeft: 5 }}
             id={`${user?.id ? 'edit' : 'create'}User-${user?.id ? 'update' : 'create'}`}

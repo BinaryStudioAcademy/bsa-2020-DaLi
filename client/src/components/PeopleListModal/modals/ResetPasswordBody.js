@@ -12,13 +12,20 @@ const ResetPasswordBody = ({ openModal, closeModal, user, resetPassword }) => {
     openModal({ user, type: 'Password' });
   };
   return (
-    <div className={classes.modalContainer} id="resetPasswordModal">
+    <div className={classes.modalContainer} style={{ width: 550, height: 120 }} id="resetPasswordModal">
       <div className={classes.modalHeader}>
         <h2 className={classes.modalTitle}>{`Reset ${user.firstName} ${user.lastName}'s password?`}</h2>
         <CloseIcon className={classes.closeIcon} onClick={closeModal} />
       </div>
       <div>Are you sure you want to do this?</div>
-      <Button className={classes.resetButton} onClick={handleReset} id="resetPassword-reset">
+      <Button
+        // className={classes.resetButton}
+        color="primary"
+        variant="contained"
+        style={{ width: 'fit-content', alignSelf: 'flex-end' }}
+        onClick={handleReset}
+        id="resetPassword-reset"
+      >
         Reset password
       </Button>
     </div>

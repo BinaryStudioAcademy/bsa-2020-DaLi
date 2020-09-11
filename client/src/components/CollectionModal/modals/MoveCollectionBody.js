@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import CloseIcon from '@material-ui/icons/Close';
+import SearchIcon from '@material-ui/icons/Search';
 import Button from '@material-ui/core/Button';
 import CollectionsIcon from '@material-ui/icons/Collections';
 import StarIcon from '@material-ui/icons/Star';
@@ -59,14 +60,17 @@ const AddUserBody = ({
         <CloseIcon className={classes.closeIcon} onClick={closeModal} />
       </div>
       <form className={classes.addCollectionModalForm} autoComplete="off">
-        <input
-          id={`${currentCollection?.id} moveCollectionModal-name`}
-          className={classes.modalInput}
-          name="name"
-          type="text"
-          placeholder="My new fantastic collections"
-          onChange={handleSearch}
-        />
+        <div className={classes.searchField}>
+          <input
+            id={`${currentCollection?.id} moveCollectionModal-name`}
+            className={classes.modalInput}
+            name="name"
+            type="text"
+            placeholder="My new fantastic collections"
+            onChange={handleSearch}
+          />
+          <SearchIcon style={{ color: '#c6cfd4', cursor: 'pointer' }} />
+        </div>
         <div className={classes.collectionContainer}>
           {filteredCollections.map(({ name, id }) => {
             return (

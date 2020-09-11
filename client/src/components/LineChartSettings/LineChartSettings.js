@@ -149,8 +149,6 @@ function LineChartSettings({ updateConfig, config: oldConfig }) {
         },
         showDataPointsValues,
       },
-      schema: oldConfig.schema,
-      summarize: oldConfig.summarize,
     });
   };
 

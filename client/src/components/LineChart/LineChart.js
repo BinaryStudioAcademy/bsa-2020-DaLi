@@ -3,7 +3,6 @@ import React, { useEffect, useState, useRef } from 'react';
 import * as d3 from 'd3';
 import d3Tip from 'd3-tip';
 import PropTypes from 'prop-types';
-import moment from 'moment';
 
 import { calcMaxYDataValue, calcMinYDataValue } from '../../utils/calcCriticalYAxisValue';
 import TrendlineCreator from '../../utils/Trendline';
@@ -36,7 +35,6 @@ function LineChart({ settings, data, chart: chartSize }) {
   const { margin } = chartSize;
 
   // const chart = d3.select(svgRef.current);
-
   const initChart = (ref) => {
     const chart = d3.select(ref).attr('width', '100%').attr('height', '100%');
     return chart;
@@ -71,7 +69,7 @@ function LineChart({ settings, data, chart: chartSize }) {
       .padding(0.1);
   };
 
-  const calcYScale = (yMin, yMax, extent = null) => {
+  const calcYScale = (yMin,yMax, extent = null) => {
     return d3
       .scaleLinear()
       .domain(extent ? extent : [yMin, yMax])
@@ -165,7 +163,7 @@ function LineChart({ settings, data, chart: chartSize }) {
   <div><span>${d.key}:</span> <span style='color:white'>${d.value}</span></div>
 `
       );
-    chart.call(tips).attr('height', '100%').attr('width', '100%');
+      chart.call(tips).attr('height', '100%').attr('width', '100%');
     return tips;
   };
 
@@ -245,8 +243,8 @@ function LineChart({ settings, data, chart: chartSize }) {
         .style('stroke', color[index]);
       chart
         .selectAll(`.dot-${YAxis.key[index]}`)
-        .data(
-          data.map((d) => {
+        .data(data.map(
+           (d) => {
             return { key: YKey, value: d[YKey], index: index, [XAxis.key]: d[XAxis.key] };
           })
         )

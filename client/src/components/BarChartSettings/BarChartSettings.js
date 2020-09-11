@@ -1,4 +1,5 @@
 /* eslint-disable react/jsx-wrap-multilines */
+/* eslint-disable max-len */
 /* eslint-disable no-unused-vars */
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
@@ -155,8 +156,6 @@ const BarChartSettings = ({ updateConfig, config: oldConfig }) => {
         showDataPointsValues,
         stacked: showStacked,
       },
-      schema: oldConfig.schema,
-      summarize: oldConfig.summarize,
     });
   };
 

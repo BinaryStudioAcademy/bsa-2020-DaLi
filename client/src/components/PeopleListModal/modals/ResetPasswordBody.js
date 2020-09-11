@@ -17,7 +17,7 @@ const ResetPasswordBody = ({ openModal, closeModal, user, resetPassword }) => {
         <h2 className={classes.modalTitle}>{`Reset ${user.firstName} ${user.lastName}'s password?`}</h2>
         <CloseIcon className={classes.closeIcon} onClick={closeModal} />
       </div>
-      <div>Are you sure you want to do this?</div>
+      <div>Are you sure you weant to do this?</div>
       <Button
         // className={classes.resetButton}
         color="primary"

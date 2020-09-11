@@ -37,8 +37,8 @@ export const secureUserUpdate = async (req, res, next) => {
   if (req.body.lastName === '') {
     throw createError(400, 'Last name cannot be empty');
   }
-  if (!mailPattern.test(req.body.email)) {
+  /* if (!mailPattern.test(req.body.email)) {
     throw createError(400, 'Email is invalid');
-  }
+  } */
   return next();
 };

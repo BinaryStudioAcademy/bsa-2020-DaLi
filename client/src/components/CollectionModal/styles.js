@@ -17,9 +17,11 @@ export const useStyles = makeStyles(() => ({
   },
 
   modalTitle: {
-    display: 'inline-box',
-    fontSize: 20,
-    fontWeight: 500,
+    fontSize: '1.25rem',
+    fontFamily: 'Poppins, Arial, sans-serif',
+    fontWeight: '500',
+    lineHeight: '1.6',
+    margin: 'auto',
   },
 
   closeIcon: {
@@ -31,14 +33,27 @@ export const useStyles = makeStyles(() => ({
   },
 
   modalContainer: {
-    position: 'absolute',
+    /* position: 'absolute',
     maxWidth: 640,
     width: '100%',
     backgroundColor: '#ffffff',
     outline: 'none',
     borderRadius: 4,
     padding: 32,
-    margin: '0 auto',
+    margin: '0 auto', */
+    width: 'calc(100% - 64px)',
+    maxWidth: '600px',
+    display: 'flex',
+    maxHeight: 'calc(100 % - 64px)',
+    flexDirection: 'column',
+    height: 'auto',
+    margin: '32px',
+    padding: '20px',
+    position: 'relative',
+    overflowY: 'auto',
+    boxSizing: 'border-box',
+    borderRadius: '10px',
+    backgroundColor: '#FFFFFF',
   },
 
   moveButton: {
@@ -51,11 +66,11 @@ export const useStyles = makeStyles(() => ({
     display: 'flex',
     flexDirection: 'column',
     position: 'relative',
-    minHeight: 400,
   },
 
   modalInput: {
-    border: '1px solid #dadada',
+    border: 'none',
+    borderBottom: '1px solid #dadada',
     padding: 10,
     borderRadius: 5,
     marginBottom: 15,
@@ -72,9 +87,28 @@ export const useStyles = makeStyles(() => ({
     },
     '&:focus': {
       outline: 'none',
-      border: '1px solid #1CD1A1',
+      borderBottom: '1px solid #33a1de',
     },
   },
+
+  searchField: {
+    position: 'relative',
+    '& svg': {
+      position: 'absolute',
+      top: '8px',
+      right: '10px',
+    },
+  },
+
+  /* .search-field input {
+    width: calc(100% - 25px);
+  }
+
+  .search-field svg {
+    position: absolute;
+    top: 8px;
+    right: 10px;
+  } */
 
   labelsContainer: {
     display: 'flex',

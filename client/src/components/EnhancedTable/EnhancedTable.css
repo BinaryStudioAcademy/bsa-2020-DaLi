@@ -12,12 +12,12 @@
   max-width: 70px;
   height: 10px;
   width: 100%;
-  background-color: rgba(80, 158, 227, 0.2);
+  background-color: #1CD1A1;
   border-radius: 3px;
 }
 
 .mini-bar-chart-progress {
-  background-color: rgb(80, 158, 227);
+  background-color: rgb(19, 146, 112);
   height: 100%;
   width: 75.9833%;
   left: 0px;

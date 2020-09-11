@@ -48,14 +48,14 @@
   width: 100%;
 }
 
-.table-settings-sidebar-footer button {
+/* .table-settings-sidebar-footer button {
   color: white !important;
   text-transform: none !important;
   background: #3ca1de !important;
   border-radius: 100px !important;
   width: 50%;
   padding: 10px 0;
-}
+} */
 
 .columns-restore-icon {
   font-size: 15px !important;

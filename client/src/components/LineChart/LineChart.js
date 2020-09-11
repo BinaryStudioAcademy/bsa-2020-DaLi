@@ -15,15 +15,17 @@ function LineChart({ settings, data, chart: chartSize }) {
   const XAxis = settings.axisData.XAxis;
   const YAxis = settings.axisData.YAxis;
   const parseDate = (schema, data) => {
-    const fieldsOfTypeDate = schema.filter((elem) => elem.data_type === 'date').map((elem) => elem.column_name);
-    data.forEach((elem) => {
+    if (schema !== undefined) {
+      const fieldsOfTypeDate = schema.filter((elem) => elem.data_type === 'date').map((elem) => elem.column_name);
       if (fieldsOfTypeDate.includes(XAxis.key)) {
-        if (moment(elem[XAxis.key], moment.ISO_8601, true).isValid()) {
-        const formatTime = moment(elem[XAxis.key], moment.ISO_8601).format('LLL');
-        elem[XAxis.key] = formatTime;
-        }
+        data.forEach((elem) => {
+          if (moment(elem[XAxis.key], moment.ISO_8601, true).isValid()) {
+            const formatTime = moment(elem[XAxis.key], moment.ISO_8601).format('LLL');
+            elem[XAxis.key] = formatTime;
+          }
+        });
       }
-    });
+    }
   };
   parseDate(settings.schema, data);
 
@@ -82,11 +84,17 @@ function LineChart({ settings, data, chart: chartSize }) {
       g.attr('transform', `translate(0,${height - margin.bottom})`).call(d3.axisBottom(xScale).tickSize(0));
     const yAxis = (g) => g.attr('transform', `translate(${margin.left},0)`).call(d3.axisLeft(yScale).tickSize(0));
 
-    chart.append('g').attr('class', 'x-axis axis').call(xAxis);
+    chart.append('g').attr('class', 'x-axis axis').call(xAxis).selectAll("text")
+      .attr("y", 0)	
+      .attr("x", -9)	
+      .attr("dy", ".35em")	
+      .attr("transform", "rotate(-45)")	
+      .style("text-anchor", "end");
+
 
     chart.append('g').attr('class', 'y-axis axis').call(yAxis);
 
-    d3.selectAll('.x-axis').each(function (d, i) {
+    /* d3.selectAll('.x-axis').each(function (d, i) {
       let width = this.getBoundingClientRect().width;
       const xAxisElements = this.childNodes;
       let widthPerElement = width / xAxisElements.length;
@@ -107,7 +115,7 @@ function LineChart({ settings, data, chart: chartSize }) {
             .text(elem);
         });
       }
-    });
+    }); */
   };
 
   const showLegend = (chart) => {

@@ -190,7 +190,9 @@ const TableSettingsSidebar = ({ config, updateConfig, userNotificationError }) =
       <div className="table-settings-sidebar-footer">
         <Button
           onClick={saveConfig}
-          className="view-visualization__setting-button"
+          // className="view-visualization__setting-button"
+          size="large"
+          color="primary"
           variant="contained"
           disabled={isError()}
         >

@@ -59,12 +59,8 @@ const AnalyticsTabsPanel = ({ value, index, data, deleteVisualization, deleteDas
   return (
     <Typography component="div" hidden={value !== index}>
       {data.length === 0 ? (
-        <div style={{ width: '100%', display: 'flex', position: 'relative' }}>
-          <img
-            src="/no_data.png"
-            style={{ margin: 'auto', height: '100%', justifyContent: 'center', objectFit: 'contain' }}
-            alt="no_data"
-          />
+        <div style={{ width: '100%', textAlign: 'center', position: 'relative' }}>
+          <Typography variant="h4">YOU DON’T HAVE ITEMS TO DISPLAY</Typography>
         </div>
       ) : (
         <Grid>
@@ -72,6 +68,7 @@ const AnalyticsTabsPanel = ({ value, index, data, deleteVisualization, deleteDas
             return (
               <Paper
                 key={dataIndex}
+                // style={{ margin: 'auto', height: '100%', justifyContent: 'center' }}
                 variant="outlined"
                 className="paper-collection-outlined"
                 onClick={() => {

@@ -8,30 +8,21 @@ export const useStyles = makeStyles(() => ({
   },
 
   collectionItemContainer: {
-    marginTop: 30,
+    marginTop: 21,
     paddingRight: 10,
     color: 'rgb(116, 131, 143)',
     fontWeight: 700,
   },
 
   collectionItem: {
-    boxSizing: 'border-box',
-    padding: '16px 10px',
+    width: '100%',
+    borderRadius: '5px',
+    margin: '10px 0',
     display: 'flex',
-    alignItems: 'center',
-    backgroundColor: 'rgb(237, 242, 245)',
-    borderRadius: 4,
-    marginBottom: 15,
-
-    '& span': {
-      marginLeft: 5,
-      textOverflow: 'ellipsis',
-      overflow: 'hidden',
-    },
-
+    justifyContent: 'start',
     '&:hover': {
-      backgroundColor: '#edf2f557',
-      color: '#509ee3',
+      color: '#FFF',
+      backgroundColor: '#1CD1A1',
     },
   },
 
@@ -43,7 +34,7 @@ export const useStyles = makeStyles(() => ({
     cursor: 'pointer',
 
     '&:hover': {
-      color: 'rgb(80, 158, 227)',
+      color: '#1CD1A1',
     },
   },
 

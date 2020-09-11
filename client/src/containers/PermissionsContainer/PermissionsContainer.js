@@ -11,6 +11,8 @@ import { checkIsTablePermissionExist, getCurrentDatabaseTablesPermissions, getCu
 import { DEFAULT_ACCESS_TYPES, TABLE_ACCESS_TYPES } from './config';
 import { useStyles } from './styles';
 import { DEFAULT_COLLECTIONS, PRIVATE_COLLECTIONS } from '../../constants';
+import NavigateNextIcon from "@material-ui/icons/NavigateNext";
+import {Breadcrumbs, Typography} from "@material-ui/core";
 
 const PermissionsContainer = (props) => {
   const {
@@ -149,17 +151,24 @@ const PermissionsContainer = (props) => {
   };
 
   return (
-    <>
+    <div className="wrapper">
       {isEdit && <PermissionsHeader onModalOpen={onModalOpen} onCancelChanges={cancelChanges} />}
+      <Breadcrumbs separator={<NavigateNextIcon />} aria-label="breadcrumb" style={{ marginTop: '10px' }}>
+        <Typography variant="body2" color="primary">
+          Permissions
+        </Typography>
+      </Breadcrumbs>
+      <Typography variant="h1" color="textPrimary">
+        Permissions
+      </Typography>
       <div className={classes.tabsHeader}>
         <Tabs
-          className={classes.tabsContainer}
           value={value}
           onChange={handleChange}
           classes={{ indicator: classes.indicator }}
         >
-          <Tab classes={{ root: classes.tabsButtons, selected: classes.selected }} label="Database permissions" />
-          <Tab classes={{ root: classes.tabsButtons, selected: classes.selected }} label="Collection permissions" />
+          <Tab label="Database permissions" />
+          <Tab label="Collection permissions" />
         </Tabs>
       </div>
       {!!tableData?.length && (
@@ -185,7 +194,7 @@ const PermissionsContainer = (props) => {
           </Box>
         </>
       )}
-    </>
+    </div>
   );
 };
 

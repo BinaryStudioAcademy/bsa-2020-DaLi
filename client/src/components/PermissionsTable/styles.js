@@ -20,8 +20,6 @@ const useStyles = makeStyles(() => ({
     boxSizing: 'border-box',
   },
   permissionsHeadGroupCell: {
-    fontSize: '16px',
-    fontWeight: 'bold',
     textAlign: 'center',
     border: 'none',
   },

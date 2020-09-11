@@ -29,5 +29,6 @@ export const useStyles = makeStyles((theme) => ({
     paddingRight: '1.5em',
     textDecoration: 'underline',
     textDecorationColor: '#1cd1a1',
+    borderRight: '1px solid rgba(0, 0, 0, .13)'
   },
 }));

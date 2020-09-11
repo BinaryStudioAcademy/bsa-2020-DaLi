@@ -1,0 +1,6 @@
+.view-visualization-container {
+  height: calc(100vh - 145px);
+
+  border: 2px solid #f4f4f4; 
+  max-height:  calc(100vh - 145px);
+}

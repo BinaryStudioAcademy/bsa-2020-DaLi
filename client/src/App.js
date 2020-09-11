@@ -1,27 +1,24 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
-import { Typography } from '@material-ui/core'
+import { Provider } from 'react-redux';
+import { BrowserRouter as Router } from 'react-router-dom';
+import { ThemeProvider } from '@material-ui/core';
+import { theme } from './theme/theme';
 
-function App() {
-  return (
-    <div className="App">
-      <Typography variant='h6' className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </Typography>
-    </div>
-  );
-}
+import Routes from './routes/routes';
+import store from './store';
+import './App.css';
+import Layout from './hoc/Layout/Layout';
+
+const App = () => (
+  <ThemeProvider theme={theme}>
+    <Provider store={store}>
+      <Router>
+        <Layout>
+          <Routes />
+        </Layout>
+      </Router>
+    </Provider>
+  </ThemeProvider>
+);
 
 export default App;

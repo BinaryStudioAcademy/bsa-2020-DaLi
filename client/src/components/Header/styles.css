@@ -1,0 +1,91 @@
+header {
+  height: 83px; 
+  background: #ffffff;
+  border-bottom: 2px solid #f7f7f7;
+  position: sticky;
+  top: 0;
+  z-index: 999;
+}
+
+.header-container {
+  display: grid;
+  grid-template-columns: max-content 1fr max-content max-content;
+  height: 100%;
+  align-items: center;
+}
+
+.header-logo-container {
+  display: grid;
+  align-items: center;
+  grid-template-columns: max-content 1fr;
+}
+
+.header-logo {
+  background: #1cd1a1;
+  width: 48px;
+  height: 48px;
+  position: relative;
+  border-radius: 60%;
+}
+
+.header-logo:before {
+  content: url(logo.svg);
+  display: block;
+  width: 80px;
+  height: 26px;
+  position: relative;
+  right: 25px;
+}
+
+.header-logo:hover {
+  cursor: pointer;
+}
+
+.header-logo:focus {
+  outline: none;
+}
+
+.header-logo-text {
+  font-family: "Poppins";
+  font-weight: bold;
+  font-size: 24px;
+  line-height: 36px;
+  color: #4e4e4e;
+  margin-left: 10px;
+}
+
+.header-controls {
+  grid-column: 3;
+  margin-right: 35px;
+}
+
+.header-icons {
+  display: flex;
+  justify-content: space-between;
+}
+
+.header-icon {
+  margin-left: 20px;
+}
+
+.admin-header {
+  background-color: #1cd1a1;
+  color: #fff;
+  border: none;
+}
+
+.admin-header-icon {
+  margin-right: 10px;
+}
+
+.link {
+  color: #fff;
+  padding: 0 20px;
+  font-weight: 500;
+  text-decoration: none;
+  opacity: 0.7;
+}
+
+.admin-settings {
+  justify-self: end;
+}

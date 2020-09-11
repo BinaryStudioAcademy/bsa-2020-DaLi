@@ -1,0 +1,63 @@
+.login-container {
+  display: grid;
+  grid-template-columns: 60% 40%;
+  height: 100vh;
+}
+
+.login-hero-container {
+  background-color: #1cd1a1;
+}
+
+.hero-dali {
+  object-fit: contain;
+  object-position: right;
+  width: 100%;
+  height: 100%;
+}
+
+.form-wrapper {
+  height: max-content;
+  width: 80%;
+  box-sizing: border-box;
+  align-self: center;
+  justify-self: center;
+}
+
+.form-wrapper .MuiTypography-subtitle2 {
+  margin: 25px 0 10px;
+}
+
+.password-label-wrapper {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+}
+
+.forgot-pswd:hover {
+  cursor: pointer;
+  text-decoration: underline;
+  text-decoration-color: #1cd1a1;
+}
+
+.checkbox-wrapper {
+  margin: 15px 0;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.login-checkbox-label {
+  line-height: 34px;
+  margin-right: 5px;
+}
+
+@media (max-width: 800px) {
+  .login-container {
+    grid-template-columns: 100%;
+    grid-template-rows: 220px 1fr;
+  }
+  .hero-dali {
+    object-fit: cover;
+    object-position: center;
+  }
+}

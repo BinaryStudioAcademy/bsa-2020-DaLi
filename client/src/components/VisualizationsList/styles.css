@@ -1,0 +1,26 @@
+.visualization-list-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(500px, 1fr));
+  padding: 0 25px;
+  margin-top: 20px;
+}
+
+.visualization-list-container a {
+  color: black;
+  text-decoration: none;
+}
+
+.visualization-item {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.visualization-item h2 {
+  margin: 0 15px;
+}
+
+.visualization-item:hover {
+  color: #33a1de;
+}

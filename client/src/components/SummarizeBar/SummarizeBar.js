@@ -192,7 +192,7 @@ const SummarizeBar = ({ closeSidebar, currentVisualization, updateVisualization 
         </Menu>
       </div>
       {isSummarize && (
-        <div>
+        <div style={{ width: '100%', display: 'flex', flexDirection: 'column' }}>
           <h3>Group by</h3>
           {currentVisualization.schema.map((column) => (
             <GroupByList

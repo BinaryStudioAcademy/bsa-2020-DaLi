@@ -68,6 +68,7 @@ const ColorPicker = ({ color: oldColor = 'red', label, index, multiline, handleC
             open={open}
             anchorEl={anchorEl}
             onClose={handleClose}
+            className={classes.popper}
             anchorOrigin={{
               vertical: 'bottom',
               horizontal: 'center',
@@ -80,7 +81,7 @@ const ColorPicker = ({ color: oldColor = 'red', label, index, multiline, handleC
             <div className={classes.colorPalette} onClick={(event) => pickColor(event)}>
               <ol className={classes.colorPaletteInner}>
                 <li className={classes.colorItemWrapper}>
-                  <div className={classes.colorItem} style={{ backgroundColor: 'rgb(80, 158, 227)' }} />
+                  <div className={classes.colorItem} style={{ backgroundColor: '#1CD1A1' }} />
                 </li>
                 <li className={classes.colorItemWrapper}>
                   <div className={classes.colorItem} style={{ backgroundColor: 'rgb(136, 191, 77)' }} />
@@ -123,7 +124,7 @@ const ColorPicker = ({ color: oldColor = 'red', label, index, multiline, handleC
             changeLabel(event.target.value);
           }}
         />
-        {multiline ? (
+        {/* {multiline ? (
           <div className={classes.btnParams}>
             <KeyboardArrowDownIcon />
           </div>
@@ -152,7 +153,7 @@ const ColorPicker = ({ color: oldColor = 'red', label, index, multiline, handleC
               <EqualizerOutlinedIcon className={classes.iconStyles} />
             </ToggleButton>
           </ToggleButtonGroup>
-        )}
+        )} */}
       </div>
     </div>
   );

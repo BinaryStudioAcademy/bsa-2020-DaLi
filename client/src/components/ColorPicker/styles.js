@@ -12,20 +12,25 @@ export const useStyles = makeStyles((theme) => ({
     display: 'flex',
     alignItems: 'center',
   },
+  popper: {
+    width: '300px !important',
+    height: '300px !important',
+  },
   colorBox: {
     boxSizing: 'border-box',
-    padding: '5px',
-    borderRadius: '4px',
+    padding: '10px',
+    borderRadius: '50%',
     border: '1px solid #f0f0f0',
   },
   colorSquare: {
     width: '21px',
     height: '21px',
     cursor: 'pointer',
-    borderRadius: '2px',
+    borderRadius: '50%',
   },
   colorPalette: {
     padding: '0.5rem',
+    width: '120px',
   },
   colorPaletteInner: {
     display: 'flex',

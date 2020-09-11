@@ -41,7 +41,7 @@ export const useStyles = makeStyles((theme) => ({
     marginBottom: '2rem',
     display: 'flex',
     justifyContent: 'center',
-    width: 300,
+    width: '100%',
   },
   formControl: {
     margin: theme.spacing(1),
@@ -51,19 +51,30 @@ export const useStyles = makeStyles((theme) => ({
     marginBottom: '3rem',
   },
   select: {
-    maxWidth: '300px',
-    width: 300,
+    height: '50px',
+    width: '300px',
+    boxSizing: 'border-box',
+    borderRadius: '4px',
+    '&:before': {
+      borderBottom: 'none',
+    },
+    '&:after': {
+      borderBottom: 'none',
+    },
+    '&:hover': {
+      borderBottom: 'none',
+    },
   },
   label: {
     fontSize: 'bold',
     fontWeight: '2rem',
   },
   input: {
-    // display: 'flex',
-    // margin: '25px 0px',
-    border: '1px solid #CFD7DF',
+    height: '40px',
+    width: '300px',
     boxSizing: 'border-box',
     borderRadius: '4px',
+    border: '1px solid rgba(0, 0, 0, 0.23)',
   },
   colorPicker: {
     display: 'flex',
@@ -76,11 +87,15 @@ export const useStyles = makeStyles((theme) => ({
     flex: 1,
     marginTop: '5px',
     marginBottom: '10px',
-    borderColor: '#519ee3',
+    borderColor: 'rgba(0, 0, 0, 0.23)',
     color: 'black',
     textTransform: 'none',
     '&$selected': {
-      backgroundColor: '#86BBEB',
+      backgroundColor: '#1CD1A1',
+      color: 'white',
+    },
+    '&:hover': {
+      backgroundColor: 'rgb(19, 146, 112)',
       color: 'white',
     },
   },
@@ -94,10 +109,15 @@ export const useStyles = makeStyles((theme) => ({
     color: 'black',
     marginTop: '10px',
   },
+  removeItemBtn: {
+    marginLeft: '10px',
+    cursor: 'pointer',
+  },
   addSeriesBtn: {
     textTransform: 'none',
-    color: '#519ee3',
-    backgroundColor: '#eeeeee',
+    width: '300px',
+    boxSizing: 'border-box',
+    margin: '5px',
   },
   ySelectItem: {
     display: 'flex',

@@ -1,0 +1,10 @@
+.MuiPopover-paper {
+  width: 150px !important;
+  height:150px !important;
+}
+
+.MuiPaper-elevation8{
+  width: 150px !important;
+  height: 150px !important;
+  margin: 0 !important;
+  }

@@ -18,6 +18,7 @@ import FormLabel from '@material-ui/core/FormLabel';
 import CloseIcon from '@material-ui/icons/Close';
 import ColorPicker from '../ColorPicker/ColorPicker';
 import { useStyles, switchStyles } from './styles';
+import './styles.css';
 
 const PrettySwitch = (props) => {
   const classes = switchStyles();
@@ -237,11 +238,12 @@ const BarChartSettings = ({ updateConfig, config: oldConfig }) => {
       </Tabs>
       <TabPanel value={value} index={0}>
         <FormControl className={classes.formControl}>
-          <InputLabel className={classes.label} shrink id="xAxis-native-helper">
+          <Typography variant="subtitle2" htmlFor="xAxis">
             X-Axis
-          </InputLabel>
+          </Typography>
           <NativeSelect
             className={classes.select}
+            variant="outlined"
             value={xAxis}
             disabled={isSummarize}
             onChange={(event) => {
@@ -256,21 +258,21 @@ const BarChartSettings = ({ updateConfig, config: oldConfig }) => {
             {valuesX}
           </NativeSelect>
         </FormControl>
-        <InputLabel className={classes.label} shrink htmlFor="yAxis-native-helper">
+        <Typography variant="subtitle2" htmlFor="yAxis">
           Y-Axis
-        </InputLabel>
+        </Typography>
         {yAxis.map((value, index) => (
           <FormControl key={`line${index}`} className={classes.ySelectControl}>
             <div className={classes.ySelectItem}>
               <NativeSelect
-                // className={classes.select}
+                className={classes.select}
+                variant="outlined"
                 value={value}
                 disabled={isSummarize}
                 onChange={(event) => {
                   const newYAxes = [...yAxis];
                   newYAxes[index] = event.target.value;
                   setYAxis(newYAxes);
-                  // if (yAxis.length === 1) {
                   setLabelYAxis(newYAxes);
                 }}
                 inputProps={{
@@ -280,11 +282,18 @@ const BarChartSettings = ({ updateConfig, config: oldConfig }) => {
               >
                 {valuesY}
               </NativeSelect>
-              {yAxis.length > 1 ? <CloseIcon fontSize="default" onClick={() => deleteChart(index)} /> : null}
+              {yAxis.length > 1 ? (
+                <CloseIcon
+                  fontSize="default"
+                  color="action"
+                  onClick={() => deleteChart(index)}
+                  className={classes.removeItemBtn}
+                />
+              ) : null}
             </div>
           </FormControl>
         ))}
-        <Button variant="contained" disabled={isSummarize} className={classes.addSeriesBtn} onClick={addChart}>
+        <Button variant="outlined" disabled={isSummarize} className={classes.addSeriesBtn} onClick={addChart}>
           Add another series
         </Button>
       </TabPanel>
@@ -295,20 +304,22 @@ const BarChartSettings = ({ updateConfig, config: oldConfig }) => {
             label="Goal line"
           />
           {isGoalLine ? (
-            <TextField
-              variant="outlined"
-              id="standard-basic"
-              label="Goal line"
-              className={classes.input}
-              type="number"
-              InputLabelProps={{
-                shrink: true,
-              }}
-              value={goalLine}
-              onChange={(event) => {
-                setGoalLine(event.target.value);
-              }}
-            />
+            <>
+              <Typography variant="subtitle2" htmlFor="goal">
+                Goal line
+              </Typography>
+              <input
+                name="goal"
+                variant="outlined"
+                id="standard-basic"
+                className={classes.input}
+                type="text"
+                value={goalLine}
+                onChange={(event) => {
+                  setGoalLine(event.target.value);
+                }}
+              />
+            </>
           ) : null}
           {YAxis.key.length > 1 ? (
             <FormControlLabel
@@ -435,8 +446,9 @@ const BarChartSettings = ({ updateConfig, config: oldConfig }) => {
           label="Show label on x-axis"
         />
         {isLabelXAxis ? (
-          <TextField
+          <input
             id="XAxis"
+            variant="outlined"
             label="X-axis label"
             disabled={isSummarize}
             className={classes.input}
@@ -457,8 +469,9 @@ const BarChartSettings = ({ updateConfig, config: oldConfig }) => {
           label="Show label on y-axis"
         />
         {isLabelYAxis ? (
-          <TextField
+          <input
             id="YAxis"
+            variant="outlined"
             label="Y-axis label"
             className={classes.input}
             disabled={isSummarize}

@@ -23,7 +23,7 @@ function createInitLineChartConfig(schema, getYKeys, getXKeys) {
         value: 0,
         label: 'our goal',
       },
-      color: ['#4aa1de'],
+      color: ['#1CD1A1'],
       trendline: {
         display: false,
         trendlineType: 'linear',

@@ -156,6 +156,8 @@ const BarChartSettings = ({ updateConfig, config: oldConfig }) => {
         showDataPointsValues,
         stacked: showStacked,
       },
+      schema: oldConfig.schema,
+      summarize: oldConfig.summarize,
     });
   };
 

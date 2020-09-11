@@ -41,6 +41,7 @@ const ViewVisualizationMain = (props) => {
           className="view-visualization__visualization-button"
           style={!isVisualizationExist ? {} : { display: 'none' }}
           variant="contained"
+          color="primary"
           startIcon={<AppsIcon />}
           id="toggleVisualizationSideBar"
         >
@@ -50,6 +51,7 @@ const ViewVisualizationMain = (props) => {
           onClick={() => {
             onToggleSideBar(0);
           }}
+          color="primary"
           className="view-visualization__setting-button"
           variant="contained"
           startIcon={<SettingsIcon />}
@@ -62,12 +64,16 @@ const ViewVisualizationMain = (props) => {
           <Button
             className={getButtonClasses('table', currentContentView)}
             onClick={() => onSwitchContentView('table')}
+            // variant="contained"
+            // color="primary"
             id="toggleInitialTable"
           >
             <ViewListOutlinedIcon />
           </Button>
           <Button
             className={getButtonClasses('chart', currentContentView)}
+            // variant="contained"
+            // color="primary"
             onClick={() => onSwitchContentView('chart')}
             id="toggleChart"
           >

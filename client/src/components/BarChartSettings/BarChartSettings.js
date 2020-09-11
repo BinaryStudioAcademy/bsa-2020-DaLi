@@ -26,7 +26,8 @@ const PrettySwitch = (props) => {
   return (
     <Switch
       focusVisibleClassName={classes.focusVisible}
-      disableRipple
+      size="medium"
+      // disableRipple
       classes={{
         root: classes.root,
         switchBase: classes.switchBase,
@@ -163,9 +164,9 @@ const BarChartSettings = ({ updateConfig, config: oldConfig }) => {
 
   const colorList = [
     'rgb(80, 158, 227)',
-    'rgb(136, 191, 77)',
     'rgb(169, 137, 197)',
     'rgb(239, 140, 140)',
+    'rgb(136, 191, 77)',
     'rgb(249, 212, 92)',
     'rgb(242, 168, 111)',
     'rgb(152, 217, 217)',
@@ -229,22 +230,23 @@ const BarChartSettings = ({ updateConfig, config: oldConfig }) => {
         value={value}
         onChange={handleChange}
         aria-label="simple tabs example"
-        variant="fullWidth"
-        classes={{
-          indicator: classes.indicator,
-        }}
+        // variant="fullWidth"
+        // classes={{
+        //   indicator: classes.indicator,
+        // }}
       >
-        <Tab className={classes.tab} label="Data" {...a11yProps(0)} />
-        <Tab className={classes.tab} label="Display" {...a11yProps(1)} />
-        <Tab className={classes.tab} label="Labels" {...a11yProps(2)} />
+        <Tab label="Data" className={classes.tab} />
+        <Tab label="Display" className={classes.tab} />
+        <Tab label="Labels" className={classes.tab} />
       </Tabs>
       <TabPanel value={value} index={0}>
         <FormControl className={classes.formControl}>
-          <InputLabel className={classes.label} shrink id="xAxis-native-helper">
+          <Typography variant="subtitle2" htmlFor="xAxis">
             X-Axis
-          </InputLabel>
+          </Typography>
           <NativeSelect
             className={classes.select}
+            variant="outlined"
             value={xAxis}
             disabled={isSummarize}
             onChange={(event) => {
@@ -259,21 +261,21 @@ const BarChartSettings = ({ updateConfig, config: oldConfig }) => {
             {valuesX}
           </NativeSelect>
         </FormControl>
-        <InputLabel className={classes.label} shrink htmlFor="yAxis-native-helper">
+        <Typography variant="subtitle2" htmlFor="yAxis">
           Y-Axis
-        </InputLabel>
+        </Typography>
         {yAxis.map((value, index) => (
           <FormControl key={`line${index}`} className={classes.ySelectControl}>
             <div className={classes.ySelectItem}>
               <NativeSelect
                 className={classes.select}
+                variant="outlined"
                 value={value}
                 disabled={isSummarize}
                 onChange={(event) => {
                   const newYAxes = [...yAxis];
                   newYAxes[index] = event.target.value;
                   setYAxis(newYAxes);
-                  // if (yAxis.length === 1) {
                   setLabelYAxis(newYAxes);
                 }}
                 inputProps={{
@@ -283,11 +285,18 @@ const BarChartSettings = ({ updateConfig, config: oldConfig }) => {
               >
                 {valuesY}
               </NativeSelect>
-              {yAxis.length > 1 ? <CloseIcon fontSize="default" onClick={() => deleteChart(index)} /> : null}
+              {yAxis.length > 1 ? (
+                <CloseIcon
+                  fontSize="default"
+                  color="action"
+                  onClick={() => deleteChart(index)}
+                  className={classes.removeItemBtn}
+                />
+              ) : null}
             </div>
           </FormControl>
         ))}
-        <Button variant="contained" disabled={isSummarize} className={classes.addSeriesBtn} onClick={addChart}>
+        <Button variant="outlined" disabled={isSummarize} className={classes.addSeriesBtn} onClick={addChart}>
           Add another series
         </Button>
       </TabPanel>
@@ -298,19 +307,23 @@ const BarChartSettings = ({ updateConfig, config: oldConfig }) => {
             label="Goal line"
           />
           {isGoalLine ? (
-            <TextField
-              id="standard-basic"
-              label="Goal line"
-              className={classes.input}
-              type="number"
-              InputLabelProps={{
-                shrink: true,
-              }}
-              value={goalLine}
-              onChange={(event) => {
-                setGoalLine(event.target.value);
-              }}
-            />
+            <>
+              <Typography variant="subtitle2" htmlFor="goal">
+                Goal line
+              </Typography>
+              <input
+                style={{ marginTop: '10px' }}
+                name="goal"
+                variant="outlined"
+                id="standard-basic"
+                className={classes.input}
+                type="text"
+                value={goalLine}
+                onChange={(event) => {
+                  setGoalLine(event.target.value);
+                }}
+              />
+            </>
           ) : null}
           {YAxis.key.length > 1 ? (
             <FormControlLabel
@@ -443,8 +456,9 @@ const BarChartSettings = ({ updateConfig, config: oldConfig }) => {
           disabled={isSummarize}
         />
         {isLabelXAxis && !isSummarize ? (
-          <TextField
+          <input
             id="XAxis"
+            variant="outlined"
             label="X-axis label"
             disabled={isSummarize}
             className={classes.input}
@@ -471,8 +485,9 @@ const BarChartSettings = ({ updateConfig, config: oldConfig }) => {
           disabled={isSummarize}
         />
         {isLabelYAxis && !isSummarize ? (
-          <TextField
+          <input
             id="YAxis"
+            variant="outlined"
             label="Y-axis label"
             className={classes.input}
             disabled={isSummarize}
@@ -493,7 +508,10 @@ const BarChartSettings = ({ updateConfig, config: oldConfig }) => {
       </TabPanel>
       <div className={classes.btnWrapper}>
         <Button
-          className={classes.btn}
+          // className={classes.btn}
+          size="large"
+          variant="contained"
+          color="primary"
           onClick={() => {
             onDoneButton();
           }}

@@ -151,8 +151,9 @@ const PermissionsContainer = (props) => {
   };
 
   return (
-    <div className="wrapper">
+    <>
       {isEdit && <PermissionsHeader onModalOpen={onModalOpen} onCancelChanges={cancelChanges} />}
+  <div className="wrapper">
       <Breadcrumbs separator={<NavigateNextIcon />} aria-label="breadcrumb" style={{ marginTop: '10px' }}>
         <Typography variant="body2" color="primary">
           Permissions
@@ -195,6 +196,7 @@ const PermissionsContainer = (props) => {
         </>
       )}
     </div>
+      </>
   );
 };
 

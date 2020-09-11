@@ -21,7 +21,7 @@ const PermissionsHeader = (props) => {
           className={`${classes.permissionsEditingHeaderButton} ${classes.permissionsEditingHeaderButtonSave}`}
           onClick={onModalOpen}
         >
-          Save Changes
+          Save
         </Button>
       </Grid>
     </Grid>

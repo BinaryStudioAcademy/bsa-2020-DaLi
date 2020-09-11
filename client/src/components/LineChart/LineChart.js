@@ -6,6 +6,7 @@ import PropTypes from 'prop-types';
 
 import { calcMaxYDataValue, calcMinYDataValue } from '../../utils/calcCriticalYAxisValue';
 import TrendlineCreator from '../../utils/Trendline';
+import moment from 'moment';
 
 import './LineChart.css';
 
@@ -13,6 +14,20 @@ function LineChart({ settings, data, chart: chartSize }) {
   const { goal, trendline, showDataPointsValues, lineType = 'curveNatural', color } = settings.display;
   const XAxis = settings.axisData.XAxis;
   const YAxis = settings.axisData.YAxis;
+  const parseDate = (schema, data) => {
+    if (schema !== undefined) {
+      const fieldsOfTypeDate = schema.filter((elem) => elem.data_type === 'date').map((elem) => elem.column_name);
+      if (fieldsOfTypeDate.includes(XAxis.key)) {
+        data.forEach((elem) => {
+          if (moment(elem[XAxis.key], moment.ISO_8601, true).isValid()) {
+            const formatTime = moment(elem[XAxis.key], moment.ISO_8601).format('LLL');
+            elem[XAxis.key] = formatTime;
+          }
+        });
+      }
+    }
+  };
+  parseDate(settings.schema, data);
 
   // const [config, setConfig] = useState({});
   const svgRef = useRef();
@@ -69,42 +84,37 @@ function LineChart({ settings, data, chart: chartSize }) {
     const yAxis = (g) => g.attr('transform', `translate(${margin.left},0)`).call(d3.axisLeft(yScale).tickSize(0));
 
     chart.append('g').attr('class', 'x-axis axis').call(xAxis).selectAll("text")
-    .attr("y", 0)
-    .attr("x", -9)
-    .attr("dy", ".35em")
-    .attr("transform", "rotate(-45)")
-    .style("text-anchor", "end");
+      .attr("y", 0)	
+      .attr("x", -9)	
+      .attr("dy", ".35em")	
+      .attr("transform", "rotate(-45)")	
+      .style("text-anchor", "end");
+
+
     chart.append('g').attr('class', 'y-axis axis').call(yAxis);
 
-    // chart.selectAll('.tick')
-    // .call(wrap);
-
-
-    // function wrap(text) {
-    //   text.each(function() {
-    //     const text = d3.select(this);
-    //     const words = text.text().split(/\s+/).reverse();
-    //     let word;
-    //     let line = [];
-    //     let lineNumber = 0;
-    //     const lineHeight = 1.1; // ems
-    //     const y = text.attr("y");
-    //     const dy = 10;//parseFloat(text.attr("dy")),
-    //     let tspan = text.text(null).append("tspan").attr("x", 0).attr("y", y).attr("dy", dy + "em");
-    //     while (word = words.pop()) {
-    //       line.push(word);
-    //       tspan.text(line.join(" "));
-    //       console.log(tspan.node().innerHTML.includes(' '));
-    //       if (tspan.node().innerHTML.includes(' ')) {
-    //         line.pop();
-    //         tspan.text(line.join(" "));
-    //         line = [word];
-    //         console.log(line);
-    //         tspan = text.append("tspan").attr("x", 0).attr("y", y).attr("dy", ++lineNumber * lineHeight + dy + "em").text(word);
-    //       }
-    //     }
-    //   });
-    // }
+    /* d3.selectAll('.x-axis').each(function (d, i) {
+      let width = this.getBoundingClientRect().width;
+      const xAxisElements = this.childNodes;
+      let widthPerElement = width / xAxisElements.length;
+      let maxCharsPerOneLine = Math.floor(widthPerElement / 9);
+      for (let i = 1; i < xAxisElements.length; i++) {
+        const replaceTextElem = xAxisElements[i].childNodes[1];
+        const data = replaceTextElem.innerHTML;
+        const arrayOfSubstr = data.match(new RegExp('.{1,' + maxCharsPerOneLine + '}', 'g'));
+        d3.select(replaceTextElem).text('');
+        arrayOfSubstr.forEach((elem, index) => {
+          d3.select(replaceTextElem)
+            .append('tspan')
+            .attr('x', 0)
+            .attr('dy', `${index + 1}em`)
+            .attr('y', 0)
+            .attr('font', 'bold 10px sans-serif')
+            .attr('fill', 'currentColor')
+            .text(elem);
+        });
+      }
+    }); */
   };
 
   const showLegend = (chart) => {

@@ -10,6 +10,10 @@ export const useStyles = makeStyles((theme) => ({
     backgroundColor: '#fafafa',
     boxShadow: 'inset -1px -1px 3px rgba(0, 0, 0, .13)',
   },
+  menulist: {
+    position: 'sticky',
+    top: '83px',
+  },
   menuItem: {
     padding: '0',
     borderRadius: '4px',
@@ -29,6 +33,6 @@ export const useStyles = makeStyles((theme) => ({
     paddingRight: '1.5em',
     textDecoration: 'underline',
     textDecorationColor: '#1cd1a1',
-    borderRight: '1px solid rgba(0, 0, 0, .13)'
+    borderRight: '1px solid rgba(0, 0, 0, .13)',
   },
 }));

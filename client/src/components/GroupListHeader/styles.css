@@ -1,4 +1,7 @@
 .group-list-header-container {
+  position: sticky;
+  top: 93px;
+  background: white;
   margin-top: 10px;
   display: flex;
   justify-content: space-between;

@@ -16,7 +16,7 @@ const PrettySwitch = (props) => {
   return (
     <Switch
       focusVisibleClassName={classes.focusVisible}
-      disableRipple
+      // disableRipple
       classes={{
         root: classes.root,
         switchBase: classes.switchBase,
@@ -120,21 +120,23 @@ const MapSettingsSidebar = ({ updateConfig, config: oldConfig }) => {
         value={value}
         onChange={handleChange}
         aria-label="simple tabs example"
-        variant="fullWidth"
-        classes={{
-          indicator: classes.indicator,
-        }}
+        // variant="fullWidth"
+        // classes={{
+        //   indicator: classes.indicator,
+        // }}
       >
-        <Tab className={classes.tab} label="Data" {...a11yProps(0)} />
-        <Tab className={classes.tab} label="Display" {...a11yProps(1)} />
+        <Tab className={classes.tab} label="Data" />
+        <Tab className={classes.tab} label="Display" />
       </Tabs>
       <TabPanel value={value} index={0}>
         <FormControl className={classes.formControl}>
-          <InputLabel className={classes.label} shrink id="Name">
+          <Typography variant="subtitle2" htmlFor="name">
             Marker name
-          </InputLabel>
+          </Typography>
           <NativeSelect
             className={classes.select}
+            name="name"
+            variant="outlined"
             value={markerName}
             onChange={(event) => {
               setMarkerName(event.target.value);
@@ -144,10 +146,12 @@ const MapSettingsSidebar = ({ updateConfig, config: oldConfig }) => {
           </NativeSelect>
         </FormControl>
         <FormControl className={classes.formControl}>
-          <InputLabel className={classes.label} shrink id="Longitude">
+          <Typography variant="subtitle2" htmlFor="Longitude">
             Longitude
-          </InputLabel>
+          </Typography>
           <NativeSelect
+            name="Longitude"
+            variant="outlined"
             className={classes.select}
             value={longitude}
             onChange={(event) => {
@@ -158,10 +162,12 @@ const MapSettingsSidebar = ({ updateConfig, config: oldConfig }) => {
           </NativeSelect>
         </FormControl>
         <FormControl className={classes.formControl}>
-          <InputLabel className={classes.label} shrink id="Latitude">
+          <Typography variant="subtitle2" htmlFor="Latitude">
             Latitude
-          </InputLabel>
+          </Typography>
           <NativeSelect
+            name="Latitude"
+            variant="outlined"
             className={classes.select}
             value={latitude}
             onChange={(event) => {
@@ -174,10 +180,12 @@ const MapSettingsSidebar = ({ updateConfig, config: oldConfig }) => {
       </TabPanel>
       <TabPanel value={value} index={1}>
         <FormControl className={classes.formControl}>
-          <InputLabel className={classes.label} shrink id="map-view">
-            Map View
-          </InputLabel>
+          <Typography variant="subtitle2" htmlFor="map">
+            Map view
+          </Typography>
           <NativeSelect
+            name="map"
+            variant="outlined"
             className={classes.select}
             value={viewName}
             onChange={(event) => {
@@ -214,7 +222,10 @@ const MapSettingsSidebar = ({ updateConfig, config: oldConfig }) => {
       </TabPanel>
       <div className={classes.btnWrapper}>
         <Button
-          className={classes.btn}
+          // className={classes.btn}
+          size="large"
+          variant="contained"
+          color="primary"
           onClick={() => {
             onDoneButton();
           }}

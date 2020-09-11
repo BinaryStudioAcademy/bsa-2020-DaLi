@@ -41,7 +41,6 @@ function createInitLineChartConfig(schema, getYKeys, getXKeys) {
       select: {},
       groupBy: {},
     },
-    schema,
   };
 }
 

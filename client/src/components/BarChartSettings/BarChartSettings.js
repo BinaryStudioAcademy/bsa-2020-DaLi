@@ -1,4 +1,3 @@
-/* eslint-disable react/jsx-wrap-multilines */
 /* eslint-disable no-unused-vars */
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
@@ -155,8 +154,6 @@ const BarChartSettings = ({ updateConfig, config: oldConfig }) => {
         showDataPointsValues,
         stacked: showStacked,
       },
-      schema: oldConfig.schema,
-      summarize: oldConfig.summarize,
     });
   };
 
@@ -432,12 +429,7 @@ const BarChartSettings = ({ updateConfig, config: oldConfig }) => {
       </TabPanel>
       <TabPanel value={value} index={2}>
         <FormControlLabel
-          control={
-            <PrettySwitch
-              checked={isSummarize ? true : isLabelXAxis}
-              onChange={(event) => setIsLabelXAxis(event.target.checked)}
-            />
-          }
+          control={<PrettySwitch checked={isSummarize ? true : isLabelXAxis} onChange={(event) => setIsLabelXAxis(event.target.checked)} />}
           label="Show label on x-axis"
           disabled={isSummarize}
         />
@@ -460,12 +452,7 @@ const BarChartSettings = ({ updateConfig, config: oldConfig }) => {
           />
         ) : null}
         <FormControlLabel
-          control={
-            <PrettySwitch
-              checked={isSummarize ? true : isLabelYAxis}
-              onChange={(event) => setIsLabelYAxis(event.target.checked)}
-            />
-          }
+          control={<PrettySwitch checked={isSummarize ? true : isLabelYAxis} onChange={(event) => setIsLabelYAxis(event.target.checked)} />}
           label="Show label on y-axis"
           disabled={isSummarize}
         />

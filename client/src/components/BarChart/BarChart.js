@@ -3,7 +3,6 @@ import React, { useEffect, useState, useRef } from 'react';
 import * as d3 from 'd3';
 import d3Tip from 'd3-tip';
 import PropTypes from 'prop-types';
-import moment from 'moment';
 
 import { calcMaxYDataValue, calcMinYDataValue } from '../../utils/calcCriticalYAxisValue';
 import TrendlineCreator from '../../utils/Trendline';
@@ -19,18 +18,6 @@ function BarChart(props) {
   const { goal, trendline, showDataPointsValues, color, stacked } = props.settings.display;
   const XAxis = props.settings.axisData.XAxis;
   const YAxis = props.settings.axisData.YAxis;
-  const parseDate = (schema, data) => {
-    const fieldsOfTypeDate = schema.filter((elem) => elem.data_type === 'date').map((elem) => elem.column_name);
-    data.forEach((elem) => {
-      if (fieldsOfTypeDate.includes(XAxis.key)) {
-        if (moment(elem[XAxis.key], moment.ISO_8601, true).isValid()) {
-        const formatTime = moment(elem[XAxis.key], moment.ISO_8601).format('LLL');
-        elem[XAxis.key] = formatTime;
-        }
-      }
-    });
-  };
-  parseDate(props.settings.schema,data);
 
   const initChart = (ref) => {
     const chart = d3.select(ref).attr('width', '100%').attr('height', '100%');
@@ -80,31 +67,12 @@ function BarChart(props) {
     const yAxis = (g) => g.attr('transform', `translate(${margin.left},0)`).call(d3.axisLeft(yScale).tickSize(0));
 
     chart.append('g').attr('class', 'x-axis axis').call(xAxis).selectAll("text")
-    
+    .attr("y", 0)
+    .attr("x", -9)
+    .attr("dy", ".35em")
+    .attr("transform", "rotate(-45)")
+    .style("text-anchor", "end");
     chart.append('g').attr('class', 'y-axis axis').call(yAxis);
-
-    d3.selectAll('.x-axis').each(function (d, i) {
-      let width = this.getBoundingClientRect().width;
-      const xAxisElements = this.childNodes;
-      let widthPerElement = width / xAxisElements.length;
-      let maxCharsPerOneLine = Math.floor(widthPerElement / 9);
-      for (let i = 1; i < xAxisElements.length; i++) {
-        const replaceTextElem = xAxisElements[i].childNodes[1];
-        const data = replaceTextElem.innerHTML;
-        const arrayOfSubstr = data.match(new RegExp('.{1,' + maxCharsPerOneLine + '}', 'g'));
-        d3.select(replaceTextElem).text('');
-        arrayOfSubstr.forEach((elem, index) => {
-          d3.select(replaceTextElem)
-            .append('tspan')
-            .attr('x', 0)
-            .attr('dy', `${index + 1}em`)
-            .attr('y', 0)
-            .attr('font', 'bold 10px sans-serif')
-            .attr('fill', 'currentColor')
-            .text(elem);
-        });
-      }
-    });
   };
 
   const drawGroupedChart = (chart, data, xScale, xSubgroup, colors, tips, yScale, yMin) => {

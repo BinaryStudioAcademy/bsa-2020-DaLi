@@ -36,7 +36,7 @@ export const useStyles = makeStyles(() => ({
     paddingRight: 24,
     '& button': {
       marginRight: 10,
-      color: '#509ee3',
+      color: '#1cd1a1',
       border: '1px solid #ffffff',
       cursor: 'pointer',
       backgroundColor: '#ffffff',
@@ -44,27 +44,69 @@ export const useStyles = makeStyles(() => ({
       fontSize: 15,
       padding: 0,
       '&:hover': {
-        borderBottom: '1px solid #509ee3',
+        border: '1px solid #1cd1a1',
       },
     },
   },
   passwordIconBtn: {
     color: '#1cd1a1 !important',
     '&:hover': {
-      borderBottom: '1px solid #1cd1a1 !important',
+      border: '1px solid #1cd1a1 !important',
     },
   },
   passwordIcon: {
     width: 20,
     '&:hover': {
-      color: '#509ee3',
-      borderBottom: '1px solid #1cd1a1',
+      color: '#1cd1a1',
+      border: '1px solid #1cd1a1',
     },
   },
   addUserModalForm: {
     display: 'flex',
     flexDirection: 'column',
     position: 'relative',
+  },
+
+  modal: {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    color: '#2e353b',
+    fontSize: 14,
+  },
+
+  modalHeader: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 20,
+  },
+
+  modalTitle: {
+    fontSize: '1.25rem',
+    fontFamily: 'Poppins, Arial, sans-serif',
+    fontWeight: '500',
+    lineHeight: '1.6',
+    margin: 'auto',
+  },
+
+  closeIcon: {
+    opacity: 0.4,
+    fontSize: 18,
+    '&:hover': {
+      opacity: 0.8,
+    },
+  },
+
+  modalContainer: {
+    display: 'flex',
+    flexDirection: 'column',
+    height: 'fit-content',
+    position: 'relative',
+    overflowY: 'auto',
+    boxSizing: 'border-box',
+    borderRadius: '10px',
+    backgroundColor: '#FFFFFF',
   },
 
   modalInput: {
@@ -85,7 +127,7 @@ export const useStyles = makeStyles(() => ({
     },
     '&:focus': {
       outline: 'none',
-      border: '1px solid #33a1de',
+      border: '1px solid #1cd1a1',
     },
   },
 
@@ -117,6 +159,7 @@ export const useStyles = makeStyles(() => ({
 
   buttonContainer: {
     flex: '0 0 auto',
+    height: 30,
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'flex-end',

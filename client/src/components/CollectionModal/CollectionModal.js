@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import Modal from '@material-ui/core/Modal';
 import { connect } from 'react-redux';
 import { useStyles } from './styles';
-import AddUserBody from './modals/AddCollectionBody';
 import MoveCollectionBody from './modals/MoveCollectionBody';
 
 import {
@@ -13,6 +12,7 @@ import {
   setFormData,
   updateCollection,
 } from '../../containers/AnalyticsContainer/actions';
+import AddCollectionBody from './modals/AddCollectionBody';
 
 const CollectionModal = ({
   isOpen,
@@ -34,7 +34,7 @@ const CollectionModal = ({
     return (
       <Modal className={classes.modal} open={isOpen || false} onClose={closeModal}>
         <>
-          <AddUserBody
+          <AddCollectionBody
             closeModal={closeModal}
             formData={formData}
             editableCollection={modal.collection}

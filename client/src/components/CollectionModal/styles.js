@@ -100,16 +100,6 @@ export const useStyles = makeStyles(() => ({
     },
   },
 
-  /* .search-field input {
-    width: calc(100% - 25px);
-  }
-
-  .search-field svg {
-    position: absolute;
-    top: 8px;
-    right: 10px;
-  } */
-
   labelsContainer: {
     display: 'flex',
     flexDirection: '',

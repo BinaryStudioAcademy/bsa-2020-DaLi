@@ -14,6 +14,7 @@ import { TextField, Typography } from '@material-ui/core';
 const ValidationSchema = Yup.object({
   name: Yup.string().required('Name is required'),
 });
+
 // eslint-disable-next-line
 const AddDashboardModal = ({ closeModal, addDashboard, isVisible }) => {
   const cancel = (resetForm) => () => {

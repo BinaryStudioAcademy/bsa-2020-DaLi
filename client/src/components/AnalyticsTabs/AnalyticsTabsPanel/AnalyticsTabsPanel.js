@@ -98,7 +98,10 @@ const AnalyticsTabsPanel = ({ value, index, data, deleteVisualization, deleteDas
                       />
                       <DeleteIcon
                         id={`analytics-dashboard-${item.id}-delete`}
-                        onClick={deleteDashboard({ id: item.id, collectionId })}
+                        onClick={(e) => {
+                          deleteDashboard({ id: item.id, collectionId })();
+                          e.stopPropagation();
+                        }}
                       />
                     </div>
                   </>
@@ -121,7 +124,10 @@ const AnalyticsTabsPanel = ({ value, index, data, deleteVisualization, deleteDas
                       />
                       <DeleteIcon
                         id={`analytics-visualization-${item.id}-delete`}
-                        onClick={deleteVisualization({ id: item.id, collectionId })}
+                        onClick={(e) => {
+                          deleteVisualization({ id: item.id, collectionId })();
+                          e.stopPropagation();
+                        }}
                       />
                     </div>
                   </>

@@ -5,8 +5,11 @@ import Breadcrumbs from '@material-ui/core/Breadcrumbs';
 import Typography from '@material-ui/core/Typography';
 import { NavLink } from 'react-router-dom';
 import NavigateNextIcon from '@material-ui/icons/NavigateNext';
-import { Grid, Button } from '@material-ui/core';
-import SyncIcon from '@material-ui/icons/Sync';
+import {
+  Grid,
+  // Button
+} from '@material-ui/core';
+// import SyncIcon from '@material-ui/icons/Sync';
 import TableItem from './TableItem';
 import StyledNavLink from '../../theme/StyledNavLink';
 
@@ -21,7 +24,12 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-const DataSourcesTablesView = ({ tables, currentDbName, databaseId, syncDatabaseTables }) => {
+const DataSourcesTablesView = ({
+  tables,
+  currentDbName,
+  // databaseId,
+  // syncDatabaseTables,
+}) => {
   const classes = useStyles();
 
   return (
@@ -41,7 +49,7 @@ const DataSourcesTablesView = ({ tables, currentDbName, databaseId, syncDatabase
             {currentDbName}
           </Typography>
         </Breadcrumbs>
-        <div className="data-source-table-view-header">
+        {/* <div className="data-source-table-view-header">
           <Typography variant="h1" color="textPrimary">
             Tables
           </Typography>
@@ -53,7 +61,7 @@ const DataSourcesTablesView = ({ tables, currentDbName, databaseId, syncDatabase
           >
             Sync tables
           </Button>
-        </div>
+        </div> */}
         <Grid container className={classes.itemList}>
           {tables.map((table) => {
             return <TableItem key={table.id} table={table} />;

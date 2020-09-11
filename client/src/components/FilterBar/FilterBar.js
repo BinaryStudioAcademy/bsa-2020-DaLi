@@ -30,6 +30,8 @@ const FilterBar = ({ currentVisualization, closeSidebar, updateVisualization }) 
   const classes = useStyles();
   const { schema, datasetSettings } = currentVisualization;
 
+  const [applyButtonDisabled, setApplyButtonDisabled] = useState(false);
+
   const [displayFiltersList, setDisplayFiltersList] = useState(true);
   const [FilterForm, setFilterForm] = useState(null);
   const [activeFilter, setActiveFilter] = useState({});
@@ -42,7 +44,12 @@ const FilterBar = ({ currentVisualization, closeSidebar, updateVisualization }) 
       ? { ...filterCandidate, isNew: false }
       : { isNew: true, columnName: name, columnType: type };
     setActiveFilter(filter);
-    setFilterForm(chooseFilterForm(type, { filter, openFiltersList, setActiveFilter }));
+
+    const props = { filter, openFiltersList, setActiveFilter };
+    if (type === 'number') {
+      props.setApplyButtonDisabled = setApplyButtonDisabled;
+    }
+    setFilterForm(chooseFilterForm(type, props));
     setDisplayFiltersList(false);
   };
 
@@ -79,7 +86,7 @@ const FilterBar = ({ currentVisualization, closeSidebar, updateVisualization }) 
         </div>
       ) : (
         <div className={classes.btnWrapper}>
-          <Button variant="contained" color="primary" onClick={setNewFilters}>
+          <Button variant="contained" disabled={applyButtonDisabled} color="primary" onClick={setNewFilters}>
             {activeFilter.isNew ? 'Apply filter' : 'Update filter'}
           </Button>
         </div>

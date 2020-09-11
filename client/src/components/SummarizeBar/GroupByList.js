@@ -8,6 +8,7 @@ import HelpOutlineIcon from '@material-ui/icons/HelpOutline';
 import Filter1Icon from '@material-ui/icons/Filter1';
 import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
+import { Button } from '@material-ui/core';
 
 import useStyles from './styles';
 
@@ -56,18 +57,19 @@ const GroupByList = ({ type, name, isActive, currentGroupBy, setCurrentGroupBy, 
     setCurrentGroupBy({ name, type, period });
   };
   return (
-    <div
+    <Button
       className={isActive ? `${classes.groupByButtonContainer} active` : classes.groupByButtonContainer}
-      role="button"
       aria-hidden="true"
+      variant="contained"
       onClick={changeGroupBy}
     >
-      {iconForType(type)}
-      <p>{name}</p>
+      <p style={{ display: 'flex', alignItems: 'center' }}>
+        {iconForType(type)} {name}
+      </p>
 
       {isDate && (
         <div role="button" aria-hidden="true" onClick={handleMenuClick}>
-          <span>by {period}</span>
+          <span className="date-period-btn">by {period}</span>
         </div>
       )}
 
@@ -78,8 +80,8 @@ const GroupByList = ({ type, name, isActive, currentGroupBy, setCurrentGroupBy, 
           </MenuItem>
         ))}
       </Menu>
-      <span>{rightIcon}</span>
-    </div>
+      <span style={{ height: 18 }}>{rightIcon}</span>
+    </Button>
   );
 };
 
